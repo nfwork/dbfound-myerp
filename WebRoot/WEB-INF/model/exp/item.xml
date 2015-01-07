@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+	<query>
+		<sql>
+		 <![CDATA[
+			 select t.item_id,
+			 		(10000000 + t.item_id) item_num,
+					t.period_id,
+					t.regist_user_id,
+					(select user_name from sys_user u where u.user_id = t.regist_user_id) regiest_user,
+					t.regist_time,
+					t.exp_time,
+					t.description,
+					p.period_name
+			   from exp_item t,exp_period p
+			  where t.period_id = p.period_id
+			  #AND_CLAUSE#
+		 ]]>
+		</sql>
+		<filter name="item_num" express="t.item_id = ${@item_num}-10000000" />
+		<filter name="period_id" express="t.period_id = ${@period_id}" />
+		<filter name="description" express="(t.description like concat('%',${@description},'%')
+											or EXISTS (select 1 from exp_item_line l 
+											                   where l.item_id = t.item_id
+											                   and l.description like concat('%',${@description},'%')))" />
+		<filter name="timefrom" express="t.exp_time &gt;= ${@timefrom}" />
+		<filter name="timeto" express="t.exp_time &lt;= ${@timeto}" />
+	</query>
+	
+	<query name="getDeatil">
+		<param name="item_id" dataType="number" />
+		<sql>
+		 <![CDATA[
+			 select *,
+			 		(10000000 + t.item_id) item_num
+			   from exp_item t
+			  where t.item_id = ${@item_id}
+		 ]]>
+		</sql>
+	</query>
+	
+	<execute name="save">
+		<param name="item_id" dataType="number" ioType="both"/>
+		<param name="period_id" dataType="number" />
+		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
+		<param name="exp_time" dataType="varchar" />
+		<param name="description" dataType="varchar" />
+		<sqls>
+			<whenSql when="${@item_id} is not null">
+				<executeSql>
+				  <![CDATA[
+					update exp_item
+					   set 
+						period_id = ${@period_id},
+						description = ${@description},
+						exp_time = ${@exp_time}		
+					 where item_id = ${@item_id} 
+				  ]]>
+				</executeSql>
+			</whenSql>
+			<whenSql when="${@item_id} is null">
+				<executeSql generatedKeyParam="item_id">
+				  <![CDATA[
+					insert into exp_item(
+			    		period_id,
+			    		regist_user_id,
+			    		regist_time,
+			    		description,
+			    		exp_time)
+					values(
+			    		${@period_id},
+			    		${@regist_user_id},
+			    		now(),
+			    		${@description},
+			    		${@exp_time})
+				  ]]>
+				</executeSql>
+			</whenSql>
+		</sqls>
+	</execute>
+	
+	<execute name="delete">
+		<param name="item_id" dataType="number" />
+		<sqls>
+			<executeSql>
+			  <![CDATA[
+				delete from exp_item where item_id = ${@item_id} 
+			  ]]>
+			</executeSql>
+			<executeSql>
+			  <![CDATA[
+				delete from exp_item_line where item_id = ${@item_id} 
+			  ]]>
+			</executeSql>
+		</sqls>
+	</execute>
+</model>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+	<query>
+		<param name="period_id" dataType="number" />
+		<sql>
+		 <![CDATA[
+		 	 select v.*,(remaind_amount+emerge_amount) end_amount from (
+		 	 
+				 select account_id,
+						account_code,
+						account_name,
+						
+						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0) from exp_item i,exp_item_line l 
+						  where l.account_id = t.account_id 
+						    and i.item_id = l.item_id
+						    and i.period_id < ${@period_id}) remaind_amount,
+						    
+						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0) from exp_item i,exp_item_line l 
+						  where l.account_id = t.account_id 
+						    and i.item_id = l.item_id
+						    and i.period_id = ${@period_id}) emerge_amount
+					from exp_account t
+					order by t.priority
+					
+			   ) v
+		 ]]>
+		</sql>
+	</query>
+	
+	<query name="getExpDetail">
+		<param name="account_id" dataType="number" />
+		<param name="period_id" dataType="number" />
+		<sql>
+		 <![CDATA[
+			  select t.item_id,
+			  		(10000000 + t.item_id) item_num,
+					t.period_id,
+					t.regist_user_id,
+					(select user_name from sys_user u where u.user_id = t.regist_user_id) regiest_user,
+					l.regist_time,
+					t.exp_time,
+					ifnull(l.description,t.description) description,
+					p.period_name,
+					a.account_name,
+					l.dr_amount,
+					l.cr_amount
+			   from exp_item t,exp_period p,exp_item_line l,exp_account a
+			  where t.period_id = p.period_id
+			    and t.item_id = l.item_id
+			    and l.account_id = a.account_id
+			    and l.account_id = ${@account_id}
+			    and t.period_id = ${@period_id}
+			  order by t.exp_time
+		 ]]>
+		</sql>
+	</query>
+	
+</model>
