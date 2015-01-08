@@ -16,6 +16,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/dbfound.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/dbfound.jar" sourcepath="/dbfound/src"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
