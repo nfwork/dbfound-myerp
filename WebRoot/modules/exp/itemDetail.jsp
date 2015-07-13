@@ -12,8 +12,11 @@
 	
 	<script type="text/javascript">
 		function save() {
+			Ext.getCmp("saveBt").disable();
+
 			if (itemForm.form.isValid()==false) {
 				$D.showWarning("验证通不过");
+				Ext.getCmp("saveBt").enable();
 				return;
 			}
 			
@@ -21,10 +24,12 @@
 			
 			if (items.length==0) {
 				$D.showWarning("无凭证行");
+				Ext.getCmp("saveBt").enable();
 				return;
 			}
 			
 			if ($D.validate(items,lineGrid)==false){
+				Ext.getCmp("saveBt").enable();
 				return;
 			}
 				
@@ -42,15 +47,18 @@
 			}
 			if(dr_amount!=cr_amount){
 				$D.showWarning("借贷不平，借方金额："+dr_amount+"，贷方金额："+cr_amount+"，请确认");
+				Ext.getCmp("saveBt").enable();
 				return;
 			}
 			
 			var data = itemForm.getData();
 			data.lineDatas = lineGrid.getModifiedData();
+			
 			$D.request( {
 				url : 'modules/exp/itemSave.jsp',
 				param : itemForm.getData(),
 				callback : function(obj) {
+					Ext.getCmp("saveBt").enable();
 					$D.showMessage(obj.message,function(){
 						if(obj.success){
 							if(data.item_num && data.item_num !=""){
@@ -127,7 +135,7 @@
 		
 		<d:buttonGroup>
 			<d:button title="新增行" click="addLine" />
-			<d:button title="保存" click="save" />
+			<d:button title="保存" id="saveBt" click="save" />
 			<d:button title="返回" click="close" />
 		</d:buttonGroup>
 		
