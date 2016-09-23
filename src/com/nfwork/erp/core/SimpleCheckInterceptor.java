@@ -24,8 +24,13 @@ public class SimpleCheckInterceptor implements Interceptor {
 			if (check(url)) {
 				return true;
 			} else {
-				request.getRequestDispatcher("/sessionExpire.jsp").forward(
-						request, response);
+				if (url.startsWith("/mobile/")) {
+					request.getRequestDispatcher("/mobile/login.jsp").forward(
+							request, response);
+				}else{
+					request.getRequestDispatcher("/sessionExpire.jsp").forward(
+							request, response);
+				}
 				return false;
 			}
 		} else {
@@ -89,6 +94,8 @@ public class SimpleCheckInterceptor implements Interceptor {
 		map.put("/close.jsp", "1");
 		map.put("/loginWindow.jsp", "1");
 		map.put("/sys/login.execute", "1");
+		
+		map.put("/mobile/login.jsp", "1");
 	}
 
 }

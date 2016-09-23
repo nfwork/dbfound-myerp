@@ -15,6 +15,7 @@
 			   from exp_item t,exp_period p
 			  where t.period_id = p.period_id
 			  #AND_CLAUSE#
+			  order by t.item_id desc
 		 ]]>
 		</sql>
 		<filter name="item_num" express="t.item_id = ${@item_num}-10000000" />
