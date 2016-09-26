@@ -8,4 +8,15 @@
        // return (num1*m+num2*m)/m;
        return Math.round(num1*m+num2*m)/m;
     }
+	
+	function getFullHeight(){
+		var height = 0;
+		if(document.documentElement && document.documentElement.clientHeight>height){
+			height = document.documentElement.clientHeight;
+		}
+		if(document.body && document.body.clientHeight>height){
+			height=document.body.clientHeight;
+		}
+		return height;
+	}
 </script>

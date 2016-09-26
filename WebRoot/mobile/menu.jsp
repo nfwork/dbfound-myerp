@@ -15,8 +15,8 @@
 	  <div class="panel-body">
 			  <a href="itemManager.jsp" class="btn btn-success btn-lg btn-block">凭证登记</a>
 			  <a href="itemQuery.jsp" style="margin-top:10px" class="btn btn-info btn-lg btn-block">凭证查询</a>
-			  <a href="accountAmountQuery.jsp" style="margin-top:10px" class="btn btn-warning btn-lg btn-block">科目余额</a>
-			  <a href="bugetAmountList.jsp" style="margin-top:10px" class="btn btn-primary btn-lg btn-block">费用查询</a>
+			  <a href="accountAmountlist.jsp" style="margin-top:10px" class="btn btn-warning btn-lg btn-block">科目余额</a>
+			  <a href="bugetAmountList.jsp" style="margin-top:10px" class="btn btn-primary btn-lg btn-block">费用明细</a>
 		</div>
 	</div>
   </body>
