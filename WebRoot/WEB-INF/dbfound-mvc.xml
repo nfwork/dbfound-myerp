@@ -4,4 +4,6 @@
 
 	<devMode value="true" />
 	
+	<action name="mobile/item" class="com.nfwork.erp.control.MobileItemControl"/>
+	
 </dbfound-mvc>

@@ -21,7 +21,7 @@
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
-		<div class="panel-heading">凭证查询</div>
+		<div class="panel-heading">凭证管理</div>
 
 		<div class="panel-body">
 			<div class="form-group">
@@ -38,7 +38,7 @@
 			</div>
 			
 			<div class="form-group">
-				<a href="itemDetail.jsp" class="btn btn-success btn-lg btn-block">凭证登记</a>
+				<a href="itemDetailM.jsp" class="btn btn-success btn-lg btn-block">凭证登记</a>
 			</div>
 			
 			<table id="table" data-id-field="id" data-side-pagination="server" data-height="350">
