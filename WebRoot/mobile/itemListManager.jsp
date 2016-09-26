@@ -17,6 +17,7 @@
 
 
 <body>
+	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
@@ -25,22 +26,27 @@
 		<div class="panel-body">
 			<div class="form-group">
 				<select id="preiod" class="form-control">
-					<option value="">--全部期间--</option>
 					<d:forEach var="preiod" items="${periodList }">
-						<option value="${preiod.period_id }">${preiod.period_name}</option>
+						<d:if test="${preiod.period_id == periods[0].period}">
+							<option selected="selected" value="${preiod.period_id }">${preiod.period_name}</option>
+						</d:if>
 					</d:forEach>
 				</select>
 			</div>
 			<div class="form-group">
 				<input class="form-control" id="description" placeholder="凭证抬头">
 			</div>
-
+			
+			<div class="form-group">
+				<a href="itemDetail.jsp" class="btn btn-success btn-lg btn-block">凭证登记</a>
+			</div>
+			
 			<table id="table" data-id-field="id" data-side-pagination="server" data-height="350">
 				<thead>
 					<tr>
-						<th data-width="24%" data-field="item_num" data-align="center">凭证号</th>
-						<th data-width="26%" data-field="exp_time" data-align="center">费用日期</th>
-						<th data-width="50%" data-field="description" data-align="left">凭证抬头</th>
+						<th data-width="25%" data-formatter="renerder" data-field="item_num" data-align="center">凭证号</th>
+						<th data-width="27%" data-field="exp_time" data-align="center">费用日期</th>
+						<th data-width="48%" data-field="description" data-align="left">凭证抬头</th>
 					</tr>
 				</thead>
 			</table>
@@ -60,6 +66,10 @@
 
 	<script type="text/javascript">
 		var item_id = 0;
+		
+		function renerder(value,row,index){
+			return "<a href='itemDetail.jsp?item_id="+row.item_id+"'>"+value+"</a>"
+		}
 
 		$('#table').bootstrapTable({
 			url : "../exp/item.query",
