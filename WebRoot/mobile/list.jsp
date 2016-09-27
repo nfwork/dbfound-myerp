@@ -25,7 +25,7 @@
 	
 	<script type="text/javascript">
 		$('#table').bootstrapTable({
-			url:"../sys/user.query",
+			url:"sys/user.query",
 			pagination:true,
 			pageSize:2,
 			responseHandler:function(res){
