@@ -102,6 +102,9 @@
 			}
 		}
 		
+		function back(){
+			history.back();
+		}
 	</script>
 </head>
 
@@ -141,6 +144,7 @@
 		<d:buttonGroup>
 			<d:button title="新增行" click="addLine" />
 			<d:button title="保存" id="saveBt" click="save" />
+			<d:button title="返回" click="back" />
 		</d:buttonGroup>
 		
 		<d:grid id="lineGrid" navBar="false" forceFit="true" selectable="false" pagerSize="10" queryForm="itemForm" model="exp/itemLine" height="$D.getFullHeight('lineGrid')-20">

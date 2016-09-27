@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<jsp:include page="../modules/base/floatBase.jsp"/>
 </head>
 
 <body>
@@ -71,8 +72,11 @@
 					<textarea class="form-control" id="description" name="description" style="height: 60px"></textarea>
 				</div>
 
-				<button type="button" id="login" class="btn btn-success btn-lg btn-block">提交</button>
-				<button type="reset" style="margin-top: 10px" class="btn btn-info btn-lg btn-block">重置</button>
+				<div class="btn-group form-group">
+				  <button id="login" class="btn btn-success" style="width:80px">提交</button>
+				  <button type="reset" class="btn btn-success" style="width:80px">重置</button>
+				  <button onclick="history.back()" class="btn btn-success" style="width:80px">返回</button>
+				</div>
 			</form>
 		</div>
 		<script>

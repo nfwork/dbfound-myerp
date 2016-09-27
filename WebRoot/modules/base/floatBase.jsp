@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<title>MyERP财务系统</title>
 <script type="text/javascript">
 	function add(num1,num2){
        var r1,r2,m;

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<jsp:include page="../modules/base/floatBase.jsp"/>
 </head>
 
 <body>
@@ -18,7 +19,7 @@
 			<div class="panel-body">
 				<form role="form">
 					<div class="form-group form-group-lg">
-						<label for="exampleInputEmail1">用户名</label> <input type="text" class="form-control" id="username" placeholder="username">
+						<label for="exampleInputEmail1">用户名</label> <input type="text" value="${cookie.user_code.value}" class="form-control" id="username" placeholder="username">
 					</div>
 					<div class="form-group form-group-lg">
 						<label for="exampleInputPassword1">密码</label> <input type="password" class="form-control" id="password" placeholder="Password">

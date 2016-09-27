@@ -34,6 +34,11 @@
 			<div class="form-group">
 				<input class="form-control" id="description" placeholder="凭证抬头">
 			</div>
+			
+			<div class="btn-group form-group">
+			  <a href="javascript:refresh()" class="btn btn-success" style="width:80px">查询</a>
+			  <a href="javascript:history.back()" class="btn btn-success" style="width:80px">返回</a>
+			</div>
 
 			<table id="table" data-id-field="id" data-side-pagination="server" data-height="350">
 				<thead>

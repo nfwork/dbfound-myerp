@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="dbfound-tags" prefix="d"%>
 <!DOCTYPE html>
-<html style="overflow: hidden;height: 100%">
+<html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
@@ -16,11 +16,11 @@
 </head>
 
 
-<body style="overflow: hidden;height: 100%">
+<body>
 	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
 			
-	<div class="panel panel-primary" style="height:100%;">
+	<div class="panel panel-primary" style="margin-bottom: 0px;">
 		<div class="panel-heading">费用明细</div>
 
 		<div class="panel-body">
@@ -32,6 +32,11 @@
 						value="${preiod.period_id }">${preiod.period_name}</option>
 					</d:forEach>
 				</select>
+			</div>
+			
+			<div class="btn-group form-group">
+			  <a href="javascript:refresh()" class="btn btn-success" style="width:80px">查询</a>
+			  <a href="javascript:history.back()" class="btn btn-success" style="width:80px">返回</a>
 			</div>
 
 			<table id="table" data-id-field="id" data-side-pagination="server" data-height="230">
@@ -102,11 +107,9 @@
 			}
 		});
 
-		var height= getFullHeight()-362;
 		$('#detailTable').bootstrapTable({
 			url : "../report/accountAmountQuery.query!getExpDetail",
 			striped : true,
-			height:height,
 			responseHandler : function(res) {
 				var r = {};
 				r.total = res.totalCounts;
@@ -120,11 +123,13 @@
 			},
 		});
 		
-		$('#preiod').change(function(){
+		function refresh(){
 			account_id = 0;
 			$('#table').bootstrapTable('refresh');
 			$('#detailTable').bootstrapTable('refresh');
-		})
+		}
+		
+		$('#preiod').change(refresh);
 	</script>
 </body>
 </html>
