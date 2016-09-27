@@ -17,7 +17,7 @@
 	<d:query rootPath="accounList" modelName="fnd/expAccount" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
-		<div class="panel-heading">请登录</div>
+		<div class="panel-heading">凭证登记</div>
 
 		<div class="panel-body">
 			<form id="registForm" role="form">

@@ -38,9 +38,9 @@
 			<table id="table" data-id-field="id" data-side-pagination="server" data-height="350">
 				<thead>
 					<tr>
-						<th data-width="24%" data-field="item_num" data-align="center">凭证号</th>
-						<th data-width="26%" data-field="exp_time" data-align="center">费用日期</th>
-						<th data-width="50%" data-field="description" data-align="left">凭证抬头</th>
+						<th data-width="25%" data-field="item_num" data-align="center">凭证号</th>
+						<th data-width="27%" data-field="exp_time" data-align="center">费用日期</th>
+						<th data-width="48%" data-field="description" data-align="left">凭证抬头</th>
 					</tr>
 				</thead>
 			</table>
@@ -63,6 +63,7 @@
 
 		$('#table').bootstrapTable({
 			url : "../exp/item.query",
+			method: 'post',
 			striped : true,
 			pagination:true,
 			pageSize:5,
@@ -90,6 +91,7 @@
 		$('#detailTable').bootstrapTable({
 			url : "../exp/itemLine.query",
 			striped : true,
+			method: 'post',
 			responseHandler : function(res) {
 				var r = {};
 				r.total = res.totalCounts;
