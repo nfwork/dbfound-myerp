@@ -64,6 +64,7 @@
 		$('#table').bootstrapTable({
 			url : "../exp/item.query",
 			method: 'post',
+			contentType:"application/x-www-form-urlencoded",
 			striped : true,
 			pagination:true,
 			pageSize:5,
@@ -91,7 +92,9 @@
 		$('#detailTable').bootstrapTable({
 			url : "../exp/itemLine.query",
 			striped : true,
+			contentType:"application/x-www-form-urlencoded",
 			method: 'post',
+			dataType: "json",  
 			responseHandler : function(res) {
 				var r = {};
 				r.total = res.totalCounts;

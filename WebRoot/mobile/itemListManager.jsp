@@ -75,6 +75,8 @@
 			url : "../exp/item.query",
 			striped : true,
 			pagination:true,
+			contentType:"application/x-www-form-urlencoded",
+			method: 'post',
 			pageSize:5,
 			responseHandler : function(res) {
 				var r = {};
@@ -100,6 +102,8 @@
 		$('#detailTable').bootstrapTable({
 			url : "../exp/itemLine.query",
 			striped : true,
+			contentType:"application/x-www-form-urlencoded",
+			method: 'post',
 			responseHandler : function(res) {
 				var r = {};
 				r.total = res.totalCounts;
