@@ -1,20 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="dbfound-tags" prefix="d"%>
 <!DOCTYPE html>
-<html style="">
+<html>
 <head>
-<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0//js/bootstrap.min.js"></script>
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap-table/1.11.0/bootstrap-table.min.css">
-<script src="http://cdn.bootcss.com/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
-<jsp:include page="../modules/base/floatBase.jsp" />
+<jsp:include page="base.jsp" />
 </head>
-
 
 <body>
 	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
@@ -40,8 +30,8 @@
 			
 			<div class="btn-group form-group">
 			  <a href="javascript:refresh()" class="btn btn-success" style="width:70px">查询</a>
-			  <a href="itemDetailM.jsp" class="btn btn-success" style="width:100px">凭证登记(简)</a>
-			  <a href="itemDetail.jsp" class="btn btn-success" style="width:80px">凭证登记</a>
+			  <a href="mobile/itemDetailM.jsp" class="btn btn-success" style="width:100px">凭证登记(简)</a>
+			  <a href="mobile/itemDetail.jsp" class="btn btn-success" style="width:80px">凭证登记</a>
 			  <a href="javascript:history.back()" class="btn btn-success" style="width:70px">返回</a>
 			</div>
 			
@@ -72,11 +62,11 @@
 		var item_id = 0;
 		
 		function renerder(value,row,index){
-			return "<a href='itemDetail.jsp?item_id="+row.item_id+"'>"+value+"</a>"
+			return "<a href='mobile/itemDetail.jsp?item_id="+row.item_id+"'>"+value+"</a>"
 		}
 
 		$('#table').bootstrapTable({
-			url : "../exp/item.query",
+			url : "exp/item.query",
 			striped : true,
 			pagination:true,
 			contentType:"application/x-www-form-urlencoded",
@@ -104,7 +94,7 @@
 		});
 		
 		$('#detailTable').bootstrapTable({
-			url : "../exp/itemLine.query",
+			url : "exp/itemLine.query",
 			striped : true,
 			contentType:"application/x-www-form-urlencoded",
 			method: 'post',

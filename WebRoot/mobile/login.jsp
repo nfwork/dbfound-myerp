@@ -3,12 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<jsp:include page="../modules/base/floatBase.jsp"/>
+<jsp:include page="base.jsp" />
 </head>
 
 <body>
@@ -36,7 +31,7 @@
 						var username = $("#username").val();
 						var password = $("#password").val();
 						$.ajax({
-							url : "../sys/login.execute",
+							url : "sys/login.execute",
 							data : {
 								user_code : username,
 								password : password
@@ -45,7 +40,7 @@
 							type : "post",
 							success : function(res) {
 								if (res.success) {
-									parent.location.href = "menu.jsp";
+									parent.location.href = "mobile/menu.jsp";
 								} else {
 									alert(res.message)
 								}

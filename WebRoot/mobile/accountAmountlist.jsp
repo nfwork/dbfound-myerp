@@ -3,16 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-<script src="http://cdn.bootcss.com/bootstrap/3.3.0//js/bootstrap.min.js"></script>
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-
-<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap-table/1.11.0/bootstrap-table.min.css">
-<script src="http://cdn.bootcss.com/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
-<jsp:include page="../modules/base/floatBase.jsp" />
+<jsp:include page="base.jsp" />
 </head>
 
 <body>
@@ -66,7 +57,7 @@
 		var account_id = 0;
 
 		$('#table').bootstrapTable({
-			url : "../report/accountAmountQuery.query",
+			url : "report/accountAmountQuery.query",
 			striped : true,
 			responseHandler : function(res) {
 				var r = {};
@@ -85,7 +76,7 @@
 		});
 
 		$('#detailTable').bootstrapTable({
-			url : "../report/accountAmountQuery.query!getExpDetail",
+			url : "report/accountAmountQuery.query!getExpDetail",
 			striped : true,
 			responseHandler : function(res) {
 				var r = {};
