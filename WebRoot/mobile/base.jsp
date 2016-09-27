@@ -2,10 +2,10 @@
 
 <base href="${basePath}"/>
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<link rel="stylesheet" href="${basePath}bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="${basePath}bootstrap/bootstrap.min.css?v=3.2">
 <link rel="stylesheet" href="${basePath}bootstrap/bootstrap-theme.min.css">
 <script src="${basePath}DBFoundUI/chart/jquery.min.js"></script>
-<script src="${basePath}bootstrap/bootstrap.min.js"></script>
+<script src="${basePath}bootstrap/bootstrap.min.js?v=3.2"></script>
 <link rel="stylesheet" href="${basePath}bootstrap/bootstrap-table.min.css">
 <script src="${basePath}bootstrap/bootstrap-table.min.js"></script>
 <script src="${basePath}bootstrap/bootstrap-table-zh-CN.min.js"></script>
