@@ -37,7 +37,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">费用日期：</span> <input class="form-control" id="exp_time" name="exp_time" value="${periods[0].exp_time}">
+					<span class="input-group-addon">费用日期：</span> <input type="date" class="form-control" id="exp_time" name="exp_time" value="${periods[0].exp_time}">
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
@@ -59,7 +59,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">费用金额：</span> <input class="form-control" id="amount" name="amount">
+					<span class="input-group-addon">费用金额：</span> <input class="form-control" type="number" id="amount" name="amount">
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
