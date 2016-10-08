@@ -66,7 +66,7 @@
 				</div>
 
 				<div class="btn-group form-group">
-				  <button id="login" class="btn btn-success" style="width:80px">提交</button>
+				  <button id="login" type="button" class="btn btn-success" style="width:80px">提交</button>
 				  <button type="reset" class="btn btn-success" style="width:80px">重置</button>
 				  <button onclick="history.back()" class="btn btn-success" style="width:80px">返回</button>
 				</div>
