@@ -9,7 +9,7 @@
 <body>
 
 	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
-	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
+	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
 	<d:query rootPath="accounList" modelName="fnd/expAccount" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
@@ -29,9 +29,7 @@
 				<div class="input-group" style="margin-bottom: 10px;">
 					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control">
 						<d:forEach var="preiod" items="${periodList }">
-							<d:if test="${preiod.period_id == periods[0].period}">
-								<option selected="selected" value="${preiod.period_id }">${preiod.period_name}</option>
-							</d:if>
+							<option selected="selected" value="${preiod.period_id }">${preiod.period_name}</option>
 						</d:forEach>
 					</select>
 				</div>
