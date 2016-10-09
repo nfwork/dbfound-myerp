@@ -11,7 +11,7 @@
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
 			
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
-		<div class="panel-heading">科目余额</div>
+		<div class="panel-heading"><b>科目余额</b></div>
 
 		<div class="panel-body">
 			<div class="form-group">

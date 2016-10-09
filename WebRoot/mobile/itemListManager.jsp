@@ -10,7 +10,7 @@
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
-		<div class="panel-heading">凭证管理</div>
+		<div class="panel-heading"><b>凭证管理</b></div>
 
 		<div class="panel-body">
 			<div class="form-group">
