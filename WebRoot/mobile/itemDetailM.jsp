@@ -57,7 +57,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">费用金额：</span> <input class="form-control" type="number" id="amount" name="amount">
+					<span class="input-group-addon">费用金额：</span> <input step="0.1" min="0.0" class="form-control" type="number" id="amount" name="amount">
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
