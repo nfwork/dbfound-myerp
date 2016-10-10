@@ -8,7 +8,7 @@
 
 <body>
 	<div class="panel panel-primary">
-		<div class="panel-heading"><b>请登录</b></div>
+		<div class="panel-heading"><b>MyERP-请登录</b></div>
 
 		<div class="panel-body">
 			<div class="panel-body">

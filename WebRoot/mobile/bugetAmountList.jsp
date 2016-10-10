@@ -12,7 +12,7 @@
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
 			
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
-		<div class="panel-heading"><b>费用明细</b></div>
+		<div class="panel-heading"><b>MyERP-费用明细</b></div>
 
 		<div class="panel-body">
 			<div class="form-group">

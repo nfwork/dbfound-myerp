@@ -7,7 +7,7 @@
 
   <body>
 	<div class="panel panel-primary">
-	  <div class="panel-heading"><b>功能菜单</b></div>
+	  <div class="panel-heading"><b>MyERP-功能菜单</b></div>
 	  <div class="panel-body">
 			  <a href="mobile/itemListManager.jsp" class="btn btn-success btn-lg btn-block">凭证管理</a>
 			  <a href="mobile/itemList.jsp" style="margin-top:10px" class="btn btn-info btn-lg btn-block">凭证查询</a>
