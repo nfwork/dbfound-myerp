@@ -20,3 +20,12 @@
        return Math.round(num1*m+num2*m)/m;
     }
 </script>
+
+<style type="text/css">
+ .panel{
+	 border-radius: 0px;
+	 -moz-border-radius: 0px; 
+	 -webkit-border-radius: 0px; 
+	 border-top: 0px;
+ }
+</style>
