@@ -1,18 +1,18 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="dbfound-tags" prefix="d"%>
 <!DOCTYPE html>
-<html>
+<html  style="height:100%;">
 <head>
 <jsp:include page="base.jsp" />
 </head>
 
-<body>
+<body  style="height:100%;">
 
 	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
 	<d:query rootPath="accounList" modelName="fnd/expAccount" />
 
-	<div class="panel panel-primary" style="margin-bottom: 0px;">
+	<div class="panel panel-primary"  style="height:100%;margin-bottom:0px">
 		<div class="panel-heading"><b>MyERP-凭证登记</b></div>
 
 		<div class="panel-body">
@@ -62,7 +62,7 @@
 
 				<div class="input-group" style="margin-bottom: 10px;">
 					<span class="input-group-addon">凭证抬头：</span>
-					<textarea class="form-control" id="description" name="description" style="height: 60px"></textarea>
+					<textarea class="form-control" id="description" name="description" style="height: 80px"></textarea>
 				</div>
 
 				<div class="btn-group form-group">
