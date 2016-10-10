@@ -28,4 +28,9 @@
 	 -webkit-border-radius: 0px; 
 	 border-top: 0px;
  }
+ .panel-heading{
+  	border-radius: 0px;
+	 -moz-border-radius: 0px; 
+	 -webkit-border-radius: 0px; 
+ }
 </style>
