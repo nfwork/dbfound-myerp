@@ -1,19 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="dbfound-tags" prefix="d"%>
 <!DOCTYPE html>
-<html  style="height:100%;">
+<html style="height: 100%;">
 <head>
 <jsp:include page="base.jsp" />
 </head>
 
-<body  style="height:100%;">
+<body style="height: 100%;">
 
 	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
 	<d:query rootPath="accounList" modelName="fnd/expAccount" />
 
-	<div class="panel panel-primary"  style="height:100%;margin-bottom:0px">
-		<div class="panel-heading"><b>MyERP-凭证登记</b></div>
+	<div class="panel panel-primary" style="height: 100%; margin-bottom: 0px">
+		<div class="panel-heading">
+			<b>MyERP-凭证登记</b>
+		</div>
 
 		<div class="panel-body">
 			<form id="registForm" role="form">
@@ -27,7 +29,8 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control">
+					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control selectpicker" data-style="common-select">
+						<option value="">-请选择-</option>
 						<d:forEach var="preiod" items="${periodList }">
 							<option selected="selected" value="${preiod.period_id }">${preiod.period_name}</option>
 						</d:forEach>
@@ -39,8 +42,9 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" name="dr_account_id" class="form-control">
-						<option></option>
+					<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" name="dr_account_id" class="form-control selectpicker"
+						data-style="common-select">
+						<option value="">-请选择-</option>
 						<d:forEach var="account" items="${accounList }">
 							<option value="${account.account_id }">${account.account_name }</option>
 						</d:forEach>
@@ -48,8 +52,9 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" name="cr_account_id" class="form-control">
-						<option></option>
+					<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" name="cr_account_id" class="form-control selectpicker"
+						data-style="common-select">
+						<option value="">-请选择-</option>
 						<d:forEach var="account" items="${accounList }">
 							<option value="${account.account_id }">${account.account_name }</option>
 						</d:forEach>
@@ -66,9 +71,9 @@
 				</div>
 
 				<div class="btn-group form-group">
-				  <button id="login" type="button" class="btn btn-success" style="width:80px">提交</button>
-				  <button type="reset" class="btn btn-success" style="width:80px">重置</button>
-				  <button onclick="history.back()" class="btn btn-success" style="width:80px">返回</button>
+					<button id="login" type="button" class="btn btn-success" style="width: 80px">提交</button>
+					<button type="reset" class="btn btn-success" style="width: 80px">重置</button>
+					<button onclick="history.back()" class="btn btn-success" style="width: 80px">返回</button>
 				</div>
 			</form>
 		</div>

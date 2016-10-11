@@ -15,7 +15,7 @@
 
 		<div class="panel-body">
 			<div class="form-group">
-				<select id="preiod" class="form-control">
+				<select id="preiod" class="form-control selectpicker" data-style="common-select">
 					<option value="">--全部期间--</option>
 					<d:forEach var="preiod" items="${periodList }">
 						<option value="${preiod.period_id }">${preiod.period_name}</option>

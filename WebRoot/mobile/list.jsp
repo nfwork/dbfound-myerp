@@ -11,7 +11,15 @@
 		<div class="panel-heading" style="-moz-border-radius: 0px; -webkit-border-radius: 0px; border-radius: 0px;">请登录</div>
 
 		<div class="panel-body">
-			<table id="table"  data-id-field="id" data-side-pagination="server">
+			<div class="form-group">
+				<select class="selectpicker" data-live-search="true">
+					<option>Mustard</option>
+					<option>Ketchup</option>
+					<option>Relish</option>
+				</select>
+			</div>
+
+			<table id="table" data-id-field="id" data-side-pagination="server">
 				<thead>
 					<tr>
 						<th data-field="user_code" data-sortable="true">用户编号</th>
@@ -22,20 +30,20 @@
 			</table>
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
 		$('#table').bootstrapTable({
-			url:"sys/user.query",
-			pagination:true,
-			pageSize:2,
-			responseHandler:function(res){
-				var r={};
+			url : "sys/user.query",
+			pagination : true,
+			pageSize : 2,
+			responseHandler : function(res) {
+				var r = {};
 				r.total = res.totalCounts;
 				r.rows = res.datas;
 				return r;
 			},
-			queryParams:function(params){
-				params.start= params.offset;
+			queryParams : function(params) {
+				params.start = params.offset;
 				return params;
 			}
 		});
