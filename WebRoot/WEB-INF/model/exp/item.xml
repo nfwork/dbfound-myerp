@@ -32,6 +32,7 @@
 		<sql>
 		 <![CDATA[
 			 select *,
+			        (select user_name from sys_user u where u.user_id = t.regist_user_id) add_user,
 			 		(10000000 + t.item_id) item_num
 			   from exp_item t
 			  where t.item_id = ${@item_id}

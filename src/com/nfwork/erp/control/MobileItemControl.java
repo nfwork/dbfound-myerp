@@ -13,6 +13,46 @@ import com.nfwork.dbfound.web.base.BaseControl;
 
 public class MobileItemControl implements BaseControl {
 
+	public ResponseObject saveBatch(Context context) throws Exception {
+		ResponseObject object = new ResponseObject();
+		
+		String period_id = context.getString("param.period_id");
+		if (DataUtil.isNull(period_id)) {
+			object.setMessage("会计期间不能为空！");
+			object.setSuccess(false);
+			return object;
+		}
+		
+		String exp_time = context.getString("param.exp_time");
+		if (DataUtil.isNull(exp_time)) {
+			object.setMessage("费用日期不能为空！");
+			object.setSuccess(false);
+			return object;
+		}
+		
+		String description = context.getString("param.description");
+		if (DataUtil.isNull(description)) {
+			object.setMessage("凭证抬头不能为空！");
+			object.setSuccess(false);
+			return object;
+		}
+		
+		List<Map<String, Object>> gridData = (List<Map<String, Object>>)context.getData("param.GridData");
+		if (gridData==null || gridData.size()<1) {
+			object.setMessage("凭证行不能为空！");
+			object.setSuccess(false);
+			return object;
+		}
+		
+		//保存头
+		ModelEngine.execute(context, "exp/item", "save");
+		ModelEngine.batchExecute(context,"exp/itemLine", "save");
+		
+		object.setMessage("保存成功！");
+		object.setSuccess(true);
+		return object;
+	}
+	
 	public ResponseObject save(Context context) throws Exception {
 		ResponseObject object = new ResponseObject();
 		

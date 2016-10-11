@@ -1,0 +1,236 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib uri="dbfound-tags" prefix="d"%>
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+<jsp:include page="base.jsp" />
+</head>
+
+<body style="height: 100%;">
+
+	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
+	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
+	<d:query rootPath="accounList" modelName="fnd/expAccount" />
+
+	<d:query rootPath="itemList" modelName="exp/item" queryName="getDeatil" />
+
+	<div class="panel panel-primary" style="height: 100%; margin-bottom: 0px">
+		<div class="panel-heading">
+			<b>MyERP-凭证登记</b>
+		</div>
+
+		<div class="panel-body">
+			<form id="registForm" role="form">
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon">凭证编号：</span> <input class="form-control" value="${itemList[0].item_num}" id="item_num" name="item_num"
+						readonly="readonly" placeholder="系统自动生成">
+				</div>
+
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon">登记用户：</span> <input class="form-control" id="add_user" name="add_user" readonly="readonly"
+						value="${empty itemList ? sessionScope.user_name : itemList[0].add_user}">
+				</div>
+
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control selectpicker" data-style="common-select">
+						<option value="">-请选择-</option>
+						<d:forEach var="preiod" items="${periodList }">
+							<option 
+								<d:if test="${preiod.period_id ==(empty itemList ? periods[0].period : itemList[0].period_id) }">selected="selected" </d:if>
+								value="${preiod.period_id }">${preiod.period_name}</option>
+						</d:forEach>
+					</select>
+				</div>
+
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon">费用日期：</span> <input type="date" class="form-control" id="exp_time" name="exp_time"
+						value="${empty itemList ? periods[0].exp_time : itemList[0].exp_time}">
+				</div>
+
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon">凭证抬头：</span>
+					<textarea class="form-control" id="ht" name="description" style="height: 60px">${itemList[0].description }</textarea>
+				</div>
+
+				<div class="btn-group form-group">
+					<button type="button" onclick="addLine()" class="btn btn-success" style="width: 80px">新增行</button>
+					<button id="login" type="button" class="btn btn-success" style="width: 80px">提交</button>
+					<button onclick="history.back()" class="btn btn-success" style="width: 80px">返回</button>
+				</div>
+			</form>
+
+			<table id="detailTable" data-side-pagination="server" data-height="200">
+				<thead>
+					<tr>
+						<th data-width="30%" data-field="account_name">科目名称</th>
+						<th data-width="15%" data-field="dr_amount" data-align="center">借</th>
+						<th data-width="15%" data-field="cr_amount" data-align="center">贷</th>
+						<th data-width="40%" data-field="description" data-align="left">凭证描述</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+		<!-- 新建modal窗口 -->
+		<div class="modal fade" id="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title">Modal title</h4>
+					</div>
+					<div class="modal-body">
+						<form id="addForm" name="addForm" role="form">
+							<div class="input-group" style="margin-bottom: 10px;">
+								<span class="input-group-addon">科 目：</span> <select id="account_id" name="account_id" class="form-control selectpicker"
+									data-style="common-select">
+									<option value="">-请选择-</option>
+									<d:forEach var="account" items="${accounList }">
+										<option value="${account.account_id }">${account.account_name }</option>
+									</d:forEach>
+								</select>
+							</div>
+
+							<div class="input-group" style="margin-bottom: 10px;">
+								<span class="input-group-addon">借金额：</span> <input step="0.1" min="0.0" class="form-control" type="number" id="dr_amount" name="dr_amount">
+							</div>
+
+							<div class="input-group" style="margin-bottom: 10px;">
+								<span class="input-group-addon">贷金额：</span> <input step="0.1" min="0.0" class="form-control" type="number" id="cr_amount" name="cr_amount">
+							</div>
+
+							<div class="input-group" style="margin-bottom: 10px;">
+								<span class="input-group-addon">行描述：</span> <input class="form-control" id="dinput" name="description"></input>
+							</div>
+						</form>
+
+					</div>
+					<div class="modal-footer" style="text-align: center">
+						<button type="button" style="width: 80px" onclick="addData()" class="btn btn-primary">确定</button>
+						<button type="button" style="width: 80px" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<script>
+			var item_id = "${param.item_id}";
+
+			function addLine() {
+				$("#modal").modal("show");
+				var form = $('#addForm')[0];
+				form.reset();
+			}
+
+			var data = [];
+
+			function addData() {
+				var cr_amount = $("#cr_amount").val();
+				var dr_amount = $("#dr_amount").val();
+				var description = $("#dinput").val();
+				var account_id = $("#account_id").val();
+				var account_name = $("#account_id").find("option:selected")
+						.text();
+				if(account_id==""){
+					alert("科目不能为空！")
+					return;
+				}
+				if(cr_amount == "" && dr_amount ==""){
+					alert("借贷不能同时为空！")
+					return;
+				}
+				
+				var lineData = {
+					cr_amount : cr_amount,
+					dr_amount : dr_amount,
+					description : description,
+					account_id : account_id,
+					account_name : account_name
+				};
+				data.push(lineData);
+				var res = {
+					rows : data,
+					total : data.length
+				};
+				debugger;
+				$('#detailTable').bootstrapTable('load', res);
+				$("#modal").modal("hide");
+			}
+
+			$('#detailTable').bootstrapTable({
+				url : "exp/itemLine.query",
+				striped : true,
+				contentType : "application/x-www-form-urlencoded",
+				method : 'post',
+				dataType : "json",
+				responseHandler : function(res) {
+					var r = {};
+					r.total = res.totalCounts;
+					r.rows = res.datas;
+					if (res.datas && res.datas.length > 0) {
+						data = res.datas;
+					}
+					return r;
+				},
+				queryParams : function(params) {
+					params.period_id = $("#preiod").val();
+					;
+					params.item_id = item_id;
+					return params;
+				},
+			});
+
+			$(function() {
+				var $btn = $("#login");
+				$btn.on("click", function() {
+					var dr_amount = 0;
+					var cr_amount = 0;
+					for(var i=0;i<data.length;i++){
+						d_amount = data[i].dr_amount;
+						if(d_amount!=""){
+							dr_amount = add(dr_amount ,d_amount);
+						}
+						c_amount = data[i].cr_amount;
+						if(c_amount!=""){
+							cr_amount = add(cr_amount,c_amount);
+						}
+					}
+					if(dr_amount!=cr_amount){
+						alert("借贷不平，借方金额："+dr_amount+"，贷方金额："+cr_amount+"，请确认");
+						return;
+					}
+					
+					var exp_time = $("#exp_time").val();
+					var period_id = $("#period_id").val();
+					var description = $("#ht").text();
+					if (description == "") {
+						description = $("#ht").val();
+					}
+					$.ajax({
+						url : "mobile/item.do!saveBatch",
+						data : {
+							GridData : JSON.stringify(data),
+							period_id : period_id,
+							exp_time : exp_time,
+							description : description
+						},
+						dataType : "json",
+						type : "post",
+						success : function(res) {
+							if (res.success) {
+								alert("凭证录入成功！")
+								history.back();
+							} else {
+								alert(res.message)
+							}
+						}
+					})
+				})
+			})
+		</script>
+	</div>
+</body>
+</html>
