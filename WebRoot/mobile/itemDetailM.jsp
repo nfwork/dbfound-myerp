@@ -29,7 +29,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control selectpicker" data-style="common-select">
+					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control" data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="preiod" items="${periodList }">
 							<option selected="selected" value="${preiod.period_id }">${preiod.period_name}</option>
@@ -42,7 +42,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" name="dr_account_id" class="form-control selectpicker"
+					<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" name="dr_account_id" class="form-control"
 						data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="account" items="${accounList }">
@@ -52,7 +52,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" name="cr_account_id" class="form-control selectpicker"
+					<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" name="cr_account_id" class="form-control"
 						data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="account" items="${accounList }">
@@ -80,7 +80,7 @@
 		<script>
 			function resetData(){
 				$("#registForm")[0].reset();
-				$('.selectpicker').selectpicker('render');
+				$('select').selectpicker('render');
 			}
 			
 			$(function() {

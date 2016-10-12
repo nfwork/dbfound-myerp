@@ -30,6 +30,7 @@
 		m = Math.pow(10, Math.max(r1, r2));
 		return Math.round(num1 * m + num2 * m) / m;
 	}
+	$(function() {$("select").selectpicker();});
 </script>
 
 <style type="text/css">

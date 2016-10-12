@@ -15,7 +15,7 @@
 
 		<div class="panel-body">
 			<div class="form-group">
-				<select id="preiod"  class="form-control selectpicker" data-style="common-select" >
+				<select id="preiod"  class="form-control" data-style="common-select" >
 					<d:forEach var="preiod" items="${periodList }">
 						<option 
 						<d:if test="${preiod.period_id == periods[0].period}">selected="selected" </d:if>

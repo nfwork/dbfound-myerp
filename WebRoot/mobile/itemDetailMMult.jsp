@@ -32,7 +32,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control selectpicker" data-style="common-select">
+					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control" data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="preiod" items="${periodList }">
 							<option <d:if test="${preiod.period_id ==(empty itemList ? periods[0].period : itemList[0].period_id) }">selected="selected" </d:if>
@@ -83,7 +83,7 @@
 					<div class="modal-body">
 						<form id="addForm" name="addForm" role="form">
 							<div class="input-group" style="margin-bottom: 10px;">
-								<span class="input-group-addon">科　目：</span> <select id="account_id" name="account_id" class="form-control selectpicker"
+								<span class="input-group-addon">科　目：</span> <select id="account_id" name="account_id" class="form-control"
 									data-style="common-select">
 									<option value="">-请选择-</option>
 									<d:forEach var="account" items="${accounList }">
@@ -132,7 +132,7 @@
 				modalShow();
 				var form = $('#addForm')[0];
 				form.reset();
-				$('.selectpicker').selectpicker('render');
+				$('select').selectpicker('render');
 				
 				dataIndex = -1;
 			}
@@ -145,7 +145,7 @@
 				$("#dr_amount").val(data[dataIndex].dr_amount);
 				$("#dinput").val(data[dataIndex].description);
 				$("#account_id").val(data[dataIndex].account_id);
-				$('.selectpicker').selectpicker('render');
+				$('select').selectpicker('render');
 			}
 			
 			function renerder(value,row,index){
