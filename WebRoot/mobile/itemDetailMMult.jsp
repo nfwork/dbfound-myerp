@@ -132,7 +132,7 @@
 				modalShow();
 				var form = $('#addForm')[0];
 				form.reset();
-				$('#account_id').selectpicker('refresh');
+				$('.selectpicker').selectpicker('render');
 				
 				dataIndex = -1;
 			}
@@ -145,9 +145,7 @@
 				$("#dr_amount").val(data[dataIndex].dr_amount);
 				$("#dinput").val(data[dataIndex].description);
 				$("#account_id").val(data[dataIndex].account_id);
-				//$('#account_id').selectpicker('select');
-				$('#account_id').find('option:selected').prop('disabled', true);
-				$('#account_id').selectpicker('refresh');
+				$('.selectpicker').selectpicker('render');
 			}
 			
 			function renerder(value,row,index){
