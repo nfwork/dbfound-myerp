@@ -44,11 +44,20 @@
 	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
+	top: 0;
+    left: 0;
+    z-index: 100;
+    position: fixed;
+    width: 100%;
 }
 
 .common-select {
 	background-color: #fff;
 	background-image: none;
 	border: 1px solid #ccc;
+}
+
+.panel-body{
+	margin-top:40px
 }
 </style>
