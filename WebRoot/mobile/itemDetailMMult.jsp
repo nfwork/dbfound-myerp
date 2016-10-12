@@ -35,8 +35,7 @@
 					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control selectpicker" data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="preiod" items="${periodList }">
-							<option 
-								<d:if test="${preiod.period_id ==(empty itemList ? periods[0].period : itemList[0].period_id) }">selected="selected" </d:if>
+							<option <d:if test="${preiod.period_id ==(empty itemList ? periods[0].period : itemList[0].period_id) }">selected="selected" </d:if>
 								value="${preiod.period_id }">${preiod.period_name}</option>
 						</d:forEach>
 					</select>
@@ -62,7 +61,7 @@
 			<table id="detailTable" data-side-pagination="server" data-height="200">
 				<thead>
 					<tr>
-						<th data-width="30%" data-field="account_name">科目名称</th>
+						<th data-width="30%" data-formatter="renerder" data-field="account_name">科目名称</th>
 						<th data-width="15%" data-field="dr_amount" data-align="center">借</th>
 						<th data-width="15%" data-field="cr_amount" data-align="center">贷</th>
 						<th data-width="40%" data-field="description" data-align="left">凭证描述</th>
@@ -79,12 +78,12 @@
 						<button type="button" class="close" data-dismiss="modal">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
-						<h4 class="modal-title">Modal title</h4>
+						<h4 class="modal-title">凭证行明细</h4>
 					</div>
 					<div class="modal-body">
 						<form id="addForm" name="addForm" role="form">
 							<div class="input-group" style="margin-bottom: 10px;">
-								<span class="input-group-addon">科 目：</span> <select id="account_id" name="account_id" class="form-control selectpicker"
+								<span class="input-group-addon">科　目：</span> <select id="account_id" name="account_id" class="form-control selectpicker"
 									data-style="common-select">
 									<option value="">-请选择-</option>
 									<d:forEach var="account" items="${accounList }">
@@ -118,22 +117,40 @@
 
 		<script>
 			var item_id = "${param.item_id}";
+			var data = [];
+			var dataIndex = -1;
 
 			function addLine() {
 				$("#modal").modal("show");
 				var form = $('#addForm')[0];
 				form.reset();
+				$('#account_id').selectpicker('refresh');
+				
+				dataIndex = -1;
 			}
-
-			var data = [];
+			
+			function updateLine(index) {
+				$("#modal").modal("show");
+				dataIndex = index;
+				$("#cr_amount").val(data[dataIndex].cr_amount);
+				$("#dr_amount").val(data[dataIndex].dr_amount);
+				$("#dinput").val(data[dataIndex].description);
+				$("#account_id").val(data[dataIndex].account_id);
+				//$('#account_id').selectpicker('select');
+				$('#account_id').find('option:selected').prop('disabled', true);
+				$('#account_id').selectpicker('refresh');
+			}
+			
+			function renerder(value,row,index){
+				return "<a href='javascript:updateLine("+index+")'>"+value+"</a>"
+			}
 
 			function addData() {
 				var cr_amount = $("#cr_amount").val();
 				var dr_amount = $("#dr_amount").val();
 				var description = $("#dinput").val();
 				var account_id = $("#account_id").val();
-				var account_name = $("#account_id").find("option:selected")
-						.text();
+				var account_name = $("#account_id").find("option:selected").text();
 				if(account_id==""){
 					alert("科目不能为空！")
 					return;
@@ -143,14 +160,29 @@
 					return;
 				}
 				
-				var lineData = {
-					cr_amount : cr_amount,
-					dr_amount : dr_amount,
-					description : description,
-					account_id : account_id,
-					account_name : account_name
-				};
-				data.push(lineData);
+				if(cr_amount != "" && dr_amount !=""){
+					alert("借贷不能同时有值！")
+					return;
+				}
+				
+				if(dataIndex == -1){
+					var lineData = {
+							cr_amount : cr_amount,
+							dr_amount : dr_amount,
+							description : description,
+							account_id : account_id,
+							account_name : account_name
+						};
+					data.push(lineData);
+				}else{
+					data[dataIndex].cr_amount = cr_amount;
+					data[dataIndex].dr_amount = dr_amount,
+					data[dataIndex].description = description,
+					data[dataIndex].account_id = account_id,
+					data[dataIndex].account_name = account_name
+				}
+					
+				
 				var res = {
 					rows : data,
 					total : data.length
