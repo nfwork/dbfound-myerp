@@ -237,17 +237,16 @@
 					
 					var exp_time = $("#exp_time").val();
 					var period_id = $("#period_id").val();
-					var description = $("#ht").text();
-					if (description == "") {
-						description = $("#ht").val();
-					}
+					var description = $("#ht").val();
+					
 					$.ajax({
 						url : "mobile/item.do!saveBatch",
 						data : {
 							GridData : JSON.stringify(data),
 							period_id : period_id,
 							exp_time : exp_time,
-							description : description
+							description : description,
+							item_id : item_id
 						},
 						dataType : "json",
 						type : "post",
