@@ -199,9 +199,14 @@
 				$("#modal").modal("hide");
 			}
 
+			var height = $(window).height() - 365;
+			if(height<200){
+				height=200;
+			}
 			$('#detailTable').bootstrapTable({
 				url : "exp/itemLine.query",
 				striped : true,
+				height : height,
 				contentType : "application/x-www-form-urlencoded",
 				method : 'post',
 				dataType : "json",
