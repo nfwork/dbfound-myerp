@@ -61,4 +61,7 @@
 .panel-body{
 	margin-top:40px
 }
+.input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+     margin-left: 0px; 
+}
 </style>
