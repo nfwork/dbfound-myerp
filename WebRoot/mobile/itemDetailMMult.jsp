@@ -78,7 +78,7 @@
 						<button type="button" class="close" data-dismiss="modal">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
-						<h4 class="modal-title">凭证行明细</h4>
+						<h4 class="modal-title"><font color="#428bca"><b>凭证行明细</b> </font></h4>
 					</div>
 					<div class="modal-body">
 						<form id="addForm" name="addForm" role="form">
@@ -119,9 +119,17 @@
 			var item_id = "${param.item_id}";
 			var data = [];
 			var dataIndex = -1;
+			
+			function modalShow(){
+				 $("#modal").modal().css({
+	                "margin-top": function () {
+	                     return 30;
+	                 }
+			     });
+			}
 
 			function addLine() {
-				$("#modal").modal("show");
+				modalShow();
 				var form = $('#addForm')[0];
 				form.reset();
 				$('#account_id').selectpicker('refresh');
@@ -129,8 +137,9 @@
 				dataIndex = -1;
 			}
 			
+			
 			function updateLine(index) {
-				$("#modal").modal("show");
+				modalShow();
 				dataIndex = index;
 				$("#cr_amount").val(data[dataIndex].cr_amount);
 				$("#dr_amount").val(data[dataIndex].dr_amount);
