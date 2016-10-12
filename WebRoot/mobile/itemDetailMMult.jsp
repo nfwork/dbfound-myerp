@@ -1,12 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="dbfound-tags" prefix="d"%>
 <!DOCTYPE html>
-<html style="height: 100%;">
+<html>
 <head>
 <jsp:include page="base.jsp" />
 </head>
 
-<body style="height: 100%;">
+<body>
 
 	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
@@ -14,7 +14,7 @@
 
 	<d:query rootPath="itemList" modelName="exp/item" queryName="getDeatil" />
 
-	<div class="panel panel-primary" style="height: 100%; margin-bottom: 0px">
+	<div class="panel panel-primary" style="margin-bottom: 0px">
 		<div class="panel-heading">
 			<b>MyERP-凭证登记</b>
 		</div>
