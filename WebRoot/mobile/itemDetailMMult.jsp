@@ -68,6 +68,8 @@
 					</tr>
 				</thead>
 			</table>
+			
+			<div id="footDiv"></div>
 		</div>
 
 		<!-- 新建modal窗口 -->
@@ -117,6 +119,9 @@
 	</div>
 
 	<script>
+	 	$("#footDiv").height(400);	
+	 	$("#footDiv").height(0);	
+	
 		var item_id = "${param.item_id}";
 		var data = [];
 		var dataIndex = -1;
