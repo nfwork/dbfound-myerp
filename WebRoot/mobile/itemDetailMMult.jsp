@@ -244,16 +244,9 @@
 		}
 
 		//初始化凭证明细table
-		var height = 200;
-		var heightS = "${param.wHeight}";
-		if(heightS!=""){
-			var h = parseInt(heightS);
-			height = h - 365;
-		}
 		$('#detailTable').bootstrapTable({
 			url : "exp/itemLine.query",
 			striped : true,
-			height : height,
 			contentType : "application/x-www-form-urlencoded",
 			method : 'post',
 			dataType : "json",
