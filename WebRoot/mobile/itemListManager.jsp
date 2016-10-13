@@ -60,7 +60,20 @@
 		var item_id = 0;
 		
 		function renerder(value,row,index){
-			return "<a href='mobile/itemDetailMMult.jsp?item_id="+row.item_id+"'>"+value+"</a>"
+			return "<a href='javascript:goDetail("+row.item_id+")'>"+value+"</a>"
+		}
+		
+		function goDetail(item_id){
+			setCookie("item_id", item_id);  
+			location.href= "mobile/itemDetailCookieJump.jsp";
+		}
+
+		function setCookie(name,value)
+		{
+			var Days = 30;
+			var exp = new Date();
+			exp.setTime(exp.getTime() + Days*24*60*60*1000);
+			document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 		}
 
 		$('#table').bootstrapTable({
