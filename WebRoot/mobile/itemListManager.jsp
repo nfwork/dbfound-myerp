@@ -29,7 +29,7 @@
 			<div class="btn-group form-group">
 			  <a href="javascript:refresh()" class="btn btn-success" style="width:70px">查询</a>
 			  <a href="mobile/itemDetailM.jsp" class="btn btn-success" style="width:100px">凭证登记(简)</a>
-			  <a href="mobile/itemDetailMMult.jsp" class="btn btn-success" style="width:80px">凭证登记</a>
+			  <a href="javascript:jumpMultAdd()" class="btn btn-success" style="width:80px">凭证登记</a>
 			  <a href="javascript:history.back()" class="btn btn-success" style="width:70px">返回</a>
 			</div>
 			
@@ -58,6 +58,10 @@
 
 	<script type="text/javascript">
 		var item_id = 0;
+		
+		function jumpMultAdd(){
+			location.href="mobile/itemDetailMMult.jsp?wHeight="+$(window).height();
+		}
 		
 		function renerder(value,row,index){
 			return "<a href='mobile/itemDetailMMult.jsp?item_id="+row.item_id+"'>"+value+"</a>"

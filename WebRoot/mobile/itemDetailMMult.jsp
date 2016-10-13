@@ -68,8 +68,6 @@
 					</tr>
 				</thead>
 			</table>
-			
-			<div id="footDiv"></div>
 		</div>
 
 		<!-- 新建modal窗口 -->
@@ -119,9 +117,6 @@
 	</div>
 
 	<script>
-	 	$("#footDiv").height(400);	
-	 	$("#footDiv").height(0);	
-	
 		var item_id = "${param.item_id}";
 		var data = [];
 		var dataIndex = -1;
@@ -248,38 +243,36 @@
 			})
 		}
 
-		$(function() {
-
-			//初始化凭证明细table
-			var height = $(window).height() - 365;
-			if (height < 200) {
-				height = 200;
-			}
-			$('#detailTable').bootstrapTable({
-				url : "exp/itemLine.query",
-				striped : true,
-				height : height,
-				contentType : "application/x-www-form-urlencoded",
-				method : 'post',
-				dataType : "json",
-				responseHandler : function(res) {
-					var r = {};
-					r.total = res.totalCounts;
-					r.rows = res.datas;
-					if (res.datas && res.datas.length > 0) {
-						data = res.datas;
-					}
-					return r;
-				},
-				queryParams : function(params) {
-					params.period_id = $("#preiod").val();
-					;
-					params.item_id = item_id;
-					return params;
-				},
-			});
-
-		})
+		//初始化凭证明细table
+		var height = 200;
+		var heightS = "${param.wHeight}";
+		if(heightS!=""){
+			var h = parseInt(heightS);
+			height = h - 365;
+		}
+		$('#detailTable').bootstrapTable({
+			url : "exp/itemLine.query",
+			striped : true,
+			height : height,
+			contentType : "application/x-www-form-urlencoded",
+			method : 'post',
+			dataType : "json",
+			responseHandler : function(res) {
+				var r = {};
+				r.total = res.totalCounts;
+				r.rows = res.datas;
+				if (res.datas && res.datas.length > 0) {
+					data = res.datas;
+				}
+				return r;
+			},
+			queryParams : function(params) {
+				params.period_id = $("#preiod").val();
+				;
+				params.item_id = item_id;
+				return params;
+			},
+		});
 	</script>
 
 </body>
