@@ -85,7 +85,7 @@
 					<div class="modal-body">
 						<form id="addForm" name="addForm" role="form">
 							<div class="input-group" style="margin-bottom: 10px;">
-								<span class="input-group-addon">科 目：</span> <select id="account_id" name="account_id" class="form-control" data-style="common-select">
+								<span class="input-group-addon">科&#12288;目：</span> <select id="account_id" name="account_id" class="form-control" data-style="common-select">
 									<option value="">-请选择-</option>
 									<d:forEach var="account" items="${accounList }">
 										<option value="${account.account_id }">${account.account_name }</option>
