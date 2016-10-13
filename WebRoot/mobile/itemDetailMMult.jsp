@@ -78,13 +78,14 @@
 						<button type="button" class="close" data-dismiss="modal">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
-						<h4 class="modal-title"><font color="#428bca"><b>凭证行明细</b> </font></h4>
+						<h4 class="modal-title">
+							<font color="#428bca"><b>凭证行明细</b> </font>
+						</h4>
 					</div>
 					<div class="modal-body">
 						<form id="addForm" name="addForm" role="form">
 							<div class="input-group" style="margin-bottom: 10px;">
-								<span class="input-group-addon">科　目：</span> <select id="account_id" name="account_id" class="form-control"
-									data-style="common-select">
+								<span class="input-group-addon">科 目：</span> <select id="account_id" name="account_id" class="form-control" data-style="common-select">
 									<option value="">-请选择-</option>
 									<d:forEach var="account" items="${accounList }">
 										<option value="${account.account_id }">${account.account_name }</option>
@@ -113,169 +114,168 @@
 				</div>
 			</div>
 		</div>
-
-
-		<script>
-			var item_id = "${param.item_id}";
-			var data = [];
-			var dataIndex = -1;
-			
-			function modalShow(){
-				 $("#modal").modal().css({
-	                "margin-top": function () {
-	                     return 30;
-	                 }
-			     });
-			}
-
-			function addLine() {
-				modalShow();
-				var form = $('#addForm')[0];
-				form.reset();
-				$('select').selectpicker('render');
-				
-				dataIndex = -1;
-			}
-			
-			
-			function updateLine(index) {
-				modalShow();
-				dataIndex = index;
-				$("#cr_amount").val(data[dataIndex].cr_amount);
-				$("#dr_amount").val(data[dataIndex].dr_amount);
-				$("#dinput").val(data[dataIndex].description);
-				$("#account_id").val(data[dataIndex].account_id);
-				$('select').selectpicker('render');
-			}
-			
-			function renerder(value,row,index){
-				return "<a href='javascript:updateLine("+index+")'>"+value+"</a>"
-			}
-
-			function addData() {
-				var cr_amount = $("#cr_amount").val();
-				var dr_amount = $("#dr_amount").val();
-				var description = $("#dinput").val();
-				var account_id = $("#account_id").val();
-				var account_name = $("#account_id").find("option:selected").text();
-				if(account_id==""){
-					alert("科目不能为空！")
-					return;
-				}
-				if(cr_amount == "" && dr_amount ==""){
-					alert("借贷不能同时为空！")
-					return;
-				}
-				
-				if(cr_amount != "" && dr_amount !=""){
-					alert("借贷不能同时有值！")
-					return;
-				}
-				
-				if(dataIndex == -1){
-					var lineData = {
-							cr_amount : cr_amount,
-							dr_amount : dr_amount,
-							description : description,
-							account_id : account_id,
-							account_name : account_name
-						};
-					data.push(lineData);
-				}else{
-					data[dataIndex].cr_amount = cr_amount;
-					data[dataIndex].dr_amount = dr_amount,
-					data[dataIndex].description = description,
-					data[dataIndex].account_id = account_id,
-					data[dataIndex].account_name = account_name
-				}
-					
-				
-				var res = {
-					rows : data,
-					total : data.length
-				};
-				debugger;
-				$('#detailTable').bootstrapTable('load', res);
-				$("#modal").modal("hide");
-			}
-
-			 function saveData() {
-					var dr_amount = 0;
-					var cr_amount = 0;
-					for(var i=0;i<data.length;i++){
-						d_amount = data[i].dr_amount;
-						if(d_amount!=""){
-							dr_amount = add(dr_amount ,d_amount);
-						}
-						c_amount = data[i].cr_amount;
-						if(c_amount!=""){
-							cr_amount = add(cr_amount,c_amount);
-						}
-					}
-					if(dr_amount!=cr_amount){
-						alert("借贷不平，借方金额："+dr_amount+"，贷方金额："+cr_amount+"，请确认");
-						return;
-					}
-					
-					var exp_time = $("#exp_time").val();
-					var period_id = $("#period_id").val();
-					var description = $("#ht").val();
-					
-					$.ajax({
-						url : "mobile/item.do!saveBatch",
-						data : {
-							GridData : JSON.stringify(data),
-							period_id : period_id,
-							exp_time : exp_time,
-							description : description,
-							item_id : item_id
-						},
-						dataType : "json",
-						type : "post",
-						success : function(res) {
-							if (res.success) {
-								alert("凭证录入成功！")
-								history.back();
-							} else {
-								alert(res.message)
-							}
-						}
-					})
-				}
-			 
-			$(function() {
-				
-				//初始化凭证明细table
-				var height = $(window).height() - 365;
-				if(height<200){
-					height=200;
-				}
-				$('#detailTable').bootstrapTable({
-					url : "exp/itemLine.query",
-					striped : true,
-					height : height,
-					contentType : "application/x-www-form-urlencoded",
-					method : 'post',
-					dataType : "json",
-					responseHandler : function(res) {
-						var r = {};
-						r.total = res.totalCounts;
-						r.rows = res.datas;
-						if (res.datas && res.datas.length > 0) {
-							data = res.datas;
-						}
-						return r;
-					},
-					queryParams : function(params) {
-						params.period_id = $("#preiod").val();
-						;
-						params.item_id = item_id;
-						return params;
-					},
-				});
-				
-			})
-		</script>
 	</div>
+
+	<script>
+		var item_id = "${param.item_id}";
+		var data = [];
+		var dataIndex = -1;
+
+		function modalShow() {
+			$("#modal").modal().css({
+				"margin-top" : function() {
+					return 30;
+				}
+			});
+		}
+
+		function addLine() {
+			modalShow();
+			var form = $('#addForm')[0];
+			form.reset();
+			$('select').selectpicker('render');
+
+			dataIndex = -1;
+		}
+
+		function updateLine(index) {
+			modalShow();
+			dataIndex = index;
+			$("#cr_amount").val(data[dataIndex].cr_amount);
+			$("#dr_amount").val(data[dataIndex].dr_amount);
+			$("#dinput").val(data[dataIndex].description);
+			$("#account_id").val(data[dataIndex].account_id);
+			$('select').selectpicker('render');
+		}
+
+		function renerder(value, row, index) {
+			return "<a href='javascript:updateLine(" + index + ")'>" + value
+					+ "</a>"
+		}
+
+		function addData() {
+			var cr_amount = $("#cr_amount").val();
+			var dr_amount = $("#dr_amount").val();
+			var description = $("#dinput").val();
+			var account_id = $("#account_id").val();
+			var account_name = $("#account_id").find("option:selected").text();
+			if (account_id == "") {
+				alert("科目不能为空！")
+				return;
+			}
+			if (cr_amount == "" && dr_amount == "") {
+				alert("借贷不能同时为空！")
+				return;
+			}
+
+			if (cr_amount != "" && dr_amount != "") {
+				alert("借贷不能同时有值！")
+				return;
+			}
+
+			if (dataIndex == -1) {
+				var lineData = {
+					cr_amount : cr_amount,
+					dr_amount : dr_amount,
+					description : description,
+					account_id : account_id,
+					account_name : account_name
+				};
+				data.push(lineData);
+			} else {
+				data[dataIndex].cr_amount = cr_amount;
+				data[dataIndex].dr_amount = dr_amount,
+						data[dataIndex].description = description,
+						data[dataIndex].account_id = account_id,
+						data[dataIndex].account_name = account_name
+			}
+
+			var res = {
+				rows : data,
+				total : data.length
+			};
+			debugger;
+			$('#detailTable').bootstrapTable('load', res);
+			$("#modal").modal("hide");
+		}
+
+		function saveData() {
+			var dr_amount = 0;
+			var cr_amount = 0;
+			for (var i = 0; i < data.length; i++) {
+				d_amount = data[i].dr_amount;
+				if (d_amount != "") {
+					dr_amount = add(dr_amount, d_amount);
+				}
+				c_amount = data[i].cr_amount;
+				if (c_amount != "") {
+					cr_amount = add(cr_amount, c_amount);
+				}
+			}
+			if (dr_amount != cr_amount) {
+				alert("借贷不平，借方金额：" + dr_amount + "，贷方金额：" + cr_amount + "，请确认");
+				return;
+			}
+
+			var exp_time = $("#exp_time").val();
+			var period_id = $("#period_id").val();
+			var description = $("#ht").val();
+
+			$.ajax({
+				url : "mobile/item.do!saveBatch",
+				data : {
+					GridData : JSON.stringify(data),
+					period_id : period_id,
+					exp_time : exp_time,
+					description : description,
+					item_id : item_id
+				},
+				dataType : "json",
+				type : "post",
+				success : function(res) {
+					if (res.success) {
+						alert("凭证录入成功！")
+						history.back();
+					} else {
+						alert(res.message)
+					}
+				}
+			})
+		}
+
+		$(function() {
+
+			//初始化凭证明细table
+			var height = $(window).height() - 365;
+			if (height < 200) {
+				height = 200;
+			}
+			$('#detailTable').bootstrapTable({
+				url : "exp/itemLine.query",
+				striped : true,
+				height : height,
+				contentType : "application/x-www-form-urlencoded",
+				method : 'post',
+				dataType : "json",
+				responseHandler : function(res) {
+					var r = {};
+					r.total = res.totalCounts;
+					r.rows = res.datas;
+					if (res.datas && res.datas.length > 0) {
+						data = res.datas;
+					}
+					return r;
+				},
+				queryParams : function(params) {
+					params.period_id = $("#preiod").val();
+					;
+					params.item_id = item_id;
+					return params;
+				},
+			});
+
+		})
+	</script>
+
 </body>
 </html>
