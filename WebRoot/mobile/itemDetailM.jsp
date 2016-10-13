@@ -42,8 +42,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" name="dr_account_id" class="form-control"
-						data-style="common-select">
+					<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" name="dr_account_id" class="form-control" data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="account" items="${accounList }">
 							<option value="${account.account_id }">${account.account_name }</option>
@@ -52,8 +51,7 @@
 				</div>
 
 				<div class="input-group" style="margin-bottom: 10px;">
-					<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" name="cr_account_id" class="form-control"
-						data-style="common-select">
+					<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" name="cr_account_id" class="form-control" data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="account" items="${accounList }">
 							<option value="${account.account_id }">${account.account_name }</option>
@@ -71,39 +69,36 @@
 				</div>
 
 				<div class="btn-group form-group">
-					<button id="login" type="button" class="btn btn-success" style="width: 80px">提交</button>
+					<button onclick="saveData()" type="button" class="btn btn-success" style="width: 80px">提交</button>
 					<button type="button" onclick="resetData()" class="btn btn-success" style="width: 80px">重置</button>
 					<button onclick="history.back()" class="btn btn-success" style="width: 80px">返回</button>
 				</div>
 			</form>
 		</div>
 		<script>
-			function resetData(){
+			function resetData() {
 				$("#registForm")[0].reset();
 				$('select').selectpicker('render');
 			}
-			
-			$(function() {
-				var $btn = $("#login");
-				$btn.on("click", function() {
-					var username = $("#username").val();
-					var password = $("#password").val();
-					$.ajax({
-						url : "mobile/item.do!save",
-						data : $('#registForm').serialize(),
-						dataType : "json",
-						type : "post",
-						success : function(res) {
-							if (res.success) {
-								alert("凭证录入成功！")
-								history.back();
-							} else {
-								alert(res.message)
-							}
+
+			function saveData() {
+				var username = $("#username").val();
+				var password = $("#password").val();
+				$.ajax({
+					url : "mobile/item.do!save",
+					data : $('#registForm').serialize(),
+					dataType : "json",
+					type : "post",
+					success : function(res) {
+						if (res.success) {
+							alert("凭证录入成功！")
+							history.back();
+						} else {
+							alert(res.message)
 						}
-					})
+					}
 				})
-			})
+			}
 		</script>
 	</div>
 </body>

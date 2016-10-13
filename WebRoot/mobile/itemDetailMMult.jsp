@@ -53,7 +53,7 @@
 
 				<div class="btn-group form-group">
 					<button type="button" onclick="addLine()" class="btn btn-success" style="width: 80px">新增行</button>
-					<button id="login" type="button" class="btn btn-success" style="width: 80px">提交</button>
+					<button onclick="saveData()" type="button" class="btn btn-success" style="width: 80px">提交</button>
 					<button onclick="history.back()" class="btn btn-success" style="width: 80px">返回</button>
 				</div>
 			</form>
@@ -199,37 +199,7 @@
 				$("#modal").modal("hide");
 			}
 
-			var height = $(window).height() - 365;
-			if(height<200){
-				height=200;
-			}
-			$('#detailTable').bootstrapTable({
-				url : "exp/itemLine.query",
-				striped : true,
-				height : height,
-				contentType : "application/x-www-form-urlencoded",
-				method : 'post',
-				dataType : "json",
-				responseHandler : function(res) {
-					var r = {};
-					r.total = res.totalCounts;
-					r.rows = res.datas;
-					if (res.datas && res.datas.length > 0) {
-						data = res.datas;
-					}
-					return r;
-				},
-				queryParams : function(params) {
-					params.period_id = $("#preiod").val();
-					;
-					params.item_id = item_id;
-					return params;
-				},
-			});
-
-			$(function() {
-				var $btn = $("#login");
-				$btn.on("click", function() {
+			 function saveData() {
 					var dr_amount = 0;
 					var cr_amount = 0;
 					for(var i=0;i<data.length;i++){
@@ -271,7 +241,39 @@
 							}
 						}
 					})
-				})
+				}
+			 
+			$(function() {
+				
+				//初始化凭证明细table
+				var height = $(window).height() - 365;
+				if(height<200){
+					height=200;
+				}
+				$('#detailTable').bootstrapTable({
+					url : "exp/itemLine.query",
+					striped : true,
+					height : height,
+					contentType : "application/x-www-form-urlencoded",
+					method : 'post',
+					dataType : "json",
+					responseHandler : function(res) {
+						var r = {};
+						r.total = res.totalCounts;
+						r.rows = res.datas;
+						if (res.datas && res.datas.length > 0) {
+							data = res.datas;
+						}
+						return r;
+					},
+					queryParams : function(params) {
+						params.period_id = $("#preiod").val();
+						;
+						params.item_id = item_id;
+						return params;
+					},
+				});
+				
 			})
 		</script>
 	</div>
