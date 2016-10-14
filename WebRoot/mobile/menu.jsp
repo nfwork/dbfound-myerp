@@ -10,7 +10,7 @@
 		<div class="panel-heading">
 			<b>MyERP-功能菜单</b>
 		</div>
-		<div class="panel-body" style="text-align: center;">
+		<div class="panel-body" style="text-align: center;padding:5px">
 
 			<div style="margin: 5px; float: left">
 				<a href="mobile/itemListManager.jsp" class="btn btn-default btn-lg"> <img
