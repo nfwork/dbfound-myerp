@@ -5,8 +5,8 @@
 <jsp:include page="base.jsp" />
 </head>
 
-<body>
-	<div class="panel panel-primary"  style="margin-bottom:0px">
+<body style="overflow: hidden">
+	<div class="panel panel-primary"  style="margin-bottom:0px;height:1000px">
 		<div class="panel-heading">
 			<b>MyERP-功能菜单</b>
 		</div>

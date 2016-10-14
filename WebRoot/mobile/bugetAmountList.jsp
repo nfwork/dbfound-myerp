@@ -42,10 +42,10 @@
 			<table id="detailTable" data-side-pagination="server" data-height="200">
 				<thead>
 					<tr>
-						<th data-width="30%" data-field="exp_time">费用日期</th>
+						<th data-width="25%" data-field="exp_time">费用日期</th>
 						<th data-width="15%" data-field="dr_amount" data-align="center">借</th>
 						<th data-width="15%" data-field="cr_amount" data-align="center">贷</th>
-						<th data-width="40%" data-field="description" data-align="left">凭证描述</th>
+						<th data-width="45%" data-field="description" data-align="left">凭证描述</th>
 					</tr>
 				</thead>
 			</table>
