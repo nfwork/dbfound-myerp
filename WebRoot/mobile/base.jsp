@@ -30,6 +30,17 @@
 		m = Math.pow(10, Math.max(r1, r2));
 		return Math.round(num1 * m + num2 * m) / m;
 	}
+	
+	function tableResponseHandle(res){
+		if(res.timeout){
+			location.href="mobile/login.jsp";
+		}
+		var r = {};
+		r.total = res.totalCounts;
+		r.rows = res.datas;
+		return r;
+	}
+	
 	$(function() {$("select").selectpicker();});
 </script>
 

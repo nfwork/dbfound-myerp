@@ -70,12 +70,7 @@
 			contentType:"application/x-www-form-urlencoded",
 			method: 'post',
 			pageSize:5,
-			responseHandler : function(res) {
-				var r = {};
-				r.total = res.totalCounts;
-				r.rows = res.datas;
-				return r;
-			},
+			responseHandler : tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $("#preiod").val();
 				params.description = $("#description").val();
@@ -99,12 +94,7 @@
 			striped : true,
 			contentType:"application/x-www-form-urlencoded",
 			method: 'post',
-			responseHandler : function(res) {
-				var r = {};
-				r.total = res.totalCounts;
-				r.rows = res.datas;
-				return r;
-			},
+			responseHandler : tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id =  $("#preiod").val();;
 				params.item_id = item_id;

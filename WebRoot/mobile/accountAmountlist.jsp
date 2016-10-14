@@ -59,12 +59,7 @@
 		$('#table').bootstrapTable({
 			url : "report/accountAmountQuery.query",
 			striped : true,
-			responseHandler : function(res) {
-				var r = {};
-				r.total = res.totalCounts;
-				r.rows = res.datas;
-				return r;
-			},
+			responseHandler : tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $("#preiod").val();
 				return params;
@@ -83,12 +78,7 @@
 			url : "report/accountAmountQuery.query!getExpDetail",
 			striped : true,
 			height:height,
-			responseHandler : function(res) {
-				var r = {};
-				r.total = res.totalCounts;
-				r.rows = res.datas;
-				return r;
-			},
+			responseHandler : tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id =  $("#preiod").val();;
 				params.account_id = account_id;

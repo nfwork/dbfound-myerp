@@ -184,10 +184,10 @@
 				data.push(lineData);
 			} else {
 				data[dataIndex].cr_amount = cr_amount;
-				data[dataIndex].dr_amount = dr_amount,
-						data[dataIndex].description = description,
-						data[dataIndex].account_id = account_id,
-						data[dataIndex].account_name = account_name
+				data[dataIndex].dr_amount = dr_amount;
+				data[dataIndex].description = description;
+				data[dataIndex].account_id = account_id;
+				data[dataIndex].account_name = account_name;
 			}
 
 			var res = {
@@ -244,9 +244,9 @@
 		}
 
 		//初始化凭证明细table
-		var height= $(window).height()-385;
-		if(height<200){
-			height=200;
+		var height = $(window).height() - 385;
+		if (height < 200) {
+			height = 200;
 		}
 		$('#detailTable').bootstrapTable({
 			url : "exp/itemLine.query",
@@ -256,17 +256,13 @@
 			method : 'post',
 			dataType : "json",
 			responseHandler : function(res) {
-				var r = {};
-				r.total = res.totalCounts;
-				r.rows = res.datas;
 				if (res.datas && res.datas.length > 0) {
 					data = res.datas;
 				}
-				return r;
+				return tableResponseHandle(res);
 			},
 			queryParams : function(params) {
 				params.period_id = $("#preiod").val();
-				;
 				params.item_id = item_id;
 				return params;
 			},
