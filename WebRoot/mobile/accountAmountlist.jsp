@@ -71,8 +71,8 @@
 		});
 
 		var height= $(window).height()-410;
-		if(height<200){
-			height=200;
+		if(height<150){
+			height=150;
 		}
 		$('#detailTable').bootstrapTable({
 			url : "report/accountAmountQuery.query!getExpDetail",

@@ -245,8 +245,8 @@
 
 		//初始化凭证明细table
 		var height = $(window).height() - 385;
-		if (height < 200) {
-			height = 200;
+		if (height < 150) {
+			height = 150;
 		}
 		$('#detailTable').bootstrapTable({
 			url : "exp/itemLine.query",
