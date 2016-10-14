@@ -1,12 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <!DOCTYPE html>
-<html>
+<html style="height：100%">
 <head>
 <jsp:include page="base.jsp" />
 </head>
 
-<body style="overflow: hidden">
-	<div class="panel panel-primary"  style="margin-bottom:0px;height:1000px">
+<body style="height：100%">
+	<div class="panel panel-primary"  style="margin-bottom:0px;height:100%">
 		<div class="panel-heading">
 			<b>MyERP-功能菜单</b>
 		</div>
