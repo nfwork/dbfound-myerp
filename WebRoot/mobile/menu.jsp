@@ -17,7 +17,7 @@
 					<td width="33%">
 						<div style="">
 							<a href="mobile/itemListManager.jsp"> <img class="btn btn-default btn-lg"
-								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/gl.png"><br> <span
+								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/dj-1.png"><br> <span
 								style="margin-top: 3px">凭证管理</span>
 							</a>
 						</div>
@@ -25,7 +25,7 @@
 					<td width="33%">
 						<div style="">
 							<a href="mobile/itemList.jsp"> <img class="btn btn-default btn-lg"
-								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/cx.png"><br> <span
+								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/cx-1.png"><br> <span
 								style="margin-top: 3px">凭证查询</span>
 							</a>
 						</div>
@@ -33,7 +33,7 @@
 					<td>
 						<div style="margin:5px;margin-left:10px;margin-right:10px">
 							<a href="mobile/accountAmountlist.jsp">  <img class="btn btn-default btn-lg"
-								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/ye.png"><br> <span
+								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/ye-1.png"><br> <span
 								style="margin-top: 3px">科目余额</span>
 							</a>
 						</div>
@@ -43,7 +43,7 @@
 					<td>
 						<div style="margin:5px;margin-left:10px;margin-right:10px">
 							<a href="mobile/bugetAmountList.jsp"> <img class="btn btn-default btn-lg"
-								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/mx.png"><br> <span
+								style="margin: 3px; padding: 0px; width: 75px; height: 75px; border-radius: 35px;" src="images/mx-1.png"><br> <span
 								style="margin-top: 3px">费用明细</span>
 							</a>
 						</div>
