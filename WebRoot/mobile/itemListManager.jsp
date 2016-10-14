@@ -82,7 +82,10 @@
 				params.start= params.offset;
 				return params;
 			},
-			onClickRow : function(row, element) {
+			onClickCell : function(field, value, row, element) {
+				if(field=="item_num"){
+					return;
+				}
 				item_id = row.item_id;
 				$('#detailTable').bootstrapTable('refresh');
 			},onLoadSuccess :function(){
