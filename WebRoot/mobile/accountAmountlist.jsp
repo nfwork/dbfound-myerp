@@ -29,7 +29,7 @@
 			  <a href="javascript:history.back()" class="btn btn-success" style="width:80px">返回</a>
 			</div>
 
-			<table id="table" data-id-field="id" data-side-pagination="server" data-height="250">
+			<table id="table" data-id-field="id" data-side-pagination="server" data-height="230">
 				<thead>
 					<tr>
 						<th data-width="40%" data-field="account_name">科目名称</th>
@@ -75,9 +75,14 @@
 			}
 		});
 
+		var height= $(window).height()-410;
+		if(height<150){
+			height=150;
+		}
 		$('#detailTable').bootstrapTable({
 			url : "report/accountAmountQuery.query!getExpDetail",
 			striped : true,
+			height:height,
 			responseHandler : function(res) {
 				var r = {};
 				r.total = res.totalCounts;

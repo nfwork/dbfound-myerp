@@ -98,9 +98,14 @@
 			}
 		});
 
+		var height= $(window).height()-410;
+		if(height<150){
+			height=150;
+		}
 		$('#detailTable').bootstrapTable({
 			url : "report/accountAmountQuery.query!getExpDetail",
 			striped : true,
+			height : height,
 			responseHandler : function(res) {
 				var r = {};
 				r.total = res.totalCounts;

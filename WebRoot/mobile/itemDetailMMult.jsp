@@ -48,7 +48,7 @@
 
 				<div class="input-group" style="margin-bottom: 10px;">
 					<span class="input-group-addon">凭证抬头：</span>
-					<textarea class="form-control" id="ht" name="description" style="height: 60px">${itemList[0].description }</textarea>
+					<textarea class="form-control" id="ht" name="description" style="height: 80px">${itemList[0].description }</textarea>
 				</div>
 
 				<div class="btn-group form-group">
@@ -244,9 +244,14 @@
 		}
 
 		//初始化凭证明细table
+		var height= $(window).height()-385;
+		if(height<150){
+			height=150;
+		}
 		$('#detailTable').bootstrapTable({
 			url : "exp/itemLine.query",
 			striped : true,
+			height : height,
 			contentType : "application/x-www-form-urlencoded",
 			method : 'post',
 			dataType : "json",
