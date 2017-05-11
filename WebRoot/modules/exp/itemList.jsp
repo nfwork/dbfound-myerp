@@ -46,10 +46,11 @@
 	     <d:initProcedure>
 		    <d:dataSet id="periodStore" modelName="fnd/expPeriod" queryName="${periodStoreQueryName}" />
 		    <d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod"/>
+		    <d:dataSet id="accountStore" modelName="fnd/expAccount"  />
 	    </d:initProcedure>
 	    
-	    <d:form id="queryForm" title="查询条件" labelWidth="80">
-			<d:line columnWidth="0.2">
+	    <d:form id="queryForm" title="查询条件" labelWidth="100">
+			<d:line columnWidth="0.25">
 				<d:choose>
 					<d:when test="${isQuery!='1'}">
 						<d:field name="period_id" editable="false" required="true" value="${periods[0].period}" options="periodStore" valueField ="period_id" displayField="period_name" anchor="95%" editor="combo" prompt="会计期间" />
@@ -64,6 +65,9 @@
 				<d:field editor="textfield" name="description" prompt="凭证抬头" anchor="95%">
 					<d:event name="enter" handle="query"></d:event>
 				</d:field>
+			</d:line>
+			<d:line columnWidth="0.25">
+				<d:field name="account_id" anchor="95%" editable="false" options="accountStore" valueField ="account_id" displayField="account_name" editor="combo"  prompt="科目名称" />
 				<d:field name="timefrom" anchor="95%" editor="datefield" prompt="费用日期从" />
 				<d:field name="timeto" anchor="95%" editor="datefield" prompt="费用日期到" />
 			</d:line>

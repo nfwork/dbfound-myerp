@@ -12,17 +12,16 @@
 					t.exp_time,
 					t.description,
 					p.period_name
-			   from exp_item t,exp_period p
+			   from exp_item t,exp_period p,exp_item_line l
 			  where t.period_id = p.period_id
+			   and t.item_id = l.item_id
 			  #AND_CLAUSE#
 		 ]]>
 		</sql>
 		<filter name="item_num" express="t.item_id = ${@item_num}-10000000" />
 		<filter name="period_id" express="t.period_id = ${@period_id}" />
-		<filter name="description" express="(t.description like concat('%',${@description},'%')
-											or EXISTS (select 1 from exp_item_line l 
-											                   where l.item_id = t.item_id
-											                   and l.description like concat('%',${@description},'%')))" />
+		<filter name="account_id" express="l.account_id = ${@account_id}" />
+		<filter name="description" express="(t.description like concat('%',${@description},'%') or l.description like concat('%',${@description},'%'))" />
 		<filter name="timefrom" express="t.exp_time &gt;= ${@timefrom}" />
 		<filter name="timeto" express="t.exp_time &lt;= ${@timeto}" />
 	</query>
