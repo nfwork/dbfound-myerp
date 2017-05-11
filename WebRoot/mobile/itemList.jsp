@@ -9,6 +9,7 @@
 
 <body>
 	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
+	<d:query rootPath="accounList" modelName="fnd/expAccount" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
 		<div class="panel-heading"><b>MyERP-凭证查询</b></div>
@@ -22,6 +23,15 @@
 					</d:forEach>
 				</select>
 			</div>
+			<div class="form-group">
+				<select id="account_id" class="form-control" data-style="common-select">
+					<option value="">-科目名称-</option>
+					<d:forEach var="account" items="${accounList }">
+						<option value="${account.account_id }">${account.account_name }</option>
+					</d:forEach>
+				</select>
+			</div>
+				
 			<div class="form-group">
 				<input class="form-control" id="description" placeholder="凭证抬头">
 			</div>
@@ -67,6 +77,7 @@
 			responseHandler : tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $("#preiod").val();
+				params.account_id = $("#account_id").val();
 				params.description = $("#description").val();
 				params.start= params.offset;
 				return params;
