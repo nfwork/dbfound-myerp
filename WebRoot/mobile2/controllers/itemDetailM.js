@@ -7,13 +7,15 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('itemDetailMController', function($scope, $http, $cookies) {
 
+	$scope.data = {};
+	
 	$http({
 		method : "get",
 		url : "../exp/public.query!getDefaultPeriod",
 		data : {}
 	}).success(function(res) {
-		$scope.add_user = res.outParam.user_name;
-		$scope.exp_time = res.datas[0].exp_time;
+		$scope.data.add_user = res.outParam.user_name;
+		$scope.data.exp_time = res.datas[0].exp_time;
 	});
 
 	$http({
@@ -25,7 +27,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			period_name : "---请选择---"
 		})
 		$scope.preiods = res.datas;
-		$scope.period_id = res.datas[res.datas.length - 1].period_id;
+		$scope.data.period_id = res.datas[res.datas.length - 1].period_id;
 	})
 
 	$http({
@@ -45,11 +47,9 @@ angular.module('myerpApp').config(function($routeProvider) {
 	}
 
 	$scope.saveData = function() {
-		var username = $("#username").val();
-		var password = $("#password").val();
 		$.ajax({
 			url : "../mobile/item.do!save",
-			data : $('#registForm').serialize(),
+			data : $scope.data,
 			dataType : "json",
 			type : "post",
 			success : function(res) {
