@@ -5,19 +5,18 @@
 
 	<div class="panel-body">
 		<div class="form-group">
-			<select id="preiod" class="form-control" data-style="common-select">
-				<option selected="selected" ng-repeat="preiod in preiods" value="{{preiod.period_id }}">{{preiod.period_name}}</option>
+			<select id="preiod" class="form-control" data-style="common-select" ng-model="preiod" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods">
 			</select>
 		</div>
 
 		<div class="form-group">
-			<input class="form-control" id="description" placeholder="凭证抬头">
+			<input class="form-control" id="description" ng-model="description" placeholder="凭证抬头">
 		</div>
 
 		<div class="btn-group form-group">
 			<a ng-click="refresh()" class="btn btn-success" style="width: 70px">查询</a> 
-			<a href="mobile/itemDetailM.jsp" class="btn btn-success" style="width: 100px">凭证登记(简)</a> 
-			<a href="mobile/itemDetailMMult.jsp" class="btn btn-success" style="width: 80px">凭证登记</a>
+			<a href="../mobile/itemDetailM.jsp" class="btn btn-success" style="width: 100px">凭证登记(简)</a> 
+			<a href="../mobile/itemDetailMMult.jsp" class="btn btn-success" style="width: 80px">凭证登记</a>
 			<a href="javascript:history.back()" class="btn btn-success" style="width: 70px">返回</a>
 		</div>
 
@@ -45,7 +44,7 @@
 
 	<script type="text/javascript">
 		renerder = function(value, row, index) {
-			return "<a href='mobile/itemDetailMMult.jsp?item_id=" + row.item_id
+			return "<a href='../mobile/itemDetailMMult.jsp?item_id=" + row.item_id
 					+ "'>" + value + "</a>"
 		}
 	</script>
