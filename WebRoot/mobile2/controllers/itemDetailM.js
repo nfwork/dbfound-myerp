@@ -7,45 +7,38 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('itemDetailMController', function($scope, $http, $cookies) {
 
-	$.ajax({
+	$http({
+		method : "get",
 		url : "../exp/public.query!getDefaultPeriod",
-		data : {},
-		dataType : "json",
-		type : "post",
-		success : function(res) {
-			$scope.add_user = res.outParam.user_name;
-			$scope.exp_time = res.datas[0].exp_time;
-		}
+		data : {}
+	}).success(function(res) {
+		$scope.add_user = res.outParam.user_name;
+		$scope.exp_time = res.datas[0].exp_time;
 	});
-	
-	$.ajax({
+
+	$http({
+		method : "get",
 		url : "../fnd/expPeriod.query!combo",
-		data : {},
-		dataType : "json",
-		type : "post",
-		success : function(res) {
-			res.datas.unshift({
-				period_name : "---请选择---"
-			})
-			$scope.preiods = res.datas;
-			$scope.period_id = res.datas[res.datas.length - 1].period_id;
-		}
-	})
-	
-	$.ajax({
-		url : "../fnd/expAccount.query",
-		data : {},
-		dataType : "json",
-		type : "post",
-		success : function(res) {
-			res.datas.unshift({
-				account_name : "---请选择---"
-			})
-			$scope.accounts = res.datas;
-		}
+		data : {}
+	}).success(function(res) {
+		res.datas.unshift({
+			period_name : "---请选择---"
+		})
+		$scope.preiods = res.datas;
+		$scope.period_id = res.datas[res.datas.length - 1].period_id;
 	})
 
-	
+	$http({
+		method : "get",
+		url : "../fnd/expAccount.query",
+		data : {}
+	}).success(function(res) {
+		res.datas.unshift({
+			account_name : "---请选择---"
+		})
+		$scope.accounts = res.datas;
+	})
+
 	$scope.resetData = function() {
 		$("#registForm")[0].reset();
 		$('select').selectpicker('render');
@@ -69,8 +62,8 @@ angular.module('myerpApp').config(function($routeProvider) {
 			}
 		})
 	}
-	
-	$scope.back = function(){
+
+	$scope.back = function() {
 		location.href = "#/itemListManager";
 	}
 });

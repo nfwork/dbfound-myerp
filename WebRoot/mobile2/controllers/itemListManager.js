@@ -7,20 +7,18 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('itemListManagerController', function($scope, $http, $cookies,BootTableResponseHandle) {
 
-	$.ajax({
+	$http({
+		method : "get",
 		url : "../fnd/expPeriod.query!combo",
-		data : {},
-		dataType : "json",
-		type : "post",
-		success : function(res) {
-			res.datas.unshift({
-				period_name : "---请选择---"
-			})
-			$scope.preiods = res.datas;
-			$scope.preiod = res.datas[res.datas.length - 1].period_id;
-			initTable();
-		}
-	})
+		data : {}
+	}).success(function(res) {
+		res.datas.unshift({
+			period_name : "---请选择---"
+		})
+		$scope.preiods = res.datas;
+		$scope.preiod = res.datas[res.datas.length - 1].period_id;
+		initTable();
+	});
 
 	$scope.item_id = 0;
 
@@ -64,6 +62,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 				return params;
 			},
 		});
+		
 	}
 
 	$scope.refresh = function() {
