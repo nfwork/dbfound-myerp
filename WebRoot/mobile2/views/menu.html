@@ -1,0 +1,13 @@
+<div class="panel panel-primary" style="margin-bottom: 0px;">
+	<div class="panel-heading">
+		<b>MyERP-功能菜单</b>
+	</div>
+	<div class="panel-body" style="text-align: center; padding: 5px">
+		<div style="margin: 5px; float: left" ng-repeat="menu in menus">
+			<a ng-href="{{menu.href}}" class="btn btn-default btn-lg"> <img
+				style="margin: 3px; padding: 0px; width: 60px; height: 60px; border-radius: 35px;" ng-src="{{menu.icon}}"><br> <span
+				style="margin-top: 3px">{{menu.name}}</span>
+			</a>
+		</div>
+	</div>
+</div>
