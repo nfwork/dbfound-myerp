@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'itemListManagerController'
 	});
 
-}).controller('itemListManagerController', function($scope, $http, $cookies) {
+}).controller('itemListManagerController', function($scope, $http, $cookies,BootTableResponseHandle) {
 
 	$.ajax({
 		url : "../fnd/expPeriod.query!combo",
@@ -32,7 +32,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			contentType : "application/x-www-form-urlencoded",
 			method : 'post',
 			pageSize : 5,
-			responseHandler : tableResponseHandle,
+			responseHandler : BootTableResponseHandle.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $scope.preiod;
 				params.description = $scope.description;
@@ -57,7 +57,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			striped : true,
 			contentType : "application/x-www-form-urlencoded",
 			method : 'post',
-			responseHandler : tableResponseHandle,
+			responseHandler : BootTableResponseHandle.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $scope.period;
 				params.item_id = $scope.item_id;
@@ -71,15 +71,9 @@ angular.module('myerpApp').config(function($routeProvider) {
 		$('#table').bootstrapTable('refresh');
 		$('#detailTable').bootstrapTable('refresh');
 	}
-
-	function tableResponseHandle(res) {
-		if (res.timeout) {
-			location.href = "#/login";
-		}
-		var r = {};
-		r.total = res.totalCounts;
-		r.rows = res.datas;
-		return r;
+	
+	$scope.back = function(){
+		location.href = "#/menu";
 	}
 
 	$('#preiod').change($scope.refresh)
