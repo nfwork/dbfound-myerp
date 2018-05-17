@@ -12,6 +12,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 	var dataIndex = -1;
 
 	$scope.header={};
+	$scope.line={};
 	
 	if(!item_id){
 		$http({
@@ -65,66 +66,55 @@ angular.module('myerpApp').config(function($routeProvider) {
 	}
 
 	$scope.addLine = function() {
-		modalShow();
-		var form = $('#addForm')[0];
-		form.reset();
-		$('select').selectpicker('render');
-
 		dataIndex = -1;
+		$scope.line={account_id:"",cr_amount:null,dr_amount:null};
+		modalShow();
 	}
 
-	$scope.updateLine = function(index) {
+	$scope.updateLine = function(row) {
+		for (var i = 0; i < data.length; i++) {
+			if(data[i].item_line_id == row.item_line_id){
+				dataIndex = i;
+				break;
+			}
+		}
+		$scope.line=data[dataIndex];
 		modalShow();
-		dataIndex = index;
-		$("#cr_amount").val(data[dataIndex].cr_amount);
-		$("#dr_amount").val(data[dataIndex].dr_amount);
-		$("#dinput").val(data[dataIndex].description);
-		$("#account_id").val(data[dataIndex].account_id);
-		$('select').selectpicker('render');
 	}
 
 	$scope.addData = function() {
-		var cr_amount = $("#cr_amount").val();
-		var dr_amount = $("#dr_amount").val();
-		var description = $("#dinput").val();
-		var account_id = $("#account_id").val();
-		var account_name = $("#account_id").find("option:selected").text();
-		if (account_id == "") {
+		
+		if (!$scope.line.account_id || $scope.line.account_id == "" || $scope.line.account_id == null) {
 			alert("科目不能为空！")
 			return;
 		}
-		if (cr_amount == "" && dr_amount == "") {
+		if ($scope.line.cr_amount == null && $scope.line.dr_amount == null) {
 			alert("借贷不能同时为空！")
 			return;
 		}
 
-		if (cr_amount != "" && dr_amount != "") {
+		if ($scope.line.cr_amount != null && $scope.line.dr_amount != null) {
 			alert("借贷不能同时有值！")
 			return;
 		}
+		
+		for(var i=1; i< $scope.accounts.length; i++){
+			if($scope.accounts[i].account_id == $scope.line.account_id ){
+				$scope.line.account_name = $scope.accounts[i].account_name;
+			}
+		}
 
 		if (dataIndex == -1) {
-			var lineData = {
-				cr_amount : cr_amount,
-				dr_amount : dr_amount,
-				description : description,
-				account_id : account_id,
-				account_name : account_name
-			};
-			data.push(lineData);
+			data.push($scope.line);
 		} else {
-			data[dataIndex].cr_amount = cr_amount;
-			data[dataIndex].dr_amount = dr_amount;
-			data[dataIndex].description = description;
-			data[dataIndex].account_id = account_id;
-			data[dataIndex].account_name = account_name;
+			data[dataIndex] = $scope.line;
 		}
 
 		var res = {
 			rows : data,
 			total : data.length
 		};
-		debugger;
+
 		$('#detailTable').bootstrapTable('load', res);
 		$("#modal").modal("hide");
 	}
@@ -190,6 +180,11 @@ angular.module('myerpApp').config(function($routeProvider) {
 				data = res.datas;
 			}
 			return BootTableResponseHandle.tableResponseHandle(res);
+		},
+		onClickCell : function(field, value, row, element) {
+			if (field == "account_name") {
+				$scope.updateLine(row);
+			}
 		},
 		queryParams : function(params) {
 			params.item_id = item_id;
