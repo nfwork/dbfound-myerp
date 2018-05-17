@@ -32,15 +32,17 @@
 
 			<div class="btn-group form-group">
 				<button type="button" ng-click="addLine()" class="btn btn-success" style="width: 80px">新增行</button>
+				<button type="button" ng-click="updateLine()" class="btn btn-success" style="width: 80px">编辑行</button>
 				<button ng-click="saveData()" type="button" class="btn btn-success" style="width: 80px">提交</button>
 				<button ng-click="back()" class="btn btn-success" style="width: 80px">返回</button>
 			</div>
 		</form>
 
-		<table id="detailTable" data-side-pagination="server" data-height="200">
+		<table id="detailTable" data-side-pagination="server" data-click-to-select="true"  data-height="200">
 			<thead>
 				<tr>
-					<th data-width="30%" data-formatter="renerder" data-field="account_name">科目名称</th>
+					<th data-radio ="true"></th>
+					<th data-width="30%" data-field="account_name">科目名称</th>
 					<th data-width="15%" data-field="dr_amount" data-align="center">借</th>
 					<th data-width="15%" data-field="cr_amount" data-align="center">贷</th>
 					<th data-width="40%" data-field="description" data-align="left">凭证描述</th>
@@ -91,10 +93,3 @@
 		</div>
 	</div>
 </div>
-
-<script>
-	function updateLine(){}
-	function renerder(value, row, index) {
-		return "<a href='javascript:updateLine()'>" + value + "</a>"
-	}
-</script>

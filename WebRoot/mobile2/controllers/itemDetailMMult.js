@@ -7,14 +7,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('itemDetailMMultController', function($scope, $http, $cookies, $location, BootTableResponseHandle) {
 	
-	var item_id = $location.search().item_id;
-	var data = [];
-	var dataIndex = -1;
+	$scope.item_id = $location.search().item_id;
+	$scope.data = [];
+	$scope.dataIndex = -1;
 
 	$scope.header={};
 	$scope.line={};
 	
-	if(!item_id){
+	if(!$scope.item_id){
 		$http({
 			method : "get",
 			url : "../exp/public.query!getDefaultPeriod",
@@ -26,7 +26,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 	}else{
 		$http({
 			method : "get",
-			url : "../exp/item.query!getDeatil?item_id=" + item_id
+			url : "../exp/item.query!getDeatil?item_id=" + $scope.item_id
 		}).success(function(res) {
 			if(res.datas.length>0){
 				$scope.header = res.datas[0];
@@ -66,19 +66,30 @@ angular.module('myerpApp').config(function($routeProvider) {
 	}
 
 	$scope.addLine = function() {
-		dataIndex = -1;
+		$scope.dataIndex = -1;
 		$scope.line={account_id:"",cr_amount:null,dr_amount:null};
 		modalShow();
 	}
 
-	$scope.updateLine = function(row) {
-		for (var i = 0; i < data.length; i++) {
-			if(data[i].item_line_id == row.item_line_id){
-				dataIndex = i;
+	$scope.updateLine = function() {
+		var rows = $('#detailTable').bootstrapTable('getSelections');
+		if(rows.length ==0){
+			alert("请选择行");
+			return;
+		}
+		var row = rows[0];
+		for (var i = 0; i < $scope.data.length; i++) {
+			if($scope.data[i].item_line_id == row.item_line_id){
+				$scope.dataIndex = i;
 				break;
 			}
 		}
-		$scope.line=data[dataIndex];
+		$scope.line = {
+			account_id : row.account_id,
+			cr_amount : row.cr_amount,
+			dr_amount : row.dr_amount,
+			description : row.description
+		};
 		modalShow();
 	}
 
@@ -88,12 +99,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 			alert("科目不能为空！")
 			return;
 		}
-		if ($scope.line.cr_amount == null && $scope.line.dr_amount == null) {
+		if (($scope.line.cr_amount == null || $scope.line.cr_amount =="") 
+				&&( $scope.line.dr_amount == null || $scope.line.dr_amount =="")) {
 			alert("借贷不能同时为空！")
 			return;
 		}
 
-		if ($scope.line.cr_amount != null && $scope.line.dr_amount != null) {
+		if (($scope.line.cr_amount != null && $scope.line.cr_amount != "") 
+				&&( $scope.line.dr_amount != null && $scope.line.dr_amount != "")) {
 			alert("借贷不能同时有值！")
 			return;
 		}
@@ -104,15 +117,24 @@ angular.module('myerpApp').config(function($routeProvider) {
 			}
 		}
 
-		if (dataIndex == -1) {
-			data.push($scope.line);
+		if ($scope.dataIndex == -1) {
+			var d = {
+					account_id : $scope.line.account_id,
+					cr_amount : $scope.line.cr_amount,
+					dr_amount : $scope.line.dr_amount,
+					description : $scope.line.description
+				}
+			$scope.data.push(d);
 		} else {
-			data[dataIndex] = $scope.line;
+			$scope.data[$scope.dataIndex].account_id = $scope.line.account_id;
+			$scope.data[$scope.dataIndex].cr_amount = $scope.line.cr_amount;
+			$scope.data[$scope.dataIndex].dr_amount = $scope.line.dr_amount;
+			$scope.data[$scope.dataIndex].description = $scope.line.description;
 		}
 
 		var res = {
-			rows : data,
-			total : data.length
+			rows : $scope.data,
+			total : $scope.data.length
 		};
 
 		$('#detailTable').bootstrapTable('load', res);
@@ -122,13 +144,13 @@ angular.module('myerpApp').config(function($routeProvider) {
 	$scope.saveData = function (){
 		var dr_amount = 0;
 		var cr_amount = 0;
-		for (var i = 0; i < data.length; i++) {
-			d_amount = data[i].dr_amount;
-			if (d_amount != "") {
+		for (var i = 0; i < $scope.data.length; i++) {
+			var d_amount = $scope.data[i].dr_amount;
+			if (d_amount && d_amount != "" && d_amount !=null) {
 				dr_amount = add(dr_amount, d_amount);
 			}
-			c_amount = data[i].cr_amount;
-			if (c_amount != "") {
+			var c_amount = $scope.data[i].cr_amount;
+			if (c_amount && c_amount != "" && c_amount != null) {
 				cr_amount = add(cr_amount, c_amount);
 			}
 		}
@@ -137,18 +159,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 			return;
 		}
 
-		var exp_time = $("#exp_time").val();
-		var period_id = $("#period_id").val();
-		var description = $("#ht").val();
-
 		$.ajax({
 			url : "../mobile/item.do!saveBatch",
 			data : {
-				GridData : JSON.stringify(data),
-				period_id : period_id,
-				exp_time : exp_time,
-				description : description,
-				item_id : item_id
+				GridData : JSON.stringify($scope.data),
+				period_id : $scope.header.period_id,
+				exp_time : $scope.header.exp_time,
+				description : $scope.header.description,
+				item_id : $scope.item_id
 			},
 			dataType : "json",
 			type : "post",
@@ -177,20 +195,31 @@ angular.module('myerpApp').config(function($routeProvider) {
 		dataType : "json",
 		responseHandler : function(res) {
 			if (res.datas && res.datas.length > 0) {
-				data = res.datas;
+				$scope.data = res.datas;
 			}
 			return BootTableResponseHandle.tableResponseHandle(res);
 		},
-		onClickCell : function(field, value, row, element) {
-			if (field == "account_name") {
-				$scope.updateLine(row);
-			}
-		},
 		queryParams : function(params) {
-			params.item_id = item_id;
+			params.item_id = $scope.item_id;
 			return params;
 		},
 	});
+	
+	function add(num1, num2) {
+		var r1, r2, m;
+		try {
+			r1 = num1.toString().split('.')[1].length;
+		} catch (e) {
+			r1 = 0;
+		}
+		try {
+			r2 = num2.toString().split(".")[1].length;
+		} catch (e) {
+			r2 = 0;
+		}
+		m = Math.pow(10, Math.max(r1, r2));
+		return Math.round(num1 * m + num2 * m) / m;
+	}
 	
 	$scope.back = function() {
 		location.href = "#/itemListManager";
