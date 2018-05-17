@@ -99,22 +99,23 @@ angular.module('myerpApp').config(function($routeProvider) {
 			alert("科目不能为空！")
 			return;
 		}
-		if (($scope.line.cr_amount == null || $scope.line.cr_amount =="") 
-				&&( $scope.line.dr_amount == null || $scope.line.dr_amount =="")) {
+		
+		if($scope.line.cr_amount == null){
+			$scope.line.cr_amount = "";
+		}
+		
+		if($scope.line.dr_amount == null){
+			$scope.line.dr_amount = "";
+		}
+		
+		if ($scope.line.cr_amount =="" && $scope.line.dr_amount =="") {
 			alert("借贷不能同时为空！")
 			return;
 		}
 
-		if (($scope.line.cr_amount != null && $scope.line.cr_amount != "") 
-				&&( $scope.line.dr_amount != null && $scope.line.dr_amount != "")) {
+		if ($scope.line.cr_amount != "" && $scope.line.dr_amount != "") {
 			alert("借贷不能同时有值！")
 			return;
-		}
-		
-		for(var i=1; i< $scope.accounts.length; i++){
-			if($scope.accounts[i].account_id == $scope.line.account_id ){
-				$scope.line.account_name = $scope.accounts[i].account_name;
-			}
 		}
 
 		if ($scope.dataIndex == -1) {
@@ -124,6 +125,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 					dr_amount : $scope.line.dr_amount,
 					description : $scope.line.description
 				}
+			
+			for(var i=1; i< $scope.accounts.length; i++){
+				if($scope.accounts[i].account_id == $scope.line.account_id ){
+					d.account_name = $scope.accounts[i].account_name;
+					break;
+				}
+			}
+			
 			$scope.data.push(d);
 		} else {
 			$scope.data[$scope.dataIndex].account_id = $scope.line.account_id;
