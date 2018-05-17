@@ -43,7 +43,6 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 	$scope.resetData = function() {
 		$("#registForm")[0].reset();
-		$('select').selectpicker('render');
 	}
 
 	$scope.saveData = function() {
@@ -66,4 +65,5 @@ angular.module('myerpApp').config(function($routeProvider) {
 	$scope.back = function() {
 		location.href = "#/itemListManager";
 	}
+	
 });
