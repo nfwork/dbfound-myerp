@@ -7,25 +7,37 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('menuController', function($scope, $http) {
 
-	$scope.menus = [ {
+	$scope.menusList = [ [ {
 		name : "凭证管理",
 		href : "#/itemListManager",
-		icon : "../images/dj-1.png"
-	}, {
+		icon : "../images/f-pzgl.png"
+	},{
+		name : "凭证登记(简)",
+		href : "#/itemDetailM",
+		icon : "../images/f-pzdjj.png"
+	},{
+		name : "凭证登记",
+		href : "#/itemDetailMMult",
+		icon : "../images/f-pzdj.png"
+	},{
 		name : "凭证查询",
 		href : "#/itemList",
-		icon : "../images/cx-1.png"
-	},{
+		icon : "../images/f-pzcx.png"
+	}],
+
+	[  {
 		name : "科目余额",
 		href : "#/accountAmountlist",
-		icon : "../images/ye-1.png"
-	},{
+		icon : "../images/f-kmye.png"
+	} ,{
 		name : "费用明细",
 		href : "#/bugetAmountList",
-		icon : "../images/mx-1.png"
-	} ];
-	
-	$scope.back = function(){
+		icon : "../images/f-fymx.png"
+	}],
+
+	]
+
+	$scope.back = function() {
 		location.href = "#/login";
 	}
 
