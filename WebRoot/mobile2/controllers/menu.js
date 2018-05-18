@@ -7,6 +7,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('menuController', function($scope, $http, $timeout) {
 
+	$http({
+		method : "get",
+		url : "../exp/public.query!getDefaultPeriod",
+		data : {}
+	}).success(function(res) {
+		$scope.user_name = res.outParam.user_name;
+	});
+	
 	$scope.menusList = [ [ {
 		name : "凭证管理",
 		href : "#/itemListManager",
