@@ -1,0 +1,38 @@
+<div class="panel panel-primary" style="margin-bottom: 0px;">
+    <div class="panel-heading" style="text-align: center;">
+		<a href="" ng-click="back()"><span style="float: left;width:20px;color: #fff;"><b>〈</b></span></a>
+		<b>MyERP-费用明细</b>
+		<a href="#/menu"><span style="float: right;width:20px;color:#fff;"><b>┋</b></span></a>
+	</div>
+
+	<div class="panel-body">
+		<div class="form-group">
+			<select id="preiod" class="form-control" data-style="common-select" ng-model="preiod" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods">
+			</select>
+		</div>
+		
+		<div class="btn-group form-group">
+		  <a href="javascript:refresh()" class="btn btn-success" style="width:80px">查询</a>
+		</div>
+
+		<table id="table" data-id-field="id" data-side-pagination="server" data-height="230">
+			<thead>
+				<tr>
+					<th data-width="60%" data-field="account_name">科目名称</th>
+					<th data-width="40%" data-field="emerge_amount" data-align="right">本月发生</th>
+				</tr>
+			</thead>
+		</table>
+		<div style="padding-top: 10px"></div>
+		<table id="detailTable" data-side-pagination="server" data-height="200">
+			<thead>
+				<tr>
+					<th data-width="27%" data-field="exp_time">费用日期</th>
+					<th data-width="15%" data-field="dr_amount" data-align="center">借</th>
+					<th data-width="15%" data-field="cr_amount" data-align="center">贷</th>
+					<th data-width="43%" data-field="description" data-align="left">凭证描述</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
