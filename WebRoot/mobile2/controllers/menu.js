@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'menuController'
 	});
 
-}).controller('menuController', function($scope, $http) {
+}).controller('menuController', function($scope, $http, $timeout) {
 
 	$scope.menusList = [ [ {
 		name : "凭证管理",
@@ -40,5 +40,15 @@ angular.module('myerpApp').config(function($routeProvider) {
 	$scope.back = function() {
 		location.href = "#/login";
 	}
+	
+	$timeout(function(){
+		$(".menuitem").mouseover(function(){
+			$(this).css("background-color","#eee"); 
+		});
+
+		$(".menuitem").mouseout(function(){
+			$(this).css("background-color","#fff");
+		});
+	},0)
 
 });
