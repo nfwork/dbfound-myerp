@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'itemDetailMMultController'
 	});
 
-}).controller('itemDetailMMultController', function($scope, $http, $cookies, $location, BootTableResponseHandle) {
+}).controller('itemDetailMMultController', function($scope, $http, $cookies, $timeout, $location, BootTableResponseHandle) {
 	
 	$scope.item_id = $location.search().item_id;
 	$scope.data = [];
@@ -44,6 +44,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		})
 		$scope.preiods = res.datas;
 		$scope.header.period_id = res.datas[res.datas.length - 1].period_id;
+		$timeout(function(){$("#period_id").selectpicker();},0)
 	})
 
 	$http({
@@ -52,10 +53,16 @@ angular.module('myerpApp').config(function($routeProvider) {
 		data : {}
 	}).success(function(res) {
 		res.datas.unshift({
+			account_id : "",
 			account_name : "---请选择---"
 		})
 		$scope.accounts = res.datas;
+		$timeout(function(){$("#account_id").selectpicker();},0)
 	})
+	
+	$scope.$watch("line.account_id",function(){
+		$timeout(function(){$("#account_id").selectpicker("refresh");},0)
+	});
 	
 	function modalShow() {
 		$("#modal").modal().css({

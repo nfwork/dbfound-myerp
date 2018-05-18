@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'itemDetailMController'
 	});
 
-}).controller('itemDetailMController', function($scope, $http, $cookies) {
+}).controller('itemDetailMController', function($scope, $http, $timeout, $cookies) {
 
 	$scope.data = {};
 	
@@ -28,6 +28,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		})
 		$scope.preiods = res.datas;
 		$scope.data.period_id = res.datas[res.datas.length - 1].period_id;
+		$timeout(function(){$("#period_id").selectpicker();},0)
 	})
 
 	$http({
@@ -39,6 +40,10 @@ angular.module('myerpApp').config(function($routeProvider) {
 			account_name : "---请选择---"
 		})
 		$scope.accounts = res.datas;
+		$timeout(function(){
+			$("#dr_account_id").selectpicker();
+			$("#cr_account_id").selectpicker();
+		},0)
 	})
 
 	$scope.resetData = function() {

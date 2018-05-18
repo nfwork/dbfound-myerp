@@ -5,18 +5,17 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'itemListManagerController'
 	});
 
-}).controller('itemListManagerController', function($scope, $http, $cookies,BootTableResponseHandle) {
+}).controller('itemListManagerController', function($scope, $http, $cookies, $timeout, BootTableResponseHandle) {
 
 	$http({
 		method : "get",
 		url : "../fnd/expPeriod.query!combo",
 		data : {}
 	}).success(function(res) {
-		res.datas.unshift({
-			period_name : "---请选择---"
-		})
 		$scope.preiods = res.datas;
 		$scope.preiod = res.datas[res.datas.length - 1].period_id;
+		
+		$timeout(function(){$("#preiod").selectpicker();},0)
 		initTable();
 	});
 
@@ -74,12 +73,4 @@ angular.module('myerpApp').config(function($routeProvider) {
 	$scope.back = function(){
 		location.href = "#/menu";
 	}
-
-	$('#preiod').change($scope.refresh)
-
-	$('#description').keydown(function(e) {
-		if (e.keyCode == 13) {
-			$scope.refresh();
-		}
-	});
 });

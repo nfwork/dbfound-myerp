@@ -24,12 +24,12 @@
 			</div>
 
 			<div class="input-group" style="margin-bottom: 10px;">
-				<span class="input-group-addon">借方科目：</span> <select ng-model="data.dr_account_id" ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
+				<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" ng-model="data.dr_account_id" ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
 				</select>
 			</div>
 			
 			<div class="input-group" style="margin-bottom: 10px;">
-				<span class="input-group-addon">贷方科目：</span> <select ng-model="data.cr_account_id" ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
+				<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" ng-model="data.cr_account_id" ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
 				</select>
 			</div>
 
