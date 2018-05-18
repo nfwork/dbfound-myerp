@@ -1,6 +1,8 @@
 <div class="panel panel-primary" style="margin-bottom: 0px;">
-	<div class="panel-heading">
+	<div class="panel-heading" style="text-align: center;">
+		<a href="" ng-click="back()"><span style="float: left;width:20px;color: #fff;"><b>〈</b></span></a>
 		<b>MyERP-凭证管理</b>
+		<a href="#/login"><span style="float: right;width:20px;color:#fff;"><b>X</b></span></a>
 	</div>
 
 	<div class="panel-body">
@@ -17,7 +19,6 @@
 			<a ng-click="refresh()" class="btn btn-success" style="width: 70px">查询</a> 
 			<a href="#/itemDetailM" class="btn btn-success" style="width: 100px">凭证登记(简)</a> 
 			<a href="#/itemDetailMMult" class="btn btn-success" style="width: 80px">凭证登记</a>
-			<a ng-click="back()" class="btn btn-success" style="width: 70px">返回</a>
 		</div>
 
 		<table id="table" data-id-field="id" data-side-pagination="server" data-height="350">

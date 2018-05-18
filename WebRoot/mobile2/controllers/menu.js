@@ -24,5 +24,9 @@ angular.module('myerpApp').config(function($routeProvider) {
 		href : "#/bugetAmountList",
 		icon : "../images/mx-1.png"
 	} ];
+	
+	$scope.back = function(){
+		location.href = "#/login";
+	}
 
 });

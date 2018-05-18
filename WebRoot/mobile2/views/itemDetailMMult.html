@@ -1,7 +1,8 @@
-
 <div class="panel panel-primary" style="margin-bottom: 0px">
-	<div class="panel-heading">
+	<div class="panel-heading" style="text-align: center;">
+		<a href="" ng-click="back()"><span style="float: left;width:20px;color: #fff;"><b>〈</b></span></a>
 		<b>MyERP-凭证登记</b>
+		<a href="#/login"><span style="float: right;width:20px;color:#fff;"><b>X</b></span></a>
 	</div>
 
 	<div class="panel-body">
@@ -34,7 +35,6 @@
 				<button type="button" ng-click="addLine()" class="btn btn-success" style="width: 80px">新增行</button>
 				<button type="button" ng-click="updateLine()" class="btn btn-success" style="width: 80px">编辑行</button>
 				<button ng-click="saveData()" type="button" class="btn btn-success" style="width: 80px">提交</button>
-				<button ng-click="back()" class="btn btn-success" style="width: 80px">返回</button>
 			</div>
 		</form>
 
