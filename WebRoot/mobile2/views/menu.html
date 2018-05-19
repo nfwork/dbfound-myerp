@@ -1,10 +1,23 @@
 <div class="panel panel-primary" style="margin-bottom: 0px;">
 	<div class="panel-heading" style="text-align: center;">
 		<a href="#/login"><span style="float: left;width:20px;color:#fff;"><b>Ⅹ</b></span></a>
-		<b>MyERP-功能菜单</b>
+		<b>MyERP-财务在线</b>
 		<a href="#/menu"><span style="float: right;width:20px;color:#fff;"><b>☰</b></span></a>
 	</div>
-	<div class="panel-body" style="text-align: center; padding: 5px">
+	<div class="panel-body" style="padding: 5px">
+		<div style="border-bottom: 1px solid #eee;margin:8px;margin-bottom: 0px;"><font color="#aaa">Hi 黄炯</font></div>
+		<div style="margin:8px;margin-bottom: 0px;">
+			<span style="margin:3px;">本月总开支：<font color="red" size="5">{{totalexp|currency:'￥'}}</font></span>
+			<table style="width: 100%">
+				<tr ng-repeat="datas in datasList">
+					<td  width="50%" height="50px" ng-repeat="data in datas">
+					  <span style="margin:3px;">{{data.account_name}}：<font color="red">{{data.totalexp|currency:'￥'}}</font></span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div style="border-bottom: 1px solid #eee;margin:8px;margin-bottom: 0px;"><font color="#aaa">功能菜单</font></div>
 		<table style="width: 100%">
 			<tr ng-repeat="menus in menusList">
 				<td class="menuitem" style="text-align: center;"  ng-repeat="menu in menus">

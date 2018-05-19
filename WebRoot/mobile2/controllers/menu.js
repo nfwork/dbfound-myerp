@@ -7,6 +7,28 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('menuController', function($scope, $http, $timeout) {
 
+	$http({
+		method : "get",
+		url : "../report/homeAnalysis.query",
+		data : {}
+	}).success(function(res) {
+		if(res.success){
+			$scope.totalexp = res.datas[0].totalexp;
+			if(res.datas.length == 2){
+				$scope.datasList  = [[res.datas[1]]];
+			}else if(res.datas.length == 3){
+				$scope.datasList  = [[res.datas[1],res.datas[2]]];
+			}else if(res.datas.length == 4){
+				$scope.datasList  = [[res.datas[1],res.datas[2]], [res.datas[3]]];
+			}else if(res.datas.length == 5){
+				$scope.datasList  = [[res.datas[1],res.datas[2]], [res.datas[3],res.datas[4]]];
+			}
+		}else{
+			alert(res.message);
+			$scope.back();
+		}
+	});
+	
 	$scope.menusList = [ [ {
 		name : "凭证管理",
 		href : "#/itemListManager",
