@@ -13,7 +13,10 @@ angular.module('myerpApp').config(function($routeProvider) {
 		data : {}
 	}).success(function(res) {
 		if(res.success){
+			$scope.user_name = res.outParam.user_name;
+			
 			$scope.totalexp = res.datas[0].totalexp;
+			
 			if(res.datas.length == 2){
 				$scope.datasList  = [[res.datas[1]]];
 			}else if(res.datas.length == 3){
