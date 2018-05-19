@@ -18,20 +18,17 @@ angular.module('myerpApp').config(function($routeProvider) {
 			period_name : "---请选择---"
 		})
 		$scope.preiods = res.datas;
-		initP();
 	});
 	
-	function initP(){
-		$http({
-			method : "get",
-			url : "../exp/public.query!getDefaultPeriod",
-			data : {}
-		}).success(function(res) {
-			$scope.preiod = res.datas[0].period;
-			$timeout(function(){$("#preiod").selectpicker();},0)
-			initTable();
-		});
-	}
+	$http({
+		method : "get",
+		url : "../exp/public.query!getDefaultPeriod",
+		data : {}
+	}).success(function(res) {
+		$scope.preiod = res.datas[0].period;
+		$timeout(function(){$("#preiod").selectpicker();},0)
+		initTable();
+	});
 	
 	var account_id = 0;
 	
