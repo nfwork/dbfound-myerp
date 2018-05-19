@@ -67,11 +67,11 @@ angular.module('myerpApp').config(function($routeProvider) {
 	}
 	
 	$timeout(function(){
-		$(".menuitem").mouseover(function(){
+		$(".menuitem").mouseenter(function(){
 			$(this).css("background-color","#eee"); 
 		});
 
-		$(".menuitem").mouseout(function(){
+		$(".menuitem").mouseleave(function(){
 			$(this).css("background-color","#fff");
 		});
 	},0)
