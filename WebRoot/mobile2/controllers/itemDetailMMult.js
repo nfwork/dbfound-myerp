@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'itemDetailMMultController'
 	});
 
-}).controller('itemDetailMMultController', function($scope, $http, $cookies, $timeout, $location, BootTableResponseHandle) {
+}).controller('itemDetailMMultController', function($scope, $http, $cookies, $timeout, $location, ToolService) {
 	
 	$scope.item_id = $location.search().item_id;
 	$scope.data = [];
@@ -163,11 +163,11 @@ angular.module('myerpApp').config(function($routeProvider) {
 		for (var i = 0; i < $scope.data.length; i++) {
 			var d_amount = $scope.data[i].dr_amount;
 			if (d_amount && d_amount != "" && d_amount !=null) {
-				dr_amount = add(dr_amount, d_amount);
+				dr_amount = ToolService.add(dr_amount, d_amount);
 			}
 			var c_amount = $scope.data[i].cr_amount;
 			if (c_amount && c_amount != "" && c_amount != null) {
-				cr_amount = add(cr_amount, c_amount);
+				cr_amount = ToolService.add(cr_amount, c_amount);
 			}
 		}
 		if (dr_amount != cr_amount) {
@@ -213,29 +213,13 @@ angular.module('myerpApp').config(function($routeProvider) {
 			if (res.datas && res.datas.length > 0) {
 				$scope.data = res.datas;
 			}
-			return BootTableResponseHandle.tableResponseHandle(res);
+			return ToolService.tableResponseHandle(res);
 		},
 		queryParams : function(params) {
 			params.item_id = $scope.item_id;
 			return params;
 		},
 	});
-	
-	function add(num1, num2) {
-		var r1, r2, m;
-		try {
-			r1 = num1.toString().split('.')[1].length;
-		} catch (e) {
-			r1 = 0;
-		}
-		try {
-			r2 = num2.toString().split(".")[1].length;
-		} catch (e) {
-			r2 = 0;
-		}
-		m = Math.pow(10, Math.max(r1, r2));
-		return Math.round(num1 * m + num2 * m) / m;
-	}
 	
 	$scope.back = function() {
 		location.href = "#/itemListManager";

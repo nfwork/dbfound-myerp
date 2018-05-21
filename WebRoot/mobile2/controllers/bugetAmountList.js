@@ -5,9 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'bugetAmountListController'
 	});
 
-}).controller('bugetAmountListController', function($scope, $http, $timeout, $cookies, BootTableResponseHandle) {
-	
-	//period_name
+}).controller('bugetAmountListController', function($scope, $http, $timeout, $cookies, ToolService) {
 	
 	$http({
 		method : "get",
@@ -44,9 +42,9 @@ angular.module('myerpApp').config(function($routeProvider) {
 				var emerge_amount = 0;
 				var end_amount = 0;
 				for (var i = 0; i < items.length; i++) {
-					append_amount = add(append_amount, items[i].append_amount);
-					emerge_amount = add(emerge_amount, items[i].emerge_amount);
-					end_amount = add(end_amount, items[i].end_amount);
+					append_amount = ToolService.add(append_amount, items[i].append_amount);
+					emerge_amount = ToolService.add(emerge_amount, items[i].emerge_amount);
+					end_amount = ToolService.add(end_amount, items[i].end_amount);
 				}
 				var json = {};
 				json.append_amount = "" + append_amount;
@@ -61,7 +59,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 				
 				items.push(json);
 				
-				return BootTableResponseHandle.tableResponseHandle(res);
+				return ToolService.tableResponseHandle(res);
 			},
 			queryParams : function(params) {
 				params.period_id =  $scope.preiod;
@@ -81,7 +79,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			url : "../report/accountAmountQuery.query!getExpDetail",
 			striped : true,
 			height : height,
-			responseHandler : BootTableResponseHandle.tableResponseHandle,
+			responseHandler : ToolService.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id =  $scope.preiod;
 				params.account_id = account_id;
@@ -90,22 +88,6 @@ angular.module('myerpApp').config(function($routeProvider) {
 		});
 	}
 	
-	function add(num1, num2) {
-		var r1, r2, m;
-		try {
-			r1 = num1.toString().split('.')[1].length;
-		} catch (e) {
-			r1 = 0;
-		}
-		try {
-			r2 = num2.toString().split(".")[1].length;
-		} catch (e) {
-			r2 = 0;
-		}
-		m = Math.pow(10, Math.max(r1, r2));
-		return Math.round(num1 * m + num2 * m) / m;
-	}
-
 	$scope.refresh = function(){
 		account_id = 0;
 		$('#table').bootstrapTable('refresh');

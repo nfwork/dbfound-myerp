@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'accountAmountlistController'
 	});
 
-}).controller('accountAmountlistController', function($scope, $http, $timeout, $cookies, BootTableResponseHandle) {
+}).controller('accountAmountlistController', function($scope, $http, $timeout, $cookies, ToolService) {
 	
 	//period_name
 	
@@ -36,7 +36,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		$('#table').bootstrapTable({
 			url : "../report/accountAmountQuery.query",
 			striped : true,
-			responseHandler : BootTableResponseHandle.tableResponseHandle,
+			responseHandler : ToolService.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $scope.preiod;
 				return params;
@@ -55,7 +55,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			url : "../report/accountAmountQuery.query!getExpDetail",
 			striped : true,
 			height:height,
-			responseHandler : BootTableResponseHandle.tableResponseHandle,
+			responseHandler : ToolService.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id =  $scope.preiod;
 				params.account_id = account_id;

@@ -5,7 +5,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		controller : 'itemListController'
 	});
 
-}).controller('itemListController', function($scope, $http, $cookies, $timeout, BootTableResponseHandle) {
+}).controller('itemListController', function($scope, $http, $cookies, $timeout, ToolService) {
 
 	$http({
 		method : "get",
@@ -42,7 +42,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			contentType : "application/x-www-form-urlencoded",
 			method : 'post',
 			pageSize : 5,
-			responseHandler : BootTableResponseHandle.tableResponseHandle,
+			responseHandler : ToolService.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $scope.preiod;
 				params.account_id = $scope.account_id;
@@ -65,7 +65,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			striped : true,
 			contentType : "application/x-www-form-urlencoded",
 			method : 'post',
-			responseHandler : BootTableResponseHandle.tableResponseHandle,
+			responseHandler : ToolService.tableResponseHandle,
 			queryParams : function(params) {
 				params.period_id = $scope.period;
 				params.item_id = $scope.item_id;
