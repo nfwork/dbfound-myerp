@@ -8,7 +8,7 @@
 
 		<div class="panel-body">
 			<div class="form-group">
-				<select id="preiod" class="form-control" data-style="common-select" ng-model="preiod" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods">
+				<select id="preiod" class="form-control" ng-change="refresh()" data-style="common-select" ng-model="preiod" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods">
 				</select>
 			</div>
 			

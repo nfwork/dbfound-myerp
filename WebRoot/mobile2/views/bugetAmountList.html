@@ -7,12 +7,12 @@
 
 	<div class="panel-body">
 		<div class="form-group">
-			<select id="preiod" class="form-control" data-style="common-select" ng-model="preiod" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods">
+			<select id="preiod" class="form-control" ng-change="refresh()" data-style="common-select" ng-model="preiod" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods">
 			</select>
 		</div>
 		
 		<div class="btn-group form-group">
-		  <a href="javascript:refresh()" class="btn btn-primary" style="width:100px">查询</a>
+		  <a ng-click="refresh()" class="btn btn-primary" style="width:100px">查询</a>
 		</div>
 
 		<table id="table" data-id-field="id" data-side-pagination="server" data-height="230">

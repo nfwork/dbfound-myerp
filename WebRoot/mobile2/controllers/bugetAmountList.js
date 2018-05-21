@@ -112,8 +112,6 @@ angular.module('myerpApp').config(function($routeProvider) {
 		$('#detailTable').bootstrapTable('refresh');
 	}
 	
-	$('#preiod').change($scope.refresh)
-
 	$scope.back = function() {
 		location.href = "#/menu";
 	}
