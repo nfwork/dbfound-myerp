@@ -58,6 +58,10 @@ angular.module('myerpApp').config(function($routeProvider) {
 		name : "费用明细",
 		href : "#/bugetAmountList",
 		icon : "../images/f-fymx.png"
+	}, {
+		name : "期间汇总",
+		href : "#/periodAmountReport",
+		icon : "../images/f-qjhz.png"
 	}],
 
 	]
