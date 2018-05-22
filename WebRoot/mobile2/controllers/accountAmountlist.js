@@ -9,16 +9,6 @@ angular.module('myerpApp').config(function($routeProvider) {
 	
 	//period_name
 	
-	$http({
-		method : "get",
-		url : "../fnd/expPeriod.query!comboAll",
-		data : {}
-	}).success(function(res) {
-		res.datas.unshift({
-			period_name : "---请选择---"
-		})
-		$scope.preiods = res.datas;
-	});
 	
 	$http({
 		method : "get",
@@ -26,9 +16,24 @@ angular.module('myerpApp').config(function($routeProvider) {
 		data : {}
 	}).success(function(res) {
 		$scope.preiod = res.datas[0].period;
-		$timeout(function(){$("#preiod").selectpicker();},0)
+		initPeriod();
 		initTable();
 	});
+	
+	function initPeriod(){
+		$http({
+			method : "get",
+			url : "../fnd/expPeriod.query!comboAll",
+			data : {}
+		}).success(function(res) {
+			res.datas.unshift({
+				period_name : "---请选择---"
+			})
+			$scope.preiods = res.datas;
+			
+			$timeout(function(){$("#preiod").selectpicker();},0)
+		});
+	}
 	
 	var account_id = 0;
 	
