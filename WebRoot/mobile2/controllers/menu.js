@@ -2,35 +2,34 @@
 angular.module('myerpApp').config(function($routeProvider) {
 	$routeProvider.when('/menu', {
 		templateUrl : 'views/menu.html',
-		controller : 'menuController'
+		controller : 'menuController',
+		resolve:{
+			homeAnalysis:function($http){
+            	return $http.get("../report/homeAnalysis.query").then(function(res){
+        			return res.data;
+            	});
+            }
+        }
 	});
 
-}).controller('menuController', function($scope, $http, $timeout) {
-
-	$http({
-		method : "get",
-		url : "../report/homeAnalysis.query",
-		data : {}
-	}).success(function(res) {
-		if(res.success){
-			$scope.user_name = res.outParam.user_name;
-			
-			$scope.totalexp = res.datas[0].totalexp;
-			
-			if(res.datas.length == 2){
-				$scope.datasList  = [[res.datas[1]]];
-			}else if(res.datas.length == 3){
-				$scope.datasList  = [[res.datas[1],res.datas[2]]];
-			}else if(res.datas.length == 4){
-				$scope.datasList  = [[res.datas[1],res.datas[2]], [res.datas[3]]];
-			}else if(res.datas.length == 5){
-				$scope.datasList  = [[res.datas[1],res.datas[2]], [res.datas[3],res.datas[4]]];
-			}
-		}else{
-			alert(res.message);
-			$scope.back();
-		}
-	});
+}).controller('menuController', function($scope, $http, $timeout, homeAnalysis) {
+	
+	if(homeAnalysis.timeout){
+		$scope.back();
+	}
+	
+	$scope.user_name = homeAnalysis.outParam.user_name;
+	$scope.totalexp = homeAnalysis.datas[0].totalexp;
+	
+	if(homeAnalysis.datas.length == 2){
+		$scope.datasList  = [[homeAnalysis.datas[1]]];
+	}else if(homeAnalysis.datas.length == 3){
+		$scope.datasList  = [[homeAnalysis.datas[1],homeAnalysis.datas[2]]];
+	}else if(homeAnalysis.datas.length == 4){
+		$scope.datasList  = [[homeAnalysis.datas[1],homeAnalysis.datas[2]], [homeAnalysis.datas[3]]];
+	}else if(homeAnalysis.datas.length == 5){
+		$scope.datasList  = [[homeAnalysis.datas[1],homeAnalysis.datas[2]], [homeAnalysis.datas[3],homeAnalysis.datas[4]]];
+	}
 	
 	$scope.menusList = [ [ {
 		name : "凭证管理",
