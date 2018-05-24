@@ -14,10 +14,6 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('menuController', function($scope, $http, $timeout, homeAnalysis) {
 	
-	if(homeAnalysis.timeout){
-		location.href = "#/login";
-	}
-	
 	$scope.user_name = homeAnalysis.outParam.user_name;
 	$scope.totalexp = homeAnalysis.datas[0].totalexp;
 	
