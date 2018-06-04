@@ -73,6 +73,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 	}
 
 	$scope.addLine = function() {
+		$('#detailTable').bootstrapTable('uncheckAll');
 		$scope.dataIndex = -1;
 		$scope.line={account_id:"",cr_amount:null,dr_amount:null};
 		modalShow();
@@ -85,12 +86,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			return;
 		}
 		var row = rows[0];
-		for (var i = 0; i < $scope.data.length; i++) {
-			if($scope.data[i].item_line_id == row.item_line_id){
-				$scope.dataIndex = i;
-				break;
-			}
-		}
+		
 		$scope.line = {
 			account_id : row.account_id,
 			cr_amount : row.cr_amount,
@@ -127,11 +123,11 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 		if ($scope.dataIndex == -1) {
 			var d = {
-					account_id : $scope.line.account_id,
-					cr_amount : $scope.line.cr_amount,
-					dr_amount : $scope.line.dr_amount,
-					description : $scope.line.description
-				}
+				account_id : $scope.line.account_id,
+				cr_amount : $scope.line.cr_amount,
+				dr_amount : $scope.line.dr_amount,
+				description : $scope.line.description
+			}
 			
 			for(var i=1; i< $scope.accounts.length; i++){
 				if($scope.accounts[i].account_id == $scope.line.account_id ){
@@ -219,6 +215,9 @@ angular.module('myerpApp').config(function($routeProvider) {
 			params.item_id = $scope.item_id;
 			return params;
 		},
+		onCheck : function(row, element) {
+			$scope.dataIndex = element.data('index');
+		}
 	});
 	
 	$scope.back = function() {
