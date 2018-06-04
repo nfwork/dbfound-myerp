@@ -163,7 +163,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 			success : function(res) {
 				if (res.success) {
 					alert("凭证录入成功！")
-					history.back();
+					$scope.back();
 				} else {
 					alert(res.message)
 				}
