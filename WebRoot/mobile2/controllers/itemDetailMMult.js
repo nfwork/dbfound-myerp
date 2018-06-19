@@ -113,13 +113,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 			return;
 		}
 
-		if ($scope.dataIndex == -1) {
-			for(var i=1; i< $scope.accounts.length; i++){
-				if($scope.accounts[i].account_id == $scope.line.account_id ){
-					$scope.line.account_name = $scope.accounts[i].account_name;
-					break;
-				}
+		for(var i=1; i< $scope.accounts.length; i++){
+			if($scope.accounts[i].account_id == $scope.line.account_id ){
+				$scope.line.account_name = $scope.accounts[i].account_name;
+				break;
 			}
+		}
+		
+		if ($scope.dataIndex == -1) {
 			$('#detailTable').bootstrapTable('insertRow',{index:10000, row:$scope.line});
 		} else {
 			$('#detailTable').bootstrapTable('updateRow',{index:$scope.dataIndex, row:$scope.line});
