@@ -1,12 +1,14 @@
 package dbfound.plugin.report;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.model.base.JavaSupport;
+import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 
@@ -14,17 +16,16 @@ import com.nfwork.dbfound.web.WebWriter;
 public class RankTransform extends JavaSupport {
 
 	@Override
-	public void execute(){
+	public void execute() {
 		context.isExport = true;
 
 		String modelName = context.getCurrentModel();
 		String rowColumnName = params.get("rowColumnName").getStringValue();
-		String columnColumnName = params.get("columnColumnName")
-				.getStringValue();
+		String columnColumnName = params.get("columnColumnName").getStringValue();
 		String keyColumnName = params.get("keyColumnName").getStringValue();
+		String priorityCloumnName = params.get("priorityColumnName").getStringValue();
 
-		List<Map> datas = ModelEngine.query(context, modelName, null)
-				.getDatas();
+		List<Map> datas = ModelEngine.query(context, modelName, null).getDatas();
 
 		List<String> rows = new ArrayList<String>();
 		Map<String, Integer> rowsMap = new HashMap<String, Integer>();
@@ -45,15 +46,25 @@ public class RankTransform extends JavaSupport {
 			String javaName = map.get(columnColumnName).toString();
 			if (columnsMap.get(javaName) == null) {
 				Column column = new Column();
-				column.jsName = "c" + (columns.size() + 1);
+				//column.jsName = "c" + (columns.size() + 1);
 				column.javaName = javaName;
+				column.priority = DataUtil.intValue(map.get(priorityCloumnName));
+				if (column.priority == null) {
+					column.priority = 999999;
+				}
 				columnsMap.put(javaName, 1);
 				columns.add(column);
 			}
 
 			bufferDatas.put(row + javaName, map.get(keyColumnName));
 		}
-
+		
+	    Collections.sort(columns);
+	    for (int i = 0; i < columns.size(); i++) {
+	    	columns.get(i).jsName = "c" + (i+1);
+		}
+	    
+		 
 		// 重新装载数据
 		List<Map> newDatas = new ArrayList<Map>();
 		for (String row : rows) {

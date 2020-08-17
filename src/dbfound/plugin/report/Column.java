@@ -1,9 +1,10 @@
 package dbfound.plugin.report;
 
-public class Column {
+public class Column implements Comparable<Column> {
 
 	String jsName;
 	String javaName;
+	Integer priority;
 
 	public String getJsName() {
 		return jsName;
@@ -19,6 +20,11 @@ public class Column {
 
 	public void setJavaName(String javaName) {
 		this.javaName = javaName;
+	}
+
+	@Override
+	public int compareTo(Column o) {
+		 return this.priority - o.priority;  
 	}
 
 }
