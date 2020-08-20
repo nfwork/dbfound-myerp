@@ -17,34 +17,36 @@
 			  	a.priority
 			FROM exp_item i,
 			 	exp_item_line l,
-			 exp_account a,
-			 exp_period p
+			     exp_account a,
+			     exp_period p
 			WHERE i.item_id = l.item_id
-			AND a.account_id = l.account_id
-			AND a.account_type = '0'
-			AND i.period_id = p.period_id
+			  AND a.account_id = l.account_id
+			  AND a.account_type = '0'
+			  AND i.period_id = p.period_id
+			  #AND_CLAUSE#
 			GROUP BY i.period_id,l.account_id
 			
 			UNION ALL
 			
 			SELECT
-		        p.period_name,
-		        '合计'         account_name,
-		        (SELECT
-		           SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0))
-		         FROM exp_item i,
-		           exp_item_line l,
-		           exp_account a
-		         WHERE i.item_id = l.item_id
-		             AND a.account_id = l.account_id
-		             AND a.account_type = '0'
-		             AND i.period_id = p.period_id)    amount,
-		             99999 AS priority
-		      FROM exp_period p
+			  p.period_name,
+			  '合计'         account_name,
+			  SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0))    amount,
+			  99999            priority
+			FROM exp_item i,
+			  exp_item_line l,
+			  exp_account a,
+			  exp_period p
+			WHERE i.item_id = l.item_id
+			    AND a.account_id = l.account_id
+			    AND a.account_type = '0'
+			    AND i.period_id = p.period_id
+			    #AND_CLAUSE#
+			GROUP BY i.period_id
 		 ]]>
 		</sql>
-		<filter name="timefrom" express="i.exp_time &gt;= ${@timefrom}" />
-		<filter name="timeto" express="i.exp_time &lt;= ${@timeto}" />
+		<filter name="periodfrom" express="i.period_id &gt;= ${@periodfrom}" />
+		<filter name="periodto" express="i.period_id &lt;= ${@periodto}" />
 	</query>
 
 	<execute>

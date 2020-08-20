@@ -3,13 +3,12 @@
 	<head-bar bar-title='MyERP-期间汇总' ></head-bar>
 
 	<div class="panel-body">
+	
+	    <div class="form-group">
+	    		<label  ng-repeat="pitem in pitems" style="padding-right:5px" ><input name="Satisfaction" type="radio" value="{{pitem.item_value}}" ng_change="initTable()" ng-checked="{{pitem.selected}}" ng-model="periodYear.value" />{{pitem.item_name}} </label>
+	    </div>
+	
 		<table id="table">
-			<thead>
-				<tr ng-show="showTable">
-					<th data-align="center" data-field="c">　会计期间　</th>
-					<th ng-repeat="column in columns" data-formatter="toThousands"  data-align="right" data-field="{{column.jsName}}">{{column.javaName}}</th>
-				</tr>
-			</thead>
 		</table>
 	</div>
 	
