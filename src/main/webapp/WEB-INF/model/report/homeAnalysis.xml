@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+	<query>
+		<param name="user_name" scope="session" ioType="both"/>
+		<sql>
+		 <![CDATA[
+			SELECT
+			  '本月开支' AS account_name,
+			  IFNULL(SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)),0) as totalexp,
+			  10 AS priority
+			FROM exp_item i,
+			  exp_item_line l,
+			  exp_account a
+			WHERE i.item_id = l.item_id
+			    AND i.period_id = DATE_FORMAT(NOW(),'%Y%m')
+			    AND a.account_type ='0'
+			    AND a.account_id = l.account_id
+			
+			UNION 
+			
+			SELECT
+			  a.account_name,
+			  IFNULL(SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)),0) as totalexp,
+			  a.priority
+			FROM exp_item i,
+			  exp_item_line l,
+			  exp_account a
+			WHERE i.item_id = l.item_id
+			    AND i.period_id = DATE_FORMAT(NOW(),'%Y%m')
+			    AND a.account_code IN('003','004','007','008')
+			    AND a.account_id = l.account_id
+			GROUP BY l.account_id
+
+
+		 ]]>
+		</sql>
+	</query>
+
+</model>

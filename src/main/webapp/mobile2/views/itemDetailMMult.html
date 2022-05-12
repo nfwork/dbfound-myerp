@@ -1,0 +1,92 @@
+<div class="panel panel-primary" style="margin-bottom: 0px">
+	
+	<head-bar bar-title='MyERP-凭证登记' ></head-bar>
+
+	<div class="panel-body">
+		<form id="registForm" role="form">
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">凭证编号：</span> <input class="form-control" ng-model="header.item_num" id="item_num" name="item_num"
+					readonly="readonly" placeholder="系统自动生成">
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">登记用户：</span> <input class="form-control" id="add_user" ng-model="header.add_user" name="add_user" readonly="readonly">
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" ng-model="header.period_id"
+					ng-options="preiod.period_id  as preiod.period_name for preiod in preiods" class="form-control" data-style="common-select">
+				</select>
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">费用日期：</span> <input type="text" class="form-control" ng-model="header.exp_time" id="exp_time" name="exp_time">
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">凭证抬头：</span>
+				<textarea class="form-control" id="ht" ng-model="header.description" name="description" style="height: 80px"></textarea>
+			</div>
+
+			<div class="form-group">
+				<button type="button" ng-click="addLine()" class="btn btn-primary" style="width: 80px">新增行</button>
+				<button type="button" ng-click="updateLine()" class="btn btn-info" style="width: 80px">编辑行</button>
+				<button ng-click="saveData()" type="button" class="btn btn-warning" style="width: 80px">提交</button>
+			</div>
+		</form>
+
+		<table id="detailTable" data-side-pagination="server" data-click-to-select="true"  data-height="200">
+			<thead>
+				<tr>
+					<th data-radio ="true"></th>
+					<th data-width="30%" data-field="account_name">科目名称</th>
+					<th data-width="15%" data-field="dr_amount" data-align="center">借</th>
+					<th data-width="15%" data-field="cr_amount" data-align="center">贷</th>
+					<th data-width="40%" data-field="description" data-align="left">凭证描述</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+	<!-- 新建modal窗口 -->
+	<div class="modal fade" id="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">
+						<font color="#428bca"><b>凭证行明细</b> </font>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form id="addForm" name="addForm" role="form">
+						<div class="input-group" style="margin-bottom: 10px;">
+							<span class="input-group-addon">科&#12288;目：</span> <select id="account_id" ng-model="line.account_id"
+								ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
+							</select>
+						</div>
+
+						<div class="input-group" style="margin-bottom: 10px;">
+							<span class="input-group-addon">借金额：</span> <input step="0.1" min="0.0" class="form-control" type="number" id="dr_amount" ng-model="line.dr_amount" name="dr_amount">
+						</div>
+
+						<div class="input-group" style="margin-bottom: 10px;">
+							<span class="input-group-addon">贷金额：</span> <input step="0.1" min="0.0" class="form-control" type="number" id="cr_amount" ng-model="line.cr_amount" name="cr_amount">
+						</div>
+
+						<div class="input-group" style="margin-bottom: 10px;">
+							<span class="input-group-addon">行描述：</span> <input class="form-control" id="dinput" ng-model="line.description" name="description"></input>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer" style="text-align: center">
+					<button type="button" style="width: 80px" ng-click="addData()" class="btn btn-primary">确定</button>
+					<button type="button" style="width: 80px" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

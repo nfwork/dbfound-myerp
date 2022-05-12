@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+	<query>
+		<sql>
+		 <![CDATA[
+			select 
+				code_id,
+				code,
+				code_value,
+				code_name,
+				priority,
+				(select user_name from sys_user u where u.user_id = t.last_update_by) last_update_user,
+				last_update_date
+			from sys_code t
+			#WHERE_CLAUSE#
+			order by code,priority
+		 ]]>
+		</sql>
+		<filter name="code" express="code = ${@code}"/>
+		<filter name="code_name" express="code_name like concat(${@code_name},'%')"/>
+		<filter name="code_value" express="code_value = ${@code_value}"/>
+	</query>
+	
+	<execute name="add">
+		<param name="code" dataType="varchar" />
+		<param name="code_value" dataType="varchar" />
+		<param name="code_name" dataType="varchar" />
+		<param name="priority" dataType="number" />
+		<param name="user_id" dataType="number" sourcePath="session.user_id" />
+		<sqls>
+			<executeSql>
+			 <![CDATA[
+			    insert into sys_code(
+			    		code,
+			    		code_value,
+			    		code_name,
+			    		priority,
+			    		last_update_by,
+			    		last_update_date)
+				values(
+			    		${@code},
+			    		${@code_value},
+			    		${@code_name},
+			    		${@priority},
+			    		${@user_id},
+			    		now())
+			 ]]>
+			</executeSql>
+		</sqls>
+	</execute>
+
+	<execute name="update">
+		<param name="code" dataType="varchar" />
+		<param name="code_value" dataType="varchar" />
+		<param name="code_name" dataType="varchar" />
+		<param name="priority" dataType="number" />
+		<param name="code_id" dataType="number" />
+		<param name="user_id" dataType="number" sourcePath="session.user_id" />
+		<param name="last_update_date" dataType="varchar" />
+		<sqls>
+			<executeSql>
+			  <![CDATA[
+				update sys_code
+				   set 
+					code = ${@code},
+					code_value = ${@code_value},
+					code_name = ${@code_name},
+					priority = ${@priority},
+					last_update_by = ${@user_id},
+					last_update_date = now()			
+				 where code_id = ${@code_id} 
+			  ]]>
+			</executeSql>
+		</sqls>
+	</execute>
+
+	<execute name="delete">
+		<param name="code_id" dataType="number" />
+		<sqls>
+			<executeSql>
+			  <![CDATA[
+				delete from sys_code where code_id = ${@code_id} 
+			  ]]>
+			</executeSql>
+		</sqls>
+	</execute>
+</model>

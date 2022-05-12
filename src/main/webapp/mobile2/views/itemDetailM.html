@@ -1,0 +1,50 @@
+<div class="panel panel-primary" style="margin-bottom: 0px">
+	
+	<head-bar bar-title='MyERP-凭证登记(简)' ></head-bar>
+
+	<div class="panel-body">
+		<form id="registForm" role="form">
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">凭证编号：</span> <input class="form-control" id="item_num" name="item_num" readonly="readonly" placeholder="系统自动生成">
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">登记用户：</span> <input class="form-control" ng-model="data.add_user" name="add_user" readonly="readonly">
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">会计期间：</span> 
+				<select id="period_id" name="period_id" ng-model="data.period_id" ng-options="preiod.period_id  as preiod.period_name for preiod in preiods" class="form-control" data-style="common-select">
+				</select>
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">费用日期：</span> <input type="text" class="form-control" id="exp_time" ng-model="data.exp_time" name="exp_time" >
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">借方科目：</span> <select id="dr_account_id" ng-model="data.dr_account_id" ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
+				</select>
+			</div>
+			
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">贷方科目：</span> <select id="cr_account_id" ng-model="data.cr_account_id" ng-options="account.account_id  as account.account_name for account in accounts" class="form-control" data-style="common-select">
+				</select>
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">费用金额：</span> <input step="0.1" min="0.0" class="form-control" type="number"  ng-model="data.amount" name="amount">
+			</div>
+
+			<div class="input-group" style="margin-bottom: 10px;">
+				<span class="input-group-addon">凭证抬头：</span>
+				<textarea class="form-control" ng-model="data.description" name="description" style="height: 80px"></textarea>
+			</div>
+
+			<div class="form-group">
+				<button ng-click="saveData()" type="button" class="btn btn-primary" style="width: 80px">提交</button>
+				<button ng-click="resetData()" type="button" class="btn btn-info" style="width: 80px">重置</button>
+			</div>
+		</form>
+	</div>
+</div>
