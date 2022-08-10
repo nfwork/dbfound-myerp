@@ -47,7 +47,6 @@
 		<sqls>
 			<execute name="save"/>
 			<batchSql sourcePath="param.lineDatas">
-				<printContext/>
 				<execute modelName="exp/itemLine" name="save"/>
 			</batchSql>
 		</sqls>

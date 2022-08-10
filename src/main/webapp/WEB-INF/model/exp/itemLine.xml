@@ -30,7 +30,6 @@
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<param name="item_line_id" dataType="number" />
 		<sqls>
-			<printContext/>
 			<whenSql when="${@item_line_id} is not null">
 				<execute name="update"/>
 			</whenSql>
@@ -81,7 +80,6 @@
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<param name="item_line_id" dataType="number" />
 		<sqls>
-			<printContext/>
 			<executeSql>
 			  <![CDATA[
 				update exp_item_line
