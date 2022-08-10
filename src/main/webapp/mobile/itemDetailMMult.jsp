@@ -8,11 +8,11 @@
 
 <body>
 
-	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
-	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
-	<d:query rootPath="accounList" modelName="fnd/expAccount" />
+	<d:query rootPath="request.periods" modelName="exp/public" queryName="getDefaultPeriod" />
+	<d:query rootPath="request.periodList" modelName="fnd/expPeriod" queryName="combo" />
+	<d:query rootPath="request.accounList" modelName="fnd/expAccount" />
 
-	<d:query rootPath="itemList" modelName="exp/item" queryName="getDeatil" />
+	<d:query rootPath="request.itemList" modelName="exp/item" queryName="getDeatil" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px">
 		<div class="panel-heading">

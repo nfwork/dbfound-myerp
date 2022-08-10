@@ -10,7 +10,7 @@
 	</head>
 	<d:initProcedure>
 		    <d:dataSet id="periodStore" modelName="fnd/expPeriod" queryName="combo" />
-		    <d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod"/>
+		    <d:query rootPath="request.periods" modelName="exp/public" queryName="getDefaultPeriod"/>
 		    <d:dataSet id="dataStore" loadData="false" modelName="report/amountAnalysis" />
 	 </d:initProcedure>
 

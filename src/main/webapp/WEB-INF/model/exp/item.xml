@@ -42,7 +42,17 @@
 		 ]]>
 		</sql>
 	</query>
-	
+
+	<execute name="saveHeaderAndLine">
+		<sqls>
+			<execute name="save"/>
+			<batchSql sourcePath="param.lineDatas">
+				<printContext/>
+				<execute modelName="exp/itemLine" name="save"/>
+			</batchSql>
+		</sqls>
+	</execute>
+
 	<execute name="save">
 		<param name="item_id" dataType="number" ioType="both"/>
 		<param name="period_id" dataType="number" />

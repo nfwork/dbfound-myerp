@@ -12,6 +12,8 @@
 	
 	<script type="text/javascript">
 		function save() {
+
+			debugger
 			Ext.getCmp("saveBt").disable();
 
 			if (itemForm.form.isValid()==false) {
@@ -55,7 +57,7 @@
 			data.lineDatas = lineGrid.getModifiedData();
 			
 			$D.request( {
-				url : 'modules/exp/itemSave.jsp',
+				url : 'exp/item.execute!saveHeaderAndLine',
 				param : itemForm.getData(),
 				callback : function(obj) {
 					Ext.getCmp("saveBt").enable();
@@ -108,11 +110,11 @@
 	    	<d:dataSet id="itemStore" modelName="exp/item" queryName="getDeatil"/>
 		    <d:dataSet id="periodStore" modelName="fnd/expPeriod" queryName="combo" />
 		    <d:dataSet id="accountStore" modelName="fnd/expAccount"  />
-		    <d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod"/>
+		    <d:query rootPath="request.periods" modelName="exp/public" queryName="getDefaultPeriod"/>
 	    </d:initProcedure>
 	    
 	    <d:menu id="menu">
-	    	<d:menuItem icon="DBFoundUI/images/delete.png" title="清除多余行" click="deleteLine"></d:menuItem>
+	    	<d:menuItem icon="DBFoundUI/images/delete.png" title="清除多余行" click="deleteLine"/>
 	    </d:menu>
 	    
 		<d:form id="itemForm" bindTarget="itemStore" labelWidth="120">
@@ -149,7 +151,7 @@
 				<d:column name="regist_time" hidden="true" sortable="true" prompt="登记时间" width="120" />
 			</d:columns>
 			<d:events>
-				<d:event name="rowcontextmenu" handle="showMenu"></d:event>
+				<d:event name="rowcontextmenu" handle="showMenu"/>
 			</d:events>
 		</d:grid>
 		

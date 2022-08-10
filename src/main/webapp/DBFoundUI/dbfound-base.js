@@ -87,13 +87,34 @@ $D = DBFound = {
 					Ext.get("dbfoundMask").unmask();
 					div.style.display = "none";
 				}
-				Ext.MessageBox.show( {
+				try{
+					var obj = Ext.util.JSON.decode(res.responseText);
+					if(obj.message){
+						Ext.MessageBox.show( {
+							title : '错误',
+							msg : obj.message,
+							buttons : Ext.MessageBox.OK,
+							icon : Ext.MessageBox.ERROR
+						});
+					}else{
+						Ext.MessageBox.show( {
+							title : '错误',
+							msg : res.responseText,
+							minWidth : $D.getFullWidth()-80,
+							buttons : Ext.MessageBox.OK,
+							icon : Ext.MessageBox.ERROR
+						});
+					}
+				} catch (e) {
+					Ext.MessageBox.show( {
 						title : '错误',
 						msg : res.responseText,
 						minWidth : $D.getFullWidth()-80,
 						buttons : Ext.MessageBox.OK,
 						icon : Ext.MessageBox.ERROR
-				});
+					});
+				}
+
 			},
 			params : param
 		});
@@ -196,7 +217,8 @@ $D = DBFound = {
 				var cl = {
 					"name" : columns[i].dataIndex,
 					"content" : columns[i].header,
-					"width" : columns[i].width
+					"width" : columns[i].width,
+					"mapper": grid.exportMappers[columns[i].dataIndex]
 				};
 				cls[i] = cl;
 			}
@@ -259,6 +281,7 @@ $D = DBFound = {
 				if (null != cm.getCellEditor(colIndex)) {
 					cm.getCellEditor(colIndex).field.reset();
 					var editor = cm.getCellEditor(colIndex).field;
+					if(value===null){value="";}
 					if (!editor.validateValue(value)) {
 						$D.showWarning("字段："+ cm.config[colIndex].header+ "，验证通不过！", function(e) {
 							grid.startEditing(rowIndex, colIndex);

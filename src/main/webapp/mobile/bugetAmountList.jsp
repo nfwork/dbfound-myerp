@@ -8,8 +8,8 @@
 
 
 <body>
-	<d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod" />
-	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
+	<d:query rootPath="request.periods" modelName="exp/public" queryName="getDefaultPeriod" />
+	<d:query rootPath="request.periodList" modelName="fnd/expPeriod" queryName="comboAll" />
 			
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
 		<div class="panel-heading"><b>MyERP-费用明细</b></div>

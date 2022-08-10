@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="combo" />
+	<d:query rootPath="request.periodList" modelName="fnd/expPeriod" queryName="combo" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
 		<div class="panel-heading"><b>MyERP-凭证管理</b></div>

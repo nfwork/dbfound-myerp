@@ -8,8 +8,8 @@
 
 
 <body>
-	<d:query rootPath="periodList" modelName="fnd/expPeriod" queryName="comboAll" />
-	<d:query rootPath="accounList" modelName="fnd/expAccount" />
+	<d:query rootPath="request.periodList" modelName="fnd/expPeriod" queryName="comboAll" />
+	<d:query rootPath="request.accounList" modelName="fnd/expAccount" />
 
 	<div class="panel panel-primary" style="margin-bottom: 0px;">
 		<div class="panel-heading"><b>MyERP-凭证查询</b></div>

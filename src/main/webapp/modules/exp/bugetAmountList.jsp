@@ -44,7 +44,7 @@
 	<body>
 		<d:initProcedure>
 		    <d:dataSet id="periodStore" modelName="fnd/expPeriod" queryName="${periodStoreQueryName}" />
-		    <d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod"/>
+		    <d:query rootPath="request.periods" modelName="exp/public" queryName="getDefaultPeriod"/>
 	    </d:initProcedure>
 	    
 		<d:form id="queryForm" title="查询条件" labelWidth="90">

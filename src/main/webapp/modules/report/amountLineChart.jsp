@@ -52,7 +52,7 @@
 	<body>
 		<d:initProcedure>
 		    <d:dataSet id="periodStore" modelName="fnd/expPeriod" queryName="comboAll" />
-		    <d:query rootPath="periods" modelName="exp/public" queryName="getDefaultPeriod"/>
+		    <d:query rootPath="request.periods" modelName="exp/public" queryName="getDefaultPeriod"/>
 	    </d:initProcedure>
 	    
 		<d:form id="queryForm" labelWidth="90">

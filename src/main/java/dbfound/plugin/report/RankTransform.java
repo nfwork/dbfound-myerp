@@ -17,7 +17,7 @@ public class RankTransform extends JavaSupport {
 
 	@Override
 	public void execute() {
-		context.isExport = true;
+		context.setExport(true);
 
 		String modelName = context.getCurrentModel();
 		String rowColumnName = params.get("rowColumnName").getStringValue();
@@ -77,7 +77,7 @@ public class RankTransform extends JavaSupport {
 			}
 		}
 
-		context.outMessage = false;
+		context.setOutMessage(false);
 		ReportResponseObject object = new ReportResponseObject();
 		object.setSuccess(true);
 		object.setDatas(newDatas);

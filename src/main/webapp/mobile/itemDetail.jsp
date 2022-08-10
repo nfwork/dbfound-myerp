@@ -63,7 +63,7 @@
 			data.lineDatas = lineGrid.getModifiedData();
 			
 			$D.request( {
-				url : 'modules/exp/itemSave.jsp',
+				url : 'exp/item.execute!saveHeaderAndLine',
 				param : itemForm.getData(),
 				callback : function(obj) {
 					Ext.getCmp("saveBt").enable();
@@ -120,7 +120,7 @@
 	    </d:initProcedure>
 	    
 	    <d:menu id="menu">
-	    	<d:menuItem icon="DBFoundUI/images/delete.png" title="清除多余行" click="deleteLine"></d:menuItem>
+	    	<d:menuItem icon="DBFoundUI/images/delete.png" title="清除多余行" click="deleteLine"/>
 	    </d:menu>
 	    
 		<d:form id="itemForm" bindTarget="itemStore" labelWidth="100">
