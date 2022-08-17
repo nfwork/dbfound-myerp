@@ -4,6 +4,7 @@
 
 	<system>
 		<openLog>true</openLog>
+		<queryLimit>false</queryLimit>
 		<modeRootPath>${@projectRoot}/WEB-INF/model</modeRootPath>
 	</system>
 	
@@ -25,8 +26,7 @@
 
 	<web>
 		<encoding>utf-8</encoding>
-		<mvcConfigFile>${@projectRoot}/WEB-INF/dbfound-mvc.xml</mvcConfigFile>
-		<interceptor>com.nfwork.erp.core.SimpleCheckInterceptor</interceptor>
+		<interceptor>com.nfwork.erp.interceptor.SimpleCheckInterceptor</interceptor>
 	</web>
 
 </dbfound>

@@ -34,7 +34,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		
 		$http({
 			method : "post",
-			url : "../report/periodAmountReport.execute?periodfrom="+periodfrom+"&periodto="+periodto,
+			url : "../report/periodAmountReport.query?periodfrom="+periodfrom+"&periodto="+periodto,
 			headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
 			data :   {}
 		}).success(function(res) {

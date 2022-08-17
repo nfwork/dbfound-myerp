@@ -60,7 +60,7 @@
 			}
 			
 			var data = itemForm.getData();
-			data.lineDatas = lineGrid.getModifiedData();
+			data.lines = lineGrid.getModifiedData();
 			
 			$D.request( {
 				url : 'exp/item.execute!saveHeaderAndLine',

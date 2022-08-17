@@ -151,9 +151,9 @@ angular.module('myerpApp').config(function($routeProvider) {
 		}
 
 		$.ajax({
-			url : "../mobile/item.do!saveBatch",
+			url : "../exp/item.execute!saveHeaderAndLine",
 			data : {
-				GridData : JSON.stringify(datas),
+				lines : JSON.stringify(datas),
 				period_id : $scope.header.period_id,
 				exp_time : $scope.header.exp_time,
 				description : $scope.header.description,

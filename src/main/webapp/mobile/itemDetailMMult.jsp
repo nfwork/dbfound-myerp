@@ -222,9 +222,9 @@
 			var description = $("#ht").val();
 
 			$.ajax({
-				url : "mobile/item.do!saveBatch",
+				url : "exp/item.execute!saveHeaderAndLine",
 				data : {
-					GridData : JSON.stringify(data),
+					lines : JSON.stringify(data),
 					period_id : period_id,
 					exp_time : exp_time,
 					description : description,

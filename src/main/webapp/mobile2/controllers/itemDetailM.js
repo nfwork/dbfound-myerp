@@ -52,7 +52,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 	$scope.saveData = function() {
 		$.ajax({
-			url : "../mobile/item.do!save",
+			url : "../exp/item.execute!simpleSave",
 			data : $scope.data,
 			dataType : "json",
 			type : "post",

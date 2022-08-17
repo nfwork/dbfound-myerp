@@ -17,7 +17,7 @@
 		}
 	</script>
 	<body>
-	     <d:grid id="listGrid" title="科目期间汇总查询" queryUrl="report/periodAmountReport.execute" rowNumber="false" navBar="false" selectable="false" autoQuery="true" height="$D.getFullHeight('listGrid')">
+	     <d:grid id="listGrid" title="科目期间汇总查询" queryUrl="report/periodAmountReport.query" rowNumber="false" navBar="false" selectable="false" autoQuery="true" height="$D.getFullHeight('listGrid')">
 			<d:columns>
 				<d:column name="c" sortable="true" prompt="期间" width="100" />
 				<d:column align="right" name="c1" sortable="true" hidden="true" prompt="c1" width="100" />

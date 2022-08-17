@@ -1,4 +1,4 @@
-package dbfound.plugin.report;
+package com.nfwork.erp.dto;
 
 public class Column implements Comparable<Column> {
 
@@ -20,6 +20,14 @@ public class Column implements Comparable<Column> {
 
 	public void setJavaName(String javaName) {
 		this.javaName = javaName;
+	}
+
+	public Integer getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Integer priority) {
+		this.priority = priority;
 	}
 
 	@Override

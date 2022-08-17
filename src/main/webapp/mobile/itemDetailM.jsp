@@ -85,7 +85,7 @@
 				var username = $("#username").val();
 				var password = $("#password").val();
 				$.ajax({
-					url : "mobile/item.do!save",
+					url : "../exp/item.execute!simpleSave",
 					data : $('#registForm').serialize(),
 					dataType : "json",
 					type : "post",

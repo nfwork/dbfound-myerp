@@ -1,4 +1,4 @@
-package com.nfwork.erp.core;
+package com.nfwork.erp.interceptor;
 
 import java.util.HashMap;
 import java.util.Map;
