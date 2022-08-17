@@ -44,12 +44,12 @@
 	</query>
 
 	<execute name="saveHeaderAndLine">
-		<param name="lines" dataType="varchar" />
+		<param name="lines_size" sourcePath="lines.size" dataType="number" />
 		<sqls>
 			<collisionSql where="${@period_id} is null" message="会计期间不能为空！"/>
 			<collisionSql where="${@exp_time} is null" message="费用日期不能为空！"/>
 			<collisionSql where="${@description} is null" message="凭证抬头不能为空！"/>
-			<collisionSql where="${@lines} is null or length(${@lines}) = 2" message="凭证行不能为空！"/>
+			<collisionSql where="${@lines_size} is null or ${@lines_size} = 0" message="凭证行不能为空！"/>
 			<execute name="save"/>
 			<batchSql sourcePath="param.lines">
 				<execute modelName="exp/itemLine" name="save"/>
