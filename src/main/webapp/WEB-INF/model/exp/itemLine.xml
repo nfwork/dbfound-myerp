@@ -23,6 +23,48 @@
 	</query>
 
 	<execute name="save">
+		<sqls>
+			<whenSql when="${@item_line_id} is not null">
+				<execute name="update" />
+			</whenSql>
+			<otherwiseSql>
+				<execute name="add"/>
+			</otherwiseSql>
+		</sqls>
+	</execute>
+
+	<execute name="add">
+		<param name="item_id" dataType="number" scope="outParam" />
+		<param name="dr_amount" dataType="number" />
+		<param name="cr_amount" dataType="number" />
+		<param name="account_id" dataType="number" />
+		<param name="description" dataType="varchar" />
+		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
+		<sqls>
+			<executeSql>
+				<![CDATA[
+			    insert into exp_item_line(
+			    		item_id,
+			    		dr_amount,
+			    		cr_amount,
+			    		account_id,
+			    		description,
+			    		regist_time,
+			    		regist_user_id)
+				values(
+			    		${@item_id},
+			    		${@dr_amount},
+			    		${@cr_amount},
+			    		${@account_id},
+			    		${@description},
+			    		now(),
+			    		${@regist_user_id})
+			 ]]>
+			</executeSql>
+		</sqls>
+	</execute>
+
+	<execute name="update">
 		<param name="item_id" dataType="number" scope="outParam" />
 		<param name="dr_amount" dataType="number" />
 		<param name="cr_amount" dataType="number" />
@@ -31,45 +73,20 @@
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<param name="item_line_id" dataType="number" />
 		<sqls>
-			<whenSql when="${@item_line_id} is not null">
-				<executeSql>
-					<![CDATA[
-						update exp_item_line
-						   set
-							item_id = ${@item_id},
-							dr_amount = ${@dr_amount},
-							cr_amount = ${@cr_amount},
-							account_id = ${@account_id},
-							description = ${@description},
-							regist_time = now(),
-							regist_user_id = ${@regist_user_id}
-						 where item_line_id = ${@item_line_id}
-					  ]]>
-				</executeSql>
-			</whenSql>
-			<otherwiseSql>
-				<executeSql>
-					<![CDATA[
-						insert into exp_item_line(
-								item_id,
-								dr_amount,
-								cr_amount,
-								account_id,
-								description,
-								regist_time,
-								regist_user_id)
-						values(
-								${@item_id},
-								${@dr_amount},
-								${@cr_amount},
-								${@account_id},
-								${@description},
-								now(),
-								${@regist_user_id})
-					 ]]>
-				</executeSql>
-			</otherwiseSql>
+			<executeSql>
+				<![CDATA[
+				update exp_item_line
+				   set
+					item_id = ${@item_id},
+					dr_amount = ${@dr_amount},
+					cr_amount = ${@cr_amount},
+					account_id = ${@account_id},
+					description = ${@description},
+					regist_time = now(),
+					regist_user_id = ${@regist_user_id}
+				 where item_line_id = ${@item_line_id}
+			  ]]>
+			</executeSql>
 		</sqls>
 	</execute>
-
 </model>
