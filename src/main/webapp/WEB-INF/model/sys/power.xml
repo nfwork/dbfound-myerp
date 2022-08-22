@@ -49,17 +49,17 @@
 					 ]]>
 				</executeSql>
 			</whenSql>
-			<whenSql when="${@power_id} is not null">
+			<otherwiseSql>
 				<executeSql>
-			     <![CDATA[
-					update sys_power set 
+					<![CDATA[
+					update sys_power set
 						enable_flag = ${@enable_flag} ,
 						last_update_by = ${@user_id} ,
-						last_update_date = NOW() 
-					where power_id = ${@power_id} 
+						last_update_date = NOW()
+					where power_id = ${@power_id}
 				 ]]>
 				</executeSql>
-			</whenSql>
+			</otherwiseSql>
 		</sqls>
 	</execute>
 </model>
