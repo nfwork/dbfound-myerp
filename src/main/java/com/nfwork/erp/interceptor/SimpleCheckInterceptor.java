@@ -38,7 +38,6 @@ public class SimpleCheckInterceptor implements Interceptor {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private boolean commonInterceptor(Context context){
 		Object user_id = context.request.getSession().getAttribute("user_id");
 
@@ -47,7 +46,7 @@ public class SimpleCheckInterceptor implements Interceptor {
 			if (check(url)) {
 				return true;
 			} else {
-				Map map = new HashMap();
+				Map<String,Object> map = new HashMap<>();
 				map.put("timeout", true);
 				map.put("message", "session超时或未登录");
 				map.put("success", false);
@@ -64,31 +63,24 @@ public class SimpleCheckInterceptor implements Interceptor {
 		return commonInterceptor(context);
 	}
 
-	public boolean executeInterceptor(Context context, String modelName,
-			String executeName) throws Exception {
+	public boolean executeInterceptor(Context context, String modelName, String executeName) {
 		return commonInterceptor(context);
 	}
 
-	public boolean exportInterceptor(Context context, String modelName,
-			String queryName) throws Exception {
+	public boolean exportInterceptor(Context context, String modelName, String queryName){
 		return commonInterceptor(context);
 	}
 
-	public boolean queryInterceptor(Context context, String modelName,
-			String queryName) throws Exception {
+	public boolean queryInterceptor(Context context, String modelName,String queryName){
 		return commonInterceptor(context);
 	}
 	
 	public boolean check(String url) {
-		if (map.get(url) == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return map.get(url) != null;
 	}
 
 	public void init() {
-		map = new HashMap<String, String>();
+		map = new HashMap<>();
 		map.put("/login.jsp", "1");
 		map.put("/relogin.jsp", "1");
 		map.put("/close.jsp", "1");

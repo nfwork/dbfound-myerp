@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.nfwork.dbfound.dto.QueryResponseObject;
 
-public class ReportResponseObject extends QueryResponseObject {
+public class ReportResponseObject<T> extends QueryResponseObject<T> {
 
-	private List<Column> columns = new ArrayList<Column>();
+	private List<Column> columns = new ArrayList<>();
 
 	public List<Column> getColumns() {
 		return columns;

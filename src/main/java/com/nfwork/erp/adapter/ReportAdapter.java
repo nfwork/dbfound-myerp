@@ -12,27 +12,27 @@ import com.nfwork.erp.dto.ReportResponseObject;
 
 import java.util.*;
 
-public class ReportAdapter implements QueryAdapter<Map> {
+public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
 
     @Override
-    public void afterQuery(Context context, Map<String, Param> params, QueryResponseObject<Map> responseObject) {
+    public void afterQuery(Context context, Map<String, Param> params, QueryResponseObject<Map<String,Object>> responseObject) {
         String rowColumnName = params.get("rowColumnName").getStringValue();
         String columnColumnName = params.get("columnColumnName").getStringValue();
         String keyColumnName = params.get("keyColumnName").getStringValue();
-        String priorityCloumnName = params.get("priorityColumnName").getStringValue();
+        String priorityColumnName = params.get("priorityColumnName").getStringValue();
 
-        List<Map> datas = responseObject.getDatas();
+        List<Map<String,Object>> dataList = responseObject.getDatas();
 
-        List<String> rows = new ArrayList<String>();
-        Map<String, Integer> rowsMap = new HashMap<String, Integer>();
+        List<String> rows = new ArrayList<>();
+        Map<String, Integer> rowsMap = new HashMap<>();
 
-        Map<String, Integer> columnsMap = new HashMap<String, Integer>();
-        List<Column> columns = new ArrayList<Column>();
+        Map<String, Integer> columnsMap = new HashMap<>();
+        List<Column> columns = new ArrayList<>();
 
-        Map<String, Object> bufferDatas = new HashMap<String, Object>();
+        Map<String, Object> bufferData = new HashMap<>();
 
         // 得到行名 列名 缓存数据
-        for (Map map : datas) {
+        for (Map<?,?> map : dataList) {
             String row = map.get(rowColumnName).toString();
             if (rowsMap.get(row) == null) {
                 rows.add(row);
@@ -43,7 +43,7 @@ public class ReportAdapter implements QueryAdapter<Map> {
             if (columnsMap.get(javaName) == null) {
                 Column column = new Column();
                 column.setJavaName(javaName);
-                column.setPriority(DataUtil.intValue(map.get(priorityCloumnName)));
+                column.setPriority(DataUtil.intValue(map.get(priorityColumnName)));
                 if (column.getPriority() == null) {
                     column.setPriority(999999);
                 }
@@ -51,7 +51,7 @@ public class ReportAdapter implements QueryAdapter<Map> {
                 columns.add(column);
             }
 
-            bufferDatas.put(row + javaName, map.get(keyColumnName));
+            bufferData.put(row + javaName, map.get(keyColumnName));
         }
 
         Collections.sort(columns);
@@ -60,19 +60,19 @@ public class ReportAdapter implements QueryAdapter<Map> {
         }
 
         // 重新装载数据
-        List<Map> newDatas = new ArrayList<Map>();
+        List<Map<String,Object>> newDatas = new ArrayList<>();
         for (String row : rows) {
-            Map newData = new HashMap();
+            Map<String,Object> newData = new HashMap<>();
             newData.put("c", row);
             newDatas.add(newData);
             for (Column column : columns) {
-                Object value = getValue(bufferDatas, row, column.getJavaName());
+                Object value = getValue(bufferData, row, column.getJavaName());
                 newData.put(column.getJsName(), value);
             }
         }
 
         context.setOutMessage(false);
-        ReportResponseObject object = new ReportResponseObject();
+        ReportResponseObject<Map<String,Object>> object = new ReportResponseObject<>();
         object.setSuccess(true);
         object.setDatas(newDatas);
         object.setTotalCounts(newDatas.size());
@@ -80,8 +80,8 @@ public class ReportAdapter implements QueryAdapter<Map> {
         WebWriter.jsonWriter(context.response, JsonUtil.beanToJson(object));
     }
 
-    private Object getValue(Map<String, Object> datas, String row, String column) {
-        return datas.get(row + column);
+    private Object getValue(Map<String, Object> dataMap, String row, String column) {
+        return dataMap.get(row + column);
     }
 
 }
