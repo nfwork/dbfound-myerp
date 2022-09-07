@@ -5,7 +5,7 @@
 	<system>
 		<openLog>true</openLog>
 		<queryLimit>false</queryLimit>
-		<modeRootPath>${@projectRoot}/WEB-INF/model</modeRootPath>
+		<modeRootPath>${@classpath}/model</modeRootPath>
 	</system>
 	
 	<database>

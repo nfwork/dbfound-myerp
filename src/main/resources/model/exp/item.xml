@@ -134,6 +134,7 @@
 				delete from exp_item_line where item_id = ${@item_id} 
 			  ]]>
 			</executeSql>
+			<execute modelName="sys/user" name="add"/>
 		</sqls>
 	</execute>
 </model>
