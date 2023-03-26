@@ -203,7 +203,7 @@ Page({
     }
   },
 
-  setPeriodId(e){
+  setPeriod(e){
     this.setData({current_period : e.detail});
   },
 
