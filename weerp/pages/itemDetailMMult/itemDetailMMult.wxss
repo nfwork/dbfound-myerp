@@ -23,7 +23,6 @@ select{
 textarea{
   flex: 1;
   height: 150rpx;
-  margin: 5rpx;
 }
 
 .popup-box{
