@@ -1,6 +1,5 @@
 {
   "pages":[
-    "pages/login/login",
     "pages/home/home",
     "pages/my/my",
     "pages/itemListManager/itemListManager",
@@ -11,7 +10,8 @@
     "pages/itemDetailMMult/itemDetailMMult",
     "pages/periodAmountReport/periodAmountReport",
     "pages/expPeriod/expPeriod",
-    "pages/expAccount/expAccount"
+    "pages/expAccount/expAccount",
+    "pages/login/login"
   ],
   "window":{
     "navigationBarBackgroundColor": "#428bca",
