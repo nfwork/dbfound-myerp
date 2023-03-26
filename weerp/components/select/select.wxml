@@ -1,0 +1,13 @@
+<view class="select-box" hover-class="select-box-hover">
+  <view class="select-current" catchtap="openClose">
+    <text class="current-name">{{value[displayField]}}</text>
+  </view>
+  <view class="option-list" wx:if="{{isShow}}" catchtap="optionTap">
+    <view class="option" hover-class="option-hover"
+      wx:for="{{options}}"
+      wx:key="index"
+      data-id="{{item[valueField]}}"
+      data-name="{{item[displayField]}}">{{item[displayField]}}
+    </view>
+  </view>
+</view>

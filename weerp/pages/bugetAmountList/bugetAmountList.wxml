@@ -1,0 +1,37 @@
+<!--pages/bugetAmountList/bugetAmountList.wxml-->
+<view class="root">
+  <view class="box"> 
+    <view class="title">费用期间：</view>
+    <select value="{{current_period}}" bindchange="setPeriod" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>
+  </view>
+
+  <view class="box"> 
+    <view class="table-header">
+      <view style="width: 450rpx;">科目名称</view>
+      <view style="flex:1">本月发生</view>
+    </view>
+    <view class="table-body"  style="height: 540rpx;">
+      <view data-accountid="{{item.account_id}}" bindtap="showDetail" class="table-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
+        <view style="width: 450rpx;height: 75rpx;">{{item.account_name}}</view>
+        <view style="flex:1;text-align: right;height: 75rpx;">{{item.emerge_amount}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="box"> 
+    <view class="table-header">
+      <view style="width: 180rpx;">费用日期</view>
+      <view style="width: 120rpx;">借</view>
+      <view style="width: 120rpx;">贷</view>
+      <view style="flex: 1;">凭证描述</view>
+    </view>
+    <view class="table-body" style="max-height: 540rpx;min-height: 180rpx;">
+      <view class="table-line" hover-class="table-line-hover" wx:for="{{item_line_list}}" wx:key="item_line_id">
+        <view style="width: 180rpx; text-align: center;">{{item.exp_time}}</view>
+        <view style="width: 120rpx; text-align:right;">{{item.dr_amount==null?"":item.dr_amount}}</view>
+        <view style="width: 120rpx; text-align:right;">{{item.cr_amount==null?"":item.cr_amount}}</view>
+        <view style="flex:1;"><text user-select="true">{{item.description==null?"":item.description}}</text></view>
+      </view>
+    </view>
+  </view>
+</view>

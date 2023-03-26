@@ -1,0 +1,60 @@
+<!--pages/itemListManager/itemListManager.wxml-->
+<view class="root">
+  
+  <view class="box"> 
+    <view class="title">费用期间：</view>
+    <select value="{{current_period}}" bindchange="setPeriodId" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>
+    <!-- <input type="text" disabled="true"  model:value="{{period_id}}"/> -->
+  </view>
+  <view class="box"> 
+    <view class="title">凭证抬头：</view>
+    <input type="text" model:value="{{description}}"/>
+  </view>
+  <view class="box"> 
+    <button size="mini" class="bule-button" bindtap="query" style="width: 160rpx;" hover-class="bule-button-hover">查 询</button>
+    <button size="mini" class="litter-bule-button" bindtap="functionTap" style="width: 230rpx;" data-fid="1" hover-class="litter-bule-button-hover" >凭证登记(简)</button>
+    <button size="mini" class="yellow-button" bindtap="functionTap" style="width: 180rpx;" data-fid="2" hover-class="yellow-button-hover">凭证登记</button>
+  </view>
+  <view class="box"> 
+    <view class="table-header">
+      <view style="width: 160rpx;">凭证号</view>
+      <view style="width: 200rpx;">费用日期</view>
+      <view style="flex: 1;">凭证抬头</view>
+    </view>
+    <view class="table-body" style="min-height: 450rpx;">
+      <view data-itemid="{{item.item_id}}" bindtap="showDetail" class="table-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="item_id">
+        <view style="width: 160rpx;color: #0f4ea0; text-align: center;" catchtap="goToDetail" data-itemid="{{item.item_id}}">{{item.item_num}}</view>
+        <view style="width: 200rpx; text-align: center;">{{item.exp_time}}</view>
+        <view style="flex:1; overflow-x: hidden;"><text user-select="true">{{item.description}}</text></view>
+      </view>
+    </view>
+  </view>
+  
+  <view class="table-pager">
+    <view class="desbox">显示 {{(currentPage-1)*limit+1}} 到 {{currentPage*limit>totalCounts?totalCounts:currentPage*limit}} 条，共 {{totalCounts}} 条，共 {{totalPages}} 页</view>
+    <view class="buttonbox"> 
+      <button bindtap="changePage" disabled="{{currentPage==1}}" data-type="{{1}}" type="default" size="mini">{{"<<"}}</button>
+      <button bindtap="changePage" disabled="{{currentPage==1}}" data-type="{{2}}" type="default" size="mini">{{"<"}}</button>
+      <button type="default" size="mini">{{currentPage}} / {{totalPages}}</button>
+      <button bindtap="changePage" disabled="{{currentPage * limit >= totalCounts}}" data-type="{{3}}" type="default" size="mini">{{">"}}</button>
+      <button bindtap="changePage" disabled="{{currentPage * limit >= totalCounts}}" data-type="{{4}}" type="default" size="mini">{{">>"}}</button>
+    </view>
+  </view>
+
+  <view class="box"> 
+    <view class="table-header">
+      <view style="width: 200rpx;">科目名称</view>
+      <view style="width: 120rpx;">借</view>
+      <view style="width: 120rpx;">贷</view>
+      <view style="flex: 1;">凭证描述</view>
+    </view>
+    <view class="table-body" style="min-height: 180rpx;">
+      <view class="table-line" hover-class="table-line-hover" wx:for="{{item_line_list}}" wx:key="item_line_id">
+        <view style="width: 200rpx;">{{item.account_name}}</view>
+        <view style="width: 120rpx; text-align: right;">{{item.dr_amount==null?"":item.dr_amount}}</view>
+        <view style="width: 120rpx; text-align: right;">{{item.cr_amount==null?"":item.cr_amount}}</view>
+        <view style="flex: 1;">{{item.description==null?"":item.description}}</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+<!--pages/home/home.wxml-->
+<view>
+  <view class="menu-title">Hi {{user_name}}</view>
+  <view class="summary">
+    <view>本月总开支：<view class="money-big">￥{{totalexp}}</view></view>
+    <view>
+      <view wx:for="{{accounts_exp}}" wx:key="index" class="summary-item">{{item.account_name}}：<view class="money-small">￥{{item.totalexp}}</view></view>
+    </view>
+  </view>
+
+  <view class="menu-title">记账</view>
+  <view class="function">
+      <view bindtap="menuTap" data-fid="{{1}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzgl.png"></image>凭证管理</view>
+      <view bindtap="menuTap" data-fid="{{2}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzdjj.png"></image>凭证登记(简)</view>
+      <view bindtap="menuTap" data-fid="{{3}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzdj.png"></image>凭证登记</view>
+  </view>
+
+  <view class="menu-title">统计查询</view>
+  <view class="function">
+      <view bindtap="menuTap" data-fid="{{4}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzcx.png"></image>凭证查询</view>
+      <view bindtap="menuTap" data-fid="{{5}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-fymx.png"></image>费用明细</view>
+      <view bindtap="menuTap" data-fid="{{6}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-kmye.png"></image>科目余额</view>
+      <view bindtap="menuTap" data-fid="{{7}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-qjhz.png"></image>期间汇总</view>
+  </view>
+
+  <view class="menu-title">基础设置</view>
+  <view class="function">
+    <view bindtap="menuTap" data-fid="{{8}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-qjhz.png"></image>期间设置</view>
+    <view bindtap="menuTap" data-fid="{{9}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzgl.png"></image>科目设置</view>
+  </view>
+</view>

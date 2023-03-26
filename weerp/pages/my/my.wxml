@@ -1,0 +1,27 @@
+<!--pages/my/my.wxml-->
+<view class="root">
+  <view class="box"> 
+    <image src="/images/tx.jpg" class="logo"></image>
+  </view>
+  <view class="box"> 
+    <view class="title">用户名：</view>
+    <text class="content">{{user_code}}</text>
+  </view>
+  <view class="box"> 
+    <view class="title">昵 称：</view>
+    <text class="content">{{user_name}}</text>
+  </view>
+  <view class="box"> 
+    <view class="title">角 色：</view>
+    <text class="content">{{role_code}}</text>
+  </view>
+  <view class="box"> 
+    <view class="title">日 期：</view>
+    <text class="content">{{exp_time}}</text>
+  </view>
+  <view class="box"> 
+    <view class="title">费用期间：</view>
+    <text class="content">{{period}}</text>
+  </view>
+
+</view>

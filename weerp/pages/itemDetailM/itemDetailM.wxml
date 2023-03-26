@@ -1,0 +1,36 @@
+<!--pages/itemDetailM/itemDetailM.wxml-->
+<view class="root">
+  <view class="box"> 
+    <view class="title">凭证编号：</view>
+    <input type="text" disabled="true" style="background-color: #f1f1f1;" model:value="{{item_num}}"/>
+  </view>
+  <view class="box"> 
+    <view class="title">登记用户：</view>
+    <input type="text" disabled="true" style="background-color: #f1f1f1;" model:value="{{user_name}}"/>
+  </view>
+  <view class="box"> 
+    <view class="title">费用期间：</view>
+    <select value="{{current_period}}" bindchange="setPeriod" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>
+  </view>
+  <view class="box"> 
+    <view class="title">费用日期：</view>
+    <input type="text" model:value="{{exp_time}}"/>
+  </view>
+  <view class="box"> 
+    <view class="title">借方科目：</view>
+    <select value="{{dr_account}}" bindchange="setDrAccount" options="{{account_list}}" valueField="account_id" displayField="account_name"></select>
+  </view>
+  <view class="box"> 
+    <view class="title">贷方科目：</view>
+    <select value="{{cr_account}}" bindchange="setCrAccount" options="{{account_list}}" valueField="account_id" displayField="account_name"></select>
+  </view>
+  <view class="box"> 
+    <view class="title">费用金额：</view>
+    <input type="digit" model:value="{{amount}}"/>
+  </view>
+  <view class="box"> 
+    <view class="title">凭证抬头：</view>
+    <textarea value="{{description}}" bindinput="setDescription" cursor-spacing="120"></textarea>
+  </view>
+  <button hover-class="bule-button-hover" style="width:100%;margin-left: 0px;" class="bule-button" bindtap="save" >保存</button>
+</view>

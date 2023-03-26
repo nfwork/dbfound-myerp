@@ -1,0 +1,30 @@
+/* pages/itemDetailM/itemDetailM.wxss */
+.box{
+  margin-bottom: 10rpx;
+}
+.box button{
+  margin: 12rpx 4rpx;
+  font-weight: normal;
+  width: 90rpx;
+}
+.title{
+  width: 160rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  padding-left: 20rpx;
+  float: left;
+  text-align: right;
+}
+input{
+  flex: 1;
+  margin-top: 5rpx;
+  float: left;
+}
+select{
+  flex: 1;
+}
+textarea{
+  flex: 1;
+  height: 150rpx;
+  margin: 5rpx;
+}

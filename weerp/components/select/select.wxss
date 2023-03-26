@@ -1,0 +1,74 @@
+/* components/select.wxss */
+.select-box {
+  position: relative;
+  width: 100%;
+  font-size: 28rpx;
+  padding-top: 4rpx;
+}
+
+.select-current {
+  height: 68rpx;
+  position: relative;
+  width: 100%;
+  padding: 0 10rpx;
+  line-height: 68rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8rpx;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.select-current::after {
+  position: absolute;
+  display: block;
+  right: 16rpx;
+  top: 30rpx;
+  content: '';
+  width: 0;
+  height: 0;
+  border: 10rpx solid transparent;
+  border-top: 10rpx solid #999;
+}
+
+.current-name {
+  display: block;
+  width: 85%;
+  height: 100%;
+  word-wrap: normal;
+  overflow: hidden;
+}
+
+.option-list {
+  position: absolute;
+  left: 0;
+  top: 76rpx;
+  max-height: 500rpx;
+  overflow: scroll;
+  width: 100%;
+  padding: 12rpx 20rpx 10rpx 20rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  z-index: 99;
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2) inset;
+  background-color: #fff;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  line-height: 70rpx;
+  border-bottom: 1px solid #eee;
+}
+
+.option-hover {
+  background-color: #edf7fd!important
+}
+
+.option:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}

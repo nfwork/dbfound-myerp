@@ -1,0 +1,51 @@
+{
+  "pages":[
+    "pages/login/login",
+    "pages/home/home",
+    "pages/my/my",
+    "pages/itemListManager/itemListManager",
+    "pages/itemDetailM/itemDetailM",
+    "pages/itemList/itemList",
+    "pages/accountAmountlist/accountAmountlist",
+    "pages/bugetAmountList/bugetAmountList",
+    "pages/itemDetailMMult/itemDetailMMult",
+    "pages/periodAmountReport/periodAmountReport",
+    "pages/expPeriod/expPeriod",
+    "pages/expAccount/expAccount"
+  ],
+  "window":{
+    "navigationBarBackgroundColor": "#428bca",
+    "navigationBarTitleText": "WeERP",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false,
+    "backgroundColor": "#efefef",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "selectedColor": "#426bea",
+    "color": "#000000",
+    "backgroundColor": "#fefefe",
+    "borderStyle": "black",
+    "list": [{
+      "pagePath": "pages/home/home",
+      "text": "首页",
+      "iconPath": "/images/sy.jpg",
+      "selectedIconPath": "/images/sy-a.jpg"
+    },{
+      "pagePath": "pages/itemListManager/itemListManager",
+      "text": "记账",
+      "iconPath": "/images/jz.jpg",
+      "selectedIconPath": "/images/jz-a.jpg"
+    },{
+      "pagePath": "pages/my/my",
+      "text": "我的",
+      "iconPath": "/images/wd.jpg",
+      "selectedIconPath": "/images/wd-a.jpg"
+    }]
+  },
+  "style": "v2",
+  "usingComponents": {
+    "select":"/components/select/select"
+  },
+  "sitemapLocation": "sitemap.json"
+}

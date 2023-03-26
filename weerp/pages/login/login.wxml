@@ -1,0 +1,9 @@
+<!--pages/login/login.wxml-->
+<view class="root">
+  <image src="/images/tx.jpg" class="logo"></image>
+  <view class="title">用户名：</view>
+  <input type="text" model:value="{{user_code}}"/>
+  <view class="title">密码：</view>
+  <input type="text" password="true" model:value="{{password}}"/>
+  <button hover-class="bule-button-hover" style="width:100%;margin: 0px;margin-top: 40rpx;" class="bule-button" bindtap="login" >登录</button>
+</view>
