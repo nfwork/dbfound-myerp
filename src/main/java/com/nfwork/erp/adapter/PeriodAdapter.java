@@ -16,7 +16,7 @@ public class PeriodAdapter implements QueryAdapter<Object> {
        int size = ModelEngine.query(context,"report/homeAnalysis","getCurrentPeriod").getDatas().size();
        if( size == 0){
            Date date = new Date();
-           SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+           SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
            SimpleDateFormat formatS = new SimpleDateFormat("yyyy年MM月");
            context.setParamData("period_code",format.format(date));
            context.setParamData("period_name",formatS.format(date));
