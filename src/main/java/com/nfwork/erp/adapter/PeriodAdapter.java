@@ -19,7 +19,7 @@ public class PeriodAdapter implements QueryAdapter<Object> {
            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
            SimpleDateFormat formatS = new SimpleDateFormat("yyyy年MM月");
            context.setParamData("period_code",format.format(date));
-           context.setParamData("period_code",formatS.format(date));
+           context.setParamData("period_name",formatS.format(date));
            ModelEngine.execute(context,"report/homeAnalysis","autoCreate");
        }
     }
