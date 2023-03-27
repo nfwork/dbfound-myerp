@@ -25,7 +25,7 @@
 						    and i.period_id = ${@period_id}
 							and i.book_id = ${@book_id}) emerge_amount
 					from exp_account t
-					 and t.book_id = ${@book_id}
+					 where t.book_id = ${@book_id}
 					order by t.priority
 			   ) v
 		 ]]>

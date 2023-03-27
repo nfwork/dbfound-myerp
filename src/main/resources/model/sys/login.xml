@@ -10,7 +10,7 @@
 		<param name="password" dataType="varchar" />
 		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true"/> 
 		<sqls>
-			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password =${@password} status = 'Y')" message="账号或密码不正确！"/>
+			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password =${@password} and status = 'Y')" message="账号或密码不正确！"/>
 			<querySql>
 		      <![CDATA[
 			         SELECT
@@ -19,7 +19,7 @@
 						u.user_name,
 						r.role_description,
 						r.role_code,
-			            r.book_id
+			            u.book_id
 					 FROM SYS_USER u,sys_role r
 				    where r.role_id =u.role_id
 					  and u.user_code=${@user_code}
