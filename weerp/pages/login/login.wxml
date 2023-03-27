@@ -5,5 +5,6 @@
   <input type="text" model:value="{{user_code}}"/>
   <view class="title">密码：</view>
   <input type="text" password="true" model:value="{{password}}"/>
-  <button hover-class="bule-button-hover" style="width:100%;margin: 0px;margin-top: 40rpx;" class="bule-button" bindtap="login" >登录</button>
+  <button hover-class="bule-button-hover" style="width:100%;margin: 0px;margin-top: 40rpx;" class="bule-button" bindtap="login" >登 录</button>
+  <button hover-class="litter-bule-button-hover" style="width:100%;margin: 0px;margin-top: 40rpx;" class="litter-bule-button" bindtap="register" >注 册</button>
 </view>

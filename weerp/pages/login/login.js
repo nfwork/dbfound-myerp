@@ -40,6 +40,14 @@ Page({
     })
   },
 
+  register(){
+    wx.showModal({
+      title: '提示',
+      content: 'WeERP小程序暂不提供在线注册功能，如有需要请发送邮件到nfwork@163.com进行账号申请；',
+      showCancel:false
+    });
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
