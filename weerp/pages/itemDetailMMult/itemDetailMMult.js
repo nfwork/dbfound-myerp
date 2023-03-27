@@ -21,6 +21,10 @@ Page({
   },
 
   save(){
+    if(!this.data.current_period || !this.data.current_period.period_id){
+      wx.showToast({title: '会计期间不能为空', icon: "error"})
+      return;
+    }
     if(this.data.item_line_list.length<2){
       wx.showToast({title: '凭证行不能为空', icon: "error"})
       return;

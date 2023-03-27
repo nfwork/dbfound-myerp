@@ -2,12 +2,12 @@
 <view class="root">
   
   <view class="box"> 
-    <view class="title">费用期间：</view>
+    <view class="title">会计期间：</view>
     <select value="{{current_period}}" bindchange="setPeriodId" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>
     <!-- <input type="text" disabled="true"  model:value="{{period_id}}"/> -->
   </view>
   <view class="box"> 
-    <view class="title">凭证抬头：</view>
+    <view class="title">凭证描述：</view>
     <input type="text" model:value="{{description}}"/>
   </view>
   <view class="box"> 
@@ -19,7 +19,7 @@
     <view class="table-header">
       <view style="width: 160rpx;">凭证号</view>
       <view style="width: 200rpx;">费用日期</view>
-      <view style="flex: 1;">凭证抬头</view>
+      <view style="flex: 1;">凭证描述</view>
     </view>
     <view class="table-body" style="min-height: 450rpx;">
       <view data-itemid="{{item.item_id}}" bindtap="showDetail" class="table-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="item_id">
@@ -46,7 +46,7 @@
       <view style="width: 200rpx;">科目名称</view>
       <view style="width: 120rpx;">借</view>
       <view style="width: 120rpx;">贷</view>
-      <view style="flex: 1;">凭证描述</view>
+      <view style="flex: 1;">行描述</view>
     </view>
     <view class="table-body" style="min-height: 180rpx;">
       <view class="table-line" hover-class="table-line-hover" wx:for="{{item_line_list}}" wx:key="item_line_id">

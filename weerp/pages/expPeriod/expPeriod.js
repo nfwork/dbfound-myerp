@@ -21,7 +21,6 @@ Page({
 
   changeStatus(e){
     let dataset = e.currentTarget.dataset;
-    console.log(dataset)
     let status = 'Y'
     if(dataset.status=='Y'){
       status = 'N';

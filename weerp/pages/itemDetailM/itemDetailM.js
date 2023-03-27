@@ -35,6 +35,10 @@ Page({
   },
 
   save(){
+    if(!this.data.current_period || !this.data.current_period.period_id){
+      wx.showToast({title: '会计期间不能为空', icon: "error"})
+      return;
+    }
     wx.request({
       url: 'https://advtest.wecloud.io/dbfound/exp/item.execute!simpleSave',
       header:{ "Cookie":wx.getStorageSync('cookies')},

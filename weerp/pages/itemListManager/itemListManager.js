@@ -17,7 +17,14 @@ Page({
   },
 
   query(){
-   wx.request({
+    if(this.data.period_list.length == 0){
+      wx.showToast({
+        title: '当前没有打开的期间',
+        icon: "error"
+      })
+      return;
+    }
+    wx.request({
       url: 'https://advtest.wecloud.io/dbfound/exp/item.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",

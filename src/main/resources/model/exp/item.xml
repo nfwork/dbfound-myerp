@@ -56,7 +56,7 @@
 		<sqls>
 			<collisionSql where="${@period_id} is null" message="会计期间不能为空！"/>
 			<collisionSql where="${@exp_time} is null" message="费用日期不能为空！"/>
-			<collisionSql where="${@description} is null" message="凭证抬头不能为空！"/>
+			<collisionSql where="${@description} is null" message="凭证描述不能为空！"/>
 			<collisionSql where="ifnull(${@lines_size},0) = 0" message="凭证行不能为空！"/>
 			<execute name="save"/>
 			<batchSql sourcePath="param.lines">
@@ -72,7 +72,7 @@
 			<collisionSql where="${@dr_account_id} is null" message="借方科目不能为空！"/>
 			<collisionSql where="${@cr_account_id} is null" message="贷方科目不能为空！"/>
 			<collisionSql where="${@amount} is null" message="金额不能为空！"/>
-			<collisionSql where="${@description} is null" message="凭证抬头不能为空！"/>
+			<collisionSql where="${@description} is null" message="凭证描述不能为空！"/>
 
 			<execute name="save"/>
 			<setContextData name="description" value="" inCurrentPath="true"/>

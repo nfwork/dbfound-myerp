@@ -2,10 +2,8 @@
 <view>
   <view class="menu-title">Hi {{user_name}}</view>
   <view class="summary">
-    <view>本月总开支：<view class="money-big">￥{{totalexp}}</view></view>
-    <view>
-      <view wx:for="{{accounts_exp}}" wx:key="index" class="summary-item">{{item.account_name}}：<view class="money-small">￥{{item.totalexp}}</view></view>
-    </view>
+    <view class="summary-item">本月总开支：<view class="money-big">￥{{totalexp}}</view></view>
+    <view wx:for="{{accounts_exp}}" wx:key="index" class="summary-item">{{item.account_name}}：<view class="money-small">￥{{item.totalexp}}</view></view>
   </view>
 
   <view class="menu-title">记账</view>
