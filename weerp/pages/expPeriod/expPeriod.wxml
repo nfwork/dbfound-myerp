@@ -11,18 +11,16 @@
   </view>
   <view class="box"> 
     <view class="table-header">
-      <view style="width: 160rpx;">期间编号</view>
-      <view style="width: 180rpx;">期间名称</view>
-      <view style="width: 120rpx;">优先级</view>
-      <view style="width: 130rpx;">期间状态</view>
+      <view style="width: 190rpx;">期间编号</view>
+      <view style="width: 220rpx;">期间名称</view>
+      <view style="width: 170rpx;">期间状态</view>
       <view style="flex: 1;">操作</view>
     </view>
     <view class="table-body" style="min-height: 750rpx;">
       <view class="table-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="period_id">
-        <view style="width: 160rpx;; text-align: center;">{{item.period_code}}</view>
-        <view style="width: 180rpx;; text-align: center;">{{item.period_name}}</view>
-        <view style="width: 120rpx;; text-align: center;">{{item.priority}}</view>
-        <view style="width:130rpx; text-align: center;">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</view>
+        <view style="width: 190rpx;; text-align: center;">{{item.period_code}}</view>
+        <view style="width: 220rpx;; text-align: center;">{{item.period_name}}</view>
+        <view style="width:170rpx; text-align: center;">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</view>
         <view bindtap="changeStatus" data-periodid="{{item.period_id}}" data-status="{{item.status}}"  style="flex: 1; text-align: center; color: #0f4ea0;">{{item.status=='Y'?'关闭':'打开'}}</view>
       </view>
     </view>

@@ -7,21 +7,23 @@
   </view>
   <view class="box"> 
     <button size="mini" class="bule-button" bindtap="query" style="width: 160rpx;" hover-class="bule-button-hover">查 询</button>
-    <button size="mini" class="yellow-button" bindtap="reset" style="width: 160rpx;" hover-class="yellow-button-hover">重 置</button>
+    <button size="mini" class="litter-bule-button" bindtap="addLine" style="width: 160rpx;" hover-class="litter-bule-button-hover" >新增</button>
   </view>
   <view class="box"> 
     <view class="table-header">
-      <view style="width: 100rpx;">编号</view>
       <view style="width: 280rpx;">科目名称</view>
-      <view style="width: 200rpx;">科目类型</view>
-      <view style="flex: 1;">优先级</view>
+      <view style="width: 180rpx;">科目类型</view>
+      <view style="flex: 1;">排序</view>
+      <view style="width: 130rpx;">首页展示</view>
     </view>
     <view class="table-body" style="min-height: 750rpx;">
       <view class="table-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
-        <view style="width: 100rpx;; text-align: center;">{{item.account_code}}</view>
-        <view style="width: 280rpx;; text-align: center;">{{item.account_name}}</view>
-        <view style="width: 200rpx;; text-align: center;">{{item.account_type_des}}</view>
+        <view bindtap="updateAccount" data-index="{{index}}" style="width: 280rpx;; text-align: center; color: #0f4ea0;">{{item.account_name}}</view>
+        <view style="width: 180rpx;; text-align: center;">{{item.account_type_des}}</view>
         <view style="flex: 1; text-align: center;">{{item.priority}}</view>
+        <view style="width: 130rpx;; text-align: center;">
+          {{item.display_in_home==1?"是":""}}
+        </view>
       </view>
     </view>
   </view>
@@ -36,5 +38,34 @@
       <button bindtap="changePage" disabled="{{currentPage * limit >= totalCounts}}" data-type="{{4}}" type="default" size="mini">{{">>"}}</button>
     </view>
   </view>
+</view>
 
+<!-- 中间弹窗 -->
+<view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
+<view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
+  <view>
+    <view class="row-info">
+      <view class="info-header">科目编辑</view>
+      <view class="box"> 
+        <view class="title">科目名称：</view>
+        <input type="text" model:value="{{current_line_account_name}}" />
+      </view>
+      <view class="box"> 
+        <view class="title">科目类型：</view>
+        <select value="{{current_line_account_type}}" bindchange="setAccountType" options="{{account_type_list}}" valueField="code_value" displayField="code_name"></select>
+      </view>
+      <view class="box"> 
+        <view class="title">排序：</view>
+        <input type="digit" model:value="{{current_line_priority}}"/>
+      </view>
+      <view class="box"> 
+        <view class="title">首页展示：</view>
+        <switch color= "#3d9be7" checked="{{current_line_display_in_home == 1}}" bindchange="setDisplay"/>
+      </view>
+    </view>
+    <view class="box, info-footer">
+      <button size="mini" class="bule-button" bindtap="saveAccount" style="width: 160rpx; margin-bottom: 20rpx;" hover-class="bule-button-hover">保 存</button>
+      <button size="mini" class="litter-bule-button" bindtap="hiddenBox" style="width: 160rpx; margin-bottom: 20rpx;margin-left: 20rpx;" hover-class="litter-bule-button-hover" >取 消</button>
+    </view>
+  </view>
 </view>

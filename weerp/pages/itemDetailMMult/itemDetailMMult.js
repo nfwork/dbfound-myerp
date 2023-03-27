@@ -61,7 +61,7 @@ Page({
         if(res.data.success){
           wx.showModal({
             title: '提示',
-            content: '保持成功',
+            content: '保存成功',
             showCancel:false,
             complete: (res) => {
               if (res.confirm) {

@@ -11,12 +11,114 @@ Page({
       totalCounts: 0,
       totalPages: 0,
       currentPage: 1,
+      showIndex: 0,
+      line_index: -1,
   },
 
   reset(){
     this.setData({
       account_name: ''
     });
+  },
+
+  hiddenBox(){
+    this.setData({
+      showIndex:'0'
+    })
+  },
+
+  showBox(){
+    this.setData({
+      showIndex:'1'
+    })
+  },
+
+  setDisplay(e){
+    this.setData({
+      current_line_display_in_home : e.detail.value?1:0
+    })
+  },
+
+  addLine(){
+    this.setData({
+      line_index: -1,
+      current_line_account_name: null,
+      current_line_account_type: null,
+      current_line_priority: null,
+      current_line_display_in_home: null
+    });
+    this.showBox();
+  },
+
+  updateAccount(e){
+    let data = this.data.item_list[e.currentTarget.dataset.index];
+    this.setData({
+      line_index: e.currentTarget.dataset.index,
+      current_line_account_name: data.account_name ,
+      current_line_account_type: {
+         code_value: data.account_type,
+         code_name : data.account_type_des
+      },
+      current_line_priority: data.priority,
+      current_line_display_in_home: data.display_in_home
+    });
+    this.showBox();
+  },
+
+  saveAccount(){
+    if(!(this.data.current_line_account_name)){
+      wx.showToast({
+        title: "科目名称不能为空！",
+        icon: "error"
+      })
+      return;
+    }
+    if(!(this.data.current_line_account_type)){
+      wx.showToast({
+        title: "科目类型不能为空！",
+        icon: "error"
+      })
+      return;
+    }
+    let account_id ;
+    let type = 'add';
+    if(this.data.line_index > -1){
+      account_id = this.data.item_list[this.data.line_index].account_id;
+      type = "update";
+    }
+    wx.request({
+      url: 'https://advtest.wecloud.io/dbfound/fnd/expAccount.execute!'+ type,
+      header:{ "Cookie":wx.getStorageSync('cookies')},
+      method:"POST",
+      data:{
+        account_id: account_id,
+        account_name: this.data.current_line_account_name,
+        account_type: this.data.current_line_account_type.code_value,
+        display_in_home: this.data.current_line_display_in_home,
+        priority: this.data.current_line_priority
+      },
+      success : (res)=> {
+        if(res.data.success){
+          if(res.data.success){
+            wx.showModal({
+              title: '提示',
+              content: '保存成功',
+              showCancel:false,
+              complete: (res) => {
+                this.hiddenBox();
+                this.query();
+              }
+            })
+          }else{
+            wx.showToast({
+              title: res.data.message,
+              icon: "error"
+            })
+          }
+        }
+      }
+    })
+    
   },
 
   query(){
@@ -44,7 +146,6 @@ Page({
       }
     })
   },
-
 
   checkPage(){
     if(this.data.currentPage > 1 &&this.data.currentPage > this.data.totalPages){
@@ -85,10 +186,30 @@ Page({
   onLoad(options) {
   },
 
-  formatNumber(n) {
-    n = n.toString()
-    return n[1] ? n : `0${n}`
+  setAccountType(e){
+    this.setData({current_line_account_type : e.detail});
   },
+
+  getAccountTypeList(){
+    wx.request({
+      url: 'https://advtest.wecloud.io/dbfound/fnd/sourceCode.query',
+      header:{ "Cookie":wx.getStorageSync('cookies')},
+      method:"POST",
+      data:{
+        code:"ACCOUNTTYPE"
+      },
+      success : (res)=> {
+        if(res.data.success){
+          this.setData({
+            account_type_list:res.data.datas
+          });
+        }else if(res.data.timeout){
+          wx.navigateTo({url: "../login/login"});
+        }
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -101,6 +222,7 @@ Page({
    */
   onShow() {
     this.query();
+    this.getAccountTypeList();
   },
 
   /**

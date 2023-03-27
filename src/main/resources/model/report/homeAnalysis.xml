@@ -32,9 +32,12 @@
 			WHERE i.item_id = l.item_id
 			    AND i.period_id = DATE_FORMAT(NOW(),'%Y%m')
 			    AND a.display_in_home = 1
+			 	AND a.account_type ='0'
 			    AND a.account_id = l.account_id
 			    and i.book_id = ${@book_id}
 			GROUP BY l.account_id
+
+			limit 5
 		 ]]>
 		</sql>
 	</query>

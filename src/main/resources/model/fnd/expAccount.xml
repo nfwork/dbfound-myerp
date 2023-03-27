@@ -11,6 +11,7 @@
 				account_name,
 				account_type,
 				priority,
+				display_in_home,
 			    (select code_name from sys_code where code = 'ACCOUNTTYPE' and code_value = account_type ) account_type_des
 			from exp_account t
 			where t.book_id = ${@book_id}
@@ -28,6 +29,7 @@
 		<param name="account_name" dataType="varchar" />
 		<param name="account_type" dataType="varchar" />
 		<param name="priority" dataType="number" />
+		<param name="display_in_home" dataType="number" />
 		<sqls>
 			<executeSql>
 			 <![CDATA[
@@ -36,12 +38,14 @@
 			    		account_name,
 			    		account_type,
 			            book_id,
+			            display_in_home,
 			    		priority)
 				values(
 			    		${@account_code},
 			    		${@account_name},
 			    		${@account_type},
 				        ${@book_id},
+				        ${@display_in_home},
 			    		${@priority})
 			 ]]>
 			</executeSql>
@@ -54,14 +58,15 @@
 		<param name="priority" dataType="number" />
 		<param name="account_type" dataType="varchar" />
 		<param name="account_id" dataType="number" />
+		<param name="display_in_home" dataType="number" />
 		<sqls>
 			<executeSql>
 			  <![CDATA[
 				update exp_account
-				   set 
-					account_code = ${@account_code},
+				   set
 					account_name = ${@account_name},
 					account_type = ${@account_type},
+				    display_in_home = ${@display_in_home},
 					priority = ${@priority}		
 				 where account_id = ${@account_id}
 				   and book_id = ${@book_id}
