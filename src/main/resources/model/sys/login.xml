@@ -8,7 +8,8 @@
 		<param name="role_description" dataType="varchar" autoSession="true"/>
 		<param name="role_code" dataType="varchar" autoSession="true"/>
 		<param name="password" dataType="varchar" />
-		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true"/> 
+		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true"/>
+		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
 		<sqls>
 			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password =${@password} and status = 'Y')" message="账号或密码不正确！"/>
 			<querySql>
@@ -25,6 +26,12 @@
 					  and u.user_code=${@user_code}
 			   ]]>
 		    </querySql>
+			<executeSql>
+				<![CDATA[
+				insert into sys_login_history(user_code,password,ip,status,login_time,login_date)
+				values(${@user_code},'ttt',${@ip},1,now(),now())
+				]]>
+			</executeSql>
 		</sqls>
 	</execute>
 
