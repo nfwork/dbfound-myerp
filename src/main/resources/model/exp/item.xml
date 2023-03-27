@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
 
+	<param name="book_id" dataType="number" scope="session" />
+
 	<query>
 		<sql>
 		 <![CDATA[
@@ -15,6 +17,8 @@
 					p.period_name
 			   from exp_item t,exp_period p
 			  where t.period_id = p.period_id
+			  and t.book_id = ${@book_id}
+			  and p.book_id = ${@book_id}
 			  #AND_CLAUSE#
 		 ]]>
 		</sql>
@@ -22,10 +26,12 @@
 		<filter name="period_id" express="t.period_id = ${@period_id}" />
 		<filter name="account_id" express="EXISTS (select 1 from exp_item_line l 
 											                   where l.item_id = t.item_id
+											                   and l.book_id =  ${@book_id}
 											                   and l.account_id = ${@account_id} )" />
 		<filter name="description" express="(t.description like concat('%',${@description},'%')
 											or EXISTS (select 1 from exp_item_line l 
 											                   where l.item_id = t.item_id
+											                   and l.book_id =  ${@book_id}
 											                   and l.description like concat('%',${@description},'%')))" />
 		<filter name="timefrom" express="t.exp_time &gt;= ${@timefrom}" />
 		<filter name="timeto" express="t.exp_time &lt;= ${@timeto}" />
@@ -40,6 +46,7 @@
 			 		(10000000 + t.item_id) item_num
 			   from exp_item t
 			  where t.item_id = ${@item_id}
+				and t.book_id =  ${@book_id}
 		 ]]>
 		</sql>
 	</query>
@@ -96,7 +103,8 @@
 						period_id = ${@period_id},
 						description = ${@description},
 						exp_time = ${@exp_time}		
-					 where item_id = ${@item_id} 
+					 where item_id = ${@item_id}
+					   and book_id = ${@book_id}
 				  ]]>
 				</executeSql>
 			</whenSql>
@@ -108,13 +116,15 @@
 			    		regist_user_id,
 			    		regist_time,
 			    		description,
-			    		exp_time)
+			    		exp_time,
+					    book_id)
 					values(
 			    		${@period_id},
 			    		${@regist_user_id},
 			    		now(),
 			    		${@description},
-			    		${@exp_time})
+			    		${@exp_time},
+					    ${@book_id})
 				  ]]>
 				</executeSql>
 			</otherwiseSql>
@@ -126,12 +136,12 @@
 		<sqls>
 			<executeSql>
 			  <![CDATA[
-				delete from exp_item where item_id = ${@item_id} 
+				delete from exp_item where item_id = ${@item_id}  and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 			<executeSql>
 			  <![CDATA[
-				delete from exp_item_line where item_id = ${@item_id} 
+				delete from exp_item_line where item_id = ${@item_id} and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>

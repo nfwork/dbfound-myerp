@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+	<param name="book_id" dataType="number" scope="session" />
+
 	<query>
 		<sql>
 		 <![CDATA[
@@ -10,7 +13,8 @@
 				priority,
 			    (select code_name from sys_code where code = 'ACCOUNTTYPE' and code_value = account_type ) account_type_des
 			from exp_account t
-			#WHERE_CLAUSE#
+			where t.book_id = ${@book_id}
+			#AND_CLAUSE#
 			order by t.priority
 		 ]]>
 		</sql>
@@ -31,11 +35,13 @@
 			    		account_code,
 			    		account_name,
 			    		account_type,
+			            book_id,
 			    		priority)
 				values(
 			    		${@account_code},
 			    		${@account_name},
 			    		${@account_type},
+				        ${@book_id},
 			    		${@priority})
 			 ]]>
 			</executeSql>
@@ -57,7 +63,8 @@
 					account_name = ${@account_name},
 					account_type = ${@account_type},
 					priority = ${@priority}		
-				 where account_id = ${@account_id} 
+				 where account_id = ${@account_id}
+				   and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>
@@ -68,7 +75,7 @@
 		<sqls>
 			<executeSql>
 			  <![CDATA[
-				delete from exp_account where account_id = ${@account_id} 
+				delete from exp_account where account_id = ${@account_id} and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>

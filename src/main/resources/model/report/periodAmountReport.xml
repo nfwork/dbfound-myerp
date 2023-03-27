@@ -2,12 +2,13 @@
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
 
-	<param name="rowColumnName" dataType="varchar" value="period_name" />
-	<param name="columnColumnName" dataType="varchar" value="account_name" />
-	<param name="keyColumnName" dataType="varchar" value="amount" />
-	<param name="priorityColumnName" dataType="varchar" value="priority" />
+	<param name="book_id" dataType="number" scope="session" />
 
 	<query adapter="com.nfwork.erp.adapter.ReportAdapter">
+		<param name="rowColumnName" dataType="varchar" value="period_name" />
+		<param name="columnColumnName" dataType="varchar" value="account_name" />
+		<param name="keyColumnName" dataType="varchar" value="amount" />
+		<param name="priorityColumnName" dataType="varchar" value="priority" />
 		<sql>
 		 <![CDATA[
 			SELECT
@@ -16,13 +17,15 @@
 			  	SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0)) amount,
 			  	a.priority
 			FROM exp_item i,
-			 	exp_item_line l,
+			 	 exp_item_line l,
 			     exp_account a,
 			     exp_period p
 			WHERE i.item_id = l.item_id
 			  AND a.account_id = l.account_id
 			  AND a.account_type = '0'
 			  AND i.period_id = p.period_id
+			  and p.book_id = ${@book_id}
+			  and i.book_id = ${@book_id}
 			  #AND_CLAUSE#
 			GROUP BY i.period_id,l.account_id
 			
@@ -34,13 +37,15 @@
 			  SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0))    amount,
 			  99999            priority
 			FROM exp_item i,
-			  exp_item_line l,
-			  exp_account a,
-			  exp_period p
+			     exp_item_line l,
+			  	 exp_account a,
+			  	 exp_period p
 			WHERE i.item_id = l.item_id
 			    AND a.account_id = l.account_id
 			    AND a.account_type = '0'
 			    AND i.period_id = p.period_id
+				and p.book_id = ${@book_id}
+				and i.book_id = ${@book_id}
 			    #AND_CLAUSE#
 			GROUP BY i.period_id
 		 ]]>

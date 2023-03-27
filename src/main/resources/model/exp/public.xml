@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+	<param name="book_id" dataType="number" scope="session" />
+
 	<query name="getDefaultPeriod">
 		<param name="user_id" scope="session" ioType="both"/>
 		<param name="user_name" scope="session" ioType="both"/>
@@ -9,7 +12,11 @@
 		<param name="role_description" scope="session" ioType="both"/>
 		<sql>
 		 <![CDATA[
-			SELECT (select p.period_id from exp_period p where p.period_id = DATE_FORMAT(NOW(),'%Y%m') and p.status='Y') period,
+			SELECT (select p.period_id
+			          from exp_period p
+			        where p.period_id = DATE_FORMAT(NOW(),'%Y%m')
+			          and p.status='Y'
+			    	  and p.book_id = ${@book_id}) period,
 				   DATE_FORMAT(NOW(),'%Y-%m-%d') exp_time
 		 ]]>
 		</sql>

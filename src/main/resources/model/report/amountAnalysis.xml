@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+	<param name="book_id" dataType="number" scope="session" />
+
 	<query>
 		<param name="period_id" dataType="number" />
 		<sql>
@@ -9,14 +12,17 @@
 					account_name,
 					(select ifnull(sum(amount),0) from exp_account_buget m 
 					  where m.account_id = t.account_id 
-					    and m.period_id = ${@period_id}) buget_amount,
+					    and m.period_id = ${@period_id}
+					    and m.book_id = ${@book_id}) buget_amount,
 					
 					(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0) from exp_item i,exp_item_line l 
 					  where l.account_id = t.account_id 
 					    and i.item_id = l.item_id
-					    and i.period_id = ${@period_id}) emerge_amount
+					    and i.period_id = ${@period_id}
+					    and i.book_id = ${@book_id}) emerge_amount
 				from exp_account t
 				where t.account_type = '0'
+			 	  and t.book_id = ${@book_id}
 				order by t.priority
 		 ]]>
 		</sql>
@@ -31,6 +37,7 @@
 				from exp_account_buget t
 			   where t.period_id = ${@period_id}
 			     and t.account_id = ${@account_id}
+			     and t.book_id = ${@book_id}
 				order by t.add_time
 		 ]]>
 		</sql>
@@ -49,13 +56,15 @@
 			    		period_id,
 			    		amount,
 			    		description,
-			    		add_time)
+			    		add_time,
+			            book_id)
 				values(
 			    		${@account_id},
 			    		${@period_id},
 			    		${@amount},
 			    		${@description},
-			    		now())
+			    		now(),
+				        ${@book_id})
 			 ]]>
 			</executeSql>
 		</sqls>

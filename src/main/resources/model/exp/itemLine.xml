@@ -2,6 +2,8 @@
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
 
+	<param name="book_id" dataType="number" scope="session" />
+
 	<query>
 		<param name="item_id" dataType="number" />
 		<sql>
@@ -17,6 +19,7 @@
 					a.account_name
 			   from exp_item_line t,exp_account a
 			  where t.account_id = a.account_id
+				and t.book_id = ${@book_id}
 			    and t.item_id = ${@item_id}
 		 ]]>
 		</sql>
@@ -50,7 +53,8 @@
 			    		account_id,
 			    		description,
 			    		regist_time,
-			    		regist_user_id)
+			    		regist_user_id,
+			            book_id)
 				values(
 			    		${@item_id},
 			    		${@dr_amount},
@@ -58,7 +62,8 @@
 			    		${@account_id},
 			    		${@description},
 			    		now(),
-			    		${@regist_user_id})
+			    		${@regist_user_id},
+				        ${@book_id})
 			 ]]>
 			</executeSql>
 		</sqls>
@@ -85,6 +90,7 @@
 					regist_time = now(),
 					regist_user_id = ${@regist_user_id}
 				 where item_line_id = ${@item_line_id}
+				   and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+	<param name="book_id" dataType="number" scope="session" />
+
 	<query>
 		<sql>
 		 <![CDATA[
@@ -9,7 +12,8 @@
 				status,
 				priority
 			from exp_period t
-			#WHERE_CLAUSE#
+			where t.book_id = ${@book_id}
+			#AND_CLAUSE#
 		 	order by t.priority
 		 ]]>
 		</sql>
@@ -28,6 +32,7 @@
 				priority
 			from exp_period t
 			where status='Y'
+			  and t.book_id = ${@book_id}
 		 	order by t.priority
 		 ]]>
 		</sql>
@@ -43,6 +48,7 @@
 				priority
 			from exp_period t
 			where status != 'A'
+			  and t.book_id = ${@book_id}
 		 	order by t.priority
 		 ]]>
 		</sql>
@@ -61,11 +67,13 @@
 			    		period_code,
 			    		period_name,
 			    		status,
+			            book_id,
 			    		priority)
 				values( ${@period_code},
 			    		${@period_code},
 			    		${@period_name},
 			    		${@status},
+				        ${@book_id},
 			    		${@priority})
 			 ]]>
 			</executeSql>
@@ -83,7 +91,8 @@
 				   set 
 					period_name = ${@period_name},
 					priority = ${@priority}		
-				 where period_id = ${@period_id} 
+				 where period_id = ${@period_id}
+				   and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>
@@ -98,7 +107,8 @@
 				update exp_period
 				   set 
 					status = 'Y'
-				 where period_id = ${@period_id} 
+				 where period_id = ${@period_id}
+				   and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>
@@ -113,7 +123,8 @@
 				update exp_period
 				   set 
 					status = 'N'
-				 where period_id = ${@period_id} 
+				 where period_id = ${@period_id}
+				   and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>
@@ -124,7 +135,7 @@
 		<sqls>
 			<executeSql>
 			  <![CDATA[
-				delete from exp_period where period_id = ${@period_id} 
+				delete from exp_period where period_id = ${@period_id} and book_id = ${@book_id}
 			  ]]>
 			</executeSql>
 		</sqls>
