@@ -20,7 +20,3 @@ input{
 select{
   flex: 1;
 }
-
-.table-line view{
-  height: 75rpx;
-}

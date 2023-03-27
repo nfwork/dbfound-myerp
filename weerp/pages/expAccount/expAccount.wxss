@@ -21,11 +21,6 @@ select{
   flex: 1;
 }
 
-.table-line view{
-  height: 75rpx;
-}
-
-
 .popup-box{
   position: absolute;
   z-index: 99;

@@ -148,6 +148,11 @@ textarea{
   justify-content: center;
 }
 
+.mini-line view{
+  overflow: hidden;
+  height: 80rpx;
+}
+
 .table-line text{
   max-height: 82rpx;
 }
