@@ -11,6 +11,11 @@
 		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true"/>
 		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
 		<sqls>
+			<querySql>
+				<![CDATA[
+					select md5(${@password}) as password
+                ]]>
+			</querySql>
 			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password =${@password} and status = 'Y')" message="账号或密码不正确！"/>
 			<querySql>
 		      <![CDATA[
@@ -40,6 +45,11 @@
 		<param name="password" dataType="varchar" />
 		<param name="user_id" dataType="number" scope="session" />
 		<sqls>
+			<querySql>
+				<![CDATA[
+					select md5(${@ypassword}) as ypassword, md5(${@password}) as password
+                ]]>
+			</querySql>
 			<collisionSql
 				where="not exists (select 1 from sys_user where user_id= ${@user_id} and password = ${@ypassword})"
 				message="原密码不正确！" />

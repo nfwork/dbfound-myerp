@@ -52,6 +52,11 @@
 			<collisionSql
 				where="exists (select 1 from sys_user where user_code= ${@user_code})"
 				message="用户编号:#{@user_code} 已经使用！" />
+			<querySql>
+				<![CDATA[
+					select md5(${@password}) as password
+				]]>
+			</querySql>
 			<executeSql>
 			 <![CDATA[
 			    INSERT INTO sys_user
@@ -92,7 +97,6 @@
 				update sys_user set 
 					user_name = ${@user_name} ,
 					role_id =${@role_id},
-					password = ${@password} ,
 					status =${@status},
 					last_update_by = ${@user_id} ,
 					last_update_date = NOW() 
