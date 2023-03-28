@@ -30,6 +30,15 @@
 		function initDefaultValue(record,grid){
 			record.set("status","Y");
 		}
+
+		function bookRenderer(value){
+			return "<a href='javascript:openBookWindow("+value+")'>账簿管理<a>";
+		}
+
+		function openBookWindow(value){
+			let url = "modules/exp/expBook.jsp?user_id="+value;
+			DBFound.open("update_window","本期添加",600,400,url);
+		}
 	</script>
 	<body>
 	    <d:initProcedure>
@@ -64,11 +73,13 @@
 				<d:gridButton type="save" />
 			</d:toolBar>
 			<d:columns>
+				<d:column name="user_id" align="center"  prompt="用户ID" width="80" />
 				<d:column name="user_code" sortable="true" required="true" editor="textfield" prompt="用户编号" width="120" />
 				<d:column name="user_name" sortable="true" required="true" editor="textfield" prompt="用户名" width="120" />
 				<d:column name="password" required="true" editor="password" prompt="密码" width="120" />
 				<d:column name="role_id" editor="combo" options="roleStore" displayField="role_name" valueField="role_id" prompt="角色" width="140" />
 				<d:column name="status" required="true" editor="combo" options="statusStore" displayField="status_name" valueField="status_code" prompt="状态" width="100" />
+				<d:column name="user_id" align="center" renderer="bookRenderer" prompt="账簿管理" width="110" />
 				<d:column name="create_date" prompt="创建日期" width="110" />
 				<d:column name="last_update_user" prompt="最后经手人" width="110" />
 			</d:columns>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+	<query>
+		<sql>
+		 <![CDATA[
+		 select book_id,
+				book_name
+			from exp_book t
+		 ]]>
+		</sql>
+	</query>
+
+	<query name="getUserBook">
+		<sql>
+			<![CDATA[
+				select u.user_code ,
+				       u.user_name,
+				       u.user_id,
+				       u.book_id
+				from sys_user u where u.user_id = ${@user_id}
+            ]]>
+		</sql>
+	</query>
+	
+	<execute name="create">
+		<param name="book_id" dataType="number" scope="param" />
+		<param name="user_id" dataType="number" scope="session" />
+		<sqls>
+			<executeSql generatedKeyParam="book_id">
+			 <![CDATA[
+			    insert into exp_book(
+			    		book_name,
+			    		create_by,
+			            create_date)
+				values(
+			    		${@book_name},
+			    		${@user_id},
+			    		now())
+			 ]]>
+			</executeSql>
+			<executeSql>
+			  <![CDATA[
+				update sys_user
+				set book_id = ${@book_id}
+				where user_code = ${@user_code}
+				]]>
+			</executeSql>
+			<batchExecuteSql sourcePath="account_list">
+				<![CDATA[
+					insert into exp_account(account_name, priority,account_type, book_id, display_in_home)
+					values
+					#BATCH_TEMPLATE_BEGIN#
+					(${@account_name},${@priority},${@account_type},${@book_id},${@display_in_home})
+					#BATCH_TEMPLATE_END#
+                ]]>
+			</batchExecuteSql>
+		</sqls>
+	</execute>
+
+	<execute name="updateUserBook">
+		<sqls>
+			<executeSql>
+			  <![CDATA[
+				update sys_user
+				   set book_id = ${@book_id}
+				 where user_code = ${@user_code}
+			  ]]>
+			</executeSql>
+		</sqls>
+	</execute>
+</model>

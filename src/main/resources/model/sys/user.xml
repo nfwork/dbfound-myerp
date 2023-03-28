@@ -17,7 +17,6 @@
 				u.password
 			FROM SYS_USER u
 			#WHERE_CLAUSE#
-			order by u.user_code
 		 ]]>
 		</sql>
 		<filter name="timefrom" express="create_date &gt;= ${@timefrom}" />
