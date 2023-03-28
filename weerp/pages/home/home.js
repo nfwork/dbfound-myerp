@@ -5,12 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-      user_name:"黄炯",
+      user_name:"",
       totalexp:0,
-      accounts_exp:[{account_name:"费用-小军",totalexp:0},
-                    {account_name:"费用-黄炯",totalexp:0},
-                    {account_name:"费用-其它",totalexp:0},
-                    {account_name:"费用-水果零食",totalexp:0}]
+      accounts_exp:[]
   },
 
   menuTap(e){
