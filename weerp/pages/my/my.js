@@ -94,6 +94,11 @@ Page({
             content: '密码修改成功',
             showCancel:false,
             complete: (res) => {
+              this.setData({
+                ypassword:"",
+                password2:"",
+                password:""
+              });
               this.hiddenBox();
             }
           })

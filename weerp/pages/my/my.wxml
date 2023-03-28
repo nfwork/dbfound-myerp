@@ -12,8 +12,8 @@
     <text class="content">{{user_name}}</text>
   </view>
   <view class="box"> 
-    <view class="title">角 色：</view>
-    <text class="content">{{role_code}}</text>
+    <view class="title">账号性质：</view>
+    <text class="content">{{role_description}}</text>
   </view>
   <view class="box"> 
     <view class="title">日 期：</view>
@@ -39,15 +39,15 @@
       <view class="info-header">密码修改</view>
       <view class="box"> 
         <view class="title">原密码：</view>
-        <input type="safe-password" model:value="{{ypassword}}" />
+        <input type="text" password="true" model:value="{{ypassword}}" />
       </view>
       <view class="box"> 
         <view class="title">新密码：</view>
-        <input type="safe-password" model:value="{{password}}"/>
+        <input type="text" password="true" model:value="{{password}}"/>
       </view>
       <view class="box"> 
         <view class="title">确认新密码：</view>
-        <input type="safe-password" model:value="{{password2}}"/>
+        <input type="text" password="true" model:value="{{password2}}"/>
       </view>
     </view>
     <view class="box, info-footer">
