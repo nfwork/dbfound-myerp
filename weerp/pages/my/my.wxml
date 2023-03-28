@@ -24,4 +24,35 @@
     <text class="content">{{period}}</text>
   </view>
 
+  <view class="box function"> 
+    <view bindtap="showBox">修改密码</view>
+    <view bindtap="logout">注销登录</view>
+  </view>
+
+</view>
+
+<!-- 中间弹窗 -->
+<view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
+<view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
+  <view>
+    <view class="row-info">
+      <view class="info-header">密码修改</view>
+      <view class="box"> 
+        <view class="title">原密码：</view>
+        <input type="safe-password" model:value="{{ypassword}}" />
+      </view>
+      <view class="box"> 
+        <view class="title">新密码：</view>
+        <input type="safe-password" model:value="{{password}}"/>
+      </view>
+      <view class="box"> 
+        <view class="title">确认新密码：</view>
+        <input type="safe-password" model:value="{{password2}}"/>
+      </view>
+    </view>
+    <view class="box, info-footer">
+      <button size="mini" class="bule-button" bindtap="updatePassword" style="width: 160rpx; margin-bottom: 20rpx;" hover-class="bule-button-hover">保 存</button>
+      <button size="mini" class="litter-bule-button" bindtap="hiddenBox" style="width: 160rpx; margin-bottom: 20rpx;margin-left: 20rpx;" hover-class="litter-bule-button-hover" >取 消</button>
+    </view>
+  </view>
 </view>

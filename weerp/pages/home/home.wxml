@@ -18,7 +18,7 @@
       <view bindtap="menuTap" data-fid="{{4}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzcx.png"></image>凭证查询</view>
       <view bindtap="menuTap" data-fid="{{5}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-fymx.png"></image>费用明细</view>
       <view bindtap="menuTap" data-fid="{{6}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-kmye.png"></image>科目余额</view>
-      <view bindtap="menuTap" data-fid="{{7}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-qjhz.png"></image>期间汇总</view>
+      <view bindtap="menuTap" data-fid="{{7}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-qjhz.png"></image>开销汇总</view>
   </view>
 
   <view class="menu-title">基础设置</view>
@@ -27,11 +27,10 @@
     <view bindtap="menuTap" data-fid="{{9}}" class="function-item" hover-class="function-item-hover"><image src="/images/f-pzgl.png"></image>科目设置</view>
   </view>
 
+  <view class="menu-title">使用说明</view>
   <view class="explain">
-    <view class="menu-title">使用说明</view>
-    <view>1、创建科目并分配好类别，如费用类(日常开支、水电燃气)、银行类(我的银行存款)、收益类(工资收入)等；</view>
-    <view>2、打开会计期间，只有处于打开状态的期间才能记账，本月结束后，关闭期间进行关账；</view>
+    <view>1、创建科目并分配好类别，如费用类(日常开支、水电燃气)、存款类(我的银行存款)、收益类(工资收入)等；</view>
+    <view>2、打开会计期间，只有处于打开状态的期间才能记账，本月结束后，关闭期间进行关账；可二次打卡；</view>
     <view>3、打开记账功能进行凭证登记，一借一贷，如借日常费用、贷银行存款；也可使用凭证登记(简)进行快速登记；</view>
-    <view>4、使用统计分析功能，查询自己的日常收益和开支情况，可按科目、按月、按年进行分析对比；</view>
   </view>
 </view>

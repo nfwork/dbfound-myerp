@@ -29,7 +29,7 @@
     <input type="digit" model:value="{{amount}}"/>
   </view>
   <view class="box"> 
-    <view class="title">凭证抬头：</view>
+    <view class="title">凭证描述：</view>
     <textarea value="{{description}}" bindinput="setDescription" cursor-spacing="120"></textarea>
   </view>
   <button hover-class="bule-button-hover" style="width:100%;margin-left: 0px;" class="bule-button" bindtap="save" >保存</button>

@@ -99,22 +99,20 @@ Page({
       },
       success : (res)=> {
         if(res.data.success){
-          if(res.data.success){
-            wx.showModal({
-              title: '提示',
-              content: '保存成功',
-              showCancel:false,
-              complete: (res) => {
-                this.hiddenBox();
-                this.query();
-              }
-            })
-          }else{
-            wx.showToast({
-              title: res.data.message,
-              icon: "error"
-            })
-          }
+          wx.showModal({
+            title: '提示',
+            content: '保存成功',
+            showCancel:false,
+            complete: (res) => {
+              this.hiddenBox();
+              this.query();
+            }
+          })
+        }else{
+          wx.showToast({
+            title: res.data.message,
+            icon: "error"
+          })
         }
       }
     })

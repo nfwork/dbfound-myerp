@@ -10,7 +10,11 @@ Page({
     role_code:"",
     role_description:"",
     exp_time:"",
-    period:""
+    period:"",
+    showIndex: 0,
+    ypassword:"",
+    password:"",
+    password2:""
   },
 
   getBasic(){
@@ -30,6 +34,74 @@ Page({
           });
         }else if(res.data.timeout){
           wx.navigateTo({url: "../login/login"});
+        }
+      }
+    })
+  },
+
+  logout(){
+    wx.showModal({
+      title: '提示',
+      content: '确认要退出吗？',
+      complete: (res) => {
+        if (res.confirm) {
+          wx.removeStorageSync('cookies');
+          wx.navigateTo({url: "../login/login"});
+        }
+      }
+    })
+  },
+
+  hiddenBox(){
+    this.setData({
+      showIndex:'0'
+    })
+  },
+
+  showBox(e){
+    this.setData({
+      showIndex:'1'
+    })
+  },
+
+  updatePassword(){
+    if(!(this.data.ypassword)){
+      wx.showToast({
+        title: "原密码不能为空！",
+        icon: "error"
+      })
+      return;
+    }
+    if(!(this.data.password) || this.data.password != this.data.password2){
+      wx.showToast({
+        title: "两次输入新密码不一致！",
+        icon: "error"
+      })
+      return;
+    }
+    wx.request({
+      url: 'https://advtest.wecloud.io/dbfound/sys/login.execute!updatePassword',
+      header:{ "Cookie":wx.getStorageSync('cookies')},
+      method:"POST",
+      data:{
+        password: this.data.password,
+        ypassword: this.data.ypassword
+      },
+      success : (res)=> {
+        if(res.data.success){
+          wx.showModal({
+            title: '提示',
+            content: '密码修改成功',
+            showCancel:false,
+            complete: (res) => {
+              this.hiddenBox();
+            }
+          })
+        }else{
+          wx.showToast({
+            title: res.data.message,
+            icon: "error"
+          })
         }
       }
     })
