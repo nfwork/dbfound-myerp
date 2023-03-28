@@ -14,7 +14,8 @@
   </view>
   <view class="box"> 
     <view class="title">费用日期：</view>
-    <input type="text" model:value="{{exp_time}}"/>
+    <calendar bind:change="dateChange" defaultTime="{{exp_time}}"></calendar>
+    <!-- <input type="text" model:value="{{exp_time}}"/> -->
   </view>
   <view class="box"> 
     <view class="title">借方科目：</view>

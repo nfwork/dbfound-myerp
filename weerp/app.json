@@ -45,7 +45,8 @@
   },
   "style": "v2",
   "usingComponents": {
-    "select":"/components/select/select"
+    "select":"/components/select/select",
+    "calendar":"/components/calendar/calendar"
   },
   "sitemapLocation": "sitemap.json"
 }

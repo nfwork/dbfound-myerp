@@ -23,6 +23,9 @@ input{
 select{
   flex: 1;
 }
+calendar{
+  flex: 1;
+}
 textarea{
   flex: 1;
   height: 150rpx;

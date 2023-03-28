@@ -34,6 +34,10 @@ Page({
     this.setData({description : e.detail.value});
   },
 
+  dateChange(e){
+    this.setData({exp_time: e.detail.dateString})
+  },
+
   save(){
     if(!this.data.current_period || !this.data.current_period.period_id){
       wx.showToast({title: '会计期间不能为空', icon: "error"})

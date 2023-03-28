@@ -104,6 +104,9 @@ Page({
     })
   },
 
+  dateChange(e){
+    this.setData({exp_time: e.detail.dateString})
+  },
   updateLine(e){
     let data = this.data.item_line_list[e.currentTarget.dataset.index];
     this.setData({
