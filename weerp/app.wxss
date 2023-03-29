@@ -202,3 +202,7 @@ textarea{
   color: #888c8f;
 }
 
+text{
+  border: none !important;
+}
+
