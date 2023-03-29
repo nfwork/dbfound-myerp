@@ -64,8 +64,8 @@
       </view>
     </view>
     <view class="box, info-footer">
-      <button size="mini" class="bule-button" bindtap="saveAccount" style="width: 160rpx; margin-bottom: 20rpx;" hover-class="bule-button-hover">保 存</button>
-      <button size="mini" class="litter-bule-button" bindtap="hiddenBox" style="width: 160rpx; margin-bottom: 20rpx;margin-left: 20rpx;" hover-class="litter-bule-button-hover" >取 消</button>
+      <button size="mini" class="litter-bule-button" bindtap="hiddenBox" style="width: 160rpx; margin-bottom: 20rpx;" hover-class="litter-bule-button-hover" >取 消</button>
+      <button size="mini" class="bule-button" bindtap="saveAccount" style="width: 160rpx; margin-bottom: 20rpx; margin-left: 20rpx;" hover-class="bule-button-hover">保 存</button>
     </view>
   </view>
 </view>

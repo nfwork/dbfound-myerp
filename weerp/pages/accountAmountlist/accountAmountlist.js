@@ -12,6 +12,13 @@ Page({
   },
 
   query(){
+    if(this.data.period_list.length == 0){
+      wx.showToast({
+        title: '当前没有打开过的期间',
+        icon: "error"
+      })
+      return;
+    }
     wx.showLoading({
       title: '正在加载中',
     })
