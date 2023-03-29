@@ -19,7 +19,7 @@
   </view>
   <view class="box"> 
     <view class="title">费用日期：</view>
-    <calendar bind:change="dateChange" defaultTime="{{exp_time}}"></calendar>
+    <calendar bind:change="dateChange" value="{{exp_time}}"></calendar>
     <!-- <input type="text" model:value="{{exp_time}}"/> -->
   </view>
   <view class="box"> 

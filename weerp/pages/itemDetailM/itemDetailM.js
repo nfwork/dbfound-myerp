@@ -35,7 +35,7 @@ Page({
   },
 
   dateChange(e){
-    this.setData({exp_time: e.detail.dateString})
+    this.setData({exp_time: e.detail.value})
   },
 
   save(){

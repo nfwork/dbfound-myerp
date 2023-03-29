@@ -1,23 +1,19 @@
 <!--components/calendar/calendar.wxml-->
 <view class="select-box" hover-class="select-box-hover">
   <view class="select-current" catchtap="openClose">
-    <text class="current-name">{{selectDay.dateString}}</text>
+    <text class="current-name">{{value}}</text>
   </view>
 
 <view wx:if="{{isShow}}" class="calendar">
 	<view class="title flex">
 		<view class="flex">
-			<picker value="{{selectDay.year+'-'+selectDay.month}}" bindchange="editMonth" mode="date" fields="month" class="year-month">{{selectDay.year}}.{{selectDay.month>9?selectDay.month:"0"+selectDay.month}}</picker>
-			<view class="icon" bindtap="lastMonth" style="transform:rotate(180deg);">
-				<view class="iconfont icon-playfill"></view>
-			</view>
-			<view class="icon" bindtap="nextMonth">
-				<view class="iconfont icon-playfill"></view>
-			</view>
-		</view>
-		<view catchtap="openChange" class="flex open">
-			<!-- <view>{{open?"收起":"展开"}}</view> -->
-			<!-- <view style="margin-left:6rpx;font-size:20rpx" class="iconfont icon-{{open?'fold':'unfold'}}"></view> -->
+			<view bindtap="lastMonth" class="tool-month-box">
+        <view class="last-month"></view>
+      </view>
+      <picker value="{{selectDay.year+'-'+selectDay.month}}" bindchange="editMonth" mode="date" fields="month" class="year-month">{{selectDay.year}}.{{selectDay.month>9?selectDay.month:"0"+selectDay.month}}</picker>
+      <view bindtap="nextMonth" class="tool-month-box">
+        <view class="next-month" ></view>
+      </view>
 		</view>
 	</view>
  
@@ -33,7 +29,7 @@
 	</view>
  
 	<!-- 日历主体 -->
-	<view class="flex-start flex-wrap calendar-main">
+	<view bindtouchmove="myTouchMove" bindtouchstart="myTouchStart" class="flex-start flex-wrap calendar-main">
 		<view wx:for="{{dateList}}" wx:key="dateList" class="day">
 			<view class="bg {{(item.year === selectDay.year && item.month === selectDay.month) ? (item.day === selectDay.day?'select':''): 'other-month'}}" catchtap="selectChange" data-day="{{item.day}}" data-year="{{item.year}}" data-month="{{item.month}}" data-date-string="{{item.dateString}}">
 				{{item.day}}

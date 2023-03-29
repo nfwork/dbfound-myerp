@@ -2,12 +2,14 @@
   <view class="select-current" catchtap="openClose">
     <text class="current-name">{{value[displayField]}}</text>
   </view>
-  <view class="option-list" wx:if="{{isShow}}" catchtap="optionTap">
-    <view class="option" hover-class="option-hover"
+  <scroll-view scroll-y="true" scroll-into-view="{{'p'+value[valueField]}}" class="option-list" wx:if="{{isShow}}" catchtap="optionTap">
+    <view class="option {{item[valueField] == value[valueField]?'option-active':''}}" hover-class="option-hover"
       wx:for="{{options}}"
       wx:key="index"
       data-id="{{item[valueField]}}"
+      id="{{'p'+item[valueField]}}"
       data-name="{{item[displayField]}}">{{item[displayField]}}
     </view>
-  </view>
+    <view wx:if="{{options.length > 6 }}" style="height: 20rpx;"></view>
+  </scroll-view>
 </view>

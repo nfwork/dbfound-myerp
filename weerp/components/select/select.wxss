@@ -47,9 +47,9 @@
   left: 0;
   top: 76rpx;
   max-height: 500rpx;
-  overflow: scroll;
+  overflow: hidden;
   width: 100%;
-  padding: 12rpx 20rpx 10rpx 20rpx;
+  padding: 12rpx 0rpx 10rpx 10rpx;
   border-radius: 6rpx;
   box-sizing: border-box;
   z-index: 99;
@@ -61,10 +61,15 @@
   display: block;
   width: 100%;
   line-height: 70rpx;
+  padding-left: 6rpx;
   border-bottom: 1px solid #eee;
 }
 
 .option-hover {
+  background-color: #edf7fd!important
+}
+
+.option-active {
   background-color: #edf7fd!important
 }
 

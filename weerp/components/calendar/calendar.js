@@ -9,7 +9,7 @@ Component({
       type: Array,
       value: []
     },
-    defaultTime: {
+    value: {
       type: String,
       value: ''
     }
@@ -33,6 +33,7 @@ Component({
       this.setData({
         isShow: !this.data.isShow
       })
+      this.initValue();
     },
 
     // 此方法供父组件调用
@@ -144,7 +145,8 @@ Component({
             month: setMonth,
             day: setDay ? setDay : day,
             dateString: this.formatTime(time, "Y-M-D")
-          }
+          },
+          value:this.formatTime(time, "Y-M-D")
         }
         if (!setDay) {
           data.open = true
@@ -152,7 +154,7 @@ Component({
         this.setData(data)
         this.dateInit(setYear, setMonth)
         this.setSpot()
-        this.triggerEvent("change", this.data.selectDay)
+        this.triggerEvent("change", {value:this.data.value})
       }
     },
     //展开收起
@@ -235,25 +237,55 @@ Component({
       }
       if (this.data.selectDay.year !== year || this.data.selectDay.month !== month) {
         this.setMonth(year, month, day)
-      } else if (this.data.selectDay.day !== day) {
+      } else  {
         this.setData({
-          selectDay: selectDay
+          selectDay: selectDay,
+          value:selectDay.dateString
         })
-        this.triggerEvent("change", this.data.selectDay)
+        this.triggerEvent("change", {value:this.data.value})
         this.close();
+      }
+    },
+    myTouchStart(e) {
+      //开启滑动事件
+      this.setData({
+        slipFlag : true,
+        startPoint : e.touches[0]
+      })
+    },
+  
+    myTouchMove(e) {
+      // ----------------监听手势左右滑事件----------------
+      if (((this.data.startPoint.clientX - e.touches[e.touches.length - 1].clientX) > 80) && this.data.slipFlag) {
+        this.setData({
+          slipFlag : false
+        })
+        this.nextMonth();
+      } else if (((this.data.startPoint.clientX - e.touches[e.touches.length - 1].clientX) < -80) && this.data.slipFlag) {
+        this.setData({
+          slipFlag : false
+        })
+        this.lastMonth();
+      }
+    },
+    initValue(){
+      if(!(this.data.selectDay.year)){
+        let now = this.data.value ? new Date(this.data.value) : new Date()
+        let selectDay = {
+          year: now.getFullYear(),
+          month: now.getMonth() + 1,
+          day: now.getDate(),
+          dateString: this.formatTime(now, "Y-M-D")
+        }
+        this.setMonth(selectDay.year, selectDay.month, selectDay.day)
       }
     }
   },
   lifetimes: {
     attached() {
-      let now = this.data.defaultTime ? new Date(this.data.defaultTime) : new Date()
-      let selectDay = {
-        year: now.getFullYear(),
-        month: now.getMonth() + 1,
-        day: now.getDate(),
-        dateString: this.formatTime(now, "Y-M-D")
+      if(this.data.value){
+        this.initValue();
       }
-      this.setMonth(selectDay.year, selectDay.month, selectDay.day)
     }
   },
   observers: {
