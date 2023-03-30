@@ -68,7 +68,7 @@
 }
 
 .function-item image{
-  width: 100rpx;
+  width: 90rpx;
   height: 90rpx;
   display: block;
   margin: 0 auto;
