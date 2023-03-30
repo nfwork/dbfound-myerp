@@ -5,23 +5,23 @@
   </view>
   <view class="box"> 
     <view class="title">用户名：</view>
-    <text class="content">{{user_code}}</text>
+    <view class="content">{{user_code}}</view>
   </view>
   <view class="box"> 
     <view class="title">昵 称：</view>
-    <text class="content">{{user_name}}</text>
+    <view class="content">{{user_name}}</view>
   </view>
   <view class="box"> 
     <view class="title">账号性质：</view>
-    <text class="content">{{role_description}}</text>
+    <view class="content">{{role_description}}</view>
   </view>
   <view class="box"> 
     <view class="title">日 期：</view>
-    <text class="content">{{exp_time}}</text>
+    <view class="content">{{exp_time}}</view>
   </view>
   <view class="box"> 
     <view class="title">费用期间：</view>
-    <text class="content">{{period}}</text>
+    <view class="content">{{period}}</view>
   </view>
 
   <view class="box function"> 

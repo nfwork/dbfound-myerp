@@ -15,7 +15,7 @@
   ],
   "window":{
     "navigationBarBackgroundColor": "#428bca",
-    "navigationBarTitleText": "WeERP",
+    "navigationBarTitleText": "We记账",
     "navigationBarTextStyle": "white",
     "enablePullDownRefresh": false,
     "backgroundColor": "#efefef",
