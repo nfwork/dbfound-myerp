@@ -1,6 +1,6 @@
 /* pages/itemDetailM/itemDetailM.wxss */
 .box{
-  margin-bottom: 10rpx;
+  margin-bottom: 6rpx;
 }
 .box button{
   margin: 12rpx 4rpx;
