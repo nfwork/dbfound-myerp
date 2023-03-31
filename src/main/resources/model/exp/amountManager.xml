@@ -122,14 +122,14 @@
                 ]]>
 			</executeSql>
 			<batchSql cursor="
-				 select t.period_id,
+				 select t.period_id + 1 as period_id,
 						l.account_id,
 						ROUND(ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)/100,0)*100 amount,
 						'按上月开销情况导入' description
 				   from exp_item t,exp_item_line l
 				  where t.item_id = l.item_id
 					and t.book_id = ${@book_id}
-					and t.period_id = ${@period_id}
+					and t.period_id = ${@period_id} - 1
 					group by t.period_id, l.account_id
 					">
 				<execute name="add" />

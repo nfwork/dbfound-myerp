@@ -43,6 +43,9 @@ Page({
       wx.showToast({title: '会计期间不能为空', icon: "error"})
       return;
     }
+    wx.showLoading({
+      title: '正在保存中',
+    })
     wx.request({
       url: 'https://advtest.wecloud.io/dbfound/exp/item.execute!simpleSave',
       header:{ "Cookie":wx.getStorageSync('cookies')},
@@ -57,6 +60,7 @@ Page({
       method:"POST",
       success : (res)=> {
         if(res.data.success){
+          wx.hideLoading();
           wx.showModal({
             title: '提示',
             content: '保持成功',
@@ -73,6 +77,12 @@ Page({
             icon: "error"
           })
         }
+      },
+      fail:()=>{
+        wx.hideLoading();
+        wx.showToast({
+          title: '请求失败'
+        })
       }
     })
   },

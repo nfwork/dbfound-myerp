@@ -219,7 +219,7 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.query!comboAll',
+      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.query!combo',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {

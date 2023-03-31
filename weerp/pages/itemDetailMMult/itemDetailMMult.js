@@ -45,7 +45,10 @@ Page({
 		if (dr_amount != cr_amount) {
 			wx.showToast({title: "借贷不平，借方金额：" + dr_amount + "，贷方金额：" + cr_amount + "，请确认", icon: "error"});
 			return;
-		}
+    }
+    wx.showLoading({
+      title: '正在保存中',
+    })
     wx.request({
       url: 'https://advtest.wecloud.io/dbfound/exp/item.execute!saveHeaderAndLine',
       header:{ "Cookie":wx.getStorageSync('cookies')},
@@ -59,6 +62,7 @@ Page({
       method:"POST",
       success : (res)=> {
         if(res.data.success){
+          wx.hideLoading();
           wx.showModal({
             title: '提示',
             content: '保存成功',
@@ -75,6 +79,12 @@ Page({
             icon: "error"
           })
         }
+      },
+      fail:()=>{
+        wx.hideLoading();
+        wx.showToast({
+          title: '请求失败'
+        })
       }
     })
   },
