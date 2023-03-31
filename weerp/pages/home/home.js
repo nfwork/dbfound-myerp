@@ -29,6 +29,8 @@ Page({
       wx.navigateTo({url: "../expPeriod/expPeriod"});
     }else if(e.currentTarget.dataset.fid == 9){
       wx.navigateTo({url: "../expAccount/expAccount"});
+    }else if(e.currentTarget.dataset.fid == 10){
+      wx.navigateTo({url: "../amountManager/amountManager"});
     }
   },
 

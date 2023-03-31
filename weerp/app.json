@@ -11,7 +11,8 @@
     "pages/periodAmountReport/periodAmountReport",
     "pages/expPeriod/expPeriod",
     "pages/expAccount/expAccount",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/amountManager/amountManager"
   ],
   "window":{
     "navigationBarBackgroundColor": "#428bca",

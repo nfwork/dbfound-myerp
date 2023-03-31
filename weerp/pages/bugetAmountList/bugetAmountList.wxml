@@ -7,13 +7,17 @@
 
   <view class="box"> 
     <view class="table-header">
-      <view style="width: 450rpx;">科目名称</view>
+      <view style="width: 260rpx;">科目名称</view>
+      <view style="flex:1">本月预算</view>
       <view style="flex:1">本月发生</view>
+      <view style="flex:1">预算余额</view>
     </view>
     <view class="table-body"  style="height: 560rpx;">
       <view data-accountid="{{item.account_id}}" bindtap="showDetail" class="table-line mini-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
-        <view style="width: 450rpx;">{{item.account_name}}</view>
+        <view style="width: 260rpx;">{{item.account_name}}</view>
+        <view style="flex:1;text-align: right;">{{item.append_amount}}</view>
         <view style="flex:1;text-align: right;">{{item.emerge_amount}}</view>
+        <view style="flex:1;text-align: right; color: {{item.end_amount<0?'red':'green'}};">{{item.end_amount}}</view>
       </view>
     </view>
   </view>

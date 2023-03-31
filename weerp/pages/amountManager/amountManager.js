@@ -1,4 +1,4 @@
-// pages/bugetAmountList/bugetAmountList.js
+// pages/amountManager/amountManager.js
 Page({
 
   /**
@@ -8,7 +8,125 @@ Page({
       item_list:[],
       item_line_list:[],
       period_list:[],
-      current_period: {}
+      current_period: {},
+      showIndex: 0,
+      account_id:"",
+      account_name:"",
+      description:"",
+      amount:"",
+      change_type:1
+  },
+
+  hiddenBox(){
+    this.setData({
+      showIndex:'0'
+    })
+  },
+
+  setDescription(e){
+    this.setData({description : e.detail.value});
+  },
+
+  showBox(e){
+    this.setData({
+      showIndex:'1',
+      account_id: e.currentTarget.dataset.accountid,
+      account_name: e.currentTarget.dataset.accountname
+    })
+  },
+
+  itemChange(e){
+    if(e.detail.value){
+      this.setData({
+        change_type: e.detail.value
+      });
+    }
+  },
+
+  initByLastMonth(){
+    wx.showModal({
+      title: '提示',
+      content: '导入之前会删除当前期间已有的预算数据，确定要导入吗？',
+      complete: (res) => {
+        if (res.confirm) {
+          wx.request({
+            url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.execute!initByLastMonth',
+            header:{ "Cookie":wx.getStorageSync('cookies')},
+            method:"POST",
+            data:{
+              period_id: this.data.current_period.period_id
+            },
+            success : (res)=> {
+              if(res.data.success){
+                wx.showModal({
+                  title: '提示',
+                  content: '预算初始化成功',
+                  showCancel:false,
+                  complete: (res) => {
+                    this.query();
+                  }
+                })
+              }else{
+                wx.showToast({
+                  title: res.data.message,
+                  icon: "error"
+                })
+              }
+            }
+          })
+        }
+      }
+    })
+  },
+
+  saveChange(){
+    if(!(this.data.amount)){
+      wx.showToast({
+        title: "金额不能为空！",
+        icon: "error"
+      })
+      return;
+    }
+    if(!(this.data.description)){
+      wx.showToast({
+        title: "调整说明不能为空！",
+        icon: "error"
+      })
+      return;
+    }
+    wx.request({
+      url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.execute!add',
+      header:{ "Cookie":wx.getStorageSync('cookies')},
+      method:"POST",
+      data:{
+        period_id: this.data.current_period.period_id,
+        account_id: this.data.account_id,
+        amount: this.data.amount * this.data.change_type,
+        description: this.data.description
+      },
+      success : (res)=> {
+        if(res.data.success){
+          wx.showModal({
+            title: '提示',
+            content: '预算调整成功',
+            showCancel:false,
+            complete: (res) => {
+              this.hiddenBox();
+              this.query();
+              this.setData({
+                amount:"",
+                description:""
+              });
+            }
+          })
+        }else{
+          wx.showToast({
+            title: res.data.message,
+            icon: "error"
+          })
+        }
+      }
+    })
   },
 
   query(){
@@ -31,18 +149,15 @@ Page({
       },
       success : (res)=> {
         if(res.data.success){
+
           let json={account_name:'合计'};
           let append_amount = 0;
           let emerge_amount = 0;
           let end_amount = 0;
           for(let i=0;i<res.data.datas.length;i++){
             append_amount = this.add(append_amount, res.data.datas[i].append_amount);
-            emerge_amount = this.add(emerge_amount, res.data.datas[i].emerge_amount);
-            end_amount = this.add(end_amount, res.data.datas[i].end_amount);
           }
           json.append_amount = append_amount;
-          json.emerge_amount = emerge_amount;
-          json.end_amount = end_amount;
           res.data.datas.push(json);
 
           this.setData({
@@ -78,13 +193,12 @@ Page({
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/report/accountAmountQuery.query!getExpDetail',
+      url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.query!detail',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
         account_id: account_id,
-        period_id: this.data.current_period.period_id,
-        order : "asc"
+        period_id: this.data.current_period.period_id
       },
       success : (res)=> {
         if(res.data.success){

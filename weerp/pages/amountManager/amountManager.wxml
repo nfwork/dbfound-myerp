@@ -1,0 +1,74 @@
+<!--pages/amountManager/amountManager.wxml-->
+<view class="root">
+  <view class="box"> 
+    <view class="title">费用期间：</view>
+    <select value="{{current_period}}" bindchange="setPeriod" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>
+  </view>
+  <view class="box"> 
+    <button size="mini" class="bule-button" bindtap="initByLastMonth" style="width: 280rpx;" hover-class="bule-button-hover">按上月开销导入</button>
+  </view>
+  <view class="box"> 
+    <view class="table-header">
+      <view style="width: 380rpx;">科目名称</view>
+      <view style="flex:1">本月预算</view>
+      <view style="width: 160rpx;">操作</view>
+    </view>
+    <view class="table-body"  style="height: 480rpx;">
+      <view data-accountid="{{item.account_id}}" bindtap="showDetail" class="table-line mini-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
+        <view style="width: 380rpx;">{{item.account_name}}</view>
+        <view style="flex:1;text-align: right;">{{item.append_amount}}</view>
+        <view bindtap="showBox" data-accountid="{{item.account_id}}" data-accountname="{{item.account_name}}" style="width:160rpx; text-align: center; color: #0f4ea0;">{{item.account_id?'调整预算':''}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="box"> 
+    <view class="table-header">
+      <view style="width: 200rpx;">添加时间</view>
+      <view style="width: 140rpx;">预算金额</view>
+      <view style="flex:1">说明</view>
+    </view>
+    <view class="table-body" style="max-height: 450rpx;min-height: 180rpx;">
+      <view class="table-line" hover-class="table-line-hover" wx:for="{{item_line_list}}" wx:key="index">
+        <view style="width: 200rpx; text-align: center; ">{{item.add_time}}</view>
+        <view style="width: 140rpx; text-align: right;">{{item.amount}}</view>
+        <view style="flex:1">{{item.description}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<!-- 中间弹窗 -->
+<view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
+<view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
+  <view>
+    <view class="row-info">
+      <view class="info-header">预算调整</view>
+      <view class="box"> 
+        <view class="title">科目名称：</view>
+        <input type="digit" disabled="true" style="background-color: #f1f1f1;" model:value="{{account_name}}" />
+      </view>
+      <view class="box"> 
+        <view class="title">调整方式：</view>
+        <radio-group bindchange="itemChange">
+          <radio value="{{1}}" color="#3d9be7" style="margin-right: 20rpx;" checked="{{true}}">增加</radio>
+          <radio value="{{-1}}" color="#3d9be7" checked="{{false}}">缩减</radio>
+        </radio-group>
+      </view>
+      <view class="box"> 
+        <view class="title">预算金额：</view>
+        <input type="digit" model:value="{{amount}}" />
+      </view>
+      <view class="box"> 
+        <view class="title">调整说明：</view>
+        <textarea bindinput="setDescription" value="{{description}}"/>
+      </view>
+    </view>
+    <view class="box, info-footer">
+      <button size="mini" class="litter-bule-button" bindtap="hiddenBox" style="width: 160rpx; margin-bottom: 20rpx;" hover-class="litter-bule-button-hover" >取 消</button>
+      <button size="mini" class="bule-button" bindtap="saveChange" style="width: 160rpx; margin-bottom: 20rpx; margin-left: 20rpx;" hover-class="bule-button-hover">保 存</button>
+    </view>
+  </view>
+</view>
+

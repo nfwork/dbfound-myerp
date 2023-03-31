@@ -110,4 +110,31 @@
 		</sqls>
 	</execute>
 
+	<execute name="initByLastMonth">
+		<param name="period_id" dataType="number" />
+		<param name="account_id" dataType="number" />
+		<sqls>
+			<executeSql>
+				<![CDATA[
+					delete from exp_account_buget
+					where book_id = ${@book_id}
+					  and period_id = ${@period_id}
+                ]]>
+			</executeSql>
+			<batchSql cursor="
+				 select t.period_id,
+						l.account_id,
+						ROUND(ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)/100,0)*100 amount,
+						'按上月开销情况导入' description
+				   from exp_item t,exp_item_line l
+				  where t.item_id = l.item_id
+					and t.book_id = ${@book_id}
+					and t.period_id = ${@period_id}
+					group by t.period_id, l.account_id
+					">
+				<execute name="add" />
+			</batchSql>
+		</sqls>
+	</execute>
+
 </model>
