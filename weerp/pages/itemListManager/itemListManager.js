@@ -24,6 +24,9 @@ Page({
       })
       return;
     }
+    wx.showLoading({
+      title: '正在加载中',
+    })
     wx.request({
       url: 'https://advtest.wecloud.io/dbfound/exp/item.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
@@ -46,6 +49,9 @@ Page({
         }else if(res.data.timeout){
           wx.navigateTo({url: "../login/login"});
         }
+      },
+      complete:()=>{
+        wx.hideLoading();
       }
     })
   },

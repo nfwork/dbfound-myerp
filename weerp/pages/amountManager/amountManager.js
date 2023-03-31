@@ -44,6 +44,13 @@ Page({
   },
 
   initByLastMonth(){
+    if(this.data.period_list.length == 0){
+      wx.showToast({
+        title: '当前没有打开过的期间',
+        icon: "error"
+      })
+      return;
+    }
     wx.showModal({
       title: '提示',
       content: '导入之前会删除当前期间已有的预算数据，确定要导入吗？',

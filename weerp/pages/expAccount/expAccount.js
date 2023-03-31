@@ -120,7 +120,10 @@ Page({
   },
 
   query(){
-   wx.request({
+    wx.showLoading({
+      title: '正在加载中',
+    })
+    wx.request({
       url: 'https://advtest.wecloud.io/dbfound/fnd/expAccount.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
@@ -141,6 +144,9 @@ Page({
         }else if(res.data.timeout){
           wx.navigateTo({url: "../login/login"});
         }
+      },
+      complete:()=>{
+        wx.hideLoading();
       }
     })
   },
