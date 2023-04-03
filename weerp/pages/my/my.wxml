@@ -20,8 +20,8 @@
     <view class="content">{{exp_time}}</view>
   </view>
   <view class="box"> 
-    <view class="title">费用期间：</view>
-    <view class="content">{{period}}</view>
+    <view class="title">会计期间：</view>
+    <view class="content">{{period==null?"无可用期间":period}}</view>
   </view>
 
   <view class="box function"> 

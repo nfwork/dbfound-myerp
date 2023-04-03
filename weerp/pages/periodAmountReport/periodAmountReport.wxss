@@ -3,31 +3,12 @@
 .box{
   justify-content: space-around;
 }
-radio{
-  margin-right: 16rpx;
-}
-radio ::before{
-  background-color: #428bca !important;
-  border-color: #428bca !important;
-}
-
 radio .wx-radio-input {
   border-radius: 50%; /* 圆角 */
-  width: 24rpx;
+  width: 28rpx;
   border: 2rpx solid #5e5e5f;
-  height: 24rpx;
+  height: 28rpx;
 }
-
-radio .wx-radio-input.wx-radio-input-checked::before {
-  border-radius: 50%; /* 圆角 */
-  width: 36rpx; /* 选中后对勾大小，不要超过背景的尺寸 */
-  height: 36rpx; /* 选中后对勾大小，不要超过背景的尺寸 */
-  line-height: 36rpx;
-  text-align: center;
-  font-size: 20rpx; /* 对勾大小 30rpx */
-  transform: translate(-50%, -50%) scale(1);
-}
-
 .header-box {
   overflow: scroll;
   width: 690rpx;

@@ -204,5 +204,7 @@ textarea{
 
 text{
   border: none !important;
+  word-wrap:break-word;
+  word-break:break-word;
 }
 

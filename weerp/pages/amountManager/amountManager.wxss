@@ -94,5 +94,12 @@ textarea{
 
 radio-group{
   flex: 1;
-  margin-top: 10rpx;
+  margin-top: 14rpx;
+}
+
+radio .wx-radio-input {
+  border-radius: 50%; /* 圆角 */
+  width: 28rpx;
+  border: 2rpx solid #5e5e5f;
+  height: 28rpx;
 }
