@@ -43,7 +43,7 @@ select{
   justify-content: center;
   border-radius: 10rpx;
   width: 90%;
-  margin-top: 10%;
+  margin-top: 15%;
   margin-left: 5%;
   margin-right: 5%;
 }
@@ -74,11 +74,11 @@ select{
 
 .row-info{
   padding: 0 30rpx;
-  height: 530rpx;
+  height: 540rpx;
 }
 
 .row-info .box{
-  height: 80rpx;
+  height: 84rpx;
 }
 
 .row-info .title{

@@ -20,6 +20,9 @@ input{
 select{
   flex: 1;
 }
+switch{
+  margin-top:5rpx;
+}
 
 .popup-box{
   position: absolute;
@@ -37,7 +40,7 @@ select{
   justify-content: center;
   border-radius: 10rpx;
   width: 90%;
-  margin-top: 10%;
+  margin-top: 15%;
   margin-left: 5%;
   margin-right: 5%;
 }
@@ -67,5 +70,5 @@ select{
 }
 
 .row-info .box{
-  height: 90rpx;
+  height: 84rpx;
 }

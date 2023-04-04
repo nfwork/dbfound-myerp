@@ -65,7 +65,7 @@ input{
   justify-content: center;
   border-radius: 10rpx;
   width: 90%;
-  margin-top: 10%;
+  margin-top: 15%;
   margin-left: 5%;
   margin-right: 5%;
 }
@@ -99,7 +99,7 @@ input{
 }
 
 .row-info .box{
-  height: 90rpx;
+  height: 84rpx;
 }
 
 .row-info .title{

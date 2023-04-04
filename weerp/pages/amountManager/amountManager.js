@@ -31,8 +31,10 @@ Page({
     this.setData({
       showIndex:'1',
       account_id: e.currentTarget.dataset.accountid,
-      account_name: e.currentTarget.dataset.accountname
-    })
+      account_name: e.currentTarget.dataset.accountname,
+      amount:"",
+      description:""
+    });
   },
 
   itemChange(e){
@@ -120,10 +122,6 @@ Page({
             complete: (res) => {
               this.hiddenBox();
               this.query();
-              this.setData({
-                amount:"",
-                description:""
-              });
             }
           })
         }else{
