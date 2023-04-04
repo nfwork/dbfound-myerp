@@ -11,7 +11,7 @@ Page({
 
   login(e){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/sys/login.execute',
+      url: 'https://dbfound.3g.net.cn/dbfound/sys/login.execute',
       method:"POST",
       data:{
         user_code:this.data.user_code,

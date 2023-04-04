@@ -19,7 +19,7 @@ Page({
 
   getBasic(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/public.query!getDefaultPeriod',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/public.query!getDefaultPeriod',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {
@@ -80,7 +80,7 @@ Page({
       return;
     }
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/sys/login.execute!updatePassword',
+      url: 'https://dbfound.3g.net.cn/dbfound/sys/login.execute!updatePassword',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{

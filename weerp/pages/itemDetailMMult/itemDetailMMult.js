@@ -50,7 +50,7 @@ Page({
       title: '正在保存中',
     })
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/item.execute!saveHeaderAndLine',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/item.execute!saveHeaderAndLine',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       data:{
         exp_time:this.data.exp_time,
@@ -91,7 +91,7 @@ Page({
   
   query(){
    wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/item.query!getDeatil',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/item.query!getDeatil',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -193,7 +193,7 @@ Page({
 
   showDetail(e){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/itemLine.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/itemLine.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -234,7 +234,7 @@ Page({
 
   getAccountList(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expAccount.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expAccount.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {
@@ -251,7 +251,7 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.query!combo',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!combo',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {
@@ -301,7 +301,7 @@ Page({
 
   getBasic(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/public.query!getDefaultPeriod',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/public.query!getDefaultPeriod',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {

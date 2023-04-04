@@ -53,7 +53,7 @@ Page({
    */
   onShow() {
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/report/homeAnalysis.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/report/homeAnalysis.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       success : (res)=> {
         if(res.data.success){

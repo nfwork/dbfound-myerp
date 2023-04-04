@@ -26,7 +26,7 @@ Page({
       status = 'N';
     }
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.execute!' + (status=='Y'?"open":"close"),
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.execute!' + (status=='Y'?"open":"close"),
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -48,7 +48,7 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{

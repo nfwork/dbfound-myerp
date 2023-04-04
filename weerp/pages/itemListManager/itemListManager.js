@@ -28,7 +28,7 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/item.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/item.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -70,7 +70,7 @@ Page({
   showDetail(e){
     let item_id = e.currentTarget.dataset.itemid;
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/itemLine.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/itemLine.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -135,7 +135,7 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.query!combo',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!combo',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {

@@ -87,7 +87,7 @@ Page({
       type = "update";
     }
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expAccount.execute!'+ type,
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expAccount.execute!'+ type,
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -124,7 +124,7 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expAccount.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expAccount.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -196,7 +196,7 @@ Page({
 
   getAccountTypeList(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/sourceCode.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/sourceCode.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{

@@ -59,7 +59,7 @@ Page({
       complete: (res) => {
         if (res.confirm) {
           wx.request({
-            url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.execute!initByLastMonth',
+            url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.execute!initByLastMonth',
             header:{ "Cookie":wx.getStorageSync('cookies')},
             method:"POST",
             data:{
@@ -104,7 +104,7 @@ Page({
       return;
     }
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.execute!add',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.execute!add',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -146,7 +146,7 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.query',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.query',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -198,7 +198,7 @@ Page({
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/exp/amountManager.query!detail',
+      url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.query!detail',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       data:{
@@ -224,7 +224,7 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://advtest.wecloud.io/dbfound/fnd/expPeriod.query!combo',
+      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!combo',
       header:{ "Cookie":wx.getStorageSync('cookies')},
       method:"POST",
       success : (res)=> {

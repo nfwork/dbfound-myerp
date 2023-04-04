@@ -17,7 +17,7 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-       url: 'https://advtest.wecloud.io/dbfound/report/periodAmountReport.query',
+       url: 'https://dbfound.3g.net.cn/dbfound/report/periodAmountReport.query',
        header:{ "Cookie":wx.getStorageSync('cookies')},
        method:"POST",
        data:{
