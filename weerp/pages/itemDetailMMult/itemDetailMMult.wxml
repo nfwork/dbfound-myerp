@@ -53,8 +53,8 @@
 <view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
 <view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
   <view>
+    <view class="info-header">凭证行管理</view>
     <view class="row-info">
-      <view class="info-header">凭证行管理</view>
       <view class="box"> 
         <view class="title">费用科目：</view>
         <select value="{{current_line_account}}" bindchange="setAccount" options="{{account_list}}" valueField="account_id" displayField="account_name"></select>

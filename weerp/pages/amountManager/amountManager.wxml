@@ -1,7 +1,7 @@
 <!--pages/amountManager/amountManager.wxml-->
 <view class="root">
   <view class="box"> 
-    <view class="title">费用期间：</view>
+    <view class="title">会计期间：</view>
     <select value="{{current_period}}" bindchange="setPeriod" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>
   </view>
   <view class="box"> 
@@ -43,8 +43,8 @@
 <view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
 <view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
   <view>
+    <view class="info-header">预算调整</view>
     <view class="row-info">
-      <view class="info-header">预算调整</view>
       <view class="box"> 
         <view class="title">科目名称：</view>
         <input type="digit" disabled="true" style="background-color: #f1f1f1;" model:value="{{account_name}}" />
@@ -62,7 +62,7 @@
       </view>
       <view class="box"> 
         <view class="title">调整说明：</view>
-        <textarea bindinput="setDescription" value="{{description}}"/>
+        <textarea bindinput="setDescription" cursor-spacing="120" value="{{description}}"/>
       </view>
     </view>
     <view class="box, info-footer">

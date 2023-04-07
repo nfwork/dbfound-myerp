@@ -43,7 +43,7 @@ Page({
   register(){
     wx.showModal({
       title: '提示',
-      content: 'WeERP小程序暂不提供在线注册功能，如有需要请发送邮件到nfwork@163.com进行账号申请；',
+      content: 'We记账小程序暂不提供在线注册功能，如有需要请发送邮件到nfwork@163.com进行账号申请；',
       showCancel:false
     });
   },

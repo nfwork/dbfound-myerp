@@ -44,8 +44,8 @@
 <view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
 <view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
   <view>
+    <view class="info-header">科目编辑</view>
     <view class="row-info">
-      <view class="info-header">科目编辑</view>
       <view class="box"> 
         <view class="title">科目名称：</view>
         <input type="text" model:value="{{current_line_account_name}}" />

@@ -40,8 +40,8 @@
 <view class="popup-box" wx:if="{{showIndex=='1'}}" bindtap="closePopup"></view> 
 <view class="info-center" style="top:{{height*0.3}}px;height:{{height*0.4}}px;" wx:if="{{showIndex=='1'}}">
   <view>
+    <view class="info-header">密码修改</view>
     <view class="row-info">
-      <view class="info-header">密码修改</view>
       <view class="box"> 
         <view class="title">原密码：</view>
         <input type="text" password="true" model:value="{{ypassword}}" />
