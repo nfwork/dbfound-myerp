@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd"> 
 	<execute>
+		<param name="openid" dataType="varchar" autoSession="true"/>
 		<param name="user_id" dataType="number" autoSession="true"/>
 		<param name="book_id" dataType="number" autoSession="true"/>
 		<param name="role_id" dataType="number" autoSession="true"/>
@@ -25,7 +26,8 @@
 						u.user_name,
 						r.role_description,
 						r.role_code,
-			            u.book_id
+			            u.book_id,
+			            u.openid
 					 FROM SYS_USER u,sys_role r
 				    where r.role_id =u.role_id
 					  and u.user_code=${@user_code}

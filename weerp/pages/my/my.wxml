@@ -16,6 +16,10 @@
     <view class="content">{{role_description}}</view>
   </view>
   <view class="box"> 
+    <view class="title">微信绑定：</view>
+    <view class="content">{{openid?"已绑定":"未绑定"}}</view>
+  </view>
+  <view class="box"> 
     <view class="title">日 期：</view>
     <view class="content">{{exp_time}}</view>
   </view>
@@ -26,6 +30,7 @@
 
   <view class="box function"> 
     <view bindtap="showBox">修改密码</view>
+    <view bindtap="bind">绑定微信</view>
     <view bindtap="logout">注销登录</view>
   </view>
 

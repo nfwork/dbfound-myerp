@@ -1,13 +1,29 @@
 // app.js
 App({
   onLaunch() {
-    // 登录
-    // wx.login({
-    //   success: res => {
-    //     console.log(res)
-    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
-    //   }
-    // })
+    wx.login({
+      success: res => {
+        wx.request({
+          url: 'https://dbfound.3g.net.cn/dbfound/sys/wxLogin.execute!login',
+          header:{ "Cookie":wx.getStorageSync('cookies')},
+          method:"POST",
+          data:{
+            js_code: res.code 
+          },
+          success : (res)=> {
+            if(res.data.success){
+              let cookieString = "";
+              if(res.cookies.length >0){
+                for(const index in res.cookies){
+                  cookieString = cookieString + res.cookies[index] +";"
+                }
+              }
+              wx.setStorageSync('cookies', cookieString);
+            }
+          }
+        })
+      }
+    })
   },
   globalData: {
     userInfo: null

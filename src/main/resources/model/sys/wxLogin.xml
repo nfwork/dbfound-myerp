@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+	<query>
+		<sql>
+			select value as wxs from sys_config where code = 'wxs'
+		</sql>
+	</query>
+
+	<execute name="login" adapter="com.nfwork.erp.adapter.WxLoginAdapter">
+		<param name="wxs" dataType="varchar" />
+		<param name="js_code" dataType="varchar" />
+		<param name="openid" dataType="varchar" autoSession="true"/>
+		<param name="user_id" dataType="number" autoSession="true"/>
+		<param name="book_id" dataType="number" autoSession="true"/>
+		<param name="role_id" dataType="number" autoSession="true"/>
+		<param name="user_name" dataType="varchar" autoSession="true"/>
+		<param name="role_description" dataType="varchar" autoSession="true"/>
+		<param name="role_code" dataType="varchar" autoSession="true"/>
+		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true"/>
+		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
+		<sqls>
+			<collisionSql where="not exists (select 1 from sys_user where openid= ${@openid} and status = 'Y')" message="未关联可用账号！"/>
+			<querySql>
+		      <![CDATA[
+			         SELECT
+						u.user_id,
+						u.role_id,
+						u.user_name,
+			            u.user_code,
+						r.role_description,
+						r.role_code,
+			            u.book_id
+					 FROM SYS_USER u,sys_role r
+				    where r.role_id =u.role_id
+					  and u.openid=${@openid}
+			   ]]>
+		    </querySql>
+			<executeSql>
+				<![CDATA[
+				insert into sys_login_history(user_code,password,ip,status,login_time,login_date)
+				values(${@user_code},'ttt',${@ip},1,now(),now())
+				]]>
+			</executeSql>
+		</sqls>
+	</execute>
+
+	<execute name="bind" adapter="com.nfwork.erp.adapter.WxBindAdapter">
+		<param name="js_code" dataType="varchar"/>
+		<param name="user_id" dataType="number" scope="session"/>
+		<param name="openid" dataType="varchar" autoSession="true"/>
+		<sqls>
+			<executeSql>
+				update sys_user set openid = null
+				where openid = ${@openid}
+			</executeSql>
+			<executeSql>
+				update sys_user set openid = ${@openid}
+				 where user_id = ${@user_id}
+			</executeSql>
+		</sqls>
+	</execute>
+
+</model>

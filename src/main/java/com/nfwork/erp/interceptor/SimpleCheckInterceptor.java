@@ -86,6 +86,7 @@ public class SimpleCheckInterceptor implements Interceptor {
 		map.put("/close.jsp", "1");
 		map.put("/loginWindow.jsp", "1");
 		map.put("/sys/login.execute", "1");
+		map.put("/sys/wxLogin.execute!login", "1");
 		
 		map.put("/mobile/login.jsp", "1");
 	}

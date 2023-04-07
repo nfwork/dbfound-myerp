@@ -10,6 +10,7 @@
 		<param name="user_code" scope="session" ioType="both"/>
 		<param name="role_code" scope="session" ioType="both"/>
 		<param name="role_description" scope="session" ioType="both"/>
+		<param name="openid" scope="session" ioType="both"/>
 		<sql>
 		 <![CDATA[
 			SELECT (select p.period_id

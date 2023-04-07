@@ -14,7 +14,8 @@ Page({
     showIndex: 0,
     ypassword:"",
     password:"",
-    password2:""
+    password2:"",
+    openid:""
   },
 
   getBasic(){
@@ -29,6 +30,7 @@ Page({
             user_code:res.data.outParam.user_code,
             role_code:res.data.outParam.role_code,
             role_description:res.data.outParam.role_description,
+            openid:res.data.outParam.openid,
             exp_time:res.data.datas[0].exp_time,
             period:res.data.datas[0].period
           });
@@ -61,6 +63,42 @@ Page({
   showBox(e){
     this.setData({
       showIndex:'1'
+    })
+  },
+
+  bind(){
+    wx.showModal({
+      title: '提示',
+      content: '确认要将绑定当前微信账号吗？',
+      complete: (res) => {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '绑定中',
+          })
+          wx.login({
+            success: res => {
+              wx.request({
+                url: 'https://dbfound.3g.net.cn/dbfound/sys/wxLogin.execute!bind',
+                header:{ "Cookie":wx.getStorageSync('cookies')},
+                method:"POST",
+                data:{
+                  js_code: res.code 
+                },
+                success : (res)=> {
+                  if(res.data.success){
+                    this.getBasic();
+                    wx.hideLoading();
+                    wx.showToast({
+                      title: '绑定成功',
+                      icon:"success"
+                    })
+                  }
+                }
+              })
+            }
+          })
+        }
+      }
     })
   },
 
