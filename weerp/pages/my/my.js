@@ -69,7 +69,7 @@ Page({
   bind(){
     wx.showModal({
       title: '提示',
-      content: '确认要将绑定当前微信账号吗？',
+      content: '确认要绑定当前微信账号吗？',
       complete: (res) => {
         if (res.confirm) {
           wx.showLoading({
