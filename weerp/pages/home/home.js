@@ -74,6 +74,7 @@ Page({
               }
             }
             wx.setStorageSync('cookies', cookieString);
+            wx.setStorageSync('user_code', res.data.outParam.user_code);
           }
         },
         complete : () =>{
