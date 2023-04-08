@@ -1,6 +1,7 @@
 package com.nfwork.erp.adapter;
 
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.exception.DBFoundPackageException;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.model.adapter.ExecuteAdapter;
 import com.nfwork.dbfound.model.bean.Param;
@@ -41,7 +42,7 @@ public class WxBindAdapter implements ExecuteAdapter {
             return JsonUtil.jsonToMap(res).get("openid").toString();
         } catch (IOException e) {
             LogUtil.error(e.getMessage(),e);
-            return null;
+            throw new RuntimeException("获取openid失败");
         }
     }
 }
