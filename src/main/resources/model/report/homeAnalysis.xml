@@ -10,7 +10,7 @@
 			SELECT
 			  '本月开支' AS account_name,
 			  IFNULL(SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)),0) as totalexp,
-			  10 AS priority
+			  1 AS priority
 			FROM exp_item i,
 			  exp_item_line l,
 			  exp_account a
@@ -35,7 +35,8 @@
 			 	AND a.account_type ='0'
 			    AND a.account_id = l.account_id
 			    and i.book_id = ${@book_id}
-			GROUP BY l.account_id
+			GROUP BY a.account_id
+			order by priority
 
 			limit 5
 		 ]]>
