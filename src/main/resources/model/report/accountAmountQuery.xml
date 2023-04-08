@@ -13,17 +13,21 @@
 						account_code,
 						account_name,
 						
-						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0) from exp_item i,exp_item_line l 
+						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)
+						   from exp_item i, exp_item_line l
 						  where l.account_id = t.account_id 
 						    and i.item_id = l.item_id
 						    and i.period_id < ${@period_id}
-						    and i.book_id = ${@book_id}) remaind_amount,
+						    and i.book_id = ${@book_id}
+						    and l.book_id = ${@book_id}) remaind_amount,
 						    
-						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0) from exp_item i,exp_item_line l 
+						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)
+						   from exp_item i, exp_item_line l
 						  where l.account_id = t.account_id 
 						    and i.item_id = l.item_id
 						    and i.period_id = ${@period_id}
-							and i.book_id = ${@book_id}) emerge_amount
+							and i.book_id = ${@book_id}
+						    and l.book_id = ${@book_id}) emerge_amount
 					from exp_account t
 					 where t.book_id = ${@book_id}
 					order by t.priority
@@ -55,8 +59,9 @@
 			    and l.account_id = a.account_id
 			    and p.book_id = ${@book_id}
 			    and t.book_id = ${@book_id}
+				and t.period_id = ${@period_id}
 			    and l.account_id = ${@account_id}
-			    and t.period_id = ${@period_id}
+			    and l.book_id = ${@book_id}
 			  order by t.exp_time
 		 ]]>
 		</sql>
