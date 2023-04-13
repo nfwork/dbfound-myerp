@@ -33,7 +33,7 @@
 						{account_name:"费用-水电燃气",account_type:0, priority:30, display_in_home:1},
 						{account_name:"费用-其它开支",account_type:0, priority:40, display_in_home:1},
 						{account_name:"我的现金",account_type:1, priority:50, display_in_home:0},
-						{account_name:"我的存款",account_type:2, priority:50, display_in_home:0}
+						{account_name:"我的存款",account_type:2, priority:60, display_in_home:0}
 					]
 				},
 				callback: function(res){
