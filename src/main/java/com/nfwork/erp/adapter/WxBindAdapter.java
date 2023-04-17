@@ -9,7 +9,9 @@ import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
@@ -35,11 +37,12 @@ public class WxBindAdapter implements ExecuteAdapter {
                 Map map = (Map) ModelEngine.query(context,"sys/wxLogin",null).getDatas().get(0);
                 wxs = map.get("wxs").toString();
             }
-            HttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet( String.format(wxUrl, wxs, jscode) );
-            HttpResponse response = httpClient.execute(httpGet);
-            String res =  EntityUtils.toString(response.getEntity());
-            return JsonUtil.jsonToMap(res).get("openid").toString();
+            HttpGet httpGet = new HttpGet(String.format(wxUrl, wxs, jscode));
+            try(CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(httpGet)){
+                String res = EntityUtils.toString(response.getEntity());
+                return JsonUtil.jsonToMap(res).get("openid").toString();
+            }
         } catch (IOException e) {
             LogUtil.error(e.getMessage(),e);
             throw new RuntimeException("获取openid失败");
