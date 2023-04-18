@@ -1,14 +1,11 @@
 package com.nfwork.erp.adapter;
 
 import com.nfwork.dbfound.core.Context;
-import com.nfwork.dbfound.exception.DBFoundPackageException;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.model.adapter.ExecuteAdapter;
 import com.nfwork.dbfound.model.bean.Param;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -34,8 +31,7 @@ public class WxBindAdapter implements ExecuteAdapter {
     protected String getOpenId(Context context ,String jscode){
         try {
             if(wxs ==null) {
-                Map map = (Map) ModelEngine.query(context,"sys/wxLogin",null).getDatas().get(0);
-                wxs = map.get("wxs").toString();
+                wxs = ModelEngine.query(context,"sys/wxLogin",null).getString("wxs");
             }
             HttpGet httpGet = new HttpGet(String.format(wxUrl, wxs, jscode));
             try(CloseableHttpClient httpClient = HttpClients.createDefault();
