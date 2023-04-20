@@ -1,4 +1,6 @@
 // pages/expPeriod/expPeriod.js
+const app = getApp();
+
 Page({
 
   /**
@@ -26,8 +28,8 @@ Page({
       status = 'N';
     }
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.execute!' + (status=='Y'?"open":"close"),
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expPeriod.execute!' + (status=='Y'?"open":"close"),
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         period_id: dataset.periodid,
@@ -48,8 +50,8 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expPeriod.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         limit : this.data.limit,

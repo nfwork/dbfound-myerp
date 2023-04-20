@@ -1,4 +1,6 @@
 // pages/login/login.js
+const app = getApp();
+
 Page({
 
   /**
@@ -11,7 +13,8 @@ Page({
 
   login(e){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/sys/login.execute',
+      url: app.globalData.serverUrl +'/sys/login.execute',
+      header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       data:{
         user_code:this.data.user_code,
@@ -25,6 +28,8 @@ Page({
               cookieString = cookieString + res.cookies[index] +";"
             }
           }
+          app.globalData.isLogin = true;
+          app.globalData.cookies = cookieString;
           wx.setStorageSync('cookies', cookieString);
           wx.setStorageSync('user_code', this.data.user_code);
           wx.switchTab({

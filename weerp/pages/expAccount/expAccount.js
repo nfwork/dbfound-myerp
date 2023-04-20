@@ -1,4 +1,6 @@
 // pages/expAccount/expAccount.js
+const app = getApp();
+
 Page({
 
   /**
@@ -87,8 +89,8 @@ Page({
       type = "update";
     }
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expAccount.execute!'+ type,
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expAccount.execute!'+ type,
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         account_id: account_id,
@@ -124,8 +126,8 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expAccount.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expAccount.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         limit : this.data.limit,
@@ -196,8 +198,8 @@ Page({
 
   getAccountTypeList(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/sourceCode.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/sourceCode.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         code:"ACCOUNTTYPE"

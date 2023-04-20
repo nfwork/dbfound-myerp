@@ -1,4 +1,6 @@
 // pages/my/my.js
+const app = getApp();
+
 Page({
 
   /**
@@ -20,8 +22,8 @@ Page({
 
   getBasic(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/public.query!getDefaultPeriod',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl+'/exp/public.query!getDefaultPeriod',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){
@@ -35,7 +37,7 @@ Page({
             period:res.data.datas[0].period
           });
         }else if(res.data.timeout){
-          wx.navigateTo({url: "../login/login"});
+          wx.redirectTo({url: "../login/login"});
         }
       }
     })
@@ -48,7 +50,9 @@ Page({
       complete: (res) => {
         if (res.confirm) {
           wx.removeStorageSync('cookies');
-          wx.navigateTo({url: "../login/login"});
+          app.globalData.cookies = "";
+          app.globalData.isLogin = false;
+          wx.redirectTo({url: "../login/login"});
         }
       }
     })
@@ -78,8 +82,8 @@ Page({
           wx.login({
             success: res => {
               wx.request({
-                url: 'https://dbfound.3g.net.cn/dbfound/sys/wxLogin.execute!bind',
-                header:{ "Cookie":wx.getStorageSync('cookies')},
+                url: app.globalData.serverUrl+'/sys/wxLogin.execute!bind',
+                header:{ "Cookie":app.globalData.cookies},
                 method:"POST",
                 data:{
                   js_code: res.code 
@@ -93,6 +97,13 @@ Page({
                       icon:"success"
                     })
                   }
+                },
+                fail: () => {
+                  wx.hideLoading();
+                  wx.showToast({
+                    title: '绑定失败',
+                    icon:"error"
+                  })
                 }
               })
             }
@@ -118,8 +129,8 @@ Page({
       return;
     }
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/sys/login.execute!updatePassword',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl+'/sys/login.execute!updatePassword',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         password: this.data.password,

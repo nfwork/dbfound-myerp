@@ -1,4 +1,6 @@
 // pages/periodAmountReport/periodAmountReport.js
+const app = getApp();
+
 Page({
 
   /**
@@ -17,8 +19,8 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-       url: 'https://dbfound.3g.net.cn/dbfound/report/periodAmountReport.query',
-       header:{ "Cookie":wx.getStorageSync('cookies')},
+       url: app.globalData.serverUrl +'/report/periodAmountReport.query',
+       header:{ "Cookie":app.globalData.cookies},
        method:"POST",
        data:{
         periodfrom: this.data.periodfrom,

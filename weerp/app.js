@@ -6,6 +6,8 @@ App({
   },
   
   globalData: {
-    userInfo: null
+    isLogin : false,
+    cookies : wx.getStorageSync('cookies'),
+    serverUrl : "https://dbfound.3g.net.cn/dbfound"
   },
 })

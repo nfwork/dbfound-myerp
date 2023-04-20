@@ -1,4 +1,6 @@
 // pages/itemListManager/itemListManager.js
+const app = getApp();
+
 Page({
 
   /**
@@ -28,8 +30,8 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/item.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/item.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         period_id: this.data.current_period.period_id,
@@ -70,8 +72,8 @@ Page({
   showDetail(e){
     let item_id = e.currentTarget.dataset.itemid;
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/itemLine.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/itemLine.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         item_id: item_id,
@@ -135,8 +137,8 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!combo',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expPeriod.query!combo',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){

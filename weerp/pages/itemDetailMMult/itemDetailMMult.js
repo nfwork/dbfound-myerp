@@ -1,4 +1,6 @@
 // pages/itemDetailMMult/itemDetailMMult.js
+const app = getApp();
+
 Page({
 
   /**
@@ -50,8 +52,8 @@ Page({
       title: '正在保存中',
     })
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/item.execute!saveHeaderAndLine',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/item.execute!saveHeaderAndLine',
+      header:{ "Cookie":app.globalData.cookies},
       data:{
         exp_time:this.data.exp_time,
         description:this.data.description,
@@ -91,8 +93,8 @@ Page({
   
   query(){
    wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/item.query!getDeatil',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/item.query!getDeatil',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         item_id: this.data.item_id
@@ -193,8 +195,8 @@ Page({
 
   showDetail(e){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/itemLine.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/itemLine.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         item_id: this.data.item_id,
@@ -234,8 +236,8 @@ Page({
 
   getAccountList(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expAccount.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expAccount.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){
@@ -251,8 +253,8 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!combo',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expPeriod.query!combo',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){
@@ -301,8 +303,8 @@ Page({
 
   getBasic(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/public.query!getDefaultPeriod',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/public.query!getDefaultPeriod',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){

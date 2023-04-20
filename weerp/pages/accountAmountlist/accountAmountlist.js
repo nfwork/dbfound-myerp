@@ -1,4 +1,6 @@
 // pages/accountAmountlist/accountAmountlist.js
+const app = getApp();
+
 Page({
 
   /**
@@ -23,8 +25,8 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/report/accountAmountQuery.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl + '/report/accountAmountQuery.query',
+      header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       data:{
         period_id: this.data.current_period.period_id
@@ -48,8 +50,8 @@ Page({
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/report/accountAmountQuery.query!getExpDetail',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/report/accountAmountQuery.query!getExpDetail',
+      header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       data:{
         account_id: account_id,
@@ -75,8 +77,8 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!comboAll',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expPeriod.query!comboAll',
+      header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){

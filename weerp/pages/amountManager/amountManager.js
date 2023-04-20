@@ -1,4 +1,6 @@
 // pages/amountManager/amountManager.js
+const app = getApp();
+
 Page({
 
   /**
@@ -59,8 +61,8 @@ Page({
       complete: (res) => {
         if (res.confirm) {
           wx.request({
-            url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.execute!initByLastMonth',
-            header:{ "Cookie":wx.getStorageSync('cookies')},
+            url: app.globalData.serverUrl +'/exp/amountManager.execute!initByLastMonth',
+            header:{ "Cookie": app.globalData.cookies},
             method:"POST",
             data:{
               period_id: this.data.current_period.period_id
@@ -104,8 +106,8 @@ Page({
       return;
     }
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.execute!add',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/amountManager.execute!add',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         period_id: this.data.current_period.period_id,
@@ -146,8 +148,8 @@ Page({
       title: '正在加载中',
     })
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.query',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/amountManager.query',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         period_id: this.data.current_period.period_id
@@ -198,8 +200,8 @@ Page({
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/exp/amountManager.query!detail',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/exp/amountManager.query!detail',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
         account_id: account_id,
@@ -224,8 +226,8 @@ Page({
 
   getPeriodList(){
     wx.request({
-      url: 'https://dbfound.3g.net.cn/dbfound/fnd/expPeriod.query!combo',
-      header:{ "Cookie":wx.getStorageSync('cookies')},
+      url: app.globalData.serverUrl +'/fnd/expPeriod.query!combo',
+      header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       success : (res)=> {
         if(res.data.success){

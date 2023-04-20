@@ -1,4 +1,6 @@
 // pages/home/home.js
+const app = getApp();
+
 Page({
 
   /**
@@ -39,9 +41,11 @@ Page({
     wx.showLoading({
       title: '正在加载中',
     })
-    let code = await this.getJsCode();
-    let result = await this.wxLogin(code);
-    result = await this.getHomeAnalysis();
+    if(app.globalData.isLogin == false){
+      let code = await this.getJsCode();
+      let lo = await this.wxLogin(code);
+    }
+    let hl = await this.getHomeAnalysis();
     this.setData({inited:true});
     wx.hideLoading();
   },
@@ -51,6 +55,9 @@ Page({
       wx.login({
         success: res => {
           resolve(res.code)
+        },
+        fail : () => {
+          wx.redirectTo({url: "../login/login"});
         }
       })
     });
@@ -59,8 +66,8 @@ Page({
   wxLogin(jsCode){
     return new Promise((resolve,reject)=>{
       wx.request({
-        url: 'https://dbfound.3g.net.cn/dbfound/sys/wxLogin.execute!login',
-        header:{ "Cookie":wx.getStorageSync('cookies')},
+        url:  app.globalData.serverUrl +'/sys/wxLogin.execute!login',
+        header:{ "Cookie": app.globalData.cookies},
         method:"POST",
         data:{
           js_code: jsCode 
@@ -73,6 +80,8 @@ Page({
                 cookieString = cookieString + res.cookies[index] +";"
               }
             }
+            app.globalData.isLogin = true;
+            app.globalData.cookies = cookieString;
             wx.setStorageSync('cookies', cookieString);
             wx.setStorageSync('user_code', res.data.outParam.user_code);
           }
@@ -87,8 +96,8 @@ Page({
   getHomeAnalysis(){
     return new Promise((resolve,reject)=>{
       wx.request({
-        url: 'https://dbfound.3g.net.cn/dbfound/report/homeAnalysis.query',
-        header:{ "Cookie":wx.getStorageSync('cookies')},
+        url: app.globalData.serverUrl +'/report/homeAnalysis.query',
+        header:{ "Cookie": app.globalData.cookies},
         success : (res)=> {
           if(res.data.success){
             let totalAccount = res.data.datas.shift();
@@ -98,7 +107,7 @@ Page({
               totalexp:totalAccount.totalexp
             });
           }else if(res.data.timeout){
-            wx.navigateTo({url: "../login/login"});
+            wx.redirectTo({url: "../login/login"});
           }
         },
         complete : () =>{
