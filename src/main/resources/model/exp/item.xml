@@ -7,7 +7,7 @@
 		<sql>
 		 <![CDATA[
 			 select t.item_id,
-			 		(10000000 + t.item_id) item_num,
+			 		t.item_num,
 					t.period_id,
 					t.regist_user_id,
 					(select user_name from sys_user u where u.user_id = t.regist_user_id) regiest_user,
@@ -22,7 +22,7 @@
 			  #AND_CLAUSE#
 		 ]]>
 		</sql>
-		<filter name="item_num" express="t.item_id = ${@item_num}-10000000" />
+		<filter name="item_num" express="t.item_num = ${@item_num}" />
 		<filter name="period_id" express="t.period_id = ${@period_id}" />
 		<filter name="account_id" express="EXISTS (select 1 from exp_item_line l 
 											                   where l.item_id = t.item_id
@@ -42,8 +42,7 @@
 		<sql>
 		 <![CDATA[
 			 select *,
-			        (select user_name from sys_user u where u.user_id = t.regist_user_id) add_user,
-			 		(10000000 + t.item_id) item_num
+			        (select user_name from sys_user u where u.user_id = t.regist_user_id) add_user
 			   from exp_item t
 			  where t.item_id = ${@item_id}
 				and t.book_id =  ${@book_id}
@@ -90,6 +89,7 @@
 
 	<execute name="save">
 		<param name="item_id" dataType="number" ioType="both"/>
+		<param name="item_num" dataType="number" value="10000001"/>
 		<param name="period_id" dataType="number" />
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<param name="exp_time" dataType="varchar" />
@@ -109,9 +109,16 @@
 				</executeSql>
 			</whenSql>
 			<otherwiseSql>
+				<querySql>
+					select (item_num + 1) as item_num
+					  from exp_item
+					 where book_id = ${@book_id}
+					order by item_num desc limit 1
+				</querySql>
 				<executeSql generatedKeyParam="item_id">
 					<![CDATA[
 					insert into exp_item(
+					    item_num,
 			    		period_id,
 			    		regist_user_id,
 			    		regist_time,
@@ -119,6 +126,7 @@
 			    		exp_time,
 					    book_id)
 					values(
+					    ${@item_num},
 			    		${@period_id},
 			    		${@regist_user_id},
 			    		now(),
