@@ -70,7 +70,6 @@
 	</execute>
 
 	<execute name="update">
-		<param name="item_id" dataType="number" scope="outParam" />
 		<param name="dr_amount" dataType="number" />
 		<param name="cr_amount" dataType="number" />
 		<param name="account_id" dataType="number" />
@@ -82,7 +81,6 @@
 				<![CDATA[
 				update exp_item_line
 				   set
-					item_id = ${@item_id},
 					dr_amount = ${@dr_amount},
 					cr_amount = ${@cr_amount},
 					account_id = ${@account_id},

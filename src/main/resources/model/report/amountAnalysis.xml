@@ -19,6 +19,7 @@
 					  where l.account_id = t.account_id 
 					    and i.item_id = l.item_id
 					    and i.period_id = ${@period_id}
+					    and l.book_id = ${@book_id}
 					    and i.book_id = ${@book_id}) emerge_amount
 				from exp_account t
 				where t.account_type = '0'

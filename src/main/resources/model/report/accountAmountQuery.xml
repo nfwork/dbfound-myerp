@@ -42,7 +42,7 @@
 		<sql>
 		 <![CDATA[
 			  select t.item_id,
-			  		(10000000 + t.item_id) item_num,
+			  		t.item_num,
 					t.period_id,
 					t.regist_user_id,
 					(select user_name from sys_user u where u.user_id = t.regist_user_id) regiest_user,
