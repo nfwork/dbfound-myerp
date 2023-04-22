@@ -20,6 +20,7 @@
 			    AND a.account_id = l.account_id
 			    and i.book_id = ${@book_id}
 			    and l.book_id = ${@book_id}
+			  	and a.book_id = ${@book_id}
 			
 			UNION 
 			
@@ -37,6 +38,7 @@
 			    AND a.account_id = l.account_id
 			    and i.book_id = ${@book_id}
 				and l.book_id = ${@book_id}
+				and a.book_id = ${@book_id}
 			GROUP BY a.account_id
 			order by priority
 

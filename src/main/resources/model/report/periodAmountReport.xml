@@ -27,6 +27,7 @@
 			  and p.book_id = ${@book_id}
 			  and i.book_id = ${@book_id}
 			  and l.book_id = ${@book_id}
+			  and a.book_id = ${@book_id}
 			  #AND_CLAUSE#
 			GROUP BY i.period_id,l.account_id
 			
@@ -48,6 +49,7 @@
 				and p.book_id = ${@book_id}
 				and i.book_id = ${@book_id}
 				and l.book_id = ${@book_id}
+			  	and a.book_id = ${@book_id}
 			    #AND_CLAUSE#
 			GROUP BY i.period_id
 		 ]]>

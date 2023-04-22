@@ -96,6 +96,7 @@
 		<param name="description" dataType="varchar" />
 		<sqls>
 			<whenSql when="${@item_id} is not null">
+				<collisionSql where="not exists (select 1 from exp_item where book_id = ${@book_id} and item_id =${@item_id})" message="凭证ID信息异常" />
 				<executeSql>
 				  <![CDATA[
 					update exp_item

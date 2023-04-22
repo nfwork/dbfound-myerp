@@ -44,6 +44,7 @@
 		<param name="description" dataType="varchar" />
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<sqls>
+			<collisionSql where="not exists (select 1 from exp_account where book_id = ${@book_id} and account_id =${@account_id})" message="凭证科目信息异常" />
 			<executeSql>
 				<![CDATA[
 			    insert into exp_item_line(
@@ -77,6 +78,7 @@
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<param name="item_line_id" dataType="number" />
 		<sqls>
+			<collisionSql where="not exists (select 1 from exp_account where book_id = ${@book_id} and account_id =${@account_id})" message="凭证科目信息异常" />
 			<executeSql>
 				<![CDATA[
 				update exp_item_line
