@@ -20,7 +20,7 @@
       <view class="table-line mini-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="period_id">
         <view style="width: 190rpx;; text-align: center;">{{item.period_code}}</view>
         <view style="width: 220rpx;; text-align: center;">{{item.period_name}}</view>
-        <view style="width:170rpx; text-align: center;">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</view>
+        <view style="width:170rpx; text-align: center; color:{{item.status=='N'?'red':item.status=='Y'?'green':'black'}}">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</view>
         <view bindtap="changeStatus" data-periodid="{{item.period_id}}" data-status="{{item.status}}"  style="flex: 1; text-align: center; color: #0f4ea0;">{{item.status=='Y'?'关闭':'打开'}}</view>
       </view>
     </view>

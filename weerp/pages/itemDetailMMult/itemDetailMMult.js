@@ -152,25 +152,42 @@ Page({
       })
       return;
     }
-    if(!(this.data.current_line_cr_amount)&&!(this.data.current_line_dr_amount)){
+    if(!(this.data.current_line_cr_amount && this.data.current_line_cr_amount !=0)
+        &&!(this.data.current_line_dr_amount && this.data.current_line_dr_amount !=0)){
       wx.showToast({
         title: "借贷金额不能同时为空！",
         icon: "error"
       })
       return;
     }
+    if((this.data.current_line_cr_amount && this.data.current_line_cr_amount !=0)
+        &&(this.data.current_line_dr_amount && this.data.current_line_dr_amount !=0)){
+      wx.showToast({
+        title: "借贷金额不能同时有值！",
+        icon: "error"
+      })
+      return;
+    }
     let item_line_list = this.data.item_line_list;
+    let current_line_cr_amount;
+    if(this.data.current_line_cr_amount){
+      current_line_cr_amount = Math.floor(this.data.current_line_cr_amount * 100) / 100;
+    }
+    let current_line_dr_amount;
+    if(this.data.current_line_dr_amount){
+      current_line_dr_amount = Math.floor(this.data.current_line_dr_amount * 100) / 100;
+    }
     if(this.data.line_index == -1){
       item_line_list.push({
-        cr_amount:this.data.current_line_cr_amount,
-        dr_amount:this.data.current_line_dr_amount,
+        cr_amount:current_line_cr_amount,
+        dr_amount:current_line_dr_amount,
         description:this.data.current_line_description,
         account_id:this.data.current_line_account.account_id,
         account_name:this.data.current_line_account.account_name
       })
     }else{
-      item_line_list[this.data.line_index].cr_amount = this.data.current_line_cr_amount;
-      item_line_list[this.data.line_index].dr_amount = this.data.current_line_dr_amount;
+      item_line_list[this.data.line_index].cr_amount = current_line_cr_amount;
+      item_line_list[this.data.line_index].dr_amount = current_line_dr_amount;
       item_line_list[this.data.line_index].description = this.data.current_line_description;
       item_line_list[this.data.line_index].account_id = this.data.current_line_account.account_id;
       item_line_list[this.data.line_index].account_name = this.data.current_line_account.account_name;

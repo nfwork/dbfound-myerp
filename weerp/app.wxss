@@ -11,8 +11,8 @@
 } 
 
 .root{
-  margin: 30rpx;
-  padding-bottom: 30rpx;
+  margin: 20rpx;
+  padding-bottom: 20rpx;
   font-size: 28rpx;
   display: flex;
   justify-content: center;

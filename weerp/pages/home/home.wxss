@@ -1,8 +1,8 @@
 /* pages/home/home.wxss */
 
 .home{
-  margin: 30rpx;
-  padding-bottom: 30rpx;
+  margin: 20rpx;
+  padding-bottom: 20rpx;
   font-size: 24rpx;
   box-sizing: border-box;
 }

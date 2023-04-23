@@ -48,13 +48,20 @@ Page({
     wx.showLoading({
       title: '正在保存中',
     })
+    let amount;
+    if(this.data.amount && this.data.amount != 0){
+      amount = Math.floor(this.data.amount * 100) / 100;
+    }else{
+      wx.showToast({title: '金额不能为空', icon: "error"});
+      return;
+    }
     wx.request({
       url: app.globalData.serverUrl +'/exp/item.execute!simpleSave',
       header:{ "Cookie":app.globalData.cookies},
       data:{
         exp_time:this.data.exp_time,
         description:this.data.description,
-        amount:this.data.amount,
+        amount:amount,
         period_id:this.data.current_period.period_id,
         cr_account_id:this.data.cr_account.account_id,
         dr_account_id:this.data.dr_account.account_id

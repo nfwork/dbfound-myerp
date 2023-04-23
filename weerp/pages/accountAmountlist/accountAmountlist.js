@@ -10,7 +10,12 @@ Page({
       item_list:[],
       item_line_list:[],
       period_list:[],
-      current_period: {}
+      current_period: {},
+      limit : 5,
+      totalCounts: 0,
+      totalPages: 0,
+      currentPage: 1,
+      account_id:""
   },
 
   query(){
@@ -49,25 +54,71 @@ Page({
 
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
+    this.setData({account_id:account_id,currentPage:1});
+    this.queryDetail();
+  },
+
+  queryDetail(){
     wx.request({
       url: app.globalData.serverUrl +'/report/accountAmountQuery.query!getExpDetail',
       header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       data:{
-        account_id: account_id,
+        account_id: this.data.account_id,
+        limit: this.data.limit,
+        start : (this.data.currentPage - 1) * this.data.limit,
         period_id: this.data.current_period.period_id,
         order : "asc"
       },
       success : (res)=> {
         if(res.data.success){
           this.setData({
-            item_line_list:res.data.datas
+            item_line_list:res.data.datas,
+            totalCounts:res.data.totalCounts,
+            totalPages: Math.ceil(res.data.totalCounts/this.data.limit)
           });
+          this.checkPage();
         }else if(res.data.timeout){
           wx.navigateTo({url: "../login/login"});
         }
       }
     })
+  },
+
+  checkPage(){
+    if(this.data.currentPage > 1 &&this.data.currentPage > this.data.totalPages){
+      if(this.data.totalPages < 2){
+        this.setData({currentPage:1});
+      }else{
+        this.setData({currentPage:this.data.totalPages});
+      }
+      this.queryDetail();
+    }
+  },
+
+  changePage(e){
+    let type = e.currentTarget.dataset.type;
+    if(type==1){
+      if(this.data.currentPage > 1){
+        this.setData({currentPage:1});
+        this.queryDetail();
+      }
+    }else if(type==2){
+      if(this.data.currentPage > 1){
+        this.setData({currentPage:this.data.currentPage-1})
+        this.queryDetail();
+      }
+    }else if(type==3){
+      if(this.data.currentPage * this.data.limit < this.data.totalCounts){
+        this.setData({currentPage:this.data.currentPage+1});
+        this.queryDetail();
+      }
+    }else if(type==4){
+      if(this.data.currentPage * this.data.limit < this.data.totalCounts){
+        this.setData({currentPage:Math.ceil(this.data.totalCounts/this.data.limit)});
+        this.queryDetail();
+      }
+    }
   },
 
   setPeriod(e){

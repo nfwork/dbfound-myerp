@@ -1,4 +1,5 @@
 <!--pages/amountManager/amountManager.wxml-->
+<wxs module="format" src="../../utils/format.wxs"></wxs>
 <view class="root">
   <view class="box"> 
     <view class="title">会计期间：</view>
@@ -16,7 +17,7 @@
     <view class="table-body"  style="height: 480rpx;">
       <view data-accountid="{{item.account_id}}" bindtap="showDetail" class="table-line mini-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
         <view style="width: 380rpx;">{{item.account_name}}</view>
-        <view style="flex:1;text-align: right;">{{item.append_amount}}</view>
+        <view style="flex:1;text-align: right;">{{format.moneyFormat(item.append_amount)}}</view>
         <view bindtap="showBox" data-accountid="{{item.account_id}}" data-accountname="{{item.account_name}}" style="width:160rpx; text-align: center; color: #0f4ea0;">{{item.account_id?'调整预算':''}}</view>
       </view>
     </view>
@@ -25,13 +26,13 @@
   <view class="box"> 
     <view class="table-header">
       <view style="width: 200rpx;">添加时间</view>
-      <view style="width: 140rpx;">预算金额</view>
+      <view style="width: 160rpx;">预算金额</view>
       <view style="flex:1">说明</view>
     </view>
     <view class="table-body" style="max-height: 450rpx;min-height: 180rpx;">
       <view class="table-line" hover-class="table-line-hover" wx:for="{{item_line_list}}" wx:key="index">
         <view style="width: 200rpx; text-align: center; ">{{item.add_time}}</view>
-        <view style="width: 140rpx; text-align: right;">{{item.amount}}</view>
+        <view style="width: 160rpx; text-align: right;">{{format.moneyFormat(item.amount)}}</view>
         <view style="flex:1">{{item.description}}</view>
       </view>
     </view>

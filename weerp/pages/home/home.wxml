@@ -1,9 +1,10 @@
 <!--pages/home/home.wxml-->
+<wxs module="format" src="../../utils/format.wxs"></wxs>
 <view class="home">
   <view class="menu-title">Hi {{user_name}}</view>
   <view class="summary">
-    <view class="summary-item">本月总开支：<view class="money-big">￥{{totalexp}}</view></view>
-    <view wx:for="{{accounts_exp}}" wx:key="index" class="summary-item">{{item.account_name}}：<view class="money-small">￥{{item.totalexp}}</view></view>
+    <view class="summary-item">本月总开支：<view class="money-big">￥{{format.moneyFormat(totalexp)}}</view></view>
+    <view wx:for="{{accounts_exp}}" wx:key="index" class="summary-item">{{item.account_name}}：<view class="money-small">￥{{format.moneyFormat(item.totalexp)}}</view></view>
   </view>
 
   <view class="menu-title">记账</view>

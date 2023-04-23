@@ -1,0 +1,24 @@
+//逢三位转逗号,保留两位小数，支持负数
+var format = {
+  moneyFormat: function(num, blank){
+    if(!num || num == 0){
+      if(blank){
+        return "";
+      }else{
+        return "0.00";
+      }
+    }
+    if (typeof num === 'number') {
+      var result = num.toLocaleString(2);
+      if(result.indexOf('.') !== -1) {
+        result = result + '00'
+      } else {
+        result = result + '.00'
+      }
+      return result.substring(0, result.indexOf('.') + 3);
+    }else{
+      return num;
+    }
+  }
+}
+module.exports = format

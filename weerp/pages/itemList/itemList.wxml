@@ -1,4 +1,5 @@
 <!--pages/itemList/itemList.wxml-->
+<wxs module="format" src="../../utils/format.wxs"></wxs>
 <view class="root">
   
   <view class="box"> 
@@ -46,16 +47,16 @@
   <view class="box"> 
     <view class="table-header">
       <view style="width: 200rpx;">科目名称</view>
-      <view style="width: 120rpx;">借</view>
-      <view style="width: 120rpx;">贷</view>
+      <view style="width: 150rpx;">借</view>
+      <view style="width: 150rpx;">贷</view>
       <view style="flex: 1;">行描述</view>
     </view>
     <view class="table-body" style="min-height: 180rpx;">
       <view class="table-line" hover-class="table-line-hover" wx:for="{{item_line_list}}" wx:key="item_line_id">
         <view style="width: 200rpx;">{{item.account_name}}</view>
-        <view style="width: 120rpx; text-align: right;">{{item.dr_amount==null?"":item.dr_amount}}</view>
-        <view style="width: 120rpx; text-align: right;">{{item.cr_amount==null?"":item.cr_amount}}</view>
-        <view style="flex: 1;">{{item.description==null?"":item.description}}</view>
+        <view style="width: 150rpx;text-align: right;">{{format.moneyFormat(item.dr_amount,true)}}</view>
+        <view style="width: 150rpx;text-align: right;">{{format.moneyFormat(item.cr_amount,true)}}</view>
+        <view style="flex: 1;"><text user-select="true">{{item.description==null?"":item.description}}</text></view>
       </view>
     </view>
   </view>
