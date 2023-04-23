@@ -2,24 +2,24 @@ package com.nfwork.erp.dto;
 
 public class Column implements Comparable<Column> {
 
-	String jsName;
-	String javaName;
+	String index;
+	String name;
 	Integer priority;
 
-	public String getJsName() {
-		return jsName;
+	public String getIndex() {
+		return index;
 	}
 
-	public void setJsName(String jsName) {
-		this.jsName = jsName;
+	public void setIndex(String index) {
+		this.index = index;
 	}
 
-	public String getJavaName() {
-		return javaName;
+	public String getName() {
+		return name;
 	}
 
-	public void setJavaName(String javaName) {
-		this.javaName = javaName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getPriority() {

@@ -10,14 +10,14 @@
   <scroll-view scroll-x="true" scroll-y="true" class="header-box" >
     <view class="table-header" style="width: {{(column_list.length+1)*190}}rpx;">
       <view>会计期间</view>
-      <view wx:for="{{column_list}}" wx:key="priority" wx:for-item="column">{{column.javaName}}</view>
+      <view wx:for="{{column_list}}" wx:key="priority" wx:for-item="column">{{column.name}}</view>
     </view>
 
     <view class="table-body" style="width: {{(column_list.length+1)*190}}rpx;">
       <block wx:for="{{item_list}}" wx:key="c">
         <view class="table-line" hover-class="table-line-hover">
             <view>{{item.c}}</view>
-            <view wx:for="{{column_list}}" wx:for-item="column" wx:key="priority">{{item[column.jsName]==null?"":item[column.jsName]}}</view>
+            <view wx:for="{{column_list}}" wx:for-item="column" wx:key="priority">{{item[column.index]==null?"":item[column.index]}}</view>
         </view>
       </block>
     </view>

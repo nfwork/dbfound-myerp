@@ -3,21 +3,20 @@
 	xsi:schemaLocation="http://dbfound.googlecode.com/conf https://raw.githubusercontent.com/nfwork/dbfound/master/tags/conf.xsd">
 
 	<system>
-		<openLog>true</openLog>
-		<queryLimit>false</queryLimit>
-		<modeRootPath>${@classpath}/model</modeRootPath>
+		<camelCaseToUnderscore>true</camelCaseToUnderscore>
+		<modelModifyCheck>true</modelModifyCheck>
 	</system>
 	
 	<database>
 		<dataSourceConnectionProvide className="org.apache.commons.dbcp.BasicDataSource" dialect="MySqlDialect">
 			<properties>
 				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-				<property name="url" value="jdbc:mysql://192.168.0.156/myerp?useUnicode=true&amp;characterEncoding=utf8" />
+				<property name="url" value="jdbc:mysql://localhost/myerp?useUnicode=true&amp;characterEncoding=utf8" />
 				<property name="username" value="dbfound" />
 				<property name="password" value="dbfound" />
-				<property name="initialSize" value="1" />
-				<property name="maxActive" value="10" />
-				<property name="maxIdle" value="1" />
+				<property name="initialSize" value="5" />
+				<property name="maxActive" value="5" />
+				<property name="maxIdle" value="5" />
 				<property name="testOnBorrow" value="true"/> 
 				<property name="validationQuery" value="select 1"/>
 			</properties>
@@ -25,7 +24,7 @@
 	</database>
 
 	<web>
-		<encoding>utf-8</encoding>
+		<basePath>/dbfound</basePath>
 		<interceptor>com.nfwork.erp.interceptor.SimpleCheckInterceptor</interceptor>
 	</web>
 

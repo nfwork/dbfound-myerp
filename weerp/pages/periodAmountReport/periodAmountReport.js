@@ -33,14 +33,14 @@ Page({
             for(let i=0;i<res.data.datas.length;i++){
               for(let j=0;j<res.data.columns.length;j++){
                 var column = res.data.columns[j];
-                var c = json[column.jsName];
+                var c = json[column.index];
                 if(c==null){
                   c=0;
-                  json[column.jsName]=c;
+                  json[column.index]=c;
                 }
-                var cc= res.data.datas[i][column.jsName];
+                var cc= res.data.datas[i][column.index];
                 if(cc>0){
-                  json[column.jsName] = this.add(c,cc);
+                  json[column.index] = this.add(c,cc);
                 }
               }
             }

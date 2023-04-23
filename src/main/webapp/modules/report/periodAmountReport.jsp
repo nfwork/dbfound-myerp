@@ -75,8 +75,8 @@
 				<%--显示查询的新列--%>
 			    for(var i=0;i<columns.length;i++){
 				    var column = columns[i];
-			    	var index = cm.findColumnIndex(column.jsName);
-				    cm.setColumnHeader(index,column.javaName);
+			    	var index = cm.findColumnIndex(column.index);
+				    cm.setColumnHeader(index,column.name);
 				    cm.setHidden(index,false);
 			    }
 
@@ -86,14 +86,14 @@
 				for(var i=0;i<datas.length;i++){
 					for(var j=0;j<columns.length;j++){
 						var column = columns[j];
-						var c = json[column.jsName];
+						var c = json[column.index];
 						if(c==null){
 							c=0;
-							json[column.jsName]=c;
+							json[column.index]=c;
 						}
-						var cc= datas[i][column.jsName];
+						var cc= datas[i][column.index];
 						if(cc>0){
-							json[column.jsName] = add(c,cc);
+							json[column.index] = add(c,cc);
 						}
 					}
 				}

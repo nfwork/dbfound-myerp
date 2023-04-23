@@ -42,7 +42,7 @@ public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
             String javaName = map.get(columnColumnName).toString();
             if (columnsMap.get(javaName) == null) {
                 Column column = new Column();
-                column.setJavaName(javaName);
+                column.setName(javaName);
                 column.setPriority(DataUtil.intValue(map.get(priorityColumnName)));
                 if (column.getPriority() == null) {
                     column.setPriority(999999);
@@ -56,7 +56,7 @@ public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
 
         Collections.sort(columns);
         for (int i = 0; i < columns.size(); i++) {
-            columns.get(i).setJsName("c" + (i+1));
+            columns.get(i).setIndex("c" + (i+1));
         }
 
         // 重新装载数据
@@ -66,8 +66,8 @@ public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
             newData.put("c", row);
             newDatas.add(newData);
             for (Column column : columns) {
-                Object value = getValue(bufferData, row, column.getJavaName());
-                newData.put(column.getJsName(), value);
+                Object value = getValue(bufferData, row, column.getName());
+                newData.put(column.getIndex(), value);
             }
         }
 
