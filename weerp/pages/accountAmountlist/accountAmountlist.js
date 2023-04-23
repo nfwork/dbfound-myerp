@@ -15,7 +15,8 @@ Page({
       totalCounts: 0,
       totalPages: 0,
       currentPage: 1,
-      account_id:""
+      account_id:"",
+      account_type:{}
   },
 
   query(){
@@ -34,10 +35,24 @@ Page({
       header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       data:{
-        period_id: this.data.current_period.period_id
+        period_id: this.data.current_period.period_id,
+        account_type: this.data.account_type.code_value
       },
       success : (res)=> {
         if(res.data.success){
+          let json={account_name:'合计'};
+          let remaind_amount = 0;
+          let emerge_amount = 0;
+          let end_amount = 0;
+          for(let i=0;i<res.data.datas.length;i++){
+            remaind_amount = this.add(remaind_amount, res.data.datas[i].remaind_amount);
+            emerge_amount = this.add(emerge_amount, res.data.datas[i].emerge_amount);
+            end_amount = this.add(end_amount, res.data.datas[i].end_amount);
+          }
+          json.remaind_amount = remaind_amount;
+          json.emerge_amount = emerge_amount;
+          json.end_amount = end_amount;
+          res.data.datas.push(json);
           this.setData({
             item_list:res.data.datas,
             item_line_list:[]
@@ -48,6 +63,53 @@ Page({
       },
       complete:()=>{
         wx.hideLoading();
+      }
+    })
+  },
+
+  add(num1, num2) {
+    let r1, r2, m;
+    try {
+      r1 = num1.toString().split('.')[1].length;
+    } catch (e) {
+      r1 = 0;
+    }
+    try {
+      r2 = num2.toString().split(".")[1].length;
+    } catch (e) {
+      r2 = 0;
+    }
+    m = Math.pow(10, Math.max(r1, r2));
+    return Math.round(num1 * m + num2 * m) / m;
+  },
+
+  reset(){
+    this.setData({
+      account_type: {}
+    });
+  },
+
+  setAccountType(e){
+    this.setData({account_type : e.detail});
+    this.query();
+  },
+
+  getAccountTypeList(){
+    wx.request({
+      url: app.globalData.serverUrl +'/fnd/sourceCode.query',
+      header:{ "Cookie":app.globalData.cookies},
+      method:"POST",
+      data:{
+        code:"ACCOUNTTYPE"
+      },
+      success : (res)=> {
+        if(res.data.success){
+          this.setData({
+            account_type_list:res.data.datas
+          });
+        }else if(res.data.timeout){
+          wx.navigateTo({url: "../login/login"});
+        }
       }
     })
   },
@@ -162,6 +224,7 @@ Page({
    */
   onShow() {
     this.getPeriodList();
+    this.getAccountTypeList();
   },
 
   /**
