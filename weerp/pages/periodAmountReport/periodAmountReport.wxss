@@ -11,7 +11,7 @@ radio .wx-radio-input {
 }
 .header-box {
   overflow: scroll;
-  width: 690rpx;
+  width: 710rpx;
   margin-top: 30rpx;
   box-sizing: border-box;
 }
