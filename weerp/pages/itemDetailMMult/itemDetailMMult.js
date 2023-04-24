@@ -172,11 +172,13 @@ Page({
     let item_line_list = this.data.item_line_list;
     let current_line_cr_amount;
     if(this.data.current_line_cr_amount){
-      current_line_cr_amount = Math.floor(this.data.current_line_cr_amount * 100) / 100;
+      current_line_cr_amount = this.data.current_line_cr_amount * 1;
+      current_line_cr_amount = current_line_cr_amount.toFixed(2);
     }
     let current_line_dr_amount;
     if(this.data.current_line_dr_amount){
-      current_line_dr_amount = Math.floor(this.data.current_line_dr_amount * 100) / 100;
+      current_line_dr_amount = this.data.current_line_dr_amount * 1;
+      current_line_dr_amount = current_line_dr_amount.toFixed(2);
     }
     if(this.data.line_index == -1){
       item_line_list.push({

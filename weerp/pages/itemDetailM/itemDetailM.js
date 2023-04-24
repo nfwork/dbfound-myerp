@@ -51,7 +51,8 @@ Page({
     })
     let amount;
     if(this.data.amount && this.data.amount != 0){
-      amount = Math.floor(this.data.amount * 100) / 100;
+      amount = this.data.amount * 1;
+      amount = amount.toFixed(2);
     }else{
       wx.showToast({title: '金额不能为空', icon: "error"});
       return;
