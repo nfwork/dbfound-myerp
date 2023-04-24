@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    platform:app.globalData.platform,
     item_num:"系统自动生成",
     description:"",
     period_list:[],

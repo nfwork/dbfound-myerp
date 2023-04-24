@@ -1,6 +1,6 @@
 <!--pages/home/home.wxml-->
 <wxs module="format" src="../../utils/format.wxs"></wxs>
-<view class="home">
+<view class="home {{platform=='ios'?'ios-css':'android-css'}}">
   <view class="menu-title">Hi {{user_name}}</view>
   <view class="summary">
     <view class="summary-item">本月总开支：<view class="money-big">￥{{format.moneyFormat(totalexp)}}</view></view>

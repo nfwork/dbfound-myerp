@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+      platform:app.globalData.platform,
       user_name:"",
       totalexp:0,
       accounts_exp:[],

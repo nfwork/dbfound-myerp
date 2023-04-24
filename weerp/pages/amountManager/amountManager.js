@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+      platform:app.globalData.platform,
       item_list:[],
       item_line_list:[],
       period_list:[],

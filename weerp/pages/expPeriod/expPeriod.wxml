@@ -1,6 +1,5 @@
 <!--pages/expPeriod/expPeriod.wxml-->
-<view class="root">
-  
+<view class="root {{platform=='ios'?'ios-css':'android-css'}}">
   <view class="box"> 
     <view class="title">期间编号：</view>
     <input type="text" model:value="{{period_code}}"/>

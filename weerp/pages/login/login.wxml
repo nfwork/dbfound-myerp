@@ -1,5 +1,5 @@
 <!--pages/login/login.wxml-->
-<view class="root">
+<view class="root {{platform=='ios'?'ios-css':'android-css'}}">
   <image src="/images/tx.jpg" class="logo"></image>
   <view class="title">用户名：</view>
   <input type="text" model:value="{{user_code}}"/>

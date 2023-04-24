@@ -1,6 +1,6 @@
 <!--pages/bugetAmountList/bugetAmountList.wxml-->
 <wxs module="format" src="../../utils/format.wxs"></wxs>
-<view class="root">
+<view class="root {{platform=='ios'?'ios-css':'android-css'}}">
   <view class="box"> 
     <view class="title">会计期间：</view>
     <select value="{{current_period}}" bindchange="setPeriod" options="{{period_list}}" valueField="period_id" displayField="period_name"></select>

@@ -1,5 +1,5 @@
 <!--pages/my/my.wxml-->
-<view class="root">
+<view class="root {{platform=='ios'?'ios-css':'android-css'}}">
   <view class="box"> 
     <image src="/images/tx.jpg" class="logo"></image>
   </view>

@@ -1,7 +1,6 @@
 <!--pages/periodAmountReport/periodAmountReport.wxml-->
 <wxs module="format" src="../../utils/format.wxs"></wxs>
-<view class="root">
-  
+<view class="root {{platform=='ios'?'ios-css':'android-css'}}">
   <view class="box">
    <radio-group bindchange="itemChange">
     <radio wx:for="{{pitems}}" color="#3d9be7" style="margin-right: 16rpx;" wx:key="item_value" value="{{item.item_value}}" checked="{{item.selected}}">{{item.item_name}}</radio>

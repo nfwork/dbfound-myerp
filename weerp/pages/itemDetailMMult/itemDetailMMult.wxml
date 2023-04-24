@@ -1,7 +1,6 @@
 <!--pages/itemDetailMMult/itemDetailMMult.wxml-->
 <wxs module="format" src="../../utils/format.wxs"></wxs>
-<view class="root">
-  
+<view class="root {{platform=='ios'?'ios-css':'android-css'}}">
   <view class="box"> 
     <view class="title">凭证编号：</view>
     <input type="text" disabled="true" style="background-color: #f1f1f1;" model:value="{{item_num}}"/>
