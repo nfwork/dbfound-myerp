@@ -1,5 +1,9 @@
 /**app.wxss**/
 
+page{
+  font-family: "Source Han Sans CN", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
 .container {
   height: 100%;
   display: flex;

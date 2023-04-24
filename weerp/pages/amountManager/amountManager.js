@@ -30,6 +30,9 @@ Page({
   },
 
   showBox(e){
+    if(!e.currentTarget.dataset.accountid){
+      return;
+    }
     this.setData({
       showIndex:'1',
       account_id: e.currentTarget.dataset.accountid,
