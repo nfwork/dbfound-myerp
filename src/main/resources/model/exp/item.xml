@@ -111,10 +111,8 @@
 			</whenSql>
 			<otherwiseSql>
 				<querySql>
-					select (item_num + 1) as item_num
-					  from exp_item
-					 where book_id = ${@book_id}
-					order by item_num desc limit 1
+					select max(item_num) + 1 as item_num
+					  from exp_item where book_id = ${@book_id}
 				</querySql>
 				<executeSql generatedKeyParam="item_id">
 					<![CDATA[
