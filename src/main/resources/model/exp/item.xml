@@ -111,8 +111,9 @@
 			</whenSql>
 			<otherwiseSql>
 				<querySql>
-					select ifnull(max(item_num),10000000) + 1 as item_num
-					  from exp_item where book_id = ${@book_id}
+					select (item_num + 1) as item_num
+					  from exp_item USE INDEX(book_num_desc)
+					 where book_id = ${@book_id} limit 1
 				</querySql>
 				<executeSql generatedKeyParam="item_id">
 					<![CDATA[
