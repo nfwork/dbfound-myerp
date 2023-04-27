@@ -20,6 +20,7 @@
 			  and t.book_id = ${@book_id}
 			  and p.book_id = ${@book_id}
 			  #AND_CLAUSE#
+			  order by item_num
 		 ]]>
 		</sql>
 		<filter name="item_num" express="t.item_num = ${@item_num}" />
