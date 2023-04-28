@@ -29,10 +29,7 @@
 											                   where l.item_id = t.item_id
 											                   and l.book_id =  ${@book_id}
 											                   and l.account_id = ${@account_id} )" />
-		<filter name="description" express="(t.description like concat('%',${@description},'%')
-											or t.item_id in (select l.item_id from exp_item_line l
-											                   where l.book_id =  ${@book_id}
-											                   and l.description like concat('%',${@description},'%')))" />
+		<filter name="description" express="t.description like concat('%',${@description},'%')" />
 		<filter name="timefrom" express="t.exp_time &gt;= ${@timefrom}" />
 		<filter name="timeto" express="t.exp_time &lt;= ${@timeto}" />
 	</query>
