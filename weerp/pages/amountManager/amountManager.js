@@ -17,7 +17,8 @@ Page({
       account_name:"",
       description:"",
       amount:"",
-      change_type:1
+      change_type:1,
+      current_line:-1
   },
 
   hiddenBox(){
@@ -173,6 +174,7 @@ Page({
 
           this.setData({
             item_list:res.data.datas,
+            current_line: -1,
             item_line_list:[]
           });
         }else if(res.data.timeout){
@@ -214,6 +216,7 @@ Page({
       success : (res)=> {
         if(res.data.success){
           this.setData({
+            current_line:e.currentTarget.dataset.index,
             item_line_list:res.data.datas
           });
         }else if(res.data.timeout){

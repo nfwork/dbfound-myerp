@@ -11,7 +11,8 @@ Page({
       item_list:[],
       item_line_list:[],
       period_list:[],
-      current_period: {}
+      current_period: {},
+      current_line:-1
   },
 
   query(){
@@ -50,6 +51,7 @@ Page({
 
           this.setData({
             item_list:res.data.datas,
+            current_line: -1,
             item_line_list:[]
           });
         }else if(res.data.timeout){
@@ -92,7 +94,8 @@ Page({
       success : (res)=> {
         if(res.data.success){
           this.setData({
-            item_line_list:res.data.datas
+            item_line_list:res.data.datas,
+            current_line:e.currentTarget.dataset.index
           });
         }else if(res.data.timeout){
           wx.navigateTo({url: "../login/login"});

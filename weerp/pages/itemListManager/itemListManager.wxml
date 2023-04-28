@@ -22,7 +22,7 @@
       <view style="flex: 1;">凭证描述</view>
     </view>
     <view class="table-body" style="min-height: 450rpx;">
-      <view data-itemid="{{item.item_id}}" bindtap="showDetail" class="table-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="item_id">
+      <view data-itemid="{{item.item_id}}" data-index="{{index}}" bindtap="showDetail" class="table-line {{current_line==index?'table-line-current':''}}" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="item_id">
         <view style="width: 160rpx;color: #0f4ea0; text-align: center;" catchtap="goToDetail" data-itemid="{{item.item_id}}">{{item.item_num}}</view>
         <view style="width: 200rpx; text-align: center;">{{item.exp_time}}</view>
         <view style="flex:1; overflow-x: hidden;"><text user-select="true">{{item.description}}</text></view>

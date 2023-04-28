@@ -17,7 +17,8 @@ Page({
       totalPages: 0,
       currentPage: 1,
       account_id:"",
-      account_type:{}
+      account_type:{},
+      current_line:-1
   },
 
   query(){
@@ -56,6 +57,7 @@ Page({
           res.data.datas.push(json);
           this.setData({
             item_list:res.data.datas,
+            current_line: -1,
             item_line_list:[]
           });
         }else if(res.data.timeout){
@@ -117,7 +119,10 @@ Page({
 
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
-    this.setData({account_id:account_id,currentPage:1});
+    this.setData({account_id:account_id,
+                  current_line:e.currentTarget.dataset.index,
+                  currentPage:1
+                });
     this.queryDetail();
   },
 

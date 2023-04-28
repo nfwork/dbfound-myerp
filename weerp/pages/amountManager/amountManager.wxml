@@ -15,7 +15,7 @@
       <view style="width: 160rpx;">操作</view>
     </view>
     <view class="table-body"  style="height: 480rpx;">
-      <view data-accountid="{{item.account_id}}" bindtap="showDetail" class="table-line mini-line" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
+      <view data-accountid="{{item.account_id}}" data-index="{{index}}" bindtap="showDetail" class="table-line mini-line {{current_line==index?'table-line-current':''}}" hover-class="table-line-hover" wx:for="{{item_list}}" wx:key="account_id">
         <view style="width: 380rpx;">{{item.account_name}}</view>
         <view style="flex:1;text-align: right;">{{format.moneyFormat(item.append_amount)}}</view>
         <view bindtap="showBox" data-accountid="{{item.account_id}}" data-accountname="{{item.account_name}}" style="width:160rpx; text-align: center; color: #0f4ea0;">{{item.account_id?'调整预算':''}}</view>

@@ -18,7 +18,8 @@ Page({
       currentPage: 1,
       description: '',
       current_period: {},
-      current_account: {}
+      current_account: {},
+      current_line:-1
   },
 
   reset(){
@@ -49,6 +50,7 @@ Page({
           this.setData({
             item_list:res.data.datas,
             item_line_list:[],
+            current_line: -1,
             totalCounts:res.data.totalCounts,
             totalPages: Math.ceil(res.data.totalCounts/this.data.limit)
           });
@@ -88,7 +90,8 @@ Page({
       success : (res)=> {
         if(res.data.success){
           this.setData({
-            item_line_list:res.data.datas
+            item_line_list:res.data.datas,
+            current_line:e.currentTarget.dataset.index
           });
         }else if(res.data.timeout){
           wx.navigateTo({url: "../login/login"});
