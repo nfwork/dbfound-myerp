@@ -20,6 +20,7 @@
 			    and p.period_id = i.period_id
 			    AND a.account_type ='0'
 			    AND a.account_id = l.account_id
+			  	and p.book_id = ${@book_id}
 			    and i.book_id = ${@book_id}
 			    and l.book_id = ${@book_id}
 			  	and a.book_id = ${@book_id}
@@ -40,6 +41,7 @@
 			    AND a.display_in_home = 1
 			 	AND a.account_type ='0'
 			    AND a.account_id = l.account_id
+			    and p.book_id = ${@book_id}
 			    and i.book_id = ${@book_id}
 				and l.book_id = ${@book_id}
 				and a.book_id = ${@book_id}
