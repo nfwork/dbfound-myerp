@@ -86,7 +86,7 @@
 
 	<execute name="save">
 		<param name="item_id" dataType="number" ioType="both"/>
-		<param name="item_num" dataType="number" value="10000001"/>
+		<param name="item_num" dataType="number"/>
 		<param name="period_id" dataType="number" />
 		<param name="regist_user_id" dataType="number" sourcePath="session.user_id" />
 		<param name="exp_time" dataType="varchar" />
@@ -107,10 +107,12 @@
 				</executeSql>
 			</whenSql>
 			<otherwiseSql>
+				<executeSql>
+					update exp_book set item_num_index = item_num_index + 1
+					where book_id = ${@book_id}
+				</executeSql>
 				<querySql>
-					select (item_num + 1) as item_num
-					  from exp_item USE INDEX(book_num_desc)
-					 where book_id = ${@book_id} limit 1
+					select item_num_index as item_num from exp_book
 				</querySql>
 				<executeSql generatedKeyParam="item_id">
 					<![CDATA[
