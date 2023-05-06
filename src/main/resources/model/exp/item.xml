@@ -112,7 +112,7 @@
 					where book_id = ${@book_id}
 				</executeSql>
 				<querySql>
-					select item_num_index as item_num from exp_book
+					select item_num_index as item_num from exp_book where book_id = ${@book_id}
 				</querySql>
 				<executeSql generatedKeyParam="item_id">
 					<![CDATA[
