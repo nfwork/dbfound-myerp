@@ -39,7 +39,7 @@
 	    
 		<d:form style="margin-bottom:0px" id="queryForm" labelWidth="90">
 			<d:line columnWidth="0.33">
-				<d:field name="period_id" editable="false" value="${periods[0].period}" required="true" anchor="85%" options="periodStore" valueField ="period_id" displayField="period_name" editor="combo" prompt="会计期间" >
+				<d:field name="period_id" editable="false" value="${periods[0].period_id}" required="true" anchor="85%" options="periodStore" valueField ="period_id" displayField="period_name" editor="combo" prompt="会计期间" >
 					<d:event name="select" handle="query"/>
 				</d:field>
 				<d:field name="b" width="80" editor="button" prompt="查询" >

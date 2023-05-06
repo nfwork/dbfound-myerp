@@ -63,14 +63,12 @@
 			<executeSql>
 			 <![CDATA[
 			    insert into exp_period(
-			    		period_id,
 			    		period_code,
 			    		period_name,
 			    		status,
 			            book_id,
 			    		priority)
 				values( ${@period_code},
-			    		${@period_code},
 			    		${@period_name},
 			    		${@status},
 				        ${@book_id},

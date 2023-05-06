@@ -53,7 +53,7 @@
 			<d:line columnWidth="0.25">
 				<d:choose>
 					<d:when test="${isQuery!='1'}">
-						<d:field name="period_id" editable="false" required="true" value="${periods[0].period}" options="periodStore" valueField ="period_id" displayField="period_name" anchor="95%" editor="combo" prompt="会计期间" />
+						<d:field name="period_id" editable="false" required="true" value="${periods[0].period_id}" options="periodStore" valueField ="period_id" displayField="period_name" anchor="95%" editor="combo" prompt="会计期间" />
 					</d:when>
 					<d:otherwise>
 						<d:field name="period_id" editable="false" options="periodStore" valueField ="period_id" displayField="period_name" anchor="95%" editor="combo" prompt="会计期间" />

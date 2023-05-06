@@ -46,14 +46,14 @@ angular.module('myerpApp').config(function($routeProvider) {
 				for(var i=0;i<res.datas.length;i++){
 					for(var j=0;j<res.columns.length;j++){
 						var column = res.columns[j];
-						var c = json[column.jsName];
+						var c = json[column.index];
 						if(c==null){
 							c=0;
-							json[column.jsName]=c;
+							json[column.index]=c;
 						}
-						var cc= res.datas[i][column.jsName];
+						var cc= res.datas[i][column.index];
 						if(cc>0){
-							json[column.jsName] = ToolService.add(c,cc);
+							json[column.index] = ToolService.add(c,cc);
 						}
 					}
 				}
@@ -64,7 +64,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 				var columns = [{"align":"center","field":"c" , "title":"　会计期间　"}];
 				
 				for(var i=0;i<res.columns.length;i++){
-					columns.push({"align":"right","field":res.columns[i].jsName , "title":res.columns[i].javaName })
+					columns.push({"align":"right","field":res.columns[i].index , "title":res.columns[i].name })
 				}
 				
 				$('#table').bootstrapTable({

@@ -19,7 +19,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('accountAmountlistController', function($scope, $http, $timeout, $cookies, ToolService, defaultPeriod, periodCombo) {
 	
-	$scope.preiod = defaultPeriod.datas[0].period;
+	$scope.preiod = defaultPeriod.datas[0].period_id;
 	
 	periodCombo.datas.unshift({
 		period_name : "---请选择---"

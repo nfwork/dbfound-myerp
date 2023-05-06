@@ -18,7 +18,7 @@
 				<select id="preiod"  class="form-control" data-style="common-select" >
 					<d:forEach var="preiod" items="${periodList }">
 						<option 
-						<d:if test="${preiod.period_id == periods[0].period}">selected="selected" </d:if>
+						<d:if test="${preiod.period_id == periods[0].period_id}">selected="selected" </d:if>
 						value="${preiod.period_id }">${preiod.period_name}</option>
 					</d:forEach>
 				</select>

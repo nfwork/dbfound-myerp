@@ -16,7 +16,7 @@
 
 	<script type="text/javascript">
 		function query() {
-			dataStore.baseParams["period_id"]="${periods[0].period}";
+			dataStore.baseParams["period_id"]="${periods[0].period_id}";
 			dataStore.reload();
 		}
 		var yAxis = [ {

@@ -125,7 +125,7 @@
 			    <d:field name="add_user" readOnly="true" value="${sessionScope.user_name}" width="210" editor="textfield" prompt="登记人" />
 			</d:line>
 			<d:line columnWidth="1">
-			    <d:field id="periodField" editable="false" name="period_id" value="${periods[0].period}" required="true" options="periodStore" valueField ="period_id" displayField="period_name" width="210" editor="combo" prompt="会计期间" />
+			    <d:field id="periodField" editable="false" name="period_id" value="${periods[0].period_id}" required="true" options="periodStore" valueField ="period_id" displayField="period_name" width="210" editor="combo" prompt="会计期间" />
 			</d:line>
 			<d:line columnWidth="1">
 			    <d:field id="expTimeField" name="exp_time" value="${periods[0].exp_time}" required="true" width="210" editor="datefield" prompt="费用发生日期" />

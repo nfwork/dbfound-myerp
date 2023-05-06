@@ -35,7 +35,7 @@
 					<span class="input-group-addon">会计期间：</span> <select id="period_id" name="period_id" class="form-control" data-style="common-select">
 						<option value="">-请选择-</option>
 						<d:forEach var="preiod" items="${periodList }">
-							<option <d:if test="${preiod.period_id ==(empty itemList ? periods[0].period : itemList[0].period_id) }">selected="selected" </d:if>
+							<option <d:if test="${preiod.period_id ==(empty itemList ? periods[0].period_id : itemList[0].period_id) }">selected="selected" </d:if>
 								value="${preiod.period_id }">${preiod.period_name}</option>
 						</d:forEach>
 					</select>
