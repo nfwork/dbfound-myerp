@@ -7,20 +7,22 @@
 		<param name="period_id" dataType="number" />
 		<sql>
 		 <![CDATA[
+			 with period_id_set as (
+			     select period_id from exp_period
+				   where book_id = ${@book_id}
+					 and period_code < (select period_code from exp_period where period_id = ${@period_id}))
+
 		 	 select v.*,(remaind_amount+emerge_amount) end_amount from (
-		 	 
 				 select account_id,
 						account_code,
 						account_name,
-						
 						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)
-						   from exp_item i, exp_item_line l
+						   from exp_item i, exp_item_line l, period_id_set p
 						  where l.account_id = t.account_id 
 						    and i.item_id = l.item_id
-						    and i.period_id < ${@period_id}
+						    and i.period_id = p.period_id
 						    and i.book_id = ${@book_id}
 						    and l.book_id = ${@book_id}) remaind_amount,
-						    
 						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)
 						   from exp_item i, exp_item_line l
 						  where l.account_id = t.account_id 
