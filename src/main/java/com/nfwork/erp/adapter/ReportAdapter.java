@@ -39,19 +39,19 @@ public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
                 rowsMap.put(row, 1);
             }
 
-            String javaName = map.get(columnColumnName).toString();
-            if (columnsMap.get(javaName) == null) {
+            String name = map.get(columnColumnName).toString();
+            if (columnsMap.get(name) == null) {
                 Column column = new Column();
-                column.setName(javaName);
+                column.setName(name);
                 column.setPriority(DataUtil.intValue(map.get(priorityColumnName)));
                 if (column.getPriority() == null) {
                     column.setPriority(999999);
                 }
-                columnsMap.put(javaName, 1);
+                columnsMap.put(name, 1);
                 columns.add(column);
             }
 
-            bufferData.put(row + javaName, map.get(keyColumnName));
+            bufferData.put(row + name, map.get(keyColumnName));
         }
 
         Collections.sort(columns);

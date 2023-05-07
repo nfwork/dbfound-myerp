@@ -11,7 +11,30 @@
 		<param name="priorityColumnName" dataType="varchar" value="priority" />
 		<sql>
 		 <![CDATA[
-			SELECT
+			(SELECT
+				p.period_name,
+				'合计'         account_name,
+				SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0))    amount,
+				99999            priority
+			FROM exp_item i,
+				 exp_item_line l,
+				 exp_account a,
+				 exp_period p
+			WHERE i.item_id = l.item_id
+			  AND a.account_id = l.account_id
+			  AND a.account_type = '0'
+			  AND i.period_id = p.period_id
+			  and p.book_id = ${@book_id}
+			  and i.book_id = ${@book_id}
+			  and l.book_id = ${@book_id}
+			  and a.book_id = ${@book_id}
+				#AND_CLAUSE#
+			GROUP BY p.period_code
+			order by p.period_code Limit 10000)
+
+			UNION ALL
+
+			(SELECT
 			  	p.period_name,
 			  	a.account_name,
 			  	SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0)) amount,
@@ -29,29 +52,7 @@
 			  and l.book_id = ${@book_id}
 			  and a.book_id = ${@book_id}
 			  #AND_CLAUSE#
-			GROUP BY i.period_id,l.account_id
-			
-			UNION ALL
-			
-			SELECT
-			  p.period_name,
-			  '合计'         account_name,
-			  SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0))    amount,
-			  99999            priority
-			FROM exp_item i,
-			     exp_item_line l,
-			  	 exp_account a,
-			  	 exp_period p
-			WHERE i.item_id = l.item_id
-			    AND a.account_id = l.account_id
-			    AND a.account_type = '0'
-			    AND i.period_id = p.period_id
-				and p.book_id = ${@book_id}
-				and i.book_id = ${@book_id}
-				and l.book_id = ${@book_id}
-			  	and a.book_id = ${@book_id}
-			    #AND_CLAUSE#
-			GROUP BY i.period_id
+			GROUP BY p.period_code,l.account_id)
 		 ]]>
 		</sql>
 		<filter name="periodfrom" express="p.period_code &gt;= ${@periodfrom}" />
