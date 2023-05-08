@@ -15,7 +15,7 @@ public class AccountAmountAdapter implements QueryAdapter<AccountAmountItem> {
     @Override
     public void afterQuery(Context context, Map<String, Param> params, QueryResponseObject<AccountAmountItem> responseObject) {
         int periodId = (Integer) params.get("period_id").getValue();
-        Map<String,AccountAmountItem> accountMap = responseObject.getMap("period_id");
+        Map<String,AccountAmountItem> accountMap = responseObject.getMap("account_id");
 
         List<AccountGroupItem> itemList = ModelEngine.query(context,"report/accountAmountQuery","getGroupData",AccountGroupItem.class).getDatas();
         for (AccountGroupItem item : itemList){
