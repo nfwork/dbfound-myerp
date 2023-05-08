@@ -23,17 +23,18 @@ public class WxBindAdapter implements ExecuteAdapter {
 
     @Override
     public void beforeExecute(Context context, Map<String, Param> params) {
-        String openid = getOpenId(context,params.get("js_code").getValue().toString());
-        LogUtil.info("get openid jscode:" + params.get("js_code").getValue() +", openid:"+openid);
+        String jsCode = params.get("js_code").getStringValue();
+        String openid = getOpenId(context, jsCode);
+        LogUtil.info("get openid jsCode:" + jsCode +", openid:"+openid);
         params.get("openid").setValue(openid);
     }
 
-    protected String getOpenId(Context context ,String jscode){
+    protected String getOpenId(Context context ,String jsCode){
         try {
             if(wxs ==null) {
                 wxs = ModelEngine.query(context,"sys/wxLogin",null).getString("wxs");
             }
-            HttpGet httpGet = new HttpGet(String.format(wxUrl, wxs, jscode));
+            HttpGet httpGet = new HttpGet(String.format(wxUrl, wxs, jsCode));
             try(CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(httpGet)){
                 String res = EntityUtils.toString(response.getEntity());

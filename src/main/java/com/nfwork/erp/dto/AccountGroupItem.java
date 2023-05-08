@@ -1,10 +1,12 @@
 package com.nfwork.erp.dto;
 
+import java.math.BigDecimal;
+
 public class AccountGroupItem {
 
     private Integer accountId;
     private Integer periodId;
-    private double amount;
+    private BigDecimal amount = BigDecimal.ZERO;
 
     public Integer getAccountId() {
         return accountId;
@@ -22,11 +24,11 @@ public class AccountGroupItem {
         this.periodId = periodId;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

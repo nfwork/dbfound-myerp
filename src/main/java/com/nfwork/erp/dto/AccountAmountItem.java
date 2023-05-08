@@ -1,5 +1,7 @@
 package com.nfwork.erp.dto;
 
+import java.math.BigDecimal;
+
 public class AccountAmountItem {
 
     private Integer accountId;
@@ -8,11 +10,11 @@ public class AccountAmountItem {
 
     private String accountCode;
 
-    private double remaindAmount;
+    private BigDecimal remaindAmount = BigDecimal.ZERO;
 
-    private double emergeAmount;
+    private BigDecimal emergeAmount = BigDecimal.ZERO;
 
-    private double endAmount;
+    private BigDecimal endAmount = BigDecimal.ZERO;
 
     public Integer getAccountId() {
         return accountId;
@@ -30,27 +32,27 @@ public class AccountAmountItem {
         this.accountName = accountName;
     }
 
-    public double getRemaindAmount() {
+    public BigDecimal getRemaindAmount() {
         return remaindAmount;
     }
 
-    public void setRemaindAmount(double remaindAmount) {
+    public void setRemaindAmount(BigDecimal remaindAmount) {
         this.remaindAmount = remaindAmount;
     }
 
-    public double getEmergeAmount() {
+    public BigDecimal getEmergeAmount() {
         return emergeAmount;
     }
 
-    public void setEmergeAmount(double emergeAmount) {
+    public void setEmergeAmount(BigDecimal emergeAmount) {
         this.emergeAmount = emergeAmount;
     }
 
-    public double getEndAmount() {
+    public BigDecimal getEndAmount() {
         return endAmount;
     }
 
-    public void setEndAmount(double endAmount) {
+    public void setEndAmount(BigDecimal endAmount) {
         this.endAmount = endAmount;
     }
 

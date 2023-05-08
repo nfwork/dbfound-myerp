@@ -14,7 +14,7 @@ import java.util.Map;
 public class AccountAmountAdapter implements QueryAdapter<AccountAmountItem> {
     @Override
     public void afterQuery(Context context, Map<String, Param> params, QueryResponseObject<AccountAmountItem> responseObject) {
-        int periodId = (Integer) params.get("period_id").getValue();
+        int periodId = params.get("period_id").getIntValue();
         Map<String,AccountAmountItem> accountMap = responseObject.getMap("account_id");
 
         List<AccountGroupItem> itemList = ModelEngine.query(context,"report/accountAmountQuery","getGroupData",AccountGroupItem.class).getDatas();
@@ -23,11 +23,11 @@ public class AccountAmountAdapter implements QueryAdapter<AccountAmountItem> {
             if(item.getPeriodId() == periodId){
                 amountItem.setEmergeAmount(item.getAmount());
             }else{
-                amountItem.setRemaindAmount(amountItem.getRemaindAmount() + item.getAmount());
+                amountItem.setRemaindAmount(amountItem.getRemaindAmount().add(item.getAmount()));
             }
         }
         for(AccountAmountItem item : responseObject.getDatas()){
-            item.setEndAmount(item.getEmergeAmount() + item.getRemaindAmount());
+            item.setEndAmount(item.getEmergeAmount().add(item.getRemaindAmount()));
         }
     }
 }
