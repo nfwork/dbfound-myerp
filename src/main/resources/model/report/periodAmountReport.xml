@@ -55,8 +55,8 @@
 			GROUP BY p.period_code,l.account_id)
 		 ]]>
 		</sql>
-		<filter name="periodfrom" express="p.period_code &gt;= ${@periodfrom}" />
-		<filter name="periodto" express="p.period_code &lt;= ${@periodto}" />
+		<filter name="periodfrom" dataType="number" express="p.period_code &gt;= ${@periodfrom}" />
+		<filter name="periodto" dataType="number" express="p.period_code &lt;= ${@periodto}" />
 	</query>
 
 </model>

@@ -8,10 +8,11 @@ Page({
    */
   data: {
       platform:app.globalData.platform,
-      item_list:[],
+      item_list:[{},{},{},{}],
       item_line_list:[],
       period_list:[],
-      current_period: {},
+      current_period_from: {},
+      current_period_to: {},
       limit : 5,
       totalCounts: 0,
       totalPages: 0,
@@ -37,7 +38,8 @@ Page({
       header:{ "Cookie": app.globalData.cookies},
       method:"POST",
       data:{
-        period_id: this.data.current_period.period_id,
+        period_code_from: this.data.current_period_from.period_code,
+        period_code_to: this.data.current_period_to.period_code,
         account_type: this.data.account_type.code_value
       },
       success : (res)=> {
@@ -88,7 +90,9 @@ Page({
 
   reset(){
     this.setData({
-      account_type: {}
+      account_type: {},
+      current_period_from:this.data.period_list[this.data.period_list.length-1],
+      current_period_to:this.data.period_list[this.data.period_list.length-1]
     });
   },
 
@@ -135,7 +139,8 @@ Page({
         account_id: this.data.account_id,
         limit: this.data.limit,
         start : (this.data.currentPage - 1) * this.data.limit,
-        period_id: this.data.current_period.period_id,
+        period_code_from: this.data.current_period_from.period_code,
+        period_code_to: this.data.current_period_to.period_code,
         order : "asc"
       },
       success : (res)=> {
@@ -189,8 +194,13 @@ Page({
     }
   },
 
-  setPeriod(e){
-    this.setData({current_period : e.detail});
+  setPeriodFrom(e){
+    this.setData({current_period_from : e.detail});
+    this.query();
+  },
+
+  setPeriodTo(e){
+    this.setData({current_period_to : e.detail});
     this.query();
   },
 
@@ -203,7 +213,8 @@ Page({
         if(res.data.success){
           this.setData({
             period_list:res.data.datas,
-            current_period:res.data.datas[res.data.datas.length-1]
+            current_period_from:res.data.datas[res.data.datas.length-1],
+            current_period_to:res.data.datas[res.data.datas.length-1]
           });
           this.query();
         }else if(res.data.timeout){

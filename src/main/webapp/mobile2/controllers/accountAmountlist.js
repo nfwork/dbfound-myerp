@@ -19,12 +19,13 @@ angular.module('myerpApp').config(function($routeProvider) {
 
 }).controller('accountAmountlistController', function($scope, $http, $timeout, $cookies, ToolService, defaultPeriod, periodCombo) {
 	
-	$scope.preiod = defaultPeriod.datas[0].period_id;
-	
+	$scope.period_from = defaultPeriod.datas[0].period;
+	$scope.period_to = defaultPeriod.datas[0].period;
+
 	periodCombo.datas.unshift({
 		period_name : "---请选择---"
 	})
-	$scope.preiods = periodCombo.datas;
+	$scope.periods = periodCombo.datas;
 	
 	$timeout(function(){$("#preiod").selectpicker();},0)
 	
@@ -35,7 +36,8 @@ angular.module('myerpApp').config(function($routeProvider) {
 		striped : true,
 		responseHandler : ToolService.tableResponseHandle,
 		queryParams : function(params) {
-			params.period_id = $scope.preiod;
+			params.period_code_from = $scope.period_from;
+			params.period_code_to = $scope.period_to;
 			return params;
 		},
 		onClickRow : function(row, element) {
@@ -54,7 +56,8 @@ angular.module('myerpApp').config(function($routeProvider) {
 		height:height,
 		responseHandler : ToolService.tableResponseHandle,
 		queryParams : function(params) {
-			params.period_id =  $scope.preiod;
+			params.period_code_from = $scope.period_from;
+			params.period_code_to = $scope.period_to;
 			params.account_id = account_id;
 			return params;
 		},

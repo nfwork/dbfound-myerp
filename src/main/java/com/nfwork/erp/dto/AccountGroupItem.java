@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class AccountGroupItem {
 
     private Integer accountId;
-    private Integer periodId;
+    private Integer periodCode;
     private BigDecimal amount = BigDecimal.ZERO;
 
     public Integer getAccountId() {
@@ -16,12 +16,12 @@ public class AccountGroupItem {
         this.accountId = accountId;
     }
 
-    public Integer getPeriodId() {
-        return periodId;
+    public Integer getPeriodCode() {
+        return periodCode;
     }
 
-    public void setPeriodId(Integer periodId) {
-        this.periodId = periodId;
+    public void setPeriodCode(Integer periodCode) {
+        this.periodCode = periodCode;
     }
 
     public BigDecimal getAmount() {

@@ -18,7 +18,7 @@
 		 ]]>
 		</sql>
 		<filter name="period_name" express="period_name like ${@period_name}"/>
-		<filter name="period_code" express="period_code like ${@period_code}"/>
+		<filter name="period_code" express="period_code = ${@period_code}"/>
 		<filter name="status" express="status = ${@status}"/>
 	</query>
 	
@@ -55,7 +55,7 @@
 	</query>
 	
 	<execute name="add">
-		<param name="period_code" dataType="varchar" />
+		<param name="period_code" dataType="number" />
 		<param name="period_name" dataType="varchar" />
 		<param name="status" dataType="varchar" />
 		<param name="priority" dataType="number" />

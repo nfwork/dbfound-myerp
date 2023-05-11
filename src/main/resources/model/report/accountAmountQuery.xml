@@ -3,45 +3,9 @@
 
 	<param name="book_id" dataType="number" scope="session" />
 
-	<query name="oldVersion">
-		<param name="period_id" dataType="number" />
-		<sql>
-		 <![CDATA[
-			 with period_id_set as (
-			     select period_id from exp_period
-				   where book_id = ${@book_id}
-					 and period_code < (select period_code from exp_period where period_id = ${@period_id}))
-
-		 	 select v.*,(remaind_amount+emerge_amount) end_amount from (
-				 select account_id,
-						account_code,
-						account_name,
-						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)
-						   from exp_item i, exp_item_line l, period_id_set p
-						  where l.account_id = t.account_id
-						    and i.item_id = l.item_id
-						    and i.period_id = p.period_id
-						    and i.book_id = ${@book_id}
-						    and l.book_id = ${@book_id}) remaind_amount,
-						(select ifnull(sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)),0)
-						   from exp_item i, exp_item_line l
-						  where l.account_id = t.account_id
-						    and i.item_id = l.item_id
-						    and i.period_id = ${@period_id}
-							and i.book_id = ${@book_id}
-						    and l.book_id = ${@book_id}) emerge_amount
-					from exp_account t
-					 where t.book_id = ${@book_id}
-				 	#AND_CLAUSE#
-					order by t.priority
-			   ) v
-		 ]]>
-		</sql>
-		<filter name="account_type" express="t.account_type = ${@account_type}" />
-	</query>
-
 	<query adapter="com.nfwork.erp.adapter.AccountAmountAdapter">
-		<param name="period_id" dataType="number" />
+		<param name="period_code_from" dataType="number" />
+		<param name="period_code_to" dataType="number" />
 		<sql>
 		 <![CDATA[
 			  select account_id,
@@ -57,23 +21,22 @@
 	</query>
 
 	<query name="getGroupData">
-		<param name="period_id" dataType="number" />
 		<sql>
 		 <![CDATA[
 			select l.account_id,
-			       i.period_id,
+			       p.period_code,
 			       sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)) as amount
 			  from exp_item i, exp_item_line l, exp_period p,exp_account a
 			  where l.account_id = a.account_id
 				and i.item_id = l.item_id
 				and i.period_id = p.period_id
-			    and p.period_code <= (select period_code from exp_period where period_id = ${@period_id})
+			    and p.period_code <=  ${@period_code_to}
 				and i.book_id = ${@book_id}
 				and l.book_id = ${@book_id}
 				and a.book_id = ${@book_id}
 			    and p.book_id = ${@book_id}
 				#AND_CLAUSE#
-              group by l.account_id, i.period_id
+              group by l.account_id, p.period_code
 			]]>
 		</sql>
 		<filter name="account_type" express="a.account_type = ${@account_type}" />
@@ -81,7 +44,8 @@
 
 	<query name="getExpDetail">
 		<param name="account_id" dataType="number" />
-		<param name="period_id" dataType="number" />
+		<param name="period_code_from" dataType="number" />
+		<param name="period_code_to" dataType="number" />
 		<sql>
 		 <![CDATA[
 			  select t.item_id,
@@ -102,7 +66,8 @@
 			    and l.account_id = a.account_id
 			    and p.book_id = ${@book_id}
 			    and t.book_id = ${@book_id}
-				and t.period_id = ${@period_id}
+				and p.period_code >= ${@period_code_from}
+				and p.period_code <= ${@period_code_to}
 			    and l.account_id = ${@account_id}
 			    and l.book_id = ${@book_id}
 			  order by t.exp_time

@@ -14,14 +14,15 @@ import java.util.Map;
 public class AccountAmountAdapter implements QueryAdapter<AccountAmountItem> {
     @Override
     public void afterQuery(Context context, Map<String, Param> params, QueryResponseObject<AccountAmountItem> responseObject) {
-        int periodId = params.get("period_id").getIntValue();
+        int periodForm = params.get("period_code_from").getIntValue();
+        int periodTo = params.get("period_code_to").getIntValue();
         Map<String,AccountAmountItem> accountMap = responseObject.getMap("account_id");
 
         List<AccountGroupItem> itemList = ModelEngine.query(context,"report/accountAmountQuery","getGroupData",AccountGroupItem.class).getDatas();
         for (AccountGroupItem item : itemList){
             AccountAmountItem amountItem = accountMap.get(item.getAccountId().toString());
-            if(item.getPeriodId() == periodId){
-                amountItem.setEmergeAmount(item.getAmount());
+            if(item.getPeriodCode() >= periodForm && item.getPeriodCode() <= periodTo){
+                amountItem.setEmergeAmount(amountItem.getEmergeAmount().add(item.getAmount()));
             }else{
                 amountItem.setRemaindAmount(amountItem.getRemaindAmount().add(item.getAmount()));
             }
