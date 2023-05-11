@@ -5,13 +5,15 @@
 	<param name="book_id" dataType="number" scope="session" />
 
 	<query adapter="com.nfwork.erp.adapter.ReportAdapter">
-		<param name="rowColumnName" dataType="varchar" value="period_name" />
-		<param name="columnColumnName" dataType="varchar" value="account_name" />
-		<param name="keyColumnName" dataType="varchar" value="amount" />
-		<param name="priorityColumnName" dataType="varchar" value="priority" />
+		<param name="row_field" dataType="varchar" value="period_name" />
+		<param name="column_field" dataType="varchar" value="account_name" />
+		<param name="value_field" dataType="varchar" value="amount" />
+		<param name="column_priority_field" dataType="varchar" value="priority" />
+		<param name="row_priority_field" dataType="varchar" value="period_code" />
 		<sql>
 		 <![CDATA[
-			(SELECT
+			SELECT
+			    p.period_code,
 				p.period_name,
 				'合计'         account_name,
 				SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0))    amount,
@@ -30,11 +32,11 @@
 			  and a.book_id = ${@book_id}
 				#AND_CLAUSE#
 			GROUP BY p.period_code
-			order by p.period_code Limit 10000)
 
 			UNION ALL
 
-			(SELECT
+		   SELECT
+			    p.period_code,
 			  	p.period_name,
 			  	a.account_name,
 			  	SUM(IFNULL(l.dr_amount,0)-IFNULL(l.cr_amount,0)) amount,
@@ -52,7 +54,7 @@
 			  and l.book_id = ${@book_id}
 			  and a.book_id = ${@book_id}
 			  #AND_CLAUSE#
-			GROUP BY p.period_code,l.account_id)
+			GROUP BY p.period_code,l.account_id
 		 ]]>
 		</sql>
 		<filter name="periodfrom" dataType="number" express="p.period_code &gt;= ${@periodfrom}" />

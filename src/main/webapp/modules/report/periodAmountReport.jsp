@@ -17,7 +17,8 @@
 		}
 	</script>
 	<body>
-	     <d:grid id="listGrid" title="科目期间汇总查询" queryUrl="report/periodAmountReport.query" rowNumber="false" navBar="false" selectable="false" autoQuery="true" height="$D.getFullHeight('listGrid')">
+		 <d:dataStore id="listData" fields="c" url="report/periodAmountReport.query" autoLoad="true" />
+	     <d:grid id="listGrid" title="科目期间汇总查询" queryUrl="" rowNumber="false" navBar="false" selectable="false" autoQuery="false" height="$D.getFullHeight('listGrid')-5">
 			<d:columns>
 				<d:column name="c" sortable="true" prompt="期间" width="100" />
 				<d:column align="right" name="c1" sortable="true" hidden="true" prompt="c1" width="100" />
@@ -57,9 +58,10 @@
 	    <script type="text/javascript">
 
 	    	<%--初始化查询表单默认值--%>
-	    	
-	    	listGrid.getStore().on("load",function(store){
-		    	
+			Ext.get("listGrid").mask("正在加载中");
+			listData.on("load",function(store){
+				listGrid.getStore().loadData({datas:[]});
+
 	    		var columns = store.reader.meta.reader.jsonData.columns;
     		 	var cm = listGrid.getColumnModel();
 			   
@@ -78,6 +80,7 @@
 			    	var index = cm.findColumnIndex(column.index);
 				    cm.setColumnHeader(index,column.name);
 				    cm.setHidden(index,false);
+					cm.moveColumn(index,i+1);
 			    }
 
 			    <%--添加合计行--%>
@@ -97,7 +100,9 @@
 						}
 					}
 				}
-				listGrid.addLine(json,true);
+				datas.push(json);
+				listGrid.getStore().loadData({datas:datas});
+				Ext.get("listGrid").unmask();
 			});
 		</script>
 	</body>
