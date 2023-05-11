@@ -9,7 +9,7 @@
 		 <![CDATA[
 			SELECT
 			  '本月开支' AS account_name,
-			  IFNULL(SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)),0) as totalexp,
+			  SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)) as totalexp,
 			  1 AS priority
 			FROM exp_item i,
 			  	exp_item_line l,
@@ -29,7 +29,7 @@
 			
 			SELECT
 			  a.account_name,
-			  IFNULL(SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)),0) as totalexp,
+			  SUM(IFNULL(dr_amount,0)-IFNULL(cr_amount,0)) as totalexp,
 			  a.priority
 			FROM exp_item i,
 			  	 exp_item_line l,
