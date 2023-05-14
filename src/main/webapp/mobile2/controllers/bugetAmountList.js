@@ -74,7 +74,7 @@ angular.module('myerpApp').config(function($routeProvider) {
 		height=150;
 	}
 	$('#detailTable').bootstrapTable({
-		url : "../report/accountAmountQuery.query!getExpDetail",
+		url : "../exp/amountManager.query!getExpDetail",
 		striped : true,
 		height : height,
 		responseHandler : ToolService.tableResponseHandle,

@@ -83,7 +83,7 @@ Page({
   showDetail(e){
     let account_id = e.currentTarget.dataset.accountid;
     wx.request({
-      url: app.globalData.serverUrl +'/report/accountAmountQuery.query!getExpDetail',
+      url: app.globalData.serverUrl +'/exp/amountManager.query!getExpDetail',
       header:{ "Cookie":app.globalData.cookies},
       method:"POST",
       data:{
