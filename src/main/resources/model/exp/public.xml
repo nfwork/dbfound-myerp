@@ -13,13 +13,19 @@
 		<param name="openid" scope="session" ioType="both"/>
 		<sql>
 		 <![CDATA[
-			select p.period_code as period,
-			       p.period_id ,
-				   DATE_FORMAT(NOW(),'%Y-%m-%d') exp_time
-			  from exp_period p
-			where p.period_code = DATE_FORMAT(NOW(),'%Y%m')
-			  and p.status='Y'
-			  and p.book_id = ${@book_id}
+			select DATE_FORMAT(NOW(),'%Y-%m-%d') exp_time,
+				   (select p.period_code
+					  from exp_period p
+					where p.period_code = DATE_FORMAT(NOW(),'%Y%m')
+					  and p.status='Y'
+					  and p.book_id = ${@book_id}) as period,
+					(
+					select p.period_id
+					from exp_period p
+					where p.period_code = DATE_FORMAT(NOW(),'%Y%m')
+					  and p.status='Y'
+					  and p.book_id = ${@book_id}
+					) as period_id
 		 ]]>
 		</sql>
 	</query>
