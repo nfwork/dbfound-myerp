@@ -53,8 +53,8 @@
       <view class="box"> 
         <view class="title">调整方式：</view>
         <radio-group bindchange="itemChange">
-          <radio value="{{1}}" color="#3d9be7" style="margin-right: 20rpx;" checked="{{true}}">增加</radio>
-          <radio value="{{-1}}" color="#3d9be7" checked="{{false}}">缩减</radio>
+          <radio value="{{1}}" color="#3d9be7" style="margin-right: 20rpx;" checked="{{change_type==1}}">增加</radio>
+          <radio value="{{-1}}" color="#3d9be7" checked="{{change_type==-1}}">缩减</radio>
         </radio-group>
       </view>
       <view class="box"> 
