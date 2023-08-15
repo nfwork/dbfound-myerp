@@ -7,13 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.base.Interceptor;
 
 public class SimpleCheckInterceptor implements Interceptor {
 
-	Map<String, String> map;
+	Map<String, String> accessMap;
 
 	public boolean jspInterceptor(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -76,19 +77,24 @@ public class SimpleCheckInterceptor implements Interceptor {
 	}
 	
 	public boolean check(String url) {
-		return map.get(url) != null;
+		return accessMap.get(url) != null;
 	}
 
 	public void init() {
-		map = new HashMap<>();
-		map.put("/login.jsp", "1");
-		map.put("/relogin.jsp", "1");
-		map.put("/close.jsp", "1");
-		map.put("/loginWindow.jsp", "1");
-		map.put("/sys/login.execute", "1");
-		map.put("/sys/wxLogin.execute!login", "1");
-		
-		map.put("/mobile/login.jsp", "1");
+		initConfig();
+
+		accessMap = new HashMap<>();
+		accessMap.put("/login.jsp", "1");
+		accessMap.put("/relogin.jsp", "1");
+		accessMap.put("/close.jsp", "1");
+		accessMap.put("/loginWindow.jsp", "1");
+		accessMap.put("/sys/login.execute", "1");
+		accessMap.put("/sys/wxLogin.execute!login", "1");
+		accessMap.put("/mobile/login.jsp", "1");
+	}
+
+	private void initConfig(){
+		DBFoundConfig.getSensitiveParamSet().add("ypassword");
 	}
 
 }
