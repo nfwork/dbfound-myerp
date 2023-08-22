@@ -71,16 +71,14 @@
 			<collisionSql where="${@description} is null" message="凭证描述不能为空！"/>
 
 			<execute name="save"/>
-			<setContextData name="description" value="" inCurrentPath="true"/>
 
-			<setContextData name="dr_amount" param="amount" inCurrentPath="true"/>
-			<setContextData name="account_id" param="dr_account_id" inCurrentPath="true"/>
-			<execute modelName="exp/itemLine" name="add"/>
+			<setContextData name="dr_line.dr_amount" param="amount" scope="param"/>
+			<setContextData name="dr_line.account_id" param="dr_account_id" scope="param"/>
+			<execute modelName="exp/itemLine" name="add" currentPath="dr_line"/>
 
-			<setContextData name="dr_amount" value="" inCurrentPath="true"/>
-			<setContextData name="cr_amount" param="amount" inCurrentPath="true"/>
-			<setContextData name="account_id" param="cr_account_id" inCurrentPath="true"/>
-			<execute modelName="exp/itemLine" name="add"/>
+			<setContextData name="cr_line.cr_amount" param="amount" scope="param"/>
+			<setContextData name="cr_line.account_id" param="cr_account_id" scope="param"/>
+			<execute modelName="exp/itemLine" name="add" currentPath="cr_line"/>
 		</sqls>
 	</execute>
 
