@@ -73,6 +73,6 @@ public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
         object.setDatas(rows);
         object.setTotalCounts(rows.size());
         object.setColumns(columns);
-        WebWriter.jsonWriter(context.response, JsonUtil.beanToJson(object));
+        WebWriter.jsonWriter(context.response, JsonUtil.toJson(object));
     }
 }
