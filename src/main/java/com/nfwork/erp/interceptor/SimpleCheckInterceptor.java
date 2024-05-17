@@ -58,9 +58,22 @@ public class SimpleCheckInterceptor implements Interceptor {
 			return true;
 		}
 	}
-	
+
+	@Override
+	public void setCorsMapping(HttpServletRequest request, HttpServletResponse response) {
+		// 允许所有源访问
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 允许的HTTP方法
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+		// 允许的头信息字段
+		response.setHeader("Access-Control-Allow-Headers", "*");
+		response.setHeader("Access-Control-Expose-Headers", "*");
+		// 是否允许携带认证信息
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+	}
+
 	public boolean doInterceptor(Context context, String className,
-			String method) throws Exception {
+								 String method) throws Exception {
 		return commonInterceptor(context);
 	}
 

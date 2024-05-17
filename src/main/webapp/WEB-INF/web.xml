@@ -13,15 +13,6 @@
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
 
-	<filter>
-		<filter-name>CorsFilter</filter-name>
-		<filter-class>com.nfwork.erp.filter.CorsFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>CorsFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
 	<!-- 加入DBFound的过滤器 -->
 	<filter>
 		<filter-name>DBFound</filter-name>
