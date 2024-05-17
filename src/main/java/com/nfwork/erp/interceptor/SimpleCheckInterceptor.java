@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.DBFoundConfig;
+import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.base.Interceptor;
@@ -61,15 +62,16 @@ public class SimpleCheckInterceptor implements Interceptor {
 
 	@Override
 	public void setCorsMapping(HttpServletRequest request, HttpServletResponse response) {
-		// 允许所有源访问
-		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-		// 允许的HTTP方法
-		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-		// 允许的头信息字段
-		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Cookie, Set-Cookie");
-		response.setHeader("Access-Control-Expose-Headers", "*");
-		// 是否允许携带认证信息
-		response.setHeader("Access-Control-Allow-Credentials", "true");
+		String origin = request.getHeader("Origin");
+		if(DataUtil.isNotNull(origin)) {
+			String JSESSIONID = request.getSession().getId();
+			response.setHeader("Jsessionid", JSESSIONID);
+			response.setHeader("Access-Control-Allow-Origin", origin);
+			response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+			response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+			response.setHeader("Access-Control-Expose-Headers", "Content-Disposition, Jsessionid");
+			response.setHeader("Access-Control-Allow-Credentials", "true");
+		}
 	}
 
 	public boolean doInterceptor(Context context, String className,
