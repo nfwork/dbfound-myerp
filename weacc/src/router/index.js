@@ -1,0 +1,32 @@
+import Router from 'vue-router';
+import Vue from 'vue';
+import HomePage from '@/pages/HomePage.vue';
+import LoginPage from '@/pages/LoginPage.vue';
+import MyPage from '@/pages/MyPage.vue';
+import ItemManage from '@/pages/ItemManage.vue';
+
+Vue.use(Router);
+
+const router  = new Router({
+    routes:[
+        {
+            name:'home',
+            path:'/',
+            component:HomePage
+        },{
+            name:'loginPage',
+            path:'/login',
+            component:LoginPage
+        },{
+            name:'myPage',
+            path:'/my',
+            component:MyPage
+        },{
+            name:'itemManage',
+            path:'/itemManage',
+            component:ItemManage
+        }
+    ]
+});
+
+export default router;
