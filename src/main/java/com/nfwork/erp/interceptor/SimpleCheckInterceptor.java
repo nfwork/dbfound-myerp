@@ -61,15 +61,15 @@ public class SimpleCheckInterceptor implements Interceptor {
 	}
 
 	@Override
-	public void setCorsMapping(HttpServletRequest request, HttpServletResponse response) {
+	public void setCors(HttpServletRequest request, HttpServletResponse response) {
 		String origin = request.getHeader("Origin");
 		if(DataUtil.isNotNull(origin)) {
-			String JSESSIONID = request.getSession().getId();
-			response.setHeader("Jsessionid", JSESSIONID);
+			String jsessionid = request.getSession().getId();
+			response.setHeader("Jsessionid", jsessionid);
 			response.setHeader("Access-Control-Allow-Origin", origin);
 			response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 			response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-			response.setHeader("Access-Control-Expose-Headers", "Content-Disposition, Jsessionid");
+			response.setHeader("Access-Control-Expose-Headers", "Jsessionid");
 			response.setHeader("Access-Control-Allow-Credentials", "true");
 		}
 	}
