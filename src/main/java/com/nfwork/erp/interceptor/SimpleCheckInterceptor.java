@@ -62,11 +62,11 @@ public class SimpleCheckInterceptor implements Interceptor {
 	@Override
 	public void setCorsMapping(HttpServletRequest request, HttpServletResponse response) {
 		// 允许所有源访问
-		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		// 允许的HTTP方法
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 		// 允许的头信息字段
-		response.setHeader("Access-Control-Allow-Headers", "*");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Cookie, Set-Cookie");
 		response.setHeader("Access-Control-Expose-Headers", "*");
 		// 是否允许携带认证信息
 		response.setHeader("Access-Control-Allow-Credentials", "true");
