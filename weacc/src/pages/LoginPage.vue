@@ -29,7 +29,7 @@
                 };
                 request.post(url,data).then(res => {
                     if(res.data.success){
-                        this.$router.back();
+                        this.$router.replace("/");
                     }else{
                         alert(res.data.message);
                     }

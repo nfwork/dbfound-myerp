@@ -88,7 +88,7 @@ export default {
 
   .content{
     margin-top:50px;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
     margin-left: 10px;
     margin-right: 10px;
     display: flex;
@@ -98,9 +98,9 @@ export default {
   .tabbar{
     position: fixed;
     bottom: 0;
-    height: 70px;
+    height: 60px;
     width: 100%;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     color: #000000;
     background-color: #fefefe;
     display: flex;

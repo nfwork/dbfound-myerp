@@ -39,30 +39,30 @@
 <script>
     import request from '@/util/request';
     export default {
-        data(){
-            return {
-                user_name:"",
-                totalexp:0,
-                accounts_exp:[]
+      data(){
+          return {
+              user_name:"",
+              totalexp:0,
+              accounts_exp:[]
+          }
+      },
+      methods:{
+          
+      },
+      mounted(){
+        let url = 'report/homeAnalysis.query?a=1';
+        let data = {};
+        request.post(url, data).then(res => {
+            if(res.data.success){
+                let totalAccount = res.data.datas.shift();
+                this.user_name = res.data.outParam.user_name;
+                this.accounts_exp = res.data.datas,
+                this.totalexp = totalAccount.totalexp;
+            }else if(res.data.timeout){
+                this.$router.push("/login");
             }
-        },
-        methods:{
-           
-        },
-        mounted:function(){
-            let url = 'report/homeAnalysis.query?a=1';
-            let data = {};
-            request.post(url, data).then(res => {
-                if(res.data.success){
-                    let totalAccount = res.data.datas.shift();
-                    this.user_name = res.data.outParam.user_name;
-                    this.accounts_exp = res.data.datas,
-                    this.totalexp = totalAccount.totalexp;
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
-                }
-            });
-        }
+        });
+      }
     }
 </script>
 
