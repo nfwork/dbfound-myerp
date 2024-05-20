@@ -35,6 +35,7 @@ export default {
        paths : {"/":{title:"We记账-首页"},
                 "/my":{title:"We记账-我的"},
                 "/itemManage":{title:"We记账-凭证管理"},
+                "/login":{title:"We记账-登录"},
                 }
     }
   },
@@ -54,12 +55,18 @@ export default {
       }
     }
   },
-  created(){
-    let path = this.$route.path; 
-    if(!path){
-      path ="/";
+  watch:{
+    '$route': {
+      handler: function (to, from) {
+        let path = to.path;
+        if(!path){
+          path ="/";
+        }
+        this.changeTab(path,true);
+      },
+      deep: true,
+      immediate: true
     }
-    this.changeTab(path,true);
   }
 }
 </script>
@@ -140,6 +147,11 @@ export default {
   flex-wrap: wrap;
 }
 
+.box button{
+  margin: 6px 4px;
+  min-width: 80px;
+}
+
 .bule-button {
   background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%);
   background-repeat: repeat-x;
@@ -193,6 +205,11 @@ button,input, textarea{
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 }
 
+.my-select{
+  flex: 1;
+  margin-top: 2px;
+}
+
 .facing-left {
   display: inline-block;
   border-left: 2px solid; border-bottom: 2px solid;
@@ -203,6 +220,8 @@ button,input, textarea{
   top: 18px;
 }
 
+
+/* table相关样式*/
 .table-header{
   box-sizing: border-box;
   margin-top: 8px;
@@ -241,7 +260,7 @@ button,input, textarea{
   align-content: flex-start;
 }
 .table-line{
-  font-size: 14px;
+  font-size: 13px;
   float: left;
   box-sizing: border-box;
 
@@ -272,7 +291,8 @@ button,input, textarea{
 }
 
 .table-line span{
-  max-height: 41px;
+  max-height: 40px;
+  border: none!important;;
 }
 
 .table-line :first-child{
@@ -294,8 +314,8 @@ button,input, textarea{
   background-color: #fff;
 }
 .table-pager{
-  width: 340px;
-  margin: 2px 0px;
+  width: 100%;
+  margin: 2px 2px;
   float: left;
 }
 
@@ -303,14 +323,14 @@ button,input, textarea{
   float: left;
   height: 30px;
   line-height: 30px;
-  font-size: 14px;
+  font-size: 13px;
 }
 .table-pager .buttonbox{
   float: right;
 }
 
 .table-pager .buttonbox button{
-  font-size: 14px;
+  font-size: 13px;
   min-width: 25px;
   margin-left: 4px;
   text-align: center;
@@ -323,4 +343,69 @@ button,input, textarea{
   border: 1px solid #aaa2a2; 
   color: #888c8f;
 }
+
+
+/* 弹框样式 */
+.popup-box{
+  position: absolute;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  background-color: rgba(53, 47, 47, 0.3);
+  width: 100%;
+  height: 100%;
+}
+.popup-info-center{
+  position: fixed;
+  z-index: 999;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  width: 90%;
+  left: 0;
+  margin-top: 15%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.popup-info-header{
+  text-align: center;
+  color: rgb(10, 114, 161);
+  font-weight: bold;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  border-bottom: 1px solid #e2e2e2; 
+  margin-bottom: 10px;
+}
+.popup-info-footer{
+  height: 50px;
+  text-align: center;
+  border-top: 1px solid #e2e2e2; 
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.popup-info-footer button{
+  margin: 8px 10px;
+  width: 80px;
+}
+
+.popup-row-info{
+  padding: 0 15px;
+  height: 128px;
+}
+
+.popup-row-info .box{
+  height: 42px;
+}
+
+.popup-row-info .box .title{
+  width:100px;
+  text-align: right;
+}
+
 </style>

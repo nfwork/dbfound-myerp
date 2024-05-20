@@ -5,8 +5,8 @@
         <input type="text" v-model="user_code"/>
         <div class="title">密码：</div>
         <input type="password" v-model="password"/>
-        <button style="width:100%;" class="bule-button" @click="login" >登 录</button>
-        <button style="width:100%;" class="litter-bule-button" @click="register" >注 册</button>
+        <button style="width:100%;height:36px" class="bule-button" @click="login" >登 录</button>
+        <button style="width:100%;height:36px" class="litter-bule-button" @click="register" >注 册</button>
     </div>
 </template>
 

@@ -3,7 +3,6 @@
     <div class="box"> 
         <div class="title">会计期间：</div>
         <my-select class="my-select" :value="current_period" @select="setPeriodId" :options="period_list" valueField="period_id" displayField="period_name"/>
-        <!-- <input type="text" disabled="true" v-model="period_id"/> -->
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>
@@ -42,18 +41,18 @@
 
     <div class="box"> 
         <div class="table-header">
-        <div style="width: 100px;">科目名称</div>
-        <div style="width: 75px;">借</div>
-        <div style="width: 75px;">贷</div>
-        <div style="flex: 1;">行描述</div>
+            <div style="width: 100px;">科目名称</div>
+            <div style="width: 75px;">借</div>
+            <div style="width: 75px;">贷</div>
+            <div style="flex: 1;">行描述</div>
         </div>
         <div class="table-body" style="min-height: 90px;">
-        <div class="table-line" hover-class="table-line-hover" v-for="item in item_line_list" :key="item.item_line_id">
-            <div style="width: 100px;">{{item.account_name}}</div>
-            <div style="width: 75px;text-align: right;">{{item.dr_amount}}</div>
-            <div style="width: 75px;text-align: right;">{{item.cr_amount}}</div>
-            <div style="flex: 1;"><text user-select="true">{{item.description==null?"":item.description}}</text></div>
-        </div>
+            <div class="table-line" hover-class="table-line-hover" v-for="item in item_line_list" :key="item.item_line_id">
+                <div style="width: 100px;">{{item.account_name}}</div>
+                <div style="width: 75px;text-align: right;">{{item.dr_amount}}</div>
+                <div style="width: 75px;text-align: right;">{{item.cr_amount}}</div>
+                <div style="flex: 1;"><text user-select="true">{{item.description==null?"":item.description}}</text></div>
+            </div>
         </div>
     </div>
 </div>
@@ -178,10 +177,6 @@ export default {
 </script>
 
 <style scoped>
-.box button{
-  margin: 6px 6px;
-  min-width: 80px;
-}
 .title{
   width: 80px;
   height: 40px;
@@ -190,11 +185,7 @@ export default {
   float: left;
   text-align: right;
 }
-.my-select{
-  flex: 1;
-  margin-top: 2px;
-}
-input,my-select{
+input{
   flex: 1;
   margin-top: 2px;
   float: left;
