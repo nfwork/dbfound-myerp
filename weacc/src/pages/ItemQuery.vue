@@ -5,13 +5,16 @@
         <my-select class="my-select" :value="current_period" @select="setPeriodId" :options="period_list" valueField="period_id" displayField="period_name"/>
     </div>
     <div class="box"> 
+        <div class="title">费用科目：</div>
+        <my-select class="my-select" :value="current_account" @select="setAccount" :options="account_list" valueField="account_id" displayField="account_name"/>
+    </div>
+    <div class="box"> 
         <div class="title">凭证描述：</div>
         <input type="text" v-model="description"/>
     </div>
     <div class="box"> 
         <button class="bule-button" @click="query">查 询</button>
-        <button class="litter-bule-button" @click="functionTap(1)" >凭证登记(简)</button>
-        <button class="yellow-button" @click="functionTap(2)">凭证登记</button>
+        <button class="yellow-button" @click="reset">重置</button>
     </div>
     <div class="box"> 
         <div class="table-header">
@@ -21,7 +24,7 @@
         </div>
         <div class="table-body" style="min-height: 230px;">
         <div :data-itemid="item.item_id" @click="showDetail(item.item_id,index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item, index) in item_list" :key="item.item_id">
-            <div style="width: 80px;color: #0f4ea0; text-align: center;" @click="goToDetail(item.item_id)">{{item.item_num}}</div>
+            <div style="width: 80px; text-align: center;" @click="goToDetail(item.item_id)">{{item.item_num}}</div>
             <div style="width: 100px; text-align: center;">{{item.exp_time}}</div>
             <div style="flex:1; overflow-x: hidden;"><span>{{item.description}}</span></div>
         </div>
@@ -66,25 +69,24 @@ export default {
             item_list:[],
             item_line_list:[],
             period_list:[],
+            account_list:[],
+            current_period: {},
+            current_account: {},
+            description: '',
+            period_id: null,
+            current_line:-1,
             limit : 5,
             totalCounts: 0,
             totalPages: 0,
             currentPage: 1,
-            period_id: null,
-            description: '',
-            current_period: {},
-            current_line:-1
         }
     },
     methods:{
         query(){
-            if(this.period_list.length == 0){
-                alert('当前没有打开的期间')
-                return;
-            }
             let url = 'exp/item.query';
             let data = {
                 period_id: this.current_period.period_id,
+                account_id: this.current_account.account_id,
                 limit : this.limit,
                 description : this.description,
                 start : (this.currentPage - 1) * this.limit
@@ -150,19 +152,26 @@ export default {
                 }
             }
         },
-        async getPeriodList(){
-            return new Promise((resolve,reject)=>{
-                let url = 'fnd/expPeriod.query!combo';
-                let data ={};
-                request.post(url, data).then(res => {
-                    if(res.data.success){
-                        this.period_list = res.data.datas;
-                        this.current_period = res.data.datas[0];
-                    }else if(res.data.timeout){
-                        this.$router.push("/login");
-                    }
-                    resolve(1);
-                });
+        getPeriodList(){
+            let url = 'fnd/expPeriod.query!comboAll';
+            let data ={};
+            request.post(url, data).then(res => {
+                if(res.data.success){
+                    this.period_list = res.data.datas;
+                }else if(res.data.timeout){
+                    this.$router.push("/login");
+                }
+            });
+        },
+        getAccountList(){
+            let url = 'fnd/expAccount.query';
+            let data ={};
+            request.post(url, data).then(res => {
+                if(res.data.success){
+                    this.account_list = res.data.datas;
+                }else if(res.data.timeout){
+                    this.$router.push("/login");
+                }
             });
         },
         goToDetail(){
@@ -171,13 +180,22 @@ export default {
         setPeriodId(item){
             this.current_period = item;
         },
-        async init(){
-            await this.getPeriodList();
+        setAccount(item){
+            this.current_account = item;
+        },
+        reset(){
+            this.description = '';
+            this.current_period = {};
+            this.current_account = {};
+        },
+        init(){
+            this.getAccountList();
+            this.getPeriodList();
             this.query();
         }
     },
     mounted(){
-        this.init();
+       this.init();
     }
 }
 </script>

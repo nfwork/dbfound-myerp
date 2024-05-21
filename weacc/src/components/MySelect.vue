@@ -1,15 +1,13 @@
 <template>
-  <div class="select-box">
+  <div ref="selectRef" class="select-box">
     <div class="select-current" @click="openClose">
       <span class="current-name">{{selected[displayField]}}</span>
     </div> 
-    <div scroll-y="true" :scroll-into-div="'p'+selected[valueField]" class="option-list" v-if="isShow">
+    <div ref="containRef" class="option-list" v-if="isShow">
       <div @click="optionTap(item)" :class="item[valueField] == value[valueField]?'option option-active':'option'" hover-class="option-hover"
         v-for="(item,index) in options"  
         :key="index"
-        :data-id="item[valueField]"
-        :id="'p'+item[valueField]"
-        :data-name="item[displayField]">{{item[displayField]}}
+        :ref="'itemRef-'+item[valueField]">{{item[displayField]}}
       </div>
       <div v-if="options.length &gt; 6" style="height: 10px;"></div>
     </div>
@@ -33,8 +31,7 @@ export default {
       value: 'id'
     },
     value: {
-      type: Object,
-      value: String
+      type: Object
     }
   },
   data(){
@@ -53,7 +50,19 @@ export default {
     },
     close() {
       this.isShow=false
+    },
+    hiddenBox(event){
+      let div = this.$refs.selectRef;
+      if (event.target !== div && !div.contains(event.target)) {
+        this.isShow = false;
+      }
     }
+  },
+  created(){
+    document.addEventListener('click', this.hiddenBox);
+  },
+  beforeDestroy(){
+    document.removeEventListener('click',this.hiddenBox);
   },
   watch: {
     selected(newValue) {
@@ -61,6 +70,20 @@ export default {
     },
     value(newValue) {
       this.selected = newValue;
+    },
+    isShow(value){
+      if(value == true){
+        setTimeout(() => {
+          let contain = this.$refs.containRef; 
+          let itemRef = 'itemRef-'+this.selected[this.valueField];
+          let element = this.$refs[itemRef];
+          if(element){
+            let top = element[0].offsetTop;
+            top = top - 105;
+            contain.scrollTop = top ;
+          }
+        }, 0);
+      }
     }
   }
 }
@@ -114,7 +137,7 @@ export default {
   left: 0;
   top: 38px;
   max-height: 250px;
-  overflow: hidden;
+  overflow: scroll;
   width: 100%;
   padding: 12rpx 0rpx 10rpx 10rpx;
   border-radius: 3px;

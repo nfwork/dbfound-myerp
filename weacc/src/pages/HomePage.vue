@@ -7,14 +7,14 @@
         </div>
         <div class="menu-title">记账</div>
         <div class="function">
-            <div bindtap="menuTap" :fid="1" class="function-item" hover-class="function-item-hover"><img src="images/pzgl.jpg">凭证管理</div>
-            <div bindtap="menuTap" :fid="2" class="function-item" hover-class="function-item-hover"><img src="images/pzdjj.jpg">凭证登记(简)</div>
-            <div bindtap="menuTap" :fid="3" class="function-item" hover-class="function-item-hover"><img src="images/pzdj.jpg">凭证登记</div>
+            <div @click="go('/itemManage')" class="function-item" hover-class="function-item-hover"><img src="images/pzgl.jpg">凭证管理</div>
+            <div bindtap="menuTap" class="function-item" hover-class="function-item-hover"><img src="images/pzdjj.jpg">凭证登记(简)</div>
+            <div bindtap="menuTap" class="function-item" hover-class="function-item-hover"><img src="images/pzdj.jpg">凭证登记</div>
         </div>
 
         <div class="menu-title">统计查询</div>
         <div class="function">
-            <div bindtap="menuTap" :fid="4" class="function-item" hover-class="function-item-hover"><img src="images/pzcx.jpg">凭证查询</div>
+            <div @click="go('/itemQuery')" class="function-item" hover-class="function-item-hover"><img src="images/pzcx.jpg">凭证查询</div>
             <div bindtap="menuTap" :fid="5" class="function-item" hover-class="function-item-hover"><img src="images/fymx.jpg">费用明细</div>
             <div bindtap="menuTap" :fid="6" class="function-item" hover-class="function-item-hover"><img src="images/kmye.jpg">科目余额</div>
             <div bindtap="menuTap" :fid="7" class="function-item" hover-class="function-item-hover"><img src="images/kxhz.jpg">开销汇总</div>
@@ -47,7 +47,9 @@
           }
       },
       methods:{
-          
+          go(url){
+            this.$router.push({ path: url });
+          }
       },
       mounted(){
         let url = 'report/homeAnalysis.query?a=1';

@@ -35,6 +35,7 @@ export default {
        paths : {"/":{title:"We记账-首页"},
                 "/my":{title:"We记账-我的"},
                 "/itemManage":{title:"We记账-凭证管理"},
+                "/itemQuery":{title:"We记账-凭证查询"},
                 "/login":{title:"We记账-登录"},
                 }
     }
