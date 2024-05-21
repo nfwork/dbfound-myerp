@@ -8,7 +8,7 @@
         <div class="menu-title">记账</div>
         <div class="function">
             <div @click="go('/itemManage')" class="function-item" hover-class="function-item-hover"><img src="images/pzgl.jpg">凭证管理</div>
-            <div bindtap="menuTap" class="function-item" hover-class="function-item-hover"><img src="images/pzdjj.jpg">凭证登记(简)</div>
+            <div @click="go('/itemDetailAdd')" class="function-item" hover-class="function-item-hover"><img src="images/pzdjj.jpg">凭证登记(简)</div>
             <div bindtap="menuTap" class="function-item" hover-class="function-item-hover"><img src="images/pzdj.jpg">凭证登记</div>
         </div>
 
@@ -95,7 +95,7 @@
 }
 .summary :first-child{
   margin-top: 0px;
-  width: 380px;
+  width: 100%;
 }
 .summary-item{
   width: 170px;
@@ -144,6 +144,7 @@
 .explain{
   font-size: 12px;
   color: gray;
+  padding-bottom: 6px;
 }
 .explain view{
   padding: 2px;

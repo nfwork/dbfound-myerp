@@ -24,7 +24,7 @@
         </div>
         <div class="table-body" style="min-height: 230px;">
         <div :data-itemid="item.item_id" @click="showDetail(item.item_id,index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item, index) in item_list" :key="item.item_id">
-            <div style="width: 80px; text-align: center;" @click="goToDetail(item.item_id)">{{item.item_num}}</div>
+            <div style="width: 80px; text-align: center;">{{item.item_num}}</div>
             <div style="width: 100px; text-align: center;">{{item.exp_time}}</div>
             <div style="flex:1; overflow-x: hidden;"><span>{{item.description}}</span></div>
         </div>
@@ -173,9 +173,6 @@ export default {
                     this.$router.push("/login");
                 }
             });
-        },
-        goToDetail(){
-
         },
         setPeriodId(item){
             this.current_period = item;

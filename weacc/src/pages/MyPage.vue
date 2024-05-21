@@ -162,7 +162,7 @@ export default {
 }
 
 .title{
-  width: 80px;
+  width: 120px;
   height: 40px;
   line-height: 40px;
   float: left;

@@ -4,7 +4,7 @@
       <span class="current-name">{{selected[displayField]}}</span>
     </div> 
     <div ref="containRef" class="option-list" v-if="isShow">
-      <div @click="optionTap(item)" :class="item[valueField] == value[valueField]?'option option-active':'option'" hover-class="option-hover"
+      <div @click="optionTap(item)" :class="item[valueField] == value[valueField]?'option option-active':'option'"
         v-for="(item,index) in options"  
         :key="index"
         :ref="'itemRef-'+item[valueField]">{{item[displayField]}}
@@ -94,7 +94,7 @@ export default {
   position: relative;
   width: 100%;
   font-size: 14px;
-  padding-top: 2px;
+  padding-top: 0px;
 }
 
 .select-current {
@@ -156,7 +156,7 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
-.option-hover {
+.option:hover {
   background-color: #edf7fd!important
 }
 

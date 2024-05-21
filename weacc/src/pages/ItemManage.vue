@@ -10,8 +10,8 @@
     </div>
     <div class="box"> 
         <button class="bule-button" @click="query">查 询</button>
-        <button class="litter-bule-button" @click="functionTap(1)" >凭证登记(简)</button>
-        <button class="yellow-button" @click="functionTap(2)">凭证登记</button>
+        <button class="litter-bule-button" @click="go('itemDetailAdd')" >凭证登记(简)</button>
+        <button class="yellow-button" @click="go('itemDetailSave')">凭证登记</button>
     </div>
     <div class="box"> 
         <div class="table-header">
@@ -77,6 +77,9 @@ export default {
         }
     },
     methods:{
+        go(url){
+            this.$router.push({ path: url });
+        },
         query(){
             if(this.period_list.length == 0){
                 alert('当前没有打开的期间')

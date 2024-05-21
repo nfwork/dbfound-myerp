@@ -5,6 +5,7 @@ import LoginPage from '@/pages/LoginPage.vue';
 import MyPage from '@/pages/MyPage.vue';
 import ItemManage from '@/pages/ItemManage.vue';
 import ItemQuery from '@/pages/ItemQuery.vue';
+import ItemDetailAdd from '@/pages/ItemDetailAdd.vue'
 
 Vue.use(Router);
 
@@ -30,6 +31,10 @@ const router  = new Router({
             name:'itemQuery',
             path:'/itemQuery',
             component:ItemQuery
+        },{
+            name:'itemDetailAdd',
+            path:'/itemDetailAdd',
+            component:ItemDetailAdd
         }
     ]
 });

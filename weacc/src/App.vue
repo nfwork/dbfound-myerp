@@ -36,7 +36,8 @@ export default {
                 "/my":{title:"We记账-我的"},
                 "/itemManage":{title:"We记账-凭证管理"},
                 "/itemQuery":{title:"We记账-凭证查询"},
-                "/login":{title:"We记账-登录"},
+                "/itemDetailAdd":{title:"We记账-凭证登记"},
+                "/login":{title:"We记账-登录"}
                 }
     }
   },
@@ -80,6 +81,11 @@ export default {
     font-family:  "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
   }
 
+  #app{
+    display: flex;
+    justify-content: center;
+  }
+
   .navbar{
     background-color: #428bca;
     height: 50px;
@@ -100,6 +106,7 @@ export default {
     margin-left: 10px;
     margin-right: 10px;
     display: flex;
+    max-width: 600px;
     justify-content: center;
   }
 
@@ -108,6 +115,7 @@ export default {
     bottom: 0;
     height: 60px;
     width: 100%;
+    max-width: 600px;
     padding-bottom: 10px;
     color: #000000;
     background-color: #fefefe;
@@ -209,6 +217,17 @@ button,input, textarea{
 .my-select{
   flex: 1;
   margin-top: 2px;
+}
+
+input[disabled] {
+  background-color: #f3eeee; 
+  color: #706767; 
+  cursor: not-allowed;
+}
+input:disabled{  
+  color: #706767;
+  opacity: 1;
+  -webkit-text-fill-color: #706767;
 }
 
 .facing-left {
