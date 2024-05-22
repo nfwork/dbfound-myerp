@@ -60,6 +60,8 @@
 
 <script>
 import request from '@/util/request';
+import { Toast } from 'vant';
+
 export default {
     data(){
         return {
@@ -82,7 +84,7 @@ export default {
         },
         query(){
             if(this.period_list.length == 0){
-                alert('当前没有打开的期间')
+                Toast.fail('当前没有打开的期间')
                 return;
             }
             let url = 'exp/item.query';
@@ -92,7 +94,7 @@ export default {
                 description : this.description,
                 start : (this.currentPage - 1) * this.limit
             };
-            request.post(url, data).then(res => {
+            request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){
                     this.item_list = res.data.datas;
                     this.item_line_list = [];

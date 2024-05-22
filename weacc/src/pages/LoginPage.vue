@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    import { Toast,Dialog } from 'vant';
     import request from '@/util/request';
 
     export default {
@@ -27,18 +28,22 @@
                     user_code:this.user_code,
                     password:this.password
                 };
-                request.post(url,data).then(res => {
+                request.post(url,data, {showLoadding:true}).then(res => {
                     if(res.data.success){
                         localStorage.setItem("user_code", this.user_code)
                         this.$router.replace("/");
                     }else{
-                        alert(res.data.message);
+                        Toast.fail(res.data.message);
                     }
                 });
             },
 
             register(){
-                alert('We记账小程序暂不提供在线注册功能，如有需要请发送邮件到nfwork@163.com进行账号申请；');
+                Dialog.alert({
+                    title: '提示',
+                    confirmButtonColor : "#2d6ca2",
+                    message: 'We记账小程序暂不提供在线注册功能，如有需要请发送邮件到nfwork@163.com进行账号申请.',
+                })
             },
         }
     }

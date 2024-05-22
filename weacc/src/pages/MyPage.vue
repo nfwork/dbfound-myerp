@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { Toast,Dialog } from 'vant';
 import request from '@/util/request';
 export default {
     data(){
@@ -98,11 +99,11 @@ export default {
         },
         updatePassword(){
             if(!(this.ypassword)){
-                alert("原密码不能为空！")
+                Toast.fail("原密码不能为空！")
                 return;
             }
             if(!(this.password) || this.password != this.password2){
-                alert("两次输入新密码不一致！")
+                Toast.fail("两次输入新密码不一致！")
                 return;
             }
             let url = '/sys/login.execute!updatePassword';
@@ -110,15 +111,15 @@ export default {
                 password: this.password,
                 ypassword: this.ypassword
             }
-            request.post(url, data).then(res => {
+            request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){
                     this.ypassword = "";
                     this.password2 = "";
                     this.password = "";
-                    alert("修改成功");
+                    Toast.success("修改成功");
                     this.hiddenBox();
                 }else{
-                    alert(res.data.message);
+                    Toast.fail(res.data.message);
                 }
             });
         },
@@ -129,13 +130,17 @@ export default {
             this.showIndex=1
         },
         logout(){
-            let result = confirm("确认要退出登录吗");
-            if(result){
+            Dialog.confirm({
+                title: '提示',
+                message: '确认要退出登录吗？',
+                confirmButtonColor : "#2d6ca2"
+            }).then(() => {
                 let url = "user.do!logout"
                 request.post(url).then(res => {
                     this.$router.replace({ path: "/login" });
                 });
-            }
+            }).catch(() => {
+            });
         }
     },
     mounted(){

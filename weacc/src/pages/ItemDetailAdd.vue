@@ -39,7 +39,8 @@
 
 <script>
 import request from '@/util/request';
-import { onMounted } from 'vue';
+import { Toast, Dialog} from 'vant';
+
 export default {
     data(){
         return {
@@ -96,7 +97,7 @@ export default {
         },
         save(){
             if(!this.current_period || !this.current_period.period_id){
-                alert('会计期间不能为空');
+                Toast.fail('会计期间不能为空');
                 return;
             }
             let amount;
@@ -104,7 +105,7 @@ export default {
                 amount = this.amount * 1;
                 amount = amount.toFixed(2);
             }else{
-                alert('金额不能为空');
+                Toast.fail('金额不能为空');
                 return;
             }
             let url = 'exp/item.execute!simpleSave';
@@ -116,12 +117,17 @@ export default {
                 cr_account_id:this.cr_account.account_id,
                 dr_account_id:this.dr_account.account_id
             };
-            request.post(url, data).then(res => {
+            request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){
-                    alert("登记成功")
-                    this.$router.replace("/itemManage");
+                    Dialog.alert({
+                        title: '提示',
+                        confirmButtonColor : "#2d6ca2",
+                        message: '登记成功',
+                    }).then(() => {
+                        this.$router.replace("/itemManage");
+                    });
                 }else{
-                    alert(res.data.message)
+                    Toast.fail(res.data.message)
                 }
             });
         }

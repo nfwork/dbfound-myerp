@@ -1,5 +1,6 @@
 import axios from 'axios';
 import router from '../router';
+import { Toast } from 'vant';
 
 const request = axios.create({
   baseURL: "https://dbfound.3g.net.cn/dbfound/",
@@ -21,10 +22,20 @@ request.interceptors.request.use(config => {
   }else{
     config.url = url +';jsessionid=' + request.jsessionid; 
   }
+  if(config.showLoadding){
+    Toast.loading({
+      duration: 0,
+      message: '请求中...',
+      forbidClick: true
+    });
+  }
   return config
 })
 
 request.interceptors.response.use(res => {
+  if(res.config.showLoadding){
+    Toast.clear();
+  }
   let jsessionid = res.headers["jsessionid"];
   if(jsessionid && jsessionid != request.jsessionid){
     request.jsessionid = jsessionid;

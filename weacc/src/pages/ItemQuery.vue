@@ -91,7 +91,7 @@ export default {
                 description : this.description,
                 start : (this.currentPage - 1) * this.limit
             };
-            request.post(url, data).then(res => {
+            request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){
                     this.item_list = res.data.datas;
                     this.item_line_list = [];
