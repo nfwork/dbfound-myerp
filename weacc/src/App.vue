@@ -296,7 +296,7 @@ input:disabled{
   padding-right: 4px;
   padding-left: 4px;
   height: 45px;
-  overflow: scroll;
+  overflow: anto;
   box-sizing: border-box;
 
   /* 添加flex布局，设置为垂直居中 */

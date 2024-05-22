@@ -16,7 +16,7 @@
     export default {
         data(){
             return {
-                user_code:"",
+                user_code: localStorage.getItem("user_code"),
                 password:""
             }
         },
@@ -29,6 +29,7 @@
                 };
                 request.post(url,data).then(res => {
                     if(res.data.success){
+                        localStorage.setItem("user_code", this.user_code)
                         this.$router.replace("/");
                     }else{
                         alert(res.data.message);

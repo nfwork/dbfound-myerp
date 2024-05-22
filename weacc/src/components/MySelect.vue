@@ -9,7 +9,6 @@
         :key="index"
         :ref="'itemRef-'+item[valueField]">{{item[displayField]}}
       </div>
-      <div v-if="options.length &gt; 6" style="height: 10px;"></div>
     </div>
   </div>
 </template>
@@ -146,13 +145,14 @@ export default {
   box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2) inset;
   background-color: #fff;
   border: 1px solid #dfdfdf;
+  overflow: auto;
 }
 
 .option {
   display: block;
   width: 100%;
   line-height: 35px;
-  padding-left: 3px;
+  padding-left: 5px;
   border-bottom: 1px solid #eee;
 }
 
