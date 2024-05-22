@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../router';
 
 const request = axios.create({
   baseURL: "https://dbfound.3g.net.cn/dbfound/",
@@ -28,6 +29,9 @@ request.interceptors.response.use(res => {
   if(jsessionid && jsessionid != request.jsessionid){
     request.jsessionid = jsessionid;
     localStorage.setItem("jsessionid",jsessionid);
+  }
+  if(res.data.timeout){
+    router.push("/login");
   }
   return res;
 })

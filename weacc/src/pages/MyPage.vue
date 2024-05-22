@@ -91,8 +91,6 @@ export default {
                     this.openid = res.data.outParam.openid,
                     this.exp_time = res.data.datas[0].exp_time,
                     this.period = res.data.datas[0].period
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }
             }).catch(error => {
                 console.error('Error:', error);
@@ -119,8 +117,6 @@ export default {
                     this.password = "";
                     alert("修改成功");
                     this.hiddenBox();
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }else{
                     alert(res.data.message);
                 }
@@ -135,9 +131,10 @@ export default {
         logout(){
             let result = confirm("确认要退出登录吗");
             if(result){
-                request.jsessionid = null;
-                localStorage.removeItem("jsessionid");
-                this.$router.replace({ path: "/login" });
+                let url = "user.do!logout"
+                request.post(url).then(res => {
+                    this.$router.replace({ path: "/login" });
+                });
             }
         }
     },

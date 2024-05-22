@@ -60,8 +60,6 @@
                 this.user_name = res.data.outParam.user_name;
                 this.accounts_exp = res.data.datas,
                 this.totalexp = totalAccount.totalexp;
-            }else if(res.data.timeout){
-                this.$router.push("/login");
             }
         });
       }

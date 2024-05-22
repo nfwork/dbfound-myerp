@@ -71,8 +71,6 @@ export default {
             request.post(url, data).then(res => {
                 if(res.data.success){
                     this.account_list = res.data.datas;
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }
             });
         },
@@ -83,8 +81,6 @@ export default {
                 if(res.data.success){
                     this.period_list = res.data.datas;
                     this.current_period = this.period_list[0];
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }
             });
         },
@@ -95,8 +91,6 @@ export default {
                 if(res.data.success){
                     this.user_name = res.data.outParam.user_name;
                     this.exp_time = res.data.datas[0].exp_time
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }
             });
         },
@@ -126,8 +120,6 @@ export default {
                 if(res.data.success){
                     alert("登记成功")
                     this.$router.replace("/itemManage");
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }else{
                     alert(res.data.message)
                 }

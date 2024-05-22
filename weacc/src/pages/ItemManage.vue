@@ -100,8 +100,6 @@ export default {
                     this.totalCounts = res.data.totalCounts;
                     this.totalPages = Math.ceil(res.data.totalCounts/this.limit);
                     this.checkPage();
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }
             });
         },
@@ -125,8 +123,6 @@ export default {
                 if(res.data.success){
                     this.item_line_list=res.data.datas;
                     this.current_line = index;
-                }else if(res.data.timeout){
-                    this.$router.push("/login");
                 }
             });
         },
@@ -163,9 +159,6 @@ export default {
                         this.current_period = res.data.datas[0];
                         resolve(1);
                     }else{
-                        if(res.data.timeout){
-                            this.$router.push("/login");
-                        }
                         resolve(0);
                     }
                 });
