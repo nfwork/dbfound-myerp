@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nfwork.dbfound.core.Context;
-import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
@@ -96,8 +95,6 @@ public class SimpleCheckInterceptor implements Interceptor {
 	}
 
 	public void init() {
-		initConfig();
-
 		accessMap = new HashMap<>();
 		accessMap.put("/login.jsp", "1");
 		accessMap.put("/relogin.jsp", "1");
@@ -106,10 +103,6 @@ public class SimpleCheckInterceptor implements Interceptor {
 		accessMap.put("/sys/login.execute", "1");
 		accessMap.put("/sys/wxLogin.execute!login", "1");
 		accessMap.put("/mobile/login.jsp", "1");
-	}
-
-	private void initConfig(){
-		DBFoundConfig.getSensitiveParamSet().add("ypassword");
 	}
 
 }

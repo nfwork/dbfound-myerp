@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div class="root">
         <img src="images/tx.jpg" class="logo">
         <div class="title">用户名：</div>
         <input type="text" v-model="user_code"/>
@@ -44,14 +44,6 @@
 </script>
 
 <style scoped>
-.login{
-  margin-top: 20px;
-  padding-bottom: 10px;
-  font-size: 14px;
-  box-sizing: border-box;
-  width: 95%;
-}
-
 .logo{
   width: 100px;
   height: 100px;

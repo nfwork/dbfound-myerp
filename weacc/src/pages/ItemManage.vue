@@ -161,10 +161,13 @@ export default {
                     if(res.data.success){
                         this.period_list = res.data.datas;
                         this.current_period = res.data.datas[0];
-                    }else if(res.data.timeout){
-                        this.$router.push("/login");
+                        resolve(1);
+                    }else{
+                        if(res.data.timeout){
+                            this.$router.push("/login");
+                        }
+                        resolve(0);
                     }
-                    resolve(1);
                 });
             });
         },
@@ -175,8 +178,10 @@ export default {
             this.current_period = item;
         },
         async init(){
-            await this.getPeriodList();
-            this.query();
+            let result = await this.getPeriodList();
+            if(result == 1){
+                this.query();
+            }
         }
     },
     mounted(){

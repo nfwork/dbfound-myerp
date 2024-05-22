@@ -143,7 +143,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .title{
   width: 80px;
   height: 40px;

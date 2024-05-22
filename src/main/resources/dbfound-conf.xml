@@ -21,8 +21,9 @@
 	</database>
 
 	<web>
-		<basePath>/dbfound</basePath>
+		<basePath>${@contextPath}</basePath>
 		<interceptor>com.nfwork.erp.interceptor.SimpleCheckInterceptor</interceptor>
+		<listener>com.nfwork.erp.listener.StartListener</listener>
 	</web>
 
 </dbfound>
