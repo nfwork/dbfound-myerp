@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div class="navbar">
-      <div v-show="showBack" class="facing-left"/>
+      <div v-show="showBack" @click="goback()" class="facing-left"/>
        {{title}}
     </div>
-    <div class="content">
+    <div :style="'max-height:'+height+'px'" class="content">
        <router-view></router-view>
     </div>
     <div class="tabbar">
@@ -14,7 +14,7 @@
       </div>
       <div @click="changeTab('/itemManage')">
         <img :src="path=='/itemManage'?'images/jz-a.jpg':'images/jz.jpg'">
-        <div :class="path=='itemManage'?'active-img':''" >记账</div>
+        <div :class="path=='/itemManage'?'active-img':''" >记账</div>
       </div>
       <div @click="changeTab('/my')">
         <img :src="path=='/my'?'images/wd-a.jpg':'images/wd.jpg'">
@@ -29,8 +29,8 @@ export default {
   name: 'App',
   data: function(){
     return {
+       height: document.documentElement.clientHeight - 115,
        path : "/",
-       showBack : false,
        title : "We记账-首页",
        paths : {"/":{title:"We记账-首页"},
                 "/my":{title:"We记账-我的"},
@@ -55,7 +55,16 @@ export default {
         }
         this.$router.replace({ path: path });
       }
+    },
+    goback(){
+      this.$router.back();
     }
+  },
+  computed:{
+      showBack(){
+        let path = this.path;
+        return path != "/" && path != "/itemManage" && path !="/my" && path != "/login";
+      }
   },
   watch:{
     '$route': {
@@ -81,9 +90,14 @@ export default {
     font-family:  "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
   }
 
+  body{
+    overflow: hidden;
+  }
+
   #app{
     display: flex;
     justify-content: center;
+    overflow: hidden;
   }
 
   .navbar{
@@ -96,15 +110,16 @@ export default {
     text-align: center;
     line-height: 50px;
     position: fixed;
-    z-index: 100;
+    z-index: 0;
     top: 0;
   }
 
   .content{
-    margin-top:50px;
-    margin-bottom: 60px;
-    margin-left: 10px;
-    margin-right: 10px;
+    position: fixed;
+    top: 50px;
+    overflow: scroll;
+    padding-right: 10px;
+    padding-left: 10px;
     display: flex;
     max-width: 600px;
     justify-content: center;
@@ -122,6 +137,7 @@ export default {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #cbc6c6;
+    z-index: -1;
   }
 
   .tabbar div{
@@ -366,29 +382,6 @@ input:disabled{
 
 
 /* 弹框样式 */
-.popup-box{
-  position: fixed;
-  z-index: 2001;
-  top: 0;
-  left: 0;
-  background-color: rgba(33, 26, 26, 0.6);
-  width: 100%;
-  height: 100%;
-}
-.popup-info-center{
-  position: fixed;
-  z-index: 2002;
-  background-color: white;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  width: 90%;
-  left: 0;
-  margin-top: 15%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
 .popup-info-header{
   text-align: center;
   color: rgb(10, 114, 161);
@@ -408,21 +401,17 @@ input:disabled{
   justify-content: center;
   align-content: center;
 }
-
 .popup-info-footer button{
   margin: 8px 10px;
   width: 80px;
 }
-
 .popup-row-info{
   padding: 0 15px;
   height: 128px;
 }
-
 .popup-row-info .box{
   height: 42px;
 }
-
 .popup-row-info .box .title{
   width:100px;
   text-align: right;

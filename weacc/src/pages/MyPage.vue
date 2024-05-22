@@ -34,9 +34,7 @@
         <div @click="logout">注销登录</div>
     </div>
 
-    <!-- 中间弹窗 -->
-    <div class="popup-box" v-if="showIndex==1" bindtap="closePopup"></div> 
-    <div class="popup-info-center" style="top:60px;" v-if="showIndex==1">
+    <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
         <div class="popup-info-header">密码修改</div>
         <div class="popup-row-info">
             <div class="box"> 
@@ -56,7 +54,7 @@
             <button class="litter-bule-button" @click="hiddenBox">取 消</button>
             <button class="bule-button" @click="updatePassword">保 存</button>
         </div>
-    </div>
+    </van-popup>
 </div>
 </template>
 
@@ -72,7 +70,7 @@ export default {
             role_description:"",
             exp_time:"",
             period:"",
-            showIndex: 0,
+            showUpdateBox: false,
             ypassword:"",
             password:"",
             password2:"",
@@ -124,10 +122,10 @@ export default {
             });
         },
         hiddenBox(){
-            this.showIndex= 0;
+            this.showUpdateBox= false;
         },
         showBox(){
-            this.showIndex=1
+            this.showUpdateBox = true;
         },
         logout(){
             Dialog.confirm({
