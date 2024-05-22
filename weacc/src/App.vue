@@ -367,17 +367,17 @@ input:disabled{
 
 /* 弹框样式 */
 .popup-box{
-  position: absolute;
-  z-index: 99;
+  position: fixed;
+  z-index: 2001;
   top: 0;
   left: 0;
-  background-color: rgba(53, 47, 47, 0.3);
+  background-color: rgba(33, 26, 26, 0.6);
   width: 100%;
   height: 100%;
 }
 .popup-info-center{
   position: fixed;
-  z-index: 999;
+  z-index: 2002;
   background-color: white;
   align-items: center;
   justify-content: center;
