@@ -16,7 +16,7 @@
         <div class="function">
             <div @click="go('/itemQuery')" class="function-item"><img src="images/pzcx.jpg">凭证查询</div>
             <div @click="go('/budgetAmount')" class="function-item"><img src="images/fymx.jpg">费用明细</div>
-            <div bindtap="menuTap" :fid="6" class="function-item"><img src="images/kmye.jpg">科目余额</div>
+            <div @click="go('/accountAmount')" :fid="6" class="function-item"><img src="images/kmye.jpg">科目余额</div>
             <div bindtap="menuTap" :fid="7" class="function-item"><img src="images/kxhz.jpg">开销汇总</div>
         </div>
 

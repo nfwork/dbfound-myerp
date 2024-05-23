@@ -42,7 +42,8 @@ export default {
                 "/itemQuery":{title:"We记账-凭证查询"},
                 "/itemDetailAdd":{title:"We记账-凭证登记(简)"},
                 "/itemDetailSave":{title:"We记账-凭证登记"},
-                 "/budgetAmount":{title:"We记账-费用明细"},
+                "/budgetAmount":{title:"We记账-费用明细"},
+                "/accountAmount":{title:"We记账-科目余额"},
                 "/login":{title:"We记账-登录"}
                 }
     }

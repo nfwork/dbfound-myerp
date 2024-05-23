@@ -7,7 +7,8 @@ import ItemManage from '@/pages/ItemManage.vue';
 import ItemQuery from '@/pages/ItemQuery.vue';
 import ItemDetailAdd from '@/pages/ItemDetailAdd.vue';
 import ItemDetailSave from '@/pages/ItemDetailSave.vue';
-import BudgetAmount from '@/pages/BudgetAmount.vue'
+import BudgetAmount from '@/pages/BudgetAmount.vue';
+import AccountAmount from '@/pages/AccountAmount.vue';
 
 Vue.use(Router);
 
@@ -45,6 +46,10 @@ const router  = new Router({
             name:'budgetAmount',
             path:'/budgetAmount',
             component:BudgetAmount
+        },{
+            name:'accountAmount',
+            path:'/accountAmount',
+            component:AccountAmount
         }
     ]
 });

@@ -71,7 +71,7 @@ export default {
             let data = {
                 period_id: this.current_period.period_id
             };
-            request.post(url, data).then(res => {
+            request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){
                     let json={account_name:'合计'};
                     let append_amount = 0;
