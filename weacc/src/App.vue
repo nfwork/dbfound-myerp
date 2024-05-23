@@ -42,6 +42,7 @@ export default {
                 "/itemQuery":{title:"We记账-凭证查询"},
                 "/itemDetailAdd":{title:"We记账-凭证登记(简)"},
                 "/itemDetailSave":{title:"We记账-凭证登记"},
+                 "/budgetAmount":{title:"We记账-费用明细"},
                 "/login":{title:"We记账-登录"}
                 }
     }
@@ -107,7 +108,6 @@ export default {
   #app{
     display: flex;
     justify-content: center;
-    overflow: hidden;
     background-color: #fff;
   }
 
@@ -320,6 +320,7 @@ input:disabled{
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
+  overflow: auto;
 }
 .table-line{
   font-size: 13px;

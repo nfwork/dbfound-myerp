@@ -23,7 +23,7 @@
         <div style="flex: 1;">凭证描述</div>
         </div>
         <div class="table-body" style="min-height: 230px;">
-        <div :data-itemid="item.item_id" @click="showDetail(item.item_id,index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item, index) in item_list" :key="item.item_id">
+        <div @click="showDetail(item.item_id,index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item, index) in item_list" :key="item.item_id">
             <div style="width: 80px; text-align: center;">{{item.item_num}}</div>
             <div style="width: 100px; text-align: center;">{{item.exp_time}}</div>
             <div style="flex:1; overflow-x: hidden;"><span>{{item.description}}</span></div>
@@ -50,7 +50,7 @@
             <div style="flex: 1;">行描述</div>
         </div>
         <div class="table-body" style="min-height: 90px;">
-            <div class="table-line" hover-class="table-line-hover" v-for="item in item_line_list" :key="item.item_line_id">
+            <div class="table-line" v-for="item in item_line_list" :key="item.item_line_id">
                 <div style="width: 100px;">{{item.account_name}}</div>
                 <div style="width: 75px;text-align: right;">{{item.dr_amount| currency}}</div>
                 <div style="width: 75px;text-align: right;">{{item.cr_amount| currency}}</div>

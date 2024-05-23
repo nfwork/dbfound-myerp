@@ -11,6 +11,7 @@ Vue.component("MySelect", MySelect);
 Vue.use(Popup);
 
 Vue.filter('currency', function(value) {
+  if (value == 0) return "0.00";
   if (!value) return '';
   const stringValue = String(value).trim();
   const regExp = /(\d{1,3})(?=(\d{3})+(?:$|\D))/g;

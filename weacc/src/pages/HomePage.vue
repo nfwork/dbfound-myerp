@@ -7,17 +7,17 @@
         </div>
         <div class="menu-title">记账</div>
         <div class="function">
-            <div @click="go('/itemManage')" class="function-item" hover-class="function-item-hover"><img src="images/pzgl.jpg">凭证管理</div>
-            <div @click="go('/itemDetailAdd')" class="function-item" hover-class="function-item-hover"><img src="images/pzdjj.jpg">凭证登记(简)</div>
-            <div @click="go('/itemDetailSave')" class="function-item" hover-class="function-item-hover"><img src="images/pzdj.jpg">凭证登记</div>
+            <div @click="go('/itemManage')" class="function-item" ><img src="images/pzgl.jpg">凭证管理</div>
+            <div @click="go('/itemDetailAdd')" class="function-item" ><img src="images/pzdjj.jpg">凭证登记(简)</div>
+            <div @click="go('/itemDetailSave')" class="function-item" ><img src="images/pzdj.jpg">凭证登记</div>
         </div>
 
         <div class="menu-title">统计查询</div>
         <div class="function">
-            <div @click="go('/itemQuery')" class="function-item" hover-class="function-item-hover"><img src="images/pzcx.jpg">凭证查询</div>
-            <div bindtap="menuTap" :fid="5" class="function-item" hover-class="function-item-hover"><img src="images/fymx.jpg">费用明细</div>
-            <div bindtap="menuTap" :fid="6" class="function-item" hover-class="function-item-hover"><img src="images/kmye.jpg">科目余额</div>
-            <div bindtap="menuTap" :fid="7" class="function-item" hover-class="function-item-hover"><img src="images/kxhz.jpg">开销汇总</div>
+            <div @click="go('/itemQuery')" class="function-item"><img src="images/pzcx.jpg">凭证查询</div>
+            <div @click="go('/budgetAmount')" class="function-item"><img src="images/fymx.jpg">费用明细</div>
+            <div bindtap="menuTap" :fid="6" class="function-item"><img src="images/kmye.jpg">科目余额</div>
+            <div bindtap="menuTap" :fid="7" class="function-item"><img src="images/kxhz.jpg">开销汇总</div>
         </div>
 
         <div class="menu-title">基础设置</div>
