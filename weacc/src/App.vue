@@ -1,24 +1,28 @@
 <template>
   <div id="app">
     <div class="navbar">
-      <div v-show="showBack" @click="goback()" class="facing-left"/>
-       {{title}}
+      <div class="navbar-inner">
+        <div v-show="showBack" @click="goback()" class="facing-left"/>
+        {{title}}
+      </div>
     </div>
-    <div :style="'max-height:'+height+'px'" class="content">
+    <div :style="'height:'+height+'px'" class="content">
        <router-view></router-view>
     </div>
     <div class="tabbar">
-      <div @click="changeTab('/')">
-        <img :src="path=='/'?'images/sy-a.jpg':'images/sy.jpg'">
-        <div :class="path=='/'?'active-img':''" >首页</div>
-      </div>
-      <div @click="changeTab('/itemManage')">
-        <img :src="path=='/itemManage'?'images/jz-a.jpg':'images/jz.jpg'">
-        <div :class="path=='/itemManage'?'active-img':''" >记账</div>
-      </div>
-      <div @click="changeTab('/my')">
-        <img :src="path=='/my'?'images/wd-a.jpg':'images/wd.jpg'">
-        <div :class="path=='/my'?'active-img':''" >我的</div>
+      <div class="tabbar-inner">
+        <div @click="changeTab('/')">
+          <img :src="path=='/'?'images/sy-a.jpg':'images/sy.jpg'">
+          <div :class="path=='/'?'active-img':''" >首页</div>
+        </div>
+        <div @click="changeTab('/itemManage')">
+          <img :src="path=='/itemManage'?'images/jz-a.jpg':'images/jz.jpg'">
+          <div :class="path=='/itemManage'?'active-img':''" >记账</div>
+        </div>
+        <div @click="changeTab('/my')">
+          <img :src="path=='/my'?'images/wd-a.jpg':'images/wd.jpg'">
+          <div :class="path=='/my'?'active-img':''" >我的</div>
+        </div>
       </div>
     </div>
   </div>
@@ -29,7 +33,7 @@ export default {
   name: 'App',
   data: function(){
     return {
-       height: document.documentElement.clientHeight - 115,
+       height: document.documentElement.clientHeight - 110,
        path : "/",
        title : "We记账-首页",
        paths : {"/":{title:"We记账-首页"},
@@ -90,14 +94,11 @@ export default {
     font-family:  "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
   }
 
-  body{
-    overflow: hidden;
-  }
-
   #app{
     display: flex;
     justify-content: center;
     overflow: hidden;
+    background-color: #fff;
   }
 
   .navbar{
@@ -107,11 +108,29 @@ export default {
     color: #efefef;
     font-size: 18px;
     font-weight: bolder;
-    text-align: center;
     line-height: 50px;
     position: fixed;
-    z-index: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 10000;
     top: 0;
+  }
+
+  .navbar-inner{
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .facing-left {
+    border-left: 2px solid; border-bottom: 2px solid;
+    width: 14px; height: 14px;
+    transform: rotate(45deg);
+    position: absolute;
+    left: 16px;
+    top: 18px;
   }
 
   .content{
@@ -123,6 +142,7 @@ export default {
     display: flex;
     max-width: 600px;
     justify-content: center;
+    align-items: flex-start;
   }
 
   .tabbar{
@@ -130,18 +150,24 @@ export default {
     bottom: 0;
     height: 60px;
     width: 100%;
-    max-width: 600px;
     padding-bottom: 10px;
     color: #000000;
     background-color: #fefefe;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     border-top: 1px solid #cbc6c6;
-    z-index: -1;
+    z-index: 10000;
   }
 
-  .tabbar div{
-    width: 33.3%;
+  .tabbar-inner{
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .tabbar-inner div{
+    width: 70px;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -163,7 +189,6 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  float: left;
 }
 
 .box {
@@ -244,16 +269,6 @@ input:disabled{
   color: #706767;
   opacity: 1;
   -webkit-text-fill-color: #706767;
-}
-
-.facing-left {
-  display: inline-block;
-  border-left: 2px solid; border-bottom: 2px solid;
-  width: 14px; height: 14px;
-  transform: rotate(45deg);
-  position: absolute;
-  left: 16px;
-  top: 18px;
 }
 
 
@@ -382,6 +397,9 @@ input:disabled{
 
 
 /* 弹框样式 */
+.van-overlay {
+    background-color: rgba(0, 0, 0, .4)!important;
+}
 .popup-info-header{
   text-align: center;
   color: rgb(10, 114, 161);
