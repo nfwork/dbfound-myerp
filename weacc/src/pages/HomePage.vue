@@ -2,14 +2,14 @@
     <div class="home">
         <div class="menu-title">Hi {{user_name}}</div>
         <div class="summary">
-            <div class="summary-item">本月总开支：<div class="money-big">￥{{totalexp}}</div></div>
-            <div v-for="(item,index) in accounts_exp" :key="index" class="summary-item">{{item.account_name}}：<div class="money-small">￥{{item.totalexp}}</div></div>
+            <div class="summary-item">本月总开支：<div class="money-big">￥{{totalexp | currency}}</div></div>
+            <div v-for="(item,index) in accounts_exp" :key="index" class="summary-item">{{item.account_name}}：<div class="money-small">￥{{item.totalexp | currency}}</div></div>
         </div>
         <div class="menu-title">记账</div>
         <div class="function">
             <div @click="go('/itemManage')" class="function-item" hover-class="function-item-hover"><img src="images/pzgl.jpg">凭证管理</div>
             <div @click="go('/itemDetailAdd')" class="function-item" hover-class="function-item-hover"><img src="images/pzdjj.jpg">凭证登记(简)</div>
-            <div bindtap="menuTap" class="function-item" hover-class="function-item-hover"><img src="images/pzdj.jpg">凭证登记</div>
+            <div @click="go('/itemDetailSave')" class="function-item" hover-class="function-item-hover"><img src="images/pzdj.jpg">凭证登记</div>
         </div>
 
         <div class="menu-title">统计查询</div>

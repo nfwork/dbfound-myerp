@@ -5,7 +5,8 @@ import LoginPage from '@/pages/LoginPage.vue';
 import MyPage from '@/pages/MyPage.vue';
 import ItemManage from '@/pages/ItemManage.vue';
 import ItemQuery from '@/pages/ItemQuery.vue';
-import ItemDetailAdd from '@/pages/ItemDetailAdd.vue'
+import ItemDetailAdd from '@/pages/ItemDetailAdd.vue';
+import ItemDetailSave from '@/pages/ItemDetailSave.vue';
 
 Vue.use(Router);
 
@@ -35,6 +36,10 @@ const router  = new Router({
             name:'itemDetailAdd',
             path:'/itemDetailAdd',
             component:ItemDetailAdd
+        },{
+            name:'itemDetailSave',
+            path:'/itemDetailSave',
+            component:ItemDetailSave
         }
     ]
 });

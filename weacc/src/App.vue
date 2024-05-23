@@ -40,7 +40,8 @@ export default {
                 "/my":{title:"We记账-我的"},
                 "/itemManage":{title:"We记账-凭证管理"},
                 "/itemQuery":{title:"We记账-凭证查询"},
-                "/itemDetailAdd":{title:"We记账-凭证登记"},
+                "/itemDetailAdd":{title:"We记账-凭证登记(简)"},
+                "/itemDetailSave":{title:"We记账-凭证登记"},
                 "/login":{title:"We记账-登录"}
                 }
     }
@@ -62,6 +63,9 @@ export default {
     },
     goback(){
       this.$router.back();
+    },
+    handleResize(){
+      this.height = document.documentElement.clientHeight - 110;
     }
   },
   computed:{
@@ -82,6 +86,12 @@ export default {
       deep: true,
       immediate: true
     }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   }
 }
 </script>
@@ -143,6 +153,7 @@ export default {
     max-width: 600px;
     justify-content: center;
     align-items: flex-start;
+    background-color: #fff;
   }
 
   .tabbar{
@@ -400,6 +411,9 @@ input:disabled{
 .van-overlay {
     background-color: rgba(0, 0, 0, .4)!important;
 }
+.van-popup {
+  overflow-y: visible !important;
+}
 .popup-info-header{
   text-align: center;
   color: rgb(10, 114, 161);
@@ -425,7 +439,6 @@ input:disabled{
 }
 .popup-row-info{
   padding: 0 15px;
-  height: 128px;
 }
 .popup-row-info .box{
   height: 42px;

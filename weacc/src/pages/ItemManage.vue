@@ -49,9 +49,9 @@
         <div class="table-body" style="min-height: 90px;">
             <div class="table-line" hover-class="table-line-hover" v-for="item in item_line_list" :key="item.item_line_id">
                 <div style="width: 100px;">{{item.account_name}}</div>
-                <div style="width: 75px;text-align: right;">{{item.dr_amount}}</div>
-                <div style="width: 75px;text-align: right;">{{item.cr_amount}}</div>
-                <div style="flex: 1;"><text user-select="true">{{item.description==null?"":item.description}}</text></div>
+                <div style="width: 75px;text-align: right;">{{item.dr_amount | currency}}</div>
+                <div style="width: 75px;text-align: right;">{{item.cr_amount | currency}}</div>
+                <div style="flex: 1;"><span>{{item.description}}</span></div>
             </div>
         </div>
     </div>
@@ -107,10 +107,10 @@ export default {
         },
         checkPage(){
             if(this.currentPage > 1 &&this.currentPage > this.totalPages){
-                if(this.data.totalPages < 2){
+                if(this.totalPages < 2){
                     this.currentPage=1;
                 }else{
-                    this.currentPage=this.data.totalPages;
+                    this.currentPage=this.totalPages;
                 }
                 this.query();
             }
@@ -166,8 +166,8 @@ export default {
                 });
             });
         },
-        goToDetail(){
-
+        goToDetail(item_id){
+            this.go("/itemDetailSave?item_id="+item_id)
         },
         setPeriodId(item){
             this.current_period = item;
