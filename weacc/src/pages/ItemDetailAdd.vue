@@ -124,20 +124,29 @@ export default {
                         confirmButtonColor : "#2d6ca2",
                         message: '登记成功',
                     }).then(() => {
-                        this.$router.replace("/itemManage");
+                        this.$router.replace("/itemManage?isAdd=1");
                     });
                 }else{
                     Toast.fail(res.data.message)
                 }
             });
+        },
+        init(){
+            this.description = "";
+            this.cr_account={};
+            this.dr_account={};
+            this.current_period={};
+            this.amount='';
+            this.getPeriodList();
+            this.getAccountList();
+            this.getBasic();
         }
     },
-    mounted(){
-        this.getAccountList();
-        this.getPeriodList();
-        this.getBasic();
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.init();
+        });
     }
-
 }
 </script>
 

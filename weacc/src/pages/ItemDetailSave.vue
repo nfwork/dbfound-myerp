@@ -305,19 +305,29 @@ export default {
                 }
             }
         },
-    },
-    mounted(){
-        this.getPeriodList();
-        this.getAccountList();
-
-        let item_id = this.$route.query.item_id;
-        if(item_id){
-            this.item_id =item_id;
-            this.query();
-            this.showDetail();
-        }else{
-            this.getBasic();
+        init(){
+            this.description = "";
+            this.item_id = "";
+            this.exp_time ="";
+            this.regist_time ="系统自动生成";
+            this.item_num = "系统自动生成";
+            this.current_period ={};
+            this.getPeriodList();
+            this.getAccountList();
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.init();
+            let item_id = to.query.item_id;
+            if(item_id){
+                vm.item_id =item_id;
+                vm.query();
+                vm.showDetail();
+            }else{
+                vm.getBasic();
+            }
+        });
     }
 
 }

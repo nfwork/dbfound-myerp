@@ -139,10 +139,18 @@ export default {
                 });
             }).catch(() => {
             });
+        },
+        init(){
+            this.password ="";
+            this.ypassword="";
+            this.password2="";
+            this.getBasic();
         }
     },
-    mounted(){
-        this.getBasic();
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+           vm.init();
+        });
     }
 }
 </script>

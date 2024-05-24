@@ -126,8 +126,10 @@ export default {
             this.query();
         },
     },
-    mounted(){
-       this.getPeriodList();
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.getPeriodList();
+        });
     }
 }
 </script>

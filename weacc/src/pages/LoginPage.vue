@@ -45,6 +45,11 @@
                     message: 'We记账小程序暂不提供在线注册功能，如有需要请发送邮件到nfwork@163.com进行账号申请.',
                 })
             },
+        },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.password = "";
+            });
         }
     }
 </script>

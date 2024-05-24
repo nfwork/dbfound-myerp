@@ -172,15 +172,24 @@ export default {
         setPeriodId(item){
             this.current_period = item;
         },
-        async init(){
+        async init(isAdd){
             let result = await this.getPeriodList();
             if(result == 1){
+                if(isAdd==1 && this.totalCounts != 0){
+                    this.currentPage = this.totalPages;
+                    if(this.item_list.length == this.limit){
+                        this.currentPage = this.currentPage + 1;
+                    }
+                }
                 this.query();
             }
         }
     },
-    mounted(){
-        this.init();
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            let isAdd = to.query.isAdd;
+            vm.init(isAdd);
+        });
     }
 }
 </script>

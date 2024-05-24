@@ -16,8 +16,8 @@
         <div class="function">
             <div @click="go('/itemQuery')" class="function-item"><img src="images/pzcx.jpg">凭证查询</div>
             <div @click="go('/budgetAmount')" class="function-item"><img src="images/fymx.jpg">费用明细</div>
-            <div @click="go('/accountAmount')" :fid="6" class="function-item"><img src="images/kmye.jpg">科目余额</div>
-            <div bindtap="menuTap" :fid="7" class="function-item"><img src="images/kxhz.jpg">开销汇总</div>
+            <div @click="go('/accountAmount')" class="function-item"><img src="images/kmye.jpg">科目余额</div>
+            <div @click="go('/periodAmount')" class="function-item"><img src="images/kxhz.jpg">开销汇总</div>
         </div>
 
         <div class="menu-title">基础设置</div>
@@ -49,20 +49,25 @@
       methods:{
           go(url){
             this.$router.push({ path: url });
+          },
+          init(){
+            let url = 'report/homeAnalysis.query?a=1';
+            let data = {};
+            request.post(url, data).then(res => {
+                if(res.data.success){
+                    let totalAccount = res.data.datas.shift();
+                    this.user_name = res.data.outParam.user_name;
+                    this.accounts_exp = res.data.datas,
+                    this.totalexp = totalAccount.totalexp;
+                }
+            });
           }
       },
-      mounted(){
-        let url = 'report/homeAnalysis.query?a=1';
-        let data = {};
-        request.post(url, data).then(res => {
-            if(res.data.success){
-                let totalAccount = res.data.datas.shift();
-                this.user_name = res.data.outParam.user_name;
-                this.accounts_exp = res.data.datas,
-                this.totalexp = totalAccount.totalexp;
-            }
+      beforeRouteEnter(to, from, next) {
+        next(vm => {
+          vm.init();
         });
-      }
+      },
     }
 </script>
 

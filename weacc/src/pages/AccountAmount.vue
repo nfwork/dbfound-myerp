@@ -3,7 +3,7 @@
   <div class="box"> 
     <div class="title">本期从：</div>
     <my-select class="my-select" :value="current_period_from" @select="setPeriodFrom" :options="period_list" valueField="period_id" displayField="period_name"/>
-    <div class="title" style="width: 60px;">到：</div>
+    <div class="title" style="width: 45px;">到：</div>
     <my-select class="my-select" :value="current_period_to" @select="setPeriodTo" :options="period_list" valueField="period_id" displayField="period_name"/>
   </div>
   <div class="box"> 
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-    <div class="table-pager">
+    <div class="table-pager" style="margin-top:6px">
         <div class="desbox">显示 {{(currentPage-1)*limit+1}} 到 {{currentPage*limit > totalCounts?totalCounts:currentPage*limit}} 条，共 {{totalCounts}} 条，共 {{totalPages}} 页</div>
         <div class="buttonbox"> 
         <button @click="changePage(1)" :disabled="currentPage==1" >{{"<<"}}</button>
@@ -225,14 +225,16 @@ export default {
             }
         }
     },
-    mounted(){
-        this.getPeriodList();
-        this.getAccountList();
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.getPeriodList();
+            vm.getAccountList();
+        });
     }
 }
 </script>
 
-<style>
+<style scoped>
 .title{
   width: 80px;
   height: 40px;

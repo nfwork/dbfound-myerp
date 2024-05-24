@@ -7,7 +7,9 @@
       </div>
     </div>
     <div :style="'height:'+height+'px'" class="content">
-       <router-view></router-view>
+       <keep-alive>
+        <router-view></router-view>
+       </keep-alive>
     </div>
     <div class="tabbar">
       <div class="tabbar-inner">
@@ -44,6 +46,7 @@ export default {
                 "/itemDetailSave":{title:"We记账-凭证登记"},
                 "/budgetAmount":{title:"We记账-费用明细"},
                 "/accountAmount":{title:"We记账-科目余额"},
+                "/periodAmount":{title:"We记账-开销汇总"},
                 "/login":{title:"We记账-登录"}
                 }
     }

@@ -183,8 +183,10 @@ export default {
             this.query();
         }
     },
-    mounted(){
-       this.init();
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.init();
+        });
     }
 }
 </script>
