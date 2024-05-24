@@ -2,7 +2,7 @@
   <div class="root">
   <div class="box">
     <van-radio-group v-model="year" direction="horizontal">
-        <van-radio v-for="item in pitems" @click="itemChange()" :name="item.item_value" :key="item.item_value">{{item.item_name}}</van-radio>
+        <van-radio style="margin:3px;" icon-size="14" v-for="item in pitems" @click="itemChange()" :name="item.item_value" :key="item.item_value">{{item.item_name}}</van-radio>
     </van-radio-group>
   </div>
 
@@ -125,8 +125,7 @@ export default {
 
 <style scoped>
 .box{
-    margin: 5px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 .header-box {
   overflow-x: scroll;
