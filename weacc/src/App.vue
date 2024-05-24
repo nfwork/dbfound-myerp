@@ -73,7 +73,7 @@ export default {
       this.$router.back();
     },
     handleResize(){
-      this.height = document.documentElement.clientHeight - 100 - this.tabPadding;
+      this.height = document.documentElement.clientHeight - 101 - this.tabPadding;
     },
     isPwaModel() {
       return navigator.standalone === true || (window.matchMedia('(display-mode: standalone)').matches);
@@ -108,7 +108,7 @@ export default {
     if(this.isIos && this.isPwa){
       this.tabPadding = 20;
     }
-    this.height = document.documentElement.clientHeight - 110 - this.tabPadding;
+    this.height = document.documentElement.clientHeight - 101 - this.tabPadding;
     window.addEventListener('resize', this.handleResize);
   },
   beforeDestroy() {
