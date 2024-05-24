@@ -232,8 +232,8 @@ export default {
 }
 
 .box button{
-  margin: 6px 4px;
-  min-width: 80px;
+  margin: 3px 4px;
+  min-width: 85px;
 }
 
 .bule-button {
@@ -294,6 +294,10 @@ button,input, textarea{
   margin-top: 2px;
 }
 
+.title{
+  user-select:none; 
+}
+
 input[disabled] {
   background-color: #f3eeee; 
   color: #706767; 
@@ -309,7 +313,7 @@ input:disabled{
 /* table相关样式*/
 .table-header{
   box-sizing: border-box;
-  margin-top: 8px;
+  margin-top: 5px;
   font-size: 14px;
   font-weight: bold;
   /* 添加flex布局 */
@@ -320,6 +324,7 @@ input:disabled{
   border-left: 1px solid #ccc; 
 }
 .table-header div{
+  user-select:none; 
   float: left;
   text-align: center;
   border: 1px solid #ccc;

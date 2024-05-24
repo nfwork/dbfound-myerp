@@ -104,6 +104,7 @@
   width: 170px;
   margin-top: 10px;
   margin-left: 10px;
+  user-select:none; 
 }
 
 .money-big{
@@ -130,6 +131,7 @@
   text-align: center;
   float: left;
   padding-top: 10px;
+  user-select:none; 
 }
 
 .function-item:hover{

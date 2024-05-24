@@ -8,7 +8,7 @@
   </div>
   <div class="box"> 
     <div class="title">科目类型：</div>
-    <my-select class="my-select" :value="current_account" @select="setAccount" :options="account_list" valueField="account_id" displayField="account_name"/>
+    <my-select class="my-select" :value="account_type" @select="setAccountType" :options="account_type_list" valueField="code_value" displayField="code_name"/>
   </div>
   <div class="box"> 
     <button class="bule-button" @click="queryMain" >查 询</button>
@@ -21,7 +21,7 @@
       <div style="width: 80px;">本期增加</div>
       <div style="flex: 1;">期末余额</div>
     </div>
-    <div class="table-body" style="max-height: 280px;">
+    <div class="table-body" style="max-height: 240px;">
       <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
         <div style="flex: 1; ;text-align: center;">{{item.account_name}}</div>
         <div style="flex: 1;text-align: right;">{{item.remaind_amount | currency}}</div>
@@ -70,7 +70,7 @@ export default {
             item_list:[{},{},{},{}],
             item_line_list:[],
             period_list:[],
-            account_list:[],
+            account_type_list:[],
             current_period_from: {},
             current_period_to: {},
             current_account:{},
@@ -96,12 +96,12 @@ export default {
                 }
             });
         },
-        getAccountList(){
-            let url = 'fnd/expAccount.query';
+        getAccountTypeList(){
+            let url = 'fnd/sourceCode.query';
             let data ={};
             request.post(url, data).then(res => {
                 if(res.data.success){
-                    this.account_list = res.data.datas;
+                    this.account_type_list = res.data.datas;
                 }
             });
         },
@@ -137,8 +137,8 @@ export default {
                 }
             });
         },
-        setAccount(item){
-            this.current_account = item;
+        setAccountType(item){
+            this.account_type = item;
         },
         setPeriodFrom(item){
             this.current_period_from = item;
@@ -228,7 +228,7 @@ export default {
     beforeRouteEnter(to, from, next) {
         next(vm => {
             vm.getPeriodList();
-            vm.getAccountList();
+            vm.getAccountTypeList();
         });
     }
 }
