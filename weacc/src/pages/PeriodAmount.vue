@@ -144,7 +144,7 @@ export default {
   font-size: 13px;
   overflow: hidden;
   height: 40px;
-  padding: 5px;
+  padding: 3px;
 }
 .table-line div{
   text-align: right;

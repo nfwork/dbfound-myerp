@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="isIos?'ios-font':''">
     <div class="navbar">
       <div class="navbar-inner">
         <div v-show="showBack" @click="goback()" class="facing-left"/>
@@ -11,7 +11,7 @@
         <router-view></router-view>
        </keep-alive>
     </div>
-    <div class="tabbar">
+    <div class="tabbar" :style="'padding-bottom:' + tabPadding +'px'">
       <div class="tabbar-inner">
         <div @click="changeTab('/')">
           <img :src="path=='/'?'images/sy-a.jpg':'images/sy.jpg'">
@@ -35,8 +35,11 @@ export default {
   name: 'App',
   data: function(){
     return {
-       height: document.documentElement.clientHeight - 110,
+       height: 0,
        path : "/",
+       isIos : false,
+       isPwa : false,
+       tabPadding : 0,
        title : "We记账-首页",
        paths : {"/":{title:"We记账-首页"},
                 "/my":{title:"We记账-我的"},
@@ -70,7 +73,14 @@ export default {
       this.$router.back();
     },
     handleResize(){
-      this.height = document.documentElement.clientHeight - 110;
+      this.height = document.documentElement.clientHeight - 100 - this.tabPadding;
+    },
+    isPwaModel() {
+      return navigator.standalone === true || (window.matchMedia('(display-mode: standalone)').matches);
+    },
+    isIPhone(){
+      let isEquipment = navigator.userAgent.toLowerCase()
+      return isEquipment.indexOf("iphone")> 0;
     }
   },
   computed:{
@@ -93,6 +103,12 @@ export default {
     }
   },
   mounted() {
+    this.isIos = this.isIPhone();
+    this.isPwa = this.isPwaModel();
+    if(this.isIos && this.isPwa){
+      this.tabPadding = 20;
+    }
+    this.height = document.documentElement.clientHeight - 110 - this.tabPadding;
     window.addEventListener('resize', this.handleResize);
   },
   beforeDestroy() {
@@ -106,6 +122,9 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+  }
+
+  .ios-font{
     font-family:  "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
   }
 
@@ -140,11 +159,11 @@ export default {
 
   .facing-left {
     border-left: 2px solid; border-bottom: 2px solid;
-    width: 14px; height: 14px;
+    width: 12px; height: 12px;
     transform: rotate(45deg);
     position: absolute;
-    left: 16px;
-    top: 18px;
+    left: 18px;
+    top: 19px;
   }
 
   .content{
@@ -163,9 +182,9 @@ export default {
   .tabbar{
     position: fixed;
     bottom: 0;
-    height: 60px;
+    height: 50px;
+    box-sizing: content-box;
     width: 100%;
-    padding-bottom: 10px;
     color: #000000;
     background-color: #fefefe;
     display: flex;

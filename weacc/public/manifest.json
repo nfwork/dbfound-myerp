@@ -4,18 +4,12 @@
     "theme_color": "#428bca",
     "icons": [
         {
-            "src": "./images/logo.jpeg",
-            "sizes": "192x192",
-            "type": "image/jpg"
-        },
-        {
-            "src": "./images/logo.jpeg",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
+            "src": "./images/logo_180.png",
+            "sizes": "180x180",
+            "type": "image/png"
         }
     ],
     "start_url": "index.html",
     "display": "standalone",
-    "background_color": "#000000"
+    "background_color": "#428bca"
 }
