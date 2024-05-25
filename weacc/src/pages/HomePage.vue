@@ -106,7 +106,8 @@
 }
 .summary-item{
   width: 176px;
-  margin-top: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   margin-left: 6px;
 }
 

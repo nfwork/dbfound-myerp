@@ -360,9 +360,7 @@ input:disabled{
   float: left;
   border-right: 1px solid #ccc; 
   border-bottom: 1px solid #ccc;
-  padding: 3px;
-  padding-right: 4px;
-  padding-left: 4px;
+  padding: 2px;
   height: 45px;
   overflow: anto;
   box-sizing: border-box;
