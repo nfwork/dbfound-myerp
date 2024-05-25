@@ -56,11 +56,11 @@
             </div>
             <div class="box"> 
                 <div class="title">借金额：</div>
-                <input type="digit" v-model="current_line_dr_amount"/>
+                <input type="number" v-model="current_line_dr_amount"/>
             </div>
             <div class="box"> 
                 <div class="title">贷金额：</div>
-                <input type="digit" v-model="current_line_cr_amount"/>
+                <input type="number" v-model="current_line_cr_amount"/>
             </div>
             <div class="box"> 
                 <div class="title">行描述：</div>

@@ -12,7 +12,7 @@
       <div style="flex:1">本月发生</div>
       <div style="flex:1">预算余额</div>
     </div>
-    <div class="table-body"  style="height: 240px;">
+    <div class="table-body"  style="height: 280px;">
       <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
         <div style="width: 120px;">{{item.account_name}}</div>
         <div style="flex:1;text-align: right;">{{item.append_amount | currency}}</div>

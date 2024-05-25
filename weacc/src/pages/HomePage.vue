@@ -48,7 +48,11 @@
       },
       methods:{
           go(url){
-            this.$router.push({ path: url });
+            if(url == '/itemManage'){
+              this.$router.replace({ path: url });
+            }else{
+              this.$router.push({ path: url });
+            }
           },
           init(){
             let url = 'report/homeAnalysis.query?a=1';
@@ -79,16 +83,16 @@
 
 .menu-title{
   box-sizing: border-box;
-  margin: 10px 0;
+  margin: 5px 0;
   font-size: 13px;
   color: gray;
-  padding: 6px;
+  padding: 5px;
   border-bottom: 1px solid rgb(233, 228, 228);
 }
 
 .summary{
   box-sizing: border-box;
-  margin: 10px 5px;
+  margin: 10px 0px;
   margin-bottom: 10px;
   min-height: 80px;
   font-size: 13px;
@@ -101,10 +105,9 @@
   width: 100%;
 }
 .summary-item{
-  width: 170px;
+  width: 176px;
   margin-top: 10px;
-  margin-left: 10px;
-  user-select:none; 
+  margin-left: 6px;
 }
 
 .money-big{
@@ -115,7 +118,7 @@
 
 .money-small{
   display: inline;
-  font-size: 14px;
+  font-size: 13px;
   color: red;
 }
 

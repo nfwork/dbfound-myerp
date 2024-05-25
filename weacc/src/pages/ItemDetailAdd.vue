@@ -27,7 +27,7 @@
     </div>
     <div class="box"> 
         <div class="title">费用金额：</div>
-        <input type="digit" v-model="amount"/>
+        <input type="number" v-model="amount"/>
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>

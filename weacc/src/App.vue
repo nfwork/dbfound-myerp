@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="isIos?'ios-font':''">
+  <div id="app">
     <div class="navbar">
       <div class="navbar-inner">
         <div v-show="showBack" @click="goback()" class="facing-left"/>
@@ -122,10 +122,7 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-
-  .ios-font{
-    font-family:  "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
+    font-family: "Monospace", "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
   }
 
   #app{
@@ -169,7 +166,7 @@ export default {
   .content{
     position: fixed;
     top: 50px;
-    overflow: scroll;
+    overflow-y: auto;
     padding-right: 10px;
     padding-left: 10px;
     display: flex;
@@ -369,6 +366,8 @@ input:disabled{
   height: 45px;
   overflow: anto;
   box-sizing: border-box;
+  word-wrap:break-word;
+  word-break:break-word;
 
   /* 添加flex布局，设置为垂直居中 */
   display: flex;

@@ -16,17 +16,17 @@
   </div>
   <div class="box"> 
     <div class="table-header">
-      <div style="flex: 1;">科目名称</div>
-      <div style="flex: 1;">期初余额</div>
-      <div style="width: 80px;">本期增加</div>
-      <div style="flex: 1;">期末余额</div>
+      <div style="width: 90px;">科目名称</div>
+      <div style="flex: 4;">期初余额</div>
+      <div style="flex: 3;">本期增加</div>
+      <div style="flex: 4;">期末余额</div>
     </div>
     <div class="table-body" style="max-height: 240px;">
       <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
-        <div style="flex: 1; ;text-align: center;">{{item.account_name}}</div>
-        <div style="flex: 1;text-align: right;">{{item.remaind_amount | currency}}</div>
-        <div style="width: 80px;text-align: right;">{{item.emerge_amount | currency}}</div>
-        <div style="flex: 1;text-align: right;">{{item.end_amount | currency}}</div>
+        <div style="width: 90px;; ;text-align: center;">{{item.account_name}}</div>
+        <div style="flex: 4;text-align: right;">{{item.remaind_amount | currency}}</div>
+        <div style="flex: 3;text-align: right;">{{item.emerge_amount | currency}}</div>
+        <div style="flex: 4;text-align: right;">{{item.end_amount | currency}}</div>
       </div>
     </div>
   </div>
