@@ -51,14 +51,13 @@ export default {
       this.isShow=false
     },
     hiddenBox(event){
-      let div = this.$refs.selectRef;
-      if (event.target !== div && !div.contains(event.target)) {
-        this.isShow = false;
+      if(this.isShow == true){
+        let div = this.$refs.selectRef;
+        if (event.target !== div && !div.contains(event.target)) {
+          this.isShow = false;
+        }
       }
     }
-  },
-  created(){
-    document.addEventListener('click', this.hiddenBox);
   },
   beforeDestroy(){
     document.removeEventListener('click',this.hiddenBox);
@@ -72,6 +71,7 @@ export default {
     },
     isShow(value){
       if(value == true){
+        document.addEventListener('click', this.hiddenBox);
         setTimeout(() => {
           let contain = this.$refs.containRef; 
           let itemRef = 'itemRef-'+this.selected[this.valueField];
@@ -82,6 +82,8 @@ export default {
             contain.scrollTop = top ;
           }
         }, 0);
+      }else{
+        document.removeEventListener('click',this.hiddenBox);
       }
     }
   }
