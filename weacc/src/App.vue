@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="isIos?'ios':'android'">
+  <div id="app" :class="platform">
     <div class="navbar">
       <div class="navbar-inner">
         <div v-show="showBack" @click="goback()" class="facing-left"/>
@@ -37,7 +37,7 @@ export default {
     return {
        height: 0,
        path : "/",
-       isIos : false,
+       platform : "",
        isPwa : false,
        tabPadding : 0,
        title : "We记账-首页",
@@ -78,9 +78,15 @@ export default {
     isPwaModel() {
       return navigator.standalone === true || (window.matchMedia('(display-mode: standalone)').matches);
     },
-    isIPhone(){
+    getPlatform(){
       let isEquipment = navigator.userAgent.toLowerCase()
-      return isEquipment.indexOf("iphone")> 0;
+      if(isEquipment.indexOf("iphone")> 0){
+        return "ios";
+      }else if(isEquipment.indexOf("android")> 0){
+        return "android";
+      }else{
+        return "others";
+      }
     }
   },
   computed:{
@@ -103,9 +109,9 @@ export default {
     }
   },
   mounted() {
-    this.isIos = this.isIPhone();
+    this.platform = this.getPlatform();
     this.isPwa = this.isPwaModel();
-    if(this.isIos && this.isPwa){
+    if(this.platform == 'ios' && this.isPwa){
       this.tabPadding = 20;
     }
     this.height = document.documentElement.clientHeight - 101 - this.tabPadding;
@@ -129,13 +135,6 @@ export default {
     font-family: "Monospace";
     font-size: 12px;
   }
-
-  /*
-  .ios .num-font{
-    font-family: "Menlo";
-    font-size: 12px;
-  }
-  */
 
   #app{
     display: flex;
