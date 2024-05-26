@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="isIos?'ios':'android'">
     <div class="navbar">
       <div class="navbar-inner">
         <div v-show="showBack" @click="goback()" class="facing-left"/>
@@ -124,10 +124,18 @@ export default {
     box-sizing: border-box;
     font-family: "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
   }
-  .num-font{
-    font-family: "Menlo","Monospace";
+
+  .android .num-font{
+    font-family: "Monospace";
     font-size: 12px;
   }
+
+  /*
+  .ios .num-font{
+    font-family: "Menlo";
+    font-size: 12px;
+  }
+  */
 
   #app{
     display: flex;
