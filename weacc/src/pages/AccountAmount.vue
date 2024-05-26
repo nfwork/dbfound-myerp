@@ -24,9 +24,9 @@
     <div class="table-body" style="max-height: 240px;">
       <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
         <div style="width: 90px;; ;text-align: center;">{{item.account_name}}</div>
-        <div style="flex: 4;text-align: right;">{{item.remaind_amount | currency}}</div>
-        <div style="flex: 3;text-align: right;">{{item.emerge_amount | currency}}</div>
-        <div style="flex: 4;text-align: right;">{{item.end_amount | currency}}</div>
+        <div class="num-font" style="flex: 4;text-align: right;">{{item.remaind_amount | currency}}</div>
+        <div class="num-font" style="flex: 3;text-align: right;">{{item.emerge_amount | currency}}</div>
+        <div class="num-font" style="flex: 4;text-align: right;">{{item.end_amount | currency}}</div>
       </div>
     </div>
   </div>
@@ -41,8 +41,8 @@
     <div class="table-body" style="max-height: 230px;">
       <div class="table-line" hover-class="table-line-hover" v-for="(item) in item_line_list" :key="item.item_line_id">
         <div style="width: 90px;text-align: center;">{{item.exp_time}}</div>
-        <div style="width: 75px;text-align: right;">{{item.dr_amount | currency}}</div>
-        <div style="width: 75px;text-align: right;">{{item.cr_amount | currency}}</div>
+        <div class="num-font" style="width: 75px;text-align: right;">{{item.dr_amount | currency}}</div>
+        <div class="num-font" style="width: 75px;text-align: right;">{{item.cr_amount | currency}}</div>
         <div style="flex: 1;"><span>{{item.description}}</span></div>
       </div>
     </div>

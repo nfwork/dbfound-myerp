@@ -2,8 +2,8 @@
     <div class="home">
         <div class="menu-title">Hi {{user_name}}</div>
         <div class="summary">
-            <div class="summary-item">本月总开支：<div class="money-big">￥{{totalexp | currency}}</div></div>
-            <div v-for="(item,index) in accounts_exp" :key="index" class="summary-item">{{item.account_name}}：<div class="money-small">￥{{item.totalexp | currency}}</div></div>
+            <div class="summary-item">本月总开支：<div class="money-big num-font">￥{{totalexp | currency}}</div></div>
+            <div v-for="(item,index) in accounts_exp" :key="index" class="summary-item">{{item.account_name}}：<div class="money-small num-font">￥{{item.totalexp | currency}}</div></div>
         </div>
         <div class="menu-title">记账</div>
         <div class="function">

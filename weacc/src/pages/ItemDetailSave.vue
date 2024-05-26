@@ -40,8 +40,8 @@
         <div class="table-body"  style="max-height: 230px;min-height: 90px;">
             <div class="table-line" hover-class="table-line-hover" v-for="(item,index) in item_line_list" :key="index">
                 <div @click="updateLine(index,item.account_id,item.account_name)" style="width: 100px;color: #0f4ea0;">{{item.account_name}}</div>
-                <div style="width: 75px; text-align: right;">{{item.dr_amount | currency}}</div>
-                <div style="width: 75px; text-align: right;">{{item.cr_amount | currency}}</div>
+                <div class="num-font" style="width: 75px; text-align: right;">{{item.dr_amount | currency}}</div>
+                <div class="num-font" style="width: 75px; text-align: right;">{{item.cr_amount | currency}}</div>
                 <div style="flex: 1;">{{item.description}}</div>
             </div>
         </div>

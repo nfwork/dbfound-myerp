@@ -122,7 +122,11 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Monospace", "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
+    font-family: "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
+  }
+  .num-font{
+    font-family: "Menlo","Monospace";
+    font-size: 12px;
   }
 
   #app{

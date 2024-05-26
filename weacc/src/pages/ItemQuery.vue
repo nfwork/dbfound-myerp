@@ -52,8 +52,8 @@
         <div class="table-body" style="min-height: 90px;">
             <div class="table-line" v-for="item in item_line_list" :key="item.item_line_id">
                 <div style="width: 100px;">{{item.account_name}}</div>
-                <div style="width: 75px;text-align: right;">{{item.dr_amount| currency}}</div>
-                <div style="width: 75px;text-align: right;">{{item.cr_amount| currency}}</div>
+                <div class="num-font" style="width: 75px;text-align: right;">{{item.dr_amount| currency}}</div>
+                <div class="num-font" style="width: 75px;text-align: right;">{{item.cr_amount| currency}}</div>
                 <div style="flex: 1;"><span>{{item.description}}</span></div>
             </div>
         </div>
