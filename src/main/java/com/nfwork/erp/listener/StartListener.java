@@ -8,4 +8,8 @@ public class StartListener implements Listener {
     public void init() {
         DBFoundConfig.getSensitiveParamSet().add("ypassword");
     }
+
+    @Override
+    public void destroy() {
+    }
 }
