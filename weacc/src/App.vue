@@ -50,6 +50,8 @@ export default {
                 "/budgetAmount":{title:"We记账-费用明细"},
                 "/accountAmount":{title:"We记账-科目余额"},
                 "/periodAmount":{title:"We记账-开销汇总"},
+                "/expPeriod":{title:"We记账-期间设置"},
+                "/expAccount":{title:"We记账-科目设置"},
                 "/login":{title:"We记账-登录"}
                 }
     }

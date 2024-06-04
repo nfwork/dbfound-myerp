@@ -22,9 +22,9 @@
 
         <div class="menu-title">基础设置</div>
         <div class="function">
-            <div bindtap="menuTap" :fid="8" class="function-item" hover-class="function-item-hover"><img src="images/qjgl.jpg">期间设置</div>
-            <div bindtap="menuTap" :fid="9" class="function-item" hover-class="function-item-hover"><img src="images/kmsz.jpg">科目设置</div>
-            <div bindtap="menuTap" :fid="10" class="function-item" hover-class="function-item-hover"><img src="images/yssz.jpg">预算设置</div>
+            <div @click="go('/expPeriod')" class="function-item"><img src="images/qjgl.jpg">期间设置</div>
+            <div @click="go('/expAccount')" class="function-item"><img src="images/kmsz.jpg">科目设置</div>
+            <div bindtap="menuTap" :fid="10" class="function-item"><img src="images/yssz.jpg">预算设置</div>
         </div>
 
         <div class="menu-title">使用说明</div>

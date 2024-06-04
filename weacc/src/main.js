@@ -4,13 +4,14 @@ import App from './App.vue'
 import router from './router';
 import MySelect from '@/components/MySelect.vue';
 import 'vant/lib/index.css';
-import { Popup, RadioGroup, Radio} from 'vant';
+import { Popup, RadioGroup, Radio, Switch} from 'vant';
 
 Vue.config.productionTip = false;
 Vue.component("MySelect", MySelect);
 Vue.use(Popup);
 Vue.use(Radio);
 Vue.use(RadioGroup);
+Vue.use(Switch);
 
 Vue.filter('currency', function(value) {
   if (value == 0) return "0.00";

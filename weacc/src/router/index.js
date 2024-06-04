@@ -10,6 +10,8 @@ import ItemDetailSave from '@/pages/ItemDetailSave.vue';
 import BudgetAmount from '@/pages/BudgetAmount.vue';
 import AccountAmount from '@/pages/AccountAmount.vue';
 import PeriodAmount from '@/pages/PeriodAmount.vue';
+import ExpPeriod from '@/pages/ExpPeriod.vue';
+import ExpAccount from '@/pages/ExpAccount.vue';
 
 Vue.use(Router);
 
@@ -55,6 +57,14 @@ const router  = new Router({
             name:'periodAmount',
             path:'/periodAmount',
             component:PeriodAmount
+        },{
+            name:'expPeriod',
+            path:'/expPeriod',
+            component:ExpPeriod
+        },{
+            name:'expAccount',
+            path:'/expAccount',
+            component:ExpAccount
         }
     ]
 });
