@@ -299,7 +299,7 @@ button,input, textarea{
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 }
 
-.my-select{
+.my-select, .my-calendar{
   flex: 1;
   margin-top: 2px;
 }

@@ -64,6 +64,7 @@ export default {
   },
   watch: {
     selected(newValue) {
+      this.$emit('input', newValue);
       this.$emit('select', newValue);
     },
     value(newValue) {

@@ -2,11 +2,11 @@
   <div class="root">
     <div class="box"> 
         <div class="title">会计期间：</div>
-        <my-select class="my-select" :value="current_period" @select="setPeriodId" :options="period_list" valueField="period_id" displayField="period_name"/>
+        <my-select class="my-select" v-model="current_period" :options="period_list" valueField="period_id" displayField="period_name"/>
     </div>
     <div class="box"> 
         <div class="title">费用科目：</div>
-        <my-select class="my-select" :value="current_account" @select="setAccount" :options="account_list" valueField="account_id" displayField="account_name"/>
+        <my-select class="my-select" v-model="current_account" :options="account_list" valueField="account_id" displayField="account_name"/>
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>
@@ -165,12 +165,6 @@ export default {
                     this.account_list = res.data.datas;
                 }
             });
-        },
-        setPeriodId(item){
-            this.current_period = item;
-        },
-        setAccount(item){
-            this.current_account = item;
         },
         reset(){
             this.description = '';

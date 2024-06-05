@@ -18,8 +18,7 @@
     </div>
     <div class="box"> 
         <div class="title">费用日期：</div>
-        <!-- <calendar bind:change="dateChange" value="{{exp_time}}"></calendar> -->
-        <input type="text" v-model="exp_time"/>
+        <my-calendar class="my-calendar" v-model="exp_time"/>
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>

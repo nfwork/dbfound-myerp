@@ -2,7 +2,7 @@
   <div class="root">
     <div class="box"> 
         <div class="title">会计期间：</div>
-        <my-select class="my-select" :value="current_period" @select="setPeriodId" :options="period_list" valueField="period_id" displayField="period_name"/>
+        <my-select class="my-select" v-model="current_period" :options="period_list" valueField="period_id" displayField="period_name"/>
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>
@@ -168,9 +168,6 @@ export default {
         },
         goToDetail(item_id){
             this.go("/itemDetailSave?item_id="+item_id)
-        },
-        setPeriodId(item){
-            this.current_period = item;
         },
         async init(isAdd){
             let result = await this.getPeriodList();

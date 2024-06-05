@@ -3,11 +3,13 @@ import App from './App.vue'
 
 import router from './router';
 import MySelect from '@/components/MySelect.vue';
+import MyCalendar from '@/components/MyCalendar.vue';
 import 'vant/lib/index.css';
 import { Popup, RadioGroup, Radio, Switch} from 'vant';
 
 Vue.config.productionTip = false;
 Vue.component("MySelect", MySelect);
+Vue.component("MyCalendar", MyCalendar);
 Vue.use(Popup);
 Vue.use(Radio);
 Vue.use(RadioGroup);
