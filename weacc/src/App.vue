@@ -52,6 +52,7 @@ export default {
                 "/periodAmount":{title:"We记账-开销汇总"},
                 "/expPeriod":{title:"We记账-期间设置"},
                 "/expAccount":{title:"We记账-科目设置"},
+                "/expBudget":{title:"We记账-预算设置"},
                 "/login":{title:"We记账-登录"}
                 }
     }

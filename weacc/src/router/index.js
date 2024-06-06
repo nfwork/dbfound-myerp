@@ -12,6 +12,7 @@ import AccountAmount from '@/pages/AccountAmount.vue';
 import PeriodAmount from '@/pages/PeriodAmount.vue';
 import ExpPeriod from '@/pages/ExpPeriod.vue';
 import ExpAccount from '@/pages/ExpAccount.vue';
+import ExpBudget from '@/pages/ExpBudget.vue';
 
 Vue.use(Router);
 
@@ -65,6 +66,10 @@ const router  = new Router({
             name:'expAccount',
             path:'/expAccount',
             component:ExpAccount
+        },{
+            name:'expBudget',
+            path:'/expBudget',
+            component:ExpBudget
         }
     ]
 });

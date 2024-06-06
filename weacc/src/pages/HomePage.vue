@@ -24,7 +24,7 @@
         <div class="function">
             <div @click="go('/expPeriod')" class="function-item"><img src="images/qjgl.jpg">期间设置</div>
             <div @click="go('/expAccount')" class="function-item"><img src="images/kmsz.jpg">科目设置</div>
-            <div bindtap="menuTap" :fid="10" class="function-item"><img src="images/yssz.jpg">预算设置</div>
+            <div @click="go('/expBudget')" class="function-item"><img src="images/yssz.jpg">预算设置</div>
         </div>
 
         <div class="menu-title">使用说明</div>
