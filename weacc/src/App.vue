@@ -394,6 +394,7 @@ input:disabled{
 
 .table-line span{
   max-height: 40px;
+  overflow: hidden;
   border: none!important;;
 }
 
