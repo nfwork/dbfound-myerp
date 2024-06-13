@@ -23,10 +23,10 @@
     </div>
     <div class="table-body" style="max-height: 240px;">
       <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
-        <div style="width: 90px;; ;text-align: center;">{{item.account_name}}</div>
-        <div class="num-font" style="flex: 4;text-align: right;">{{item.remaind_amount | currency}}</div>
-        <div class="num-font" style="flex: 3;text-align: right;">{{item.emerge_amount | currency}}</div>
-        <div class="num-font" style="flex: 4;text-align: right;">{{item.end_amount | currency}}</div>
+        <div style="width: 90px;text-align:center;">{{item.account_name}}</div>
+        <div class="num-font" style="flex: 4;text-align: right;font-size:12px;">{{item.remaind_amount | currency}}</div>
+        <div class="num-font" style="flex: 3;text-align: right;font-size:12px;">{{item.emerge_amount | currency}}</div>
+        <div class="num-font" style="flex: 4;text-align: right;font-size:12px;">{{item.end_amount | currency}}</div>
       </div>
     </div>
   </div>

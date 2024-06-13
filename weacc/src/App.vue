@@ -136,7 +136,7 @@ export default {
 
   .android .num-font{
     font-family: "Monospace";
-    font-size: 12px;
+    font-size: 13px;
   }
 
   #app{
@@ -391,10 +391,12 @@ input:disabled{
   overflow: hidden;
   height: 40px;
 }
+.mini-line span{
+  overflow: hidden;
+}
 
 .table-line span{
   max-height: 40px;
-  overflow: hidden;
   border: none!important;;
 }
 
