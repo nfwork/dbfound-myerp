@@ -139,9 +139,13 @@ export default {
     font-size: 13px;
   }
 
+  .android .num-mini-font{
+    font-size: 12px !important;
+  }
+
   .ios .num-font{
     font-family: "Helvetica Neue";
-    font-size: 13px !important;
+    font-size: 13px;
   }
 
   #app{
