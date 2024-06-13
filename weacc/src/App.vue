@@ -139,6 +139,11 @@ export default {
     font-size: 13px;
   }
 
+  .ios .num-font{
+    font-family: "Helvetica Neue";
+    font-size: 13px !important;
+  }
+
   #app{
     display: flex;
     justify-content: center;
