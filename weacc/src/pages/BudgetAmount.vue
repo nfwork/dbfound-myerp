@@ -108,6 +108,7 @@ export default {
             return Math.round(num1 * m + num2 * m) / m;
         },
         showDetail(account_id, index){
+            this.current_line = index;
             let url ='exp/amountManager.query!getExpDetail';
             let data = {
                 account_id: account_id,
@@ -117,7 +118,6 @@ export default {
             request.post(url, data).then(res => {
                 if(res.data.success){
                     this.item_line_list = res.data.datas;
-                    this.current_line = index;
                 }
             });
         },

@@ -413,9 +413,9 @@ input:disabled{
   border-left: 1px solid #ccc; 
 }
 
-.table-line:hover div{
+/* .table-line:hover div{
   background-color: #edf7fd!important
-}
+} */
 
 .table-line-current div{
   background-color: #edf7fd!important

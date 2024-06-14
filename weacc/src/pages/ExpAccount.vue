@@ -16,7 +16,7 @@
       <div style="flex: 2;">首页展示</div>
     </div>
     <div class="table-body" style="min-height: 400px;">
-      <div class="table-line mini-line" v-for="(item,index) in item_list" :key="item.account_id">
+      <div @click="setIndex(index)" :class="'table-line mini-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.account_id">
         <div @click="updateAccount(index,item)" style="flex: 3; text-align: center; color: #0f4ea0;">{{item.account_name}}</div>
         <div style="flex: 3; text-align: center;">{{item.account_type_des}}</div>
         <div style="flex: 2; text-align: center;">{{item.priority}}</div>
@@ -79,6 +79,7 @@ export default {
             totalPages: 0,
             currentPage: 1,
             showIndex: 0,
+            current_line: -1,
             line_index: -1,
             showUpdateBox: false,
             current_line_account_type:{},
@@ -94,6 +95,9 @@ export default {
         },
         showBox(){
             this.showUpdateBox = true;
+        },
+        setIndex(index){
+          this.current_line = index;
         },
         setAccountType(item){
             this.current_line_account_type = item;

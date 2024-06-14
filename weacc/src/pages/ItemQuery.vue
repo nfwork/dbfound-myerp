@@ -113,6 +113,7 @@ export default {
             }
         },
         showDetail(item_id, index){
+            this.current_line = index;
             let url = 'exp/itemLine.query';
             let data = {
                 item_id: item_id,
@@ -121,7 +122,6 @@ export default {
             request.post(url, data).then(res => {
                 if(res.data.success){
                     this.item_line_list=res.data.datas;
-                    this.current_line = index;
                 }
             });
         },

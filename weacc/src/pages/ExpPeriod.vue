@@ -16,7 +16,7 @@
         <div style="flex: 2;">操作</div>
         </div>
         <div class="table-body" style="min-height: 400px;">
-        <div class="table-line mini-line" v-for="item in item_list" :key="item.period_id">
+        <div @click="setIndex(index)" :class="'table-line mini-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.period_id">
             <div style="flex: 3; text-align: center;">{{item.period_code}}</div>
             <div style="flex: 3; text-align: center;">{{item.period_name}}</div>
             <div :style="'flex: 2; text-align: center; color:'+(item.status=='N'?'red':item.status=='Y'?'green':'black')">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</div>
@@ -49,12 +49,16 @@ export default {
             limit : 10,
             totalCounts: 0,
             totalPages: 0,
+            current_line: -1,
             currentPage: 1
         }
     },
     methods:{
         reset(){
             this.period_code='';
+        },
+        setIndex(index){
+          this.current_line = index;
         },
         changeStatus(period_id,status){
             let url = 'fnd/expPeriod.execute!' + (status=='Y'?'close':'open');

@@ -13,7 +13,7 @@
     </div>
 
     <div class="table-body" :style="'width:' + ((column_list.length+1)*95) + 'px;'">
-      <div class="table-line" v-for="item in item_list" :key="item.c">
+      <div @click="setIndex(index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item,index) in item_list" :key="item.c">
         <div>{{item.c}}</div>
         <div class="num-font" v-for="column in column_list" :key="column.priority">{{item[column.index] | currency}}</div>
       </div>
@@ -30,6 +30,7 @@ export default {
             item_list:[],
             column_list:[],
             pitems:[],
+            current_line:-1,
             year:""
         }
     },
@@ -75,7 +76,9 @@ export default {
                 }
             });
         },
-
+        setIndex(index){
+          this.current_line = index;
+        },
         itemChange(){
             this.query();
         },
