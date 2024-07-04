@@ -67,7 +67,7 @@
   width: 100%;
   margin-top: 10px;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 input{

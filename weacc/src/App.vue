@@ -160,7 +160,7 @@ export default {
     width: 100%;
     color: #efefef;
     font-size: 18px;
-    font-weight: bolder;
+    font-weight: 600;
     line-height: 50px;
     position: fixed;
     display: flex;
@@ -335,7 +335,7 @@ input:disabled{
   box-sizing: border-box;
   margin-top: 5px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   /* 添加flex布局 */
   display: flex;
   width: 100%;
