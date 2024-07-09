@@ -469,7 +469,7 @@ input:disabled{
 .popup-info-header{
   text-align: center;
   color: rgb(10, 114, 161);
-  font-weight: bold;
+  font-weight: 600;
   height: 50px;
   line-height: 50px;
   font-size: 18px;
