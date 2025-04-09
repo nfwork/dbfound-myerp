@@ -17,7 +17,7 @@
         <div style="width: 120px;">{{item.account_name}}</div>
         <div class="num-font" style="flex:1;text-align: right;">{{item.append_amount | currency}}</div>
         <div class="num-font" style="flex:1;text-align: right;">{{item.emerge_amount | currency}}</div>
-        <div class="num-font" :style="'flex:1;text-align: right; color:' + (item.end_amount &lt; 0?'red':'green')">{{item.end_amount | currency}}</div>
+        <div class="num-font" :style="'flex:1;text-align: right; color:' + (item.end_amount < 0?'red':'green')">{{item.end_amount | currency}}</div>
       </div>
     </div>
   </div>

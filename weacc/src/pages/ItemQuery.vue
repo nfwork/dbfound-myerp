@@ -37,8 +37,8 @@
         <button @click="changePage(1)" :disabled="currentPage==1" >{{"<<"}}</button>
         <button @click="changePage(2)" :disabled="currentPage==1" >{{"<"}}</button>
         <button >{{currentPage}} / {{totalPages}}</button>
-        <button @click="changePage(3)" :disabled="currentPage * limit &gt;= totalCounts" > {{">"}}</button>
-        <button @click="changePage(4)" :disabled="currentPage * limit &gt;= totalCounts" > {{">>"}}</button>
+        <button @click="changePage(3)" :disabled="currentPage * limit >= totalCounts" > {{">"}}</button>
+        <button @click="changePage(4)" :disabled="currentPage * limit >= totalCounts" > {{">>"}}</button>
         </div>
     </div>
 
