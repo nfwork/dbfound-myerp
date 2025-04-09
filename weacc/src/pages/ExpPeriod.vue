@@ -2,7 +2,7 @@
   <div class="root">
     <div class="box"> 
         <div class="title">期间编号：</div>
-        <input type="text" v-model="period_code"/>
+        <input type="text" v-model="period_code" @keyup.enter="query"/>
     </div>
     <div class="box"> 
         <button class="bule-button" @click="query">查 询</button>

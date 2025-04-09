@@ -2,7 +2,7 @@
   <div class="root">
   <div class="box"> 
     <div class="title">科目名称：</div>
-    <input type="text" v-model="account_name"/>
+    <input type="text" v-model="account_name" @keyup.enter="query"/>
   </div>
   <div class="box"> 
     <button class="bule-button" @click="query" >查 询</button>
