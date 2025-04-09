@@ -311,6 +311,8 @@ export default {
             this.regist_time ="系统自动生成";
             this.item_num = "系统自动生成";
             this.current_period ={};
+            // 清空表格数据
+            this.item_line_list = []; 
             this.getPeriodList();
             this.getAccountList();
         }
@@ -323,12 +325,10 @@ export default {
                 vm.item_id =item_id;
                 vm.query();
                 vm.showDetail();
-            }else{
                 vm.getBasic();
             }
         });
     }
-
 }
 </script>
 
