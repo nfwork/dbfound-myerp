@@ -25,7 +25,7 @@
             <div @click="go('/expPeriod')" class="function-item"><img src="images/qjgl.jpg">期间设置</div>
             <div @click="go('/expAccount')" class="function-item"><img src="images/kmsz.jpg">科目设置</div>
             <div @click="go('/expBudget')" class="function-item"><img src="images/yssz.jpg">预算设置</div>
-            <div @click="go('/profitRecord')" class="function-item"><img src="images/fymx.jpg">利润记录</div>
+            <div @click="go('/profitRecord')" class="function-item"><img src="images/fymx.jpg">收益管理</div>
         </div>
 
         <div class="menu-title">使用说明</div>

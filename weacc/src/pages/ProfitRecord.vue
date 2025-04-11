@@ -11,30 +11,37 @@
     </div>
     <div class="box"> 
       <div class="table-header">
-        <div style="flex: 2;">收益日期</div>
-        <div style="flex: 2;">渠道PF</div>
-        <div style="flex: 2;">渠道ZS</div>
-        <div style="flex: 2;">渠道JT</div>
+        <div style="flex: 5;">收益日期</div>
+        <div style="flex: 4;">渠道PF</div>
+        <div style="flex: 4;">渠道ZS</div>
+        <div style="flex: 4;">渠道JT</div>
+        <div style="flex: 4;">渠道JJ</div>
       </div>
-      <div class="table-body" style="min-height: 400px;">
+      <div class="table-body" style="height: 400px;">
         <div @click="setIndex(index)" :class="'table-line mini-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
-          <div @click="updateRecord(index,item)" style="flex: 2; text-align: center; color: #0f4ea0; line-height: 40px;">{{item.cost_date}}</div>
-          <div style="flex: 2; text-align: center; display: inline-block; line-height: 40px;">
+          <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
+          <div style="flex: 4; text-align: center;">
             {{item.channel_pf | currency}}<span v-if="index < item_list.length - 1 && item.channel_pf && item_list[index + 1].channel_pf" 
               :style="{'margin-left': '1px', 'color': (item.channel_pf - item_list[index + 1].channel_pf) >= 0 ? 'red' : 'green'}">
               ({{(item.channel_pf - item_list[index + 1].channel_pf).toFixed(2)}})
             </span>
           </div>
-          <div style="flex: 2; text-align: center; display: inline-block; line-height: 40px;">
+          <div style="flex: 4; text-align: center; ">
             {{item.channel_zs | currency}}<span v-if="index < item_list.length - 1 && item.channel_zs && item_list[index + 1].channel_zs" 
               :style="{'margin-left': '1px', 'color': (item.channel_zs - item_list[index + 1].channel_zs) >= 0 ? 'red' : 'green'}">
               ({{(item.channel_zs - item_list[index + 1].channel_zs).toFixed(2)}})
             </span>
           </div>
-          <div style="flex: 2; text-align: center; display: inline-block; line-height: 40px;">
+          <div style="flex: 4; text-align: center;">
             {{item.channel_jt | currency}}<span v-if="index < item_list.length - 1 && item.channel_jt && item_list[index + 1].channel_jt" 
               :style="{'margin-left': '1px', 'color': (item.channel_jt - item_list[index + 1].channel_jt) >= 0 ? 'red' : 'green'}">
               ({{(item.channel_jt - item_list[index + 1].channel_jt).toFixed(2)}})
+            </span>
+          </div>
+          <div style="flex: 4; text-align: center;">
+            {{item.channel_jj | currency}}<span v-if="index < item_list.length - 1 && item.channel_jj && item_list[index + 1].channel_jj" 
+              :style="{'margin-left': '1px', 'color': (item.channel_jj - item_list[index + 1].channel_jj) >= 0 ? 'red' : 'green'}">
+              ({{(item.channel_jj - item_list[index + 1].channel_jj).toFixed(2)}})
             </span>
           </div>
         </div>
@@ -53,7 +60,7 @@
     </div>
 
     <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
-      <div class="popup-info-header">利润记录编辑</div>
+      <div class="popup-info-header">收益记录编辑</div>
       <div class="popup-row-info">
         <div class="box"> 
           <div class="title">收益日期：</div>
@@ -70,6 +77,10 @@
         <div class="box"> 
           <div class="title">渠道JT：</div>
           <input type="number" v-model="current_line_channel_jt"/>
+        </div>
+        <div class="box"> 
+          <div class="title">渠道JJ：</div>
+          <input type="number" v-model="current_line_channel_jj"/>
         </div>
       </div>
       <div class="popup-info-footer">
@@ -88,7 +99,7 @@ export default {
         return {
             item_list:[],
             cost_date:'',
-            limit : 10,
+            limit : 30,  // 将分页大小从10改为30
             totalCounts: 0,
             totalPages: 0,
             currentPage: 1,
@@ -98,7 +109,8 @@ export default {
             current_line_cost_date:"",
             current_line_channel_pf:null,
             current_line_channel_zs:null,
-            current_line_channel_jt:null
+            current_line_channel_jt:null,
+            current_line_channel_jj:null
         }
     },
     methods:{
@@ -184,6 +196,7 @@ export default {
             this.current_line_channel_pf = item.channel_pf;
             this.current_line_channel_zs = item.channel_zs;
             this.current_line_channel_jt = item.channel_jt;
+            this.current_line_channel_jj = item.channel_jj;
             this.showBox();
         },
         saveRecord(){
@@ -203,7 +216,8 @@ export default {
                 cost_date: this.current_line_cost_date,
                 channel_pf: this.current_line_channel_pf,
                 channel_zs: this.current_line_channel_zs,
-                channel_jt: this.current_line_channel_jt
+                channel_jt: this.current_line_channel_jt,
+                channel_jj: this.current_line_channel_jj
             };
             request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){

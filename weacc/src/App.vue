@@ -54,7 +54,7 @@ export default {
                 "/expAccount":{title:"We记账-科目设置"},
                 "/expBudget":{title:"We记账-预算设置"},
                 "/login":{title:"We记账-登录"},
-                "/profitRecord":{title:"We记账-利润记录"}
+                "/profitRecord":{title:"We记账-收益管理"}
                 }
     }
   },
