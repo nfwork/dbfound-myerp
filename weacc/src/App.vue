@@ -350,7 +350,7 @@ input:disabled{
   text-align: center;
   border: 1px solid #ccc;
   border-left: none;
-  padding: 0px;
+  padding: 2px;
   height: 35px;
   background-color: #f6f6f6;
   box-sizing: border-box;
