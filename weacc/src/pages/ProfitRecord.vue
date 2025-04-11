@@ -16,9 +16,10 @@
         <div style="flex: 4;">渠道ZS</div>
         <div style="flex: 4;">渠道JT</div>
         <div style="flex: 4;">渠道JJ</div>
+        <div style="flex: 4;">汇总</div>  <!-- 新增汇总列 -->
       </div>
-      <div class="table-body" style="height: 400px;">
-        <div @click="setIndex(index)" :class="'table-line mini-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
+      <div class="table-body" style="height: 450px;">
+        <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
           <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
           <div style="flex: 4; text-align: center;">
             {{item.channel_pf | currency}}<span v-if="index < item_list.length - 1 && item.channel_pf && item_list[index + 1].channel_pf" 
@@ -42,6 +43,13 @@
             {{item.channel_jj | currency}}<span v-if="index < item_list.length - 1 && item.channel_jj && item_list[index + 1].channel_jj" 
               :style="{'margin-left': '1px', 'color': (item.channel_jj - item_list[index + 1].channel_jj) >= 0 ? 'red' : 'green'}">
               ({{(item.channel_jj - item_list[index + 1].channel_jj).toFixed(2)}})
+            </span>
+          </div>
+          <!-- 新增汇总列 -->
+          <div style="flex: 4; text-align: center;">
+            {{item.channel_total | currency}}<span v-if="index < item_list.length - 1 && item.channel_total && item_list[index + 1].channel_total" 
+              :style="{'margin-left': '1px', 'color': (item.channel_total - item_list[index + 1].channel_total) >= 0 ? 'red' : 'green'}">
+              ({{(item.channel_total - item_list[index + 1].channel_total).toFixed(2)}})
             </span>
           </div>
         </div>

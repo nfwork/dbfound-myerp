@@ -9,6 +9,7 @@
                 p.channel_zs,
                 p.channel_jt,
                 p.channel_jj,
+                ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_jj,0) channel_total,
                 DATE_FORMAT(p.cost_date,'%Y-%m-%d') cost_date
             FROM pf_profit_record p
             #WHERE_CLAUSE#
