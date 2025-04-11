@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
-    
+
+    <param name="book_id" dataType="number" scope="session" />
+
     <query pagerSize="10">
         <sql>
             SELECT
@@ -12,7 +14,8 @@
                 ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_jj,0) channel_total,
                 DATE_FORMAT(p.cost_date,'%Y-%m-%d') cost_date
             FROM pf_profit_record p
-            #WHERE_CLAUSE#
+            where p.book_id = ${@book_id}
+            #AND_CLAUSE#
             order by p.cost_date desc
         </sql>
         <filter name="cost_date" express="${@cost_date} >= cost_date " />
@@ -27,7 +30,7 @@
         <param name="user_id" dataType="number" scope="session" />
         <sqls>
             <collisionSql
-                where="exists (select 1 from pf_profit_record where cost_date = ${@cost_date})"
+                where="exists (select 1 from pf_profit_record where cost_date = ${@cost_date} and book_id = ${@book_id})"
                 message="日期:#{@cost_date} 已存在记录！" />
             <executeSql>
                 INSERT INTO pf_profit_record
@@ -36,6 +39,7 @@
                     channel_jt,
                     channel_jj,
                     cost_date,
+                    book_id,
                     create_by,
                     create_date,
                     last_update_by,
@@ -46,6 +50,7 @@
                     ${@channel_jt},
                     ${@channel_jj},
                     ${@cost_date},
+                    ${@book_id},
                     ${@user_id},
                     NOW(),
                     ${@user_id},
@@ -64,7 +69,7 @@
         <param name="record_id" dataType="number" />
         <sqls>
             <collisionSql
-                where="exists (select 1 from pf_profit_record where cost_date = ${@cost_date} and record_id != ${@record_id})"
+                where="exists (select 1 from pf_profit_record where cost_date = ${@cost_date} and book_id = ${@book_id} and record_id != ${@record_id})"
                 message="日期:#{@cost_date} 已存在记录！" />
             <executeSql>
                 UPDATE pf_profit_record SET 
@@ -76,6 +81,7 @@
                     last_update_by = ${@user_id},
                     last_update_date = NOW()
                 WHERE record_id = ${@record_id}
+                  and book_id = ${@book_id}
             </executeSql>
         </sqls>
     </execute>
@@ -84,7 +90,7 @@
         <param name="record_id" dataType="number" />
         <sqls>
             <executeSql>
-                DELETE FROM pf_profit_record WHERE record_id = ${@record_id}
+                DELETE FROM pf_profit_record WHERE record_id = ${@record_id} and book_id = ${@book_id}
             </executeSql>
         </sqls>
     </execute>
