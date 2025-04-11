@@ -13,6 +13,7 @@ import PeriodAmount from '@/pages/PeriodAmount.vue';
 import ExpPeriod from '@/pages/ExpPeriod.vue';
 import ExpAccount from '@/pages/ExpAccount.vue';
 import ExpBudget from '@/pages/ExpBudget.vue';
+import ProfitRecord from '@/pages/ProfitRecord.vue';
 
 Vue.use(Router);
 
@@ -70,6 +71,10 @@ const router  = new Router({
             name:'expBudget',
             path:'/expBudget',
             component:ExpBudget
+        },{
+            name:'profitRecord',
+            path:'/profitRecord',
+            component:ProfitRecord
         }
     ]
 });

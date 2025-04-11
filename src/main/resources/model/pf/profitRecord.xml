@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+    
+    <query pagerSize="10">
+        <sql>
+            SELECT
+                p.record_id,
+                p.channel_pf,
+                p.channel_zs,
+                p.channel_jt,
+                DATE_FORMAT(p.cost_date,'%Y-%m-%d') cost_date
+            FROM pf_profit_record p
+            #WHERE_CLAUSE#
+            order by p.record_id desc
+        </sql>
+        <filter name="cost_date" express="cost_date >= ${@cost_date}" />
+    </query>
+    
+    <execute name="add">
+        <param name="channel_pf" dataType="number" />
+        <param name="channel_zs" dataType="number" />
+        <param name="channel_jt" dataType="number" />
+        <param name="cost_date" dataType="varchar" />
+        <param name="user_id" dataType="number" scope="session" />
+        <sqls>
+            <collisionSql
+                where="exists (select 1 from pf_profit_record where cost_date = ${@cost_date})"
+                message="日期:#{@cost_date} 已存在记录！" />
+            <executeSql>
+                INSERT INTO pf_profit_record
+                   (channel_pf,
+                    channel_zs,
+                    channel_jt,
+                    cost_date,
+                    create_by,
+                    create_date,
+                    last_update_by,
+                    last_update_date)
+                VALUES
+                    (${@channel_pf},
+                    ${@channel_zs},
+                    ${@channel_jt},
+                    ${@cost_date},
+                    ${@user_id},
+                    NOW(),
+                    ${@user_id},
+                    NOW())
+            </executeSql>
+        </sqls>
+    </execute>
+
+    <execute name="update">
+        <param name="channel_pf" dataType="number" />
+        <param name="channel_zs" dataType="number" />
+        <param name="channel_jt" dataType="number" />
+        <param name="cost_date" dataType="varchar" />
+        <param name="user_id" dataType="number" scope="session" />
+        <param name="record_id" dataType="number" />
+        <sqls>
+            <collisionSql
+                where="exists (select 1 from pf_profit_record where cost_date = ${@cost_date} and record_id != ${@record_id})"
+                message="日期:#{@cost_date} 已存在记录！" />
+            <executeSql>
+                UPDATE pf_profit_record SET 
+                    channel_pf = ${@channel_pf},
+                    channel_zs = ${@channel_zs},
+                    channel_jt = ${@channel_jt},
+                    cost_date = ${@cost_date},
+                    last_update_by = ${@user_id},
+                    last_update_date = NOW()
+                WHERE record_id = ${@record_id}
+            </executeSql>
+        </sqls>
+    </execute>
+
+    <execute name="delete">
+        <param name="record_id" dataType="number" />
+        <sqls>
+            <executeSql>
+                DELETE FROM pf_profit_record WHERE record_id = ${@record_id}
+            </executeSql>
+        </sqls>
+    </execute>
+</model>
