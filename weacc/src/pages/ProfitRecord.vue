@@ -22,34 +22,34 @@
         <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
           <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_pf | currency}}<span v-if="index < item_list.length - 1 && item.channel_pf && item_list[index + 1].channel_pf" 
-              :style="{'margin-left': '1px', 'color': (item.channel_pf - item_list[index + 1].channel_pf) >= 0 ? 'red' : 'green'}">
-              ({{(item.channel_pf - item_list[index + 1].channel_pf).toFixed(2)}})
-            </span>
-          </div>
-          <div style="flex: 4; text-align: center; ">
-            {{item.channel_zs | currency}}<span v-if="index < item_list.length - 1 && item.channel_zs && item_list[index + 1].channel_zs" 
-              :style="{'margin-left': '1px', 'color': (item.channel_zs - item_list[index + 1].channel_zs) >= 0 ? 'red' : 'green'}">
-              ({{(item.channel_zs - item_list[index + 1].channel_zs).toFixed(2)}})
+            {{item.channel_pf | currency}}<span v-if="item.diff_pf !== undefined" 
+                :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
+                ({{item.diff_pf.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_jt | currency}}<span v-if="index < item_list.length - 1 && item.channel_jt && item_list[index + 1].channel_jt" 
-              :style="{'margin-left': '1px', 'color': (item.channel_jt - item_list[index + 1].channel_jt) >= 0 ? 'red' : 'green'}">
-              ({{(item.channel_jt - item_list[index + 1].channel_jt).toFixed(2)}})
+            {{item.channel_zs | currency}}<span v-if="item.diff_zs !== undefined" 
+                :style="{'margin-left': '1px', 'color': item.diff_zs > 0 ? 'red' : item.diff_zs < 0 ? 'green' : ''}">
+                ({{item.diff_zs.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_jj | currency}}<span v-if="index < item_list.length - 1 && item.channel_jj && item_list[index + 1].channel_jj" 
-              :style="{'margin-left': '1px', 'color': (item.channel_jj - item_list[index + 1].channel_jj) >= 0 ? 'red' : 'green'}">
-              ({{(item.channel_jj - item_list[index + 1].channel_jj).toFixed(2)}})
+            {{item.channel_jt | currency}}<span v-if="item.diff_jt !== undefined" 
+                :style="{'margin-left': '1px', 'color': item.diff_jt > 0 ? 'red' : item.diff_jt < 0 ? 'green' : ''}">
+                ({{item.diff_jt.toFixed(2)}})
+            </span>
+          </div>
+          <div style="flex: 4; text-align: center;">
+            {{item.channel_jj | currency}}<span v-if="item.diff_jj !== undefined" 
+                :style="{'margin-left': '1px', 'color': item.diff_jj > 0 ? 'red' : item.diff_jj < 0 ? 'green' : ''}">
+                ({{item.diff_jj.toFixed(2)}})
             </span>
           </div>
           <!-- 新增汇总列 -->
           <div style="flex: 4; text-align: center;">
-            {{item.channel_total | currency}}<span v-if="index < item_list.length - 1 && item.channel_total && item_list[index + 1].channel_total" 
-              :style="{'margin-left': '1px', 'color': (item.channel_total - item_list[index + 1].channel_total) >= 0 ? 'red' : 'green'}">
-              ({{(item.channel_total - item_list[index + 1].channel_total).toFixed(2)}})
+            {{item.channel_total | currency}}<span v-if="item.diff_total !== undefined" 
+                :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
+                ({{item.diff_total.toFixed(2)}})
             </span>
           </div>
         </div>
@@ -146,6 +146,23 @@ export default {
             request.post(url, data, {showLoadding:true}).then(res => {
                 if(res.data.success){
                     this.item_list = res.data.datas;
+                    // 优化差值计算逻辑
+                    this.item_list.forEach((item, index) => {
+                        if(index < this.item_list.length - 1) {
+                            const nextItem = this.item_list[index + 1];
+                            // 只有当前记录和下一记录都有值时才计算差值
+                            item.diff_pf = (item.channel_pf != null && nextItem.channel_pf != null) 
+                                ? item.channel_pf - nextItem.channel_pf : undefined;
+                            item.diff_zs = (item.channel_zs != null && nextItem.channel_zs != null) 
+                                ? item.channel_zs - nextItem.channel_zs : undefined;
+                            item.diff_jt = (item.channel_jt != null && nextItem.channel_jt != null) 
+                                ? item.channel_jt - nextItem.channel_jt : undefined;
+                            item.diff_jj = (item.channel_jj != null && nextItem.channel_jj != null) 
+                                ? item.channel_jj - nextItem.channel_jj : undefined;
+                            item.diff_total = (item.channel_total != null && nextItem.channel_total != null) 
+                                ? item.channel_total - nextItem.channel_total : undefined;
+                        }
+                    });
                     this.totalCounts = res.data.totalCounts,
                     this.totalPages = Math.ceil(res.data.totalCounts/this.limit);
                     this.checkPage();
