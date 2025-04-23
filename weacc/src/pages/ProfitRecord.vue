@@ -213,6 +213,7 @@ export default {
             this.current_line_channel_pf= null;
             this.current_line_channel_zs= null;
             this.current_line_channel_jt= null;
+            this.current_line_channel_jj= null; 
             this.showBox();
         },
         updateRecord(index,item){
