@@ -47,6 +47,8 @@ public class RabbitMQUtil {
                     context.request.getSession().setAttribute("user_code", map.get("user_code"));
                     context.request.getSession().setAttribute("user_name", map.get("user_name"));
                     context.request.getSession().setAttribute("role_id", map.get("role_id"));
+                    context.request.getSession().setAttribute("role_code", map.get("role_code"));
+                    context.request.getSession().setAttribute("role_description", map.get("role_description"));
                 }
             }
             WebWriter.jsonWriter(context.response, result);
