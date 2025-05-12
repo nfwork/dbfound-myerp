@@ -8,6 +8,7 @@ import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.erp.dto.ReportResponseObject;
+import com.nfwork.erp.mq.MQMessageException;
 
 import java.util.*;
 
@@ -73,6 +74,10 @@ public class ReportAdapter implements QueryAdapter<Map<String,Object>> {
         object.setDatas(rows);
         object.setTotalCounts(rows.size());
         object.setColumns(columns);
+        //mq模式下没法jsonWriter
+        if (context.request == null){
+            throw new MQMessageException(object);
+        }
         WebWriter.jsonWriter(context.response, JsonUtil.toJson(object));
     }
 }

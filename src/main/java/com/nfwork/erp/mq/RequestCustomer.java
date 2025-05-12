@@ -38,7 +38,10 @@ public class RequestCustomer {
             String response;
             try {
                 response = processMessage(message);
-            } catch (Exception e) {
+            }catch (MQMessageException me){
+                response = JsonUtil.toJson(me.getData());
+            }catch (Exception e) {
+                LogUtil.error("处理失败了，message："+message,e);
                 response = JsonUtil.toJson(handle(e));
             }
 

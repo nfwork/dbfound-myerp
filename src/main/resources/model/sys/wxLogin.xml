@@ -10,13 +10,13 @@
 	<execute name="login" adapter="com.nfwork.erp.adapter.WxLoginAdapter">
 		<param name="wxs" dataType="varchar" />
 		<param name="js_code" dataType="varchar" />
-		<param name="openid" dataType="varchar" autoSession="true"/>
-		<param name="user_id" dataType="number" autoSession="true"/>
-		<param name="book_id" dataType="number" autoSession="true"/>
-		<param name="role_id" dataType="number" autoSession="true"/>
-		<param name="user_name" dataType="varchar" autoSession="true"/>
-		<param name="role_description" dataType="varchar" autoSession="true"/>
-		<param name="role_code" dataType="varchar" autoSession="true"/>
+		<param name="openid" dataType="varchar" autoSession="true" ioType="both"/>
+		<param name="user_id" dataType="number" autoSession="true" ioType="both"/>
+		<param name="book_id" dataType="number" autoSession="true" ioType="both"/>
+		<param name="role_id" dataType="number" autoSession="true" ioType="both"/>
+		<param name="user_name" dataType="varchar" autoSession="true" ioType="both"/>
+		<param name="role_description" dataType="varchar" autoSession="true" ioType="both"/>
+		<param name="role_code" dataType="varchar" autoSession="true" ioType="both"/>
 		<param name="user_code" dataType="varchar" autoSession="true" ioType="both"/>
 		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
 		<sqls>
