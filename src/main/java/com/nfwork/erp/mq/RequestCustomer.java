@@ -1,9 +1,7 @@
 package com.nfwork.erp.mq;
 
-import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.CollisionException;
-import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
 import com.rabbitmq.client.*;
@@ -11,7 +9,6 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public class RequestCustomer {
@@ -59,19 +56,7 @@ public class RequestCustomer {
 
     private String processMessage(String message) throws Exception {
         // 这里实现你的业务逻辑
-        Map<String,Object> data = JsonUtil.jsonToMap(message);
-        String type = data.get("_type").toString();
-        String name = (String) data.get("_name");
-        String modelName = data.get("_modelName").toString();
-        Context context = new Context(data);
-
-        Object result;
-        if(type.equals("execute")){
-            result = ModelEngine.execute(context,modelName,name);
-        }else{
-            result = ModelEngine.query(context,modelName,name);
-        }
-        return JsonUtil.toJson(result);
+        return JsonUtil.toJson(RabbitMQManager.mqProcess(message));
     }
 
     private ResponseObject handle(Exception exception) {

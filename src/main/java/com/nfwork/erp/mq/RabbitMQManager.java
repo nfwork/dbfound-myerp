@@ -2,13 +2,14 @@ package com.nfwork.erp.mq;
 
 
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 
 import java.util.Map;
 import java.util.Objects;
 
-public class RabbitMQUtil {
+public class RabbitMQManager {
 
     static RequestCustomer customer = null;
 
@@ -18,7 +19,7 @@ public class RabbitMQUtil {
 
     public static void initCustomer() {
         if (customer == null &&  "mqCustomer".equals(model)) {
-            synchronized (RabbitMQUtil.class) {
+            synchronized (RabbitMQManager.class) {
                 if (customer == null) {
                     try {
                         customer = new RequestCustomer();
@@ -37,7 +38,7 @@ public class RabbitMQUtil {
             data.put("_modelName", modelName);
             data.put("_name", name);
             data.put("_type", type);
-            String result = RabbitMQUtil.getRequestSender().sendAndReceive(JsonUtil.toJson(data));
+            String result = RabbitMQManager.getRequestSender().sendAndReceive(JsonUtil.toJson(data));
             if (isLogin(context)) {
                 Map<String, Object> map = JsonUtil.jsonToMap(result);
                 if(Objects.equals(map.get("success"), true)) {
@@ -55,6 +56,22 @@ public class RabbitMQUtil {
         }
     }
 
+    public static Object mqProcess(String message) throws Exception {
+        Map<String,Object> data = JsonUtil.jsonToMap(message);
+        String type = data.get("_type").toString();
+        String name = (String) data.get("_name");
+        String modelName = data.get("_modelName").toString();
+        Context context = new Context(data);
+
+        Object result;
+        if(type.equals("execute")){
+            result = ModelEngine.execute(context,modelName,name);
+        }else{
+            result = ModelEngine.query(context,modelName,name);
+        }
+        return result;
+    }
+
     public static boolean isLogin(Context context) {
         String url = context.request.getServletPath();
         return url.equals("/sys/login.execute") || url.equals("/sys/wxLogin.execute");
@@ -63,7 +80,7 @@ public class RabbitMQUtil {
     public static RequestSender getRequestSender(){
         try {
             if (sender == null) {
-                synchronized (RabbitMQUtil.class){
+                synchronized (RabbitMQManager.class){
                     if (sender == null) {
                         sender = new RequestSender();
                     }
@@ -93,6 +110,6 @@ public class RabbitMQUtil {
     }
 
     public static void setModel(String model) {
-        RabbitMQUtil.model = model;
+        RabbitMQManager.model = model;
     }
 }

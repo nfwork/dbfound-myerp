@@ -11,7 +11,7 @@ import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.base.Interceptor;
-import com.nfwork.erp.mq.RabbitMQUtil;
+import com.nfwork.erp.mq.RabbitMQManager;
 
 public class SimpleCheckInterceptor implements Interceptor {
 
@@ -47,9 +47,9 @@ public class SimpleCheckInterceptor implements Interceptor {
 			String url = context.request.getServletPath();
 
 			// 添加mq响应处理
-			if("mqSender".equals(RabbitMQUtil.getModel())){
-				if(RabbitMQUtil.isLogin(context)){
-					RabbitMQUtil.mqCall(context, modelName, name, type);
+			if("mqSender".equals(RabbitMQManager.getModel())){
+				if(RabbitMQManager.isLogin(context)){
+					RabbitMQManager.mqCall(context, modelName, name, type);
 					return false;
 				}
 			}
@@ -65,8 +65,8 @@ public class SimpleCheckInterceptor implements Interceptor {
 			}
 		} else {
 			// 添加mq响应处理
-			if("mqSender".equals(RabbitMQUtil.getModel())){
-				RabbitMQUtil.mqCall(context, modelName, name, type);
+			if("mqSender".equals(RabbitMQManager.getModel())){
+				RabbitMQManager.mqCall(context, modelName, name, type);
 				return false;
 			}
 			return true;
