@@ -11,6 +11,7 @@ import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.base.Interceptor;
+import com.nfwork.erp.mq.RabbitMQUtil;
 
 public class SimpleCheckInterceptor implements Interceptor {
 
@@ -39,11 +40,19 @@ public class SimpleCheckInterceptor implements Interceptor {
 		}
 	}
 	
-	private boolean commonInterceptor(Context context){
+	private boolean commonInterceptor(Context context, String modelName, String name, String type) throws Exception {
 		Object user_id = context.request.getSession().getAttribute("user_id");
 
 		if (user_id == null) {
 			String url = context.request.getServletPath();
+
+			// 添加mq响应处理
+			if("mqSender".equals(RabbitMQUtil.getModel())){
+				if(RabbitMQUtil.isLogin(context)){
+					RabbitMQUtil.mqCall(context, modelName, name, type);
+					return false;
+				}
+			}
 			if (check(url)) {
 				return true;
 			} else {
@@ -55,6 +64,11 @@ public class SimpleCheckInterceptor implements Interceptor {
 				return false;
 			}
 		} else {
+			// 添加mq响应处理
+			if("mqSender".equals(RabbitMQUtil.getModel())){
+				RabbitMQUtil.mqCall(context, modelName, name, type);
+				return false;
+			}
 			return true;
 		}
 	}
@@ -74,21 +88,20 @@ public class SimpleCheckInterceptor implements Interceptor {
 		}
 	}
 
-	public boolean doInterceptor(Context context, String className,
-								 String method) throws Exception {
-		return commonInterceptor(context);
+	public boolean doInterceptor(Context context, String className,String method) throws Exception{
+		return commonInterceptor(context, className, method,"do");
 	}
 
-	public boolean executeInterceptor(Context context, String modelName, String executeName) {
-		return commonInterceptor(context);
+	public boolean executeInterceptor(Context context, String modelName, String executeName) throws Exception {
+		return commonInterceptor(context, modelName, executeName,"execute");
 	}
 
-	public boolean exportInterceptor(Context context, String modelName, String queryName){
-		return commonInterceptor(context);
+	public boolean exportInterceptor(Context context, String modelName, String queryName) throws Exception {
+		return commonInterceptor(context, modelName, queryName,"export");
 	}
 
-	public boolean queryInterceptor(Context context, String modelName,String queryName){
-		return commonInterceptor(context);
+	public boolean queryInterceptor(Context context, String modelName,String queryName) throws Exception {
+		return commonInterceptor(context, modelName, queryName,"query");
 	}
 	
 	public boolean check(String url) {

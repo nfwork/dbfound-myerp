@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd"> 
 	<execute>
-		<param name="openid" dataType="varchar" autoSession="true"/>
-		<param name="user_id" dataType="number" autoSession="true"/>
-		<param name="book_id" dataType="number" autoSession="true"/>
-		<param name="role_id" dataType="number" autoSession="true"/>
-		<param name="user_name" dataType="varchar" autoSession="true"/>
-		<param name="role_description" dataType="varchar" autoSession="true"/>
+		<param name="openid" dataType="varchar" autoSession="true" ioType="both"/>
+		<param name="user_id" dataType="number" autoSession="true" ioType="both"/>
+		<param name="book_id" dataType="number" autoSession="true" ioType="both"/>
+		<param name="role_id" dataType="number" autoSession="true" ioType="both"/>
+		<param name="user_name" dataType="varchar" autoSession="true" ioType="both"/>
+		<param name="role_description" dataType="varchar" autoSession="true" ioType="both"/>
 		<param name="role_code" dataType="varchar" autoSession="true"/>
 		<param name="password" dataType="varchar" />
-		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true"/>
+		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true" ioType="both"/>
 		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
 		<sqls>
 			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password = md5(${@password}) and status = 'Y')" message="账号或密码不正确！"/>
