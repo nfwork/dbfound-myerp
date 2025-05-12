@@ -6,6 +6,7 @@ import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class RabbitMQUtil {
 
@@ -39,12 +40,14 @@ public class RabbitMQUtil {
             String result = RabbitMQUtil.getRequestSender().sendAndReceive(JsonUtil.toJson(data));
             if (isLogin(context)) {
                 Map<String, Object> map = JsonUtil.jsonToMap(result);
-                map = (Map<String, Object>) map.get("outParam");
-                context.request.getSession().setAttribute("user_id", map.get("user_id"));
-                context.request.getSession().setAttribute("book_id", map.get("book_id"));
-                context.request.getSession().setAttribute("user_code", map.get("user_code"));
-                context.request.getSession().setAttribute("user_name", map.get("user_name"));
-                context.request.getSession().setAttribute("role_id", map.get("role_id"));
+                if(Objects.equals(map.get("success"), true)) {
+                    map = (Map<String, Object>) map.get("outParam");
+                    context.request.getSession().setAttribute("user_id", map.get("user_id"));
+                    context.request.getSession().setAttribute("book_id", map.get("book_id"));
+                    context.request.getSession().setAttribute("user_code", map.get("user_code"));
+                    context.request.getSession().setAttribute("user_name", map.get("user_name"));
+                    context.request.getSession().setAttribute("role_id", map.get("role_id"));
+                }
             }
             WebWriter.jsonWriter(context.response, result);
         }

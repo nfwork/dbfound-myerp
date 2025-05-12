@@ -48,14 +48,4 @@ public class RequestSender {
             connection.close();
         }
     }
-    
-    public static void main(String[] args) throws Exception {
-        RequestSender sender = new RequestSender();
-        try {
-            String result = sender.sendAndReceive("hello");
-            System.out.println(result);
-        } finally {
-            sender.close();
-        }
-    }
 }

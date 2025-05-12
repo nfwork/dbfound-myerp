@@ -1,12 +1,16 @@
 package com.nfwork.erp.mq;
 
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.dto.ResponseObject;
+import com.nfwork.dbfound.exception.CollisionException;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
+import com.nfwork.dbfound.util.LogUtil;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -24,22 +28,18 @@ public class RequestCustomer {
     }
 
     public void startConsuming() throws Exception {
-        System.out.println("等待接收消息...");
-
         // 创建消费者
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             String replyTo = delivery.getProperties().getReplyTo();
             String correlationId = delivery.getProperties().getCorrelationId();
 
-            System.out.println("收到消息: " + message);
-
             // 处理消息并生成响应
             String response;
             try {
                 response = processMessage(message);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                response = JsonUtil.toJson(handle(e));
             }
 
             // 发送响应
@@ -71,17 +71,27 @@ public class RequestCustomer {
         return JsonUtil.toJson(result);
     }
 
+    private ResponseObject handle(Exception exception) {
+        String em = exception.getMessage();
+        String code = null;
+        if(exception instanceof CollisionException){
+            code = ((CollisionException) exception).getCode();
+            LogUtil.info(exception.getClass().getName() + ": " + em);
+        } else {
+            if(exception.getCause() instanceof SQLException){
+                em = exception.getCause().getMessage();
+            }
+            em =  exception.getClass().getName() +": " + em;
+        }
+        ResponseObject ro = new ResponseObject();
+        ro.setSuccess(false);
+        ro.setCode(code);
+        ro.setMessage(em);
+        return ro;
+    }
+
     public void close() throws IOException, TimeoutException {
         channel.close();
         connection.close();
-    }
-
-    public static void main(String[] args) {
-        try {
-            RequestCustomer consumer = new RequestCustomer();
-            consumer.startConsuming();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
