@@ -89,7 +89,7 @@ public class RabbitMQManager {
 
     public static boolean isLogin(Context context) {
         String url = context.request.getServletPath();
-        return url.equals("/sys/login.execute") || url.equals("/sys/wxLogin.execute");
+        return url.equals("/sys/login.execute") || url.equals("/sys/wxLogin.execute!login");
     }
 
     public static void destroy() {
