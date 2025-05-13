@@ -5,55 +5,93 @@ import com.nfwork.dbfound.exception.CollisionException;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
 import com.rabbitmq.client.*;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RequestCustomer {
     private final Connection connection;
-    private final Channel channel;
+    private final GenericObjectPool<Channel> channelPool;
+    private final ExecutorService executorService;
 
     public RequestCustomer() throws IOException, TimeoutException {
         ConnectionFactory factory = RabbitMQConfig.createConnectionFactory();
         connection = factory.newConnection();
-        channel = connection.createChannel();
+        channelPool = new GenericObjectPool<>(new ChannelFactory(connection), RabbitMQConfig.createPoolConfig());
         
-        // 声明请求队列
-        channel.queueDeclare(RabbitMQConfig.REQUEST_QUEUE_NAME, false, false, false, null);
+        // 创建固定大小的线程池，大小可以根据实际需求调整
+        executorService = Executors.newFixedThreadPool(10);
     }
 
     public void startConsuming() throws Exception {
+        // 声明请求队列
+        Channel initChannel = channelPool.borrowObject();
+        try {
+            initChannel.queueDeclare(RabbitMQConfig.REQUEST_QUEUE_NAME, false, false, false, null);
+        } finally {
+            channelPool.returnObject(initChannel);
+        }
+
         // 创建消费者
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-            String replyTo = delivery.getProperties().getReplyTo();
-            String correlationId = delivery.getProperties().getCorrelationId();
+            // 使用线程池处理消息
+            executorService.submit(() -> {
 
-            // 处理消息并生成响应
-            String response;
-            try {
-                response = processMessage(message);
-            }catch (MQMessageException me){
-                response = JsonUtil.toJson(me.getData());
-            }catch (Exception e) {
-                LogUtil.error("处理失败了，message："+message,e);
-                response = JsonUtil.toJson(handle(e));
-            }
+                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                // 处理消息并生成响应
+                String response;
+                try {
+                    response = processMessage(message);
+                } catch (MQMessageException me) {
+                    response = JsonUtil.toJson(me.getData());
+                } catch (Exception e) {
+                    LogUtil.error("处理失败了，message：" + message, e);
+                    response = JsonUtil.toJson(handle(e));
+                }
 
-            // 发送响应
-            AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder()
-                    .correlationId(correlationId)
-                    .build();
+                Channel channel = null;
+                try {
+                    channel = channelPool.borrowObject();
+                    String replyTo = delivery.getProperties().getReplyTo();
+                    String correlationId = delivery.getProperties().getCorrelationId();
 
-            channel.basicPublish("", replyTo, replyProps, response.getBytes(StandardCharsets.UTF_8));
+                    // 发送响应
+                    AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder()
+                            .correlationId(correlationId)
+                            .build();
+
+                    channel.basicPublish("", replyTo, replyProps, response.getBytes(StandardCharsets.UTF_8));
+                } catch (Exception e) {
+                    LogUtil.error("消息处理过程中发生异常", e);
+                    if (channel != null) {
+                        try {
+                            channelPool.invalidateObject(channel);
+                        } catch (Exception ignored) {
+                        }
+                        channel = null;
+                    }
+                } finally {
+                    if (channel != null) {
+                        try {
+                            channelPool.returnObject(channel);
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+            });
         };
 
         // 开始消费消息
-        channel.basicConsume(RabbitMQConfig.REQUEST_QUEUE_NAME, true, deliverCallback, consumerTag -> {});
+        Channel consumerChannel = channelPool.borrowObject();
+        consumerChannel.basicConsume(RabbitMQConfig.REQUEST_QUEUE_NAME, true, deliverCallback, consumerTag -> {});
     }
 
+    // 移除了内部的 ChannelFactory 类
     private String processMessage(String message) throws Exception {
         // 这里实现你的业务逻辑
         return JsonUtil.toJson(RabbitMQManager.mqProcess(message));
@@ -79,7 +117,12 @@ public class RequestCustomer {
     }
 
     public void close() throws IOException, TimeoutException {
-        channel.close();
-        connection.close();
+        executorService.shutdown(); // 关闭线程池
+        if (channelPool != null) {
+            channelPool.close();
+        }
+        if (connection != null && connection.isOpen()) {
+            connection.close();
+        }
     }
 }
