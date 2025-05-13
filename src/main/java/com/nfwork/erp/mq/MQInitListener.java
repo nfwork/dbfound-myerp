@@ -11,7 +11,13 @@ public class MQInitListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         RabbitMQManager.setModel(sce.getServletContext().getInitParameter("model"));
         // 初始化MQ消费者
-        RabbitMQManager.initCustomer();
+        if("mqCustomer".equals(RabbitMQManager.getModel())){
+            RabbitMQManager.initCustomer();
+        }
+        // 初始化MQ消费者
+        else if("mqSender".equals(RabbitMQManager.getModel())){
+            RabbitMQManager.initSender();
+        }
     }
     
     @Override

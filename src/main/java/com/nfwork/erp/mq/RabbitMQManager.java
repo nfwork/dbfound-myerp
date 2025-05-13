@@ -11,19 +11,33 @@ import java.util.Objects;
 
 public class RabbitMQManager {
 
-    static RequestCustomer customer = null;
+    static volatile RequestCustomer customer = null;
 
-    static RequestSender sender = null;
+    static volatile RequestSender sender = null;
 
     static String model = null;
 
     public static void initCustomer() {
-        if (customer == null &&  "mqCustomer".equals(model)) {
+        if (customer == null) {
             synchronized (RabbitMQManager.class) {
                 if (customer == null) {
                     try {
                         customer = new RequestCustomer();
                         customer.startConsuming();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void initSender() {
+        if (sender == null) {
+            synchronized (RabbitMQManager.class){
+                if (sender == null) {
+                    try {
+                        sender = new RequestSender();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -38,7 +52,7 @@ public class RabbitMQManager {
             data.put("_modelName", modelName);
             data.put("_name", name);
             data.put("_type", type);
-            String result = RabbitMQManager.getRequestSender().sendAndReceive(JsonUtil.toJson(data));
+            String result = sender.sendAndReceive(JsonUtil.toJson(data));
             if (isLogin(context)) {
                 Map<String, Object> map = JsonUtil.jsonToMap(result);
                 if(Objects.equals(map.get("success"), true)) {
@@ -75,21 +89,6 @@ public class RabbitMQManager {
     public static boolean isLogin(Context context) {
         String url = context.request.getServletPath();
         return url.equals("/sys/login.execute") || url.equals("/sys/wxLogin.execute");
-    }
-
-    public static RequestSender getRequestSender(){
-        try {
-            if (sender == null) {
-                synchronized (RabbitMQManager.class){
-                    if (sender == null) {
-                        sender = new RequestSender();
-                    }
-                }
-            }
-            return sender;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static void destroy() {

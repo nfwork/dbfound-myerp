@@ -1,5 +1,6 @@
 package com.nfwork.erp.mq;
 
+import com.rabbitmq.client.ConnectionFactory;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import com.rabbitmq.client.Channel;
 
@@ -16,8 +17,8 @@ public class RabbitMQConfig {
     private static final int MAX_IDLE = 10;   // 最大空闲
     private static final int MIN_IDLE = 5;    // 最小空闲
     
-    public static com.rabbitmq.client.ConnectionFactory createConnectionFactory() {
-        com.rabbitmq.client.ConnectionFactory factory = new com.rabbitmq.client.ConnectionFactory();
+    public static ConnectionFactory createConnectionFactory() {
+        ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(HOST);
         factory.setPort(PORT);
         factory.setUsername(USERNAME);
