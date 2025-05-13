@@ -18,6 +18,7 @@ public class RequestCustomer {
     private final Connection connection;
     private final GenericObjectPool<Channel> channelPool;
     private final ExecutorService executorService;
+    private final Channel consumerChannel; // 新增独立的消费者Channel
 
     public RequestCustomer() throws IOException, TimeoutException {
         ConnectionFactory factory = RabbitMQConfig.createConnectionFactory();
@@ -25,18 +26,15 @@ public class RequestCustomer {
         channelPool = new GenericObjectPool<>(new ChannelFactory(connection), RabbitMQConfig.createPoolConfig());
         
         // 创建固定大小的线程池，大小可以根据实际需求调整
-        executorService = Executors.newFixedThreadPool(10);
+        executorService = Executors.newFixedThreadPool(20);
+        
+        // 创建独立的消费者Channel
+        consumerChannel = connection.createChannel();
+        // 声明请求队列
+        consumerChannel.queueDeclare(RabbitMQConfig.REQUEST_QUEUE_NAME, false, false, false, null);
     }
 
     public void startConsuming() throws Exception {
-        // 声明请求队列
-        Channel initChannel = channelPool.borrowObject();
-        try {
-            initChannel.queueDeclare(RabbitMQConfig.REQUEST_QUEUE_NAME, false, false, false, null);
-        } finally {
-            channelPool.returnObject(initChannel);
-        }
-
         // 创建消费者
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             // 使用线程池处理消息
@@ -86,8 +84,7 @@ public class RequestCustomer {
             });
         };
 
-        // 开始消费消息
-        Channel consumerChannel = channelPool.borrowObject();
+        // 使用独立的consumerChannel进行消费
         consumerChannel.basicConsume(RabbitMQConfig.REQUEST_QUEUE_NAME, true, deliverCallback, consumerTag -> {});
     }
 
@@ -120,6 +117,9 @@ public class RequestCustomer {
         executorService.shutdown(); // 关闭线程池
         if (channelPool != null) {
             channelPool.close();
+        }
+        if (consumerChannel != null && consumerChannel.isOpen()) {
+            consumerChannel.close();
         }
         if (connection != null && connection.isOpen()) {
             connection.close();
