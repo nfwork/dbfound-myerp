@@ -58,6 +58,7 @@ public class RabbitMQManager {
                 if(Objects.equals(map.get("success"), true)) {
                     map = (Map<String, Object>) map.get("outParam");
                     context.request.getSession().setAttribute("user_id", map.get("user_id"));
+                    context.request.getSession().setAttribute("openid", map.get("openid"));
                     context.request.getSession().setAttribute("book_id", map.get("book_id"));
                     context.request.getSession().setAttribute("user_code", map.get("user_code"));
                     context.request.getSession().setAttribute("user_name", map.get("user_name"));
