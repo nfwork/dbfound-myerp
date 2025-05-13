@@ -54,6 +54,8 @@ public class RequestSender {
                     .build();
 
             channel.basicPublish("", RabbitMQConfig.REQUEST_QUEUE_NAME, props, message.getBytes(StandardCharsets.UTF_8));
+            channelPool.returnObject(channel);
+            channel = null;
 
             String result = response.poll(RabbitMQConfig.REQUEST_TIME_OUT, TimeUnit.SECONDS);
             if (result == null) {
