@@ -325,6 +325,7 @@ export default {
                 vm.item_id =item_id;
                 vm.query();
                 vm.showDetail();
+            }else{
                 vm.getBasic();
             }
         });
