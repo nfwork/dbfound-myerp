@@ -11,7 +11,7 @@ public class RabbitMQConfig {
     private static final int PORT = 5672;  // RabbitMQ默认端口
     
     public static final String REQUEST_QUEUE_NAME = "request_queue";
-    public static final String REPLY_QUEUE_NAME = "reply_queue";
+    public static final String REPLY_QUEUE_NAME = "reply_queue_";
     public static final int REQUEST_TIME_OUT = 30;
     
     // sender channel连接池配置

@@ -1,5 +1,6 @@
 package com.nfwork.erp.mq;
 
+import com.nfwork.dbfound.util.UUIDUtil;
 import com.rabbitmq.client.*;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
@@ -17,6 +18,7 @@ public class RequestSender {
     private final GenericObjectPool<Channel> channelPool;
     private final Map<String, BlockingQueue<String>> responseMap = new ConcurrentHashMap<>();
     private final Channel consumerChannel;
+    private final String replyQueueName;
     
     public RequestSender() throws IOException, TimeoutException {
         ConnectionFactory factory = RabbitMQConfig.createConnectionFactory();
@@ -27,16 +29,16 @@ public class RequestSender {
         consumerChannel = connection.createChannel();
 
         // 创建持久化的回复队列
-        consumerChannel.queueDeclare(RabbitMQConfig.REPLY_QUEUE_NAME, false, false, true, null);
+        replyQueueName = RabbitMQConfig.REPLY_QUEUE_NAME + UUIDUtil.getRandomString(8).toLowerCase();
+        consumerChannel.queueDeclare(replyQueueName, false, false, true, null);
         
         // 设置全局消费者
-        consumerChannel.basicConsume(RabbitMQConfig.REPLY_QUEUE_NAME, true, (consumerTag, delivery) -> {
+        consumerChannel.basicConsume(replyQueueName, true, (consumerTag, delivery) -> {
             String correlationId = delivery.getProperties().getCorrelationId();
             String response = new String(delivery.getBody(), StandardCharsets.UTF_8);
             BlockingQueue<String> responseQueue = responseMap.get(correlationId);
             if (responseQueue != null) {
                 responseQueue.offer(response);
-                responseMap.remove(correlationId);
             }
         }, consumerTag -> {});
     }
@@ -51,7 +53,7 @@ public class RequestSender {
             channel = channelPool.borrowObject();
             AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
                     .correlationId(corrId)
-                    .replyTo(RabbitMQConfig.REPLY_QUEUE_NAME)
+                    .replyTo(replyQueueName)
                     .build();
 
             channel.basicPublish("", RabbitMQConfig.REQUEST_QUEUE_NAME, props, message.getBytes(StandardCharsets.UTF_8));
@@ -69,7 +71,6 @@ public class RequestSender {
                 }
                 channel = null;
             }
-            responseMap.remove(corrId);
             throw new IOException("Failed to process message, clause by " + e.getMessage(), e);
         } finally {
             responseMap.remove(corrId);
