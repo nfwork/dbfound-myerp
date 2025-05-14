@@ -32,6 +32,7 @@
         <div @click="showBox">修改密码</div>
         <div bindtap="bind">绑定微信</div>
         <div @click="logout">注销登录</div>
+        <div @click="keepLogin" :class="{'disabled': keep_login}">{{keep_login ? '已保持登录' : '保持登录'}}</div>
     </div>
 
     <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
@@ -74,7 +75,8 @@ export default {
             ypassword:"",
             password:"",
             password2:"",
-            openid:""
+            openid:"",
+            keep_login: false,
         }
     },
     methods : {
@@ -88,11 +90,33 @@ export default {
                     this.role_code = res.data.outParam.role_code,
                     this.role_description = res.data.outParam.role_description,
                     this.openid = res.data.outParam.openid,
+                    this.keep_login = res.data.outParam.keep_login || false,
                     this.exp_time = res.data.datas[0].exp_time,
                     this.period = res.data.datas[0].period
                 }
             }).catch(error => {
                 console.error('Error:', error);
+            });
+        },
+        keepLogin(){
+            if(this.keep_login) {
+                return;
+            }
+            Dialog.confirm({
+                title: '提示',
+                message: '确认要保持登录状态吗？',
+                confirmButtonColor : "#2d6ca2"
+            }).then(() => {
+                let url = "user.do!keepLogin"
+                request.post(url).then(res => {
+                    if(res.data.success){
+                        Toast.success("设置成功");
+                        this.keep_login = true;
+                    }else{
+                        Toast.fail(res.data.message);
+                    }
+                });
+            }).catch(() => {
             });
         },
         updatePassword(){
@@ -196,11 +220,17 @@ export default {
   margin-top: 20px;
 }
 
+.function div.disabled {
+    color: #999;
+    cursor: not-allowed;
+}
+
 .function div{
-  padding: 3px;
-  width: 80px;
-  text-align: center;
-  display: inline-block;
+    padding: 3px;
+    width: 80px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
 }
 
 input{

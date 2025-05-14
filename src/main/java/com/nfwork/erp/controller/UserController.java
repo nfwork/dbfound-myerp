@@ -15,4 +15,12 @@ public class UserController implements ActionController {
         responseObject.setMessage("success");
         return responseObject;
     }
+
+    public ResponseObject keepLogin(Context context){
+        context.request.getSession().setMaxInactiveInterval(60 * 60 * 24 * 7);
+        ResponseObject responseObject = new ResponseObject();
+        responseObject.setSuccess(true);
+        responseObject.setMessage("success");
+        return responseObject;
+    }
 }
