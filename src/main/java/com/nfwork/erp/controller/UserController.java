@@ -18,6 +18,7 @@ public class UserController implements ActionController {
 
     public ResponseObject keepLogin(Context context){
         context.request.getSession().setMaxInactiveInterval(60 * 60 * 24 * 7);
+        context.setSessionData("keep_login", true);
         ResponseObject responseObject = new ResponseObject();
         responseObject.setSuccess(true);
         responseObject.setMessage("success");

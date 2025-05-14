@@ -9,6 +9,7 @@
 		<param name="user_name" scope="session" ioType="both"/>
 		<param name="user_code" scope="session" ioType="both"/>
 		<param name="role_code" scope="session" ioType="both"/>
+		<param name="keep_login" scope="session" ioType="both"/>
 		<param name="role_description" scope="session" ioType="both"/>
 		<param name="openid" scope="session" ioType="both"/>
 		<sql>

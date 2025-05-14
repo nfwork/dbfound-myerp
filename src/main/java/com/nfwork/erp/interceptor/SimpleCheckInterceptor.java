@@ -64,6 +64,9 @@ public class SimpleCheckInterceptor implements Interceptor {
 				return false;
 			}
 		} else {
+			if ("do".equals(type)) {
+				return true;
+			}
 			// 添加mq响应处理
 			if("mqSender".equals(RabbitMQManager.getModel())){
 				RabbitMQManager.mqCall(context, modelName, name, type);
