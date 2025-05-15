@@ -1,12 +1,15 @@
 package com.nfwork.erp.interceptor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.dto.QueryResponseObject;
+import com.nfwork.dbfound.excel.ExcelWriter;
 import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
@@ -69,7 +72,13 @@ public class SimpleCheckInterceptor implements Interceptor {
 			}
 			// 添加mq响应处理
 			if("mqSender".equals(RabbitMQManager.getServiceMode())){
-				WebWriter.jsonWriter(context.response, RabbitMQManager.mqCall(context, modelName, name, type));
+				if ("export".equals(type)){
+					String result = RabbitMQManager.mqCall(context, modelName, name, "query");
+					List<?> list = JsonUtil.getObjectMapper().readValue(result, QueryResponseObject.class).getDatas();
+					ExcelWriter.excelExport(context,list);
+				}else{
+					WebWriter.jsonWriter(context.response, RabbitMQManager.mqCall(context, modelName, name, type));
+				}
 				return false;
 			}
 			return true;

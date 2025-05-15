@@ -2,6 +2,7 @@ package com.nfwork.erp.mq;
 
 
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.excel.ExcelWriter;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
 
@@ -46,29 +47,26 @@ public class RabbitMQManager {
     }
 
     public static String mqCall(Context context, String modelName, String name, String type) throws Exception {
-        if("query".equals(type) || "execute".equals(type)) {
-            Map<String, Object> data = context.getDatas();
-            data.put("_modelName", modelName);
-            data.put("_name", name);
-            data.put("_type", type);
-            String result = sender.sendAndReceive(JsonUtil.toJson(data));
-            if (isLogin(context)) {
-                Map<String, Object> map = JsonUtil.jsonToMap(result);
-                if(Objects.equals(map.get("success"), true)) {
-                    map = (Map<String, Object>) map.get("outParam");
-                    context.request.getSession().setAttribute("user_id", map.get("user_id"));
-                    context.request.getSession().setAttribute("openid", map.get("openid"));
-                    context.request.getSession().setAttribute("book_id", map.get("book_id"));
-                    context.request.getSession().setAttribute("user_code", map.get("user_code"));
-                    context.request.getSession().setAttribute("user_name", map.get("user_name"));
-                    context.request.getSession().setAttribute("role_id", map.get("role_id"));
-                    context.request.getSession().setAttribute("role_code", map.get("role_code"));
-                    context.request.getSession().setAttribute("role_description", map.get("role_description"));
-                }
+        Map<String, Object> data = context.getDatas();
+        data.put("_modelName", modelName);
+        data.put("_name", name);
+        data.put("_type", type);
+        String result = sender.sendAndReceive(JsonUtil.toJson(data));
+        if (isLogin(context)) {
+            Map<String, Object> map = JsonUtil.jsonToMap(result);
+            if(Objects.equals(map.get("success"), true)) {
+                map = (Map<String, Object>) map.get("outParam");
+                context.request.getSession().setAttribute("user_id", map.get("user_id"));
+                context.request.getSession().setAttribute("openid", map.get("openid"));
+                context.request.getSession().setAttribute("book_id", map.get("book_id"));
+                context.request.getSession().setAttribute("user_code", map.get("user_code"));
+                context.request.getSession().setAttribute("user_name", map.get("user_name"));
+                context.request.getSession().setAttribute("role_id", map.get("role_id"));
+                context.request.getSession().setAttribute("role_code", map.get("role_code"));
+                context.request.getSession().setAttribute("role_description", map.get("role_description"));
             }
-            return result;
         }
-        return "";
+        return result;
     }
 
     public static Object mqProcess(String message) throws Exception {
@@ -82,6 +80,10 @@ public class RabbitMQManager {
         if(type.equals("execute")){
             result = ModelEngine.execute(context,modelName,name);
         }else{
+            if(type.equals("export")){
+                context.setExport(true);
+                ExcelWriter.prepareContext(context);
+            }
             result = ModelEngine.query(context,modelName,name);
         }
         return result;
