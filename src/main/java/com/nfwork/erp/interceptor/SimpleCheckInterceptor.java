@@ -73,7 +73,7 @@ public class SimpleCheckInterceptor implements Interceptor {
 			// 添加mq响应处理
 			if("mqSender".equals(RabbitMQManager.getServiceMode())){
 				if ("export".equals(type)){
-					String result = RabbitMQManager.mqCall(context, modelName, name, "query");
+					String result = RabbitMQManager.mqCall(context, modelName, name, type);
 					List<?> list = JsonUtil.getObjectMapper().readValue(result, QueryResponseObject.class).getDatas();
 					ExcelWriter.excelExport(context,list);
 				}else{
