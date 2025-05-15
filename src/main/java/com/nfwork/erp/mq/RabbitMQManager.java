@@ -4,7 +4,6 @@ package com.nfwork.erp.mq;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
-import com.nfwork.dbfound.web.WebWriter;
 
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +14,7 @@ public class RabbitMQManager {
 
     static volatile RequestSender sender = null;
 
-    static String model = null;
+    static String serviceMode = null;
 
     public static void initCustomer() {
         if (customer == null) {
@@ -46,7 +45,7 @@ public class RabbitMQManager {
         }
     }
 
-    public static void mqCall(Context context, String modelName, String name, String type) throws Exception {
+    public static String mqCall(Context context, String modelName, String name, String type) throws Exception {
         if("query".equals(type) || "execute".equals(type)) {
             Map<String, Object> data = context.getDatas();
             data.put("_modelName", modelName);
@@ -67,8 +66,9 @@ public class RabbitMQManager {
                     context.request.getSession().setAttribute("role_description", map.get("role_description"));
                 }
             }
-            WebWriter.jsonWriter(context.response, result);
+            return result;
         }
+        return "";
     }
 
     public static Object mqProcess(String message) throws Exception {
@@ -105,11 +105,11 @@ public class RabbitMQManager {
         }
     }
 
-    public static String getModel() {
-        return model;
+    public static String getServiceMode() {
+        return serviceMode;
     }
 
-    public static void setModel(String model) {
-        RabbitMQManager.model = model;
+    public static void setServiceMode(String serviceMode) {
+        RabbitMQManager.serviceMode = serviceMode;
     }
 }

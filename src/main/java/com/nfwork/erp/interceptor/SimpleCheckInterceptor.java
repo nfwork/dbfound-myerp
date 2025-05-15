@@ -47,9 +47,9 @@ public class SimpleCheckInterceptor implements Interceptor {
 			String url = context.request.getServletPath();
 
 			// 添加mq响应处理
-			if("mqSender".equals(RabbitMQManager.getModel())){
+			if("mqSender".equals(RabbitMQManager.getServiceMode())){
 				if(RabbitMQManager.isLogin(context)){
-					RabbitMQManager.mqCall(context, modelName, name, type);
+					WebWriter.jsonWriter(context.response, RabbitMQManager.mqCall(context, modelName, name, type));
 					return false;
 				}
 			}
@@ -68,8 +68,8 @@ public class SimpleCheckInterceptor implements Interceptor {
 				return true;
 			}
 			// 添加mq响应处理
-			if("mqSender".equals(RabbitMQManager.getModel())){
-				RabbitMQManager.mqCall(context, modelName, name, type);
+			if("mqSender".equals(RabbitMQManager.getServiceMode())){
+				WebWriter.jsonWriter(context.response, RabbitMQManager.mqCall(context, modelName, name, type));
 				return false;
 			}
 			return true;

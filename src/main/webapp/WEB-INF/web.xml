@@ -24,11 +24,8 @@
 	</filter-mapping>
 
 	<context-param>
-		<param-name>model</param-name>
-		<param-value>mqCustomer</param-value> <!--mqCustomer mqSender -->
+		<param-name>serviceMode</param-name>
+		<param-value>mqSender</param-value> <!--mqCustomer mqSender -->
 	</context-param>
-	<listener>
-	    <listener-class>com.nfwork.erp.mq.MQInitListener</listener-class>
-	</listener>
 
 </web-app>
