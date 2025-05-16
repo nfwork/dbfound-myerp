@@ -2,7 +2,6 @@ package com.nfwork.erp.mq;
 
 
 import com.nfwork.dbfound.core.Context;
-import com.nfwork.dbfound.excel.ExcelWriter;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
 
@@ -46,13 +45,16 @@ public class RabbitMQManager {
         }
     }
 
-    public static String mqCall(Context context, String modelName, String name, String type) throws Exception {
+    public static String mqCall(Context context, String modelName, String name, String sourcePath, boolean autoPaging,String type) throws Exception {
         Map<String, Object> data = context.getDatas();
         data.put("_modelName", modelName);
         data.put("_name", name);
+        data.put("_sourcePath", sourcePath);
         data.put("_type", type);
+        data.put("_autoPaging", autoPaging);
+        data.put("_export", context.isExport());
         String result = sender.sendAndReceive(JsonUtil.toJson(data));
-        if (isLogin(context)) {
+        if (type.equals("execute") && isLogin(context)) {
             Map<String, Object> map = JsonUtil.jsonToMap(result);
             if(Objects.equals(map.get("success"), true)) {
                 map = (Map<String, Object>) map.get("outParam");
@@ -69,22 +71,24 @@ public class RabbitMQManager {
         return result;
     }
 
-    public static Object mqProcess(String message) throws Exception {
+    public static Object mqProcess(String message){
         Map<String,Object> data = JsonUtil.jsonToMap(message);
         String type = data.get("_type").toString();
         String name = (String) data.get("_name");
         String modelName = data.get("_modelName").toString();
+        String sourcePath = (String) data.get("_sourcePath");
+        boolean autoPaging = (boolean) data.get("_autoPaging");
+        boolean export = (boolean) data.get("_export");
         Context context = new Context(data);
+        context.setExport(export);
 
         Object result;
         if(type.equals("execute")){
-            result = ModelEngine.execute(context,modelName,name);
+            result = ModelEngine.execute(context,modelName,name,sourcePath);
+        }else if(type.equals("batchExecute")){
+            result = ModelEngine.batchExecute(context,modelName,name,sourcePath);
         }else{
-            if(type.equals("export")){
-                context.setExport(true);
-                ExcelWriter.prepareContext(context);
-            }
-            result = ModelEngine.query(context,modelName,name);
+            result = ModelEngine.query(context,modelName,name,sourcePath,autoPaging);
         }
         return result;
     }

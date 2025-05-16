@@ -1,27 +1,23 @@
 package com.nfwork.erp.interceptor;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nfwork.dbfound.core.Context;
-import com.nfwork.dbfound.dto.QueryResponseObject;
-import com.nfwork.dbfound.excel.ExcelWriter;
 import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.base.Interceptor;
-import com.nfwork.erp.mq.RabbitMQManager;
 
 public class SimpleCheckInterceptor implements Interceptor {
 
 	Map<String, String> accessMap;
 
 	public boolean jspInterceptor(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+								  HttpServletResponse response) throws Exception {
 		Object user_id = request.getSession().getAttribute("user_id");
 
 		if (user_id == null) {
@@ -42,20 +38,12 @@ public class SimpleCheckInterceptor implements Interceptor {
 			return true;
 		}
 	}
-	
-	private boolean commonInterceptor(Context context, String modelName, String name, String type) throws Exception {
+
+	private boolean commonInterceptor(Context context){
 		Object user_id = context.request.getSession().getAttribute("user_id");
 
 		if (user_id == null) {
 			String url = context.request.getServletPath();
-
-			// 添加mq响应处理
-			if("mqSender".equals(RabbitMQManager.getServiceMode())){
-				if(RabbitMQManager.isLogin(context)){
-					WebWriter.jsonWriter(context.response, RabbitMQManager.mqCall(context, modelName, name, type));
-					return false;
-				}
-			}
 			if (check(url)) {
 				return true;
 			} else {
@@ -67,20 +55,6 @@ public class SimpleCheckInterceptor implements Interceptor {
 				return false;
 			}
 		} else {
-			if ("do".equals(type)) {
-				return true;
-			}
-			// 添加mq响应处理
-			if("mqSender".equals(RabbitMQManager.getServiceMode())){
-				if ("export".equals(type)){
-					String result = RabbitMQManager.mqCall(context, modelName, name, type);
-					List<?> list = JsonUtil.getObjectMapper().readValue(result, QueryResponseObject.class).getDatas();
-					ExcelWriter.excelExport(context,list);
-				}else{
-					WebWriter.jsonWriter(context.response, RabbitMQManager.mqCall(context, modelName, name, type));
-				}
-				return false;
-			}
 			return true;
 		}
 	}
@@ -100,22 +74,23 @@ public class SimpleCheckInterceptor implements Interceptor {
 		}
 	}
 
-	public boolean doInterceptor(Context context, String className,String method) throws Exception{
-		return commonInterceptor(context, className, method,"do");
+	public boolean doInterceptor(Context context, String className,
+								 String method) throws Exception {
+		return commonInterceptor(context);
 	}
 
-	public boolean executeInterceptor(Context context, String modelName, String executeName) throws Exception {
-		return commonInterceptor(context, modelName, executeName,"execute");
+	public boolean executeInterceptor(Context context, String modelName, String executeName) {
+		return commonInterceptor(context);
 	}
 
-	public boolean exportInterceptor(Context context, String modelName, String queryName) throws Exception {
-		return commonInterceptor(context, modelName, queryName,"export");
+	public boolean exportInterceptor(Context context, String modelName, String queryName){
+		return commonInterceptor(context);
 	}
 
-	public boolean queryInterceptor(Context context, String modelName,String queryName) throws Exception {
-		return commonInterceptor(context, modelName, queryName,"query");
+	public boolean queryInterceptor(Context context, String modelName,String queryName){
+		return commonInterceptor(context);
 	}
-	
+
 	public boolean check(String url) {
 		return accessMap.get(url) != null;
 	}
