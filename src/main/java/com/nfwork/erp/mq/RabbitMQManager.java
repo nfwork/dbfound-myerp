@@ -4,6 +4,7 @@ package com.nfwork.erp.mq;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.JsonUtil;
+import com.nfwork.dbfound.util.TransactionUtil;
 
 import java.util.Map;
 import java.util.Objects;
@@ -71,7 +72,7 @@ public class RabbitMQManager {
         return result;
     }
 
-    public static Object mqProcess(String message){
+    public static Object mqProcess(String message) throws Exception {
         Map<String,Object> data = JsonUtil.jsonToMap(message);
         String type = data.get("_type").toString();
         String name = (String) data.get("_name");
@@ -84,9 +85,9 @@ public class RabbitMQManager {
 
         Object result;
         if(type.equals("execute")){
-            result = ModelEngine.execute(context,modelName,name,sourcePath);
+            result = TransactionUtil.execute(context,()-> ModelEngine.execute(context,modelName,name,sourcePath));
         }else if(type.equals("batchExecute")){
-            result = ModelEngine.batchExecute(context,modelName,name,sourcePath);
+            result = TransactionUtil.execute(context,()-> ModelEngine.batchExecute(context,modelName,name,sourcePath));
         }else{
             result = ModelEngine.query(context,modelName,name,sourcePath,autoPaging);
         }

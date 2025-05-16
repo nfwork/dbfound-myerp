@@ -3,7 +3,6 @@ package com.nfwork.erp.mq;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nfwork.erp.dto.ReportResponseObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
