@@ -8,6 +8,7 @@ import com.nfwork.dbfound.util.JsonUtil;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.nfwork.erp.dto.ReportResponseObject;
 
 public class MQModelOperator extends ModelOperator {
 
@@ -23,8 +24,9 @@ public class MQModelOperator extends ModelOperator {
                 JavaType responseType = TypeFactory.defaultInstance().constructParametricType(QueryResponseObject.class, itemType);
                 return objectMapper.readValue(result, responseType);
             } else {
+                System.out.println(result);
                 // 默认转换为QueryResponseObject
-                return objectMapper.readValue(result, QueryResponseObject.class);
+                return objectMapper.readValue(result, ReportResponseObject.class);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
