@@ -8,7 +8,6 @@ import com.nfwork.dbfound.util.JsonUtil;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.nfwork.erp.dto.ReportResponseObject;
 
 public class MQModelOperator extends ModelOperator {
 
@@ -21,12 +20,11 @@ public class MQModelOperator extends ModelOperator {
             if (clazz != null) {
                 // 使用JavaType来构建正确的泛型类型
                 JavaType itemType = TypeFactory.defaultInstance().constructType(clazz);
-                JavaType responseType = TypeFactory.defaultInstance().constructParametricType(QueryResponseObject.class, itemType);
+                JavaType responseType = TypeFactory.defaultInstance().constructParametricType(MQResponseObject.class, itemType);
                 return objectMapper.readValue(result, responseType);
             } else {
-                System.out.println(result);
                 // 默认转换为QueryResponseObject
-                return objectMapper.readValue(result, ReportResponseObject.class);
+                return objectMapper.readValue(result, MQResponseObject.class);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -38,7 +36,7 @@ public class MQModelOperator extends ModelOperator {
         try {
             String result = RabbitMQManager.mqCall(context,modelName, executeName,sourcePath,false,"batchExecute");
             ObjectMapper objectMapper = JsonUtil.getObjectMapper();
-            return objectMapper.readValue(result, QueryResponseObject.class);
+            return objectMapper.readValue(result, MQResponseObject.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +47,7 @@ public class MQModelOperator extends ModelOperator {
         try {
             String result = RabbitMQManager.mqCall(context,modelName, executeName,sourcePath,false,"execute");
             ObjectMapper objectMapper = JsonUtil.getObjectMapper();
-            return objectMapper.readValue(result, QueryResponseObject.class);
+            return objectMapper.readValue(result, MQResponseObject.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
