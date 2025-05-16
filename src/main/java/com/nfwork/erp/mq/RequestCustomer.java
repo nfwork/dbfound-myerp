@@ -2,6 +2,7 @@ package com.nfwork.erp.mq;
 
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.CollisionException;
+import com.nfwork.dbfound.exception.NoServletResponseException;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
 import com.rabbitmq.client.*;
@@ -45,8 +46,8 @@ public class RequestCustomer {
                 String response;
                 try {
                     response = processMessage(message);
-                } catch (MQMessageException me) {
-                    response = JsonUtil.toJson(me.getData());
+                } catch (NoServletResponseException me) {
+                    response = me.getContent();
                 } catch (Exception e) {
                     LogUtil.error("处理失败了，message：" + message, e);
                     response = JsonUtil.toJson(handle(e));
