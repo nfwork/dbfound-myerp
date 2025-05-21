@@ -85,9 +85,9 @@ public class RabbitMQManager {
 
         Object result;
         if(type.equals("execute")){
-            result = TransactionUtil.execute(context,()-> ModelEngine.execute(context,modelName,name,sourcePath));
+            result = TransactionUtil.execute(context,()-> ModelEngine.getModelOperator().execute(context,modelName,name,sourcePath));
         }else if(type.equals("batchExecute")){
-            result = TransactionUtil.execute(context,()-> ModelEngine.batchExecute(context,modelName,name,sourcePath));
+            result = TransactionUtil.execute(context,()-> ModelEngine.getModelOperator().batchExecute(context,modelName,name,sourcePath));
         }else{
             result = ModelEngine.getModelOperator().query(context,modelName,name,sourcePath,autoPaging,null);
         }
