@@ -14,6 +14,7 @@ import ExpPeriod from '@/pages/ExpPeriod.vue';
 import ExpAccount from '@/pages/ExpAccount.vue';
 import ExpBudget from '@/pages/ExpBudget.vue';
 import ProfitRecord from '@/pages/ProfitRecord.vue';
+import ProfitArchive from '@/pages/ProfitArchive.vue';
 
 Vue.use(Router);
 
@@ -75,6 +76,10 @@ const router  = new Router({
             name:'profitRecord',
             path:'/profitRecord',
             component:ProfitRecord
+        },{
+            path: '/profitArchive',
+            name: 'ProfitArchive',
+            component: ProfitArchive
         }
     ]
 });

@@ -54,7 +54,9 @@ export default {
                 "/expAccount":{title:"We记账-科目设置"},
                 "/expBudget":{title:"We记账-预算设置"},
                 "/login":{title:"We记账-登录"},
-                "/profitRecord":{title:"We记账-收益管理"}
+                "/profitRecord":{title:"We记账-收益登记"},
+                // 新增收益归档的 title
+                "/profitArchive":{title:"We记账-收益归档"}
                 }
     }
   },
@@ -304,7 +306,7 @@ button,input, textarea{
   font-size: 14px;
   color: #555;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #dfe7ee;
   border-radius: 3px;
   box-sizing: border-box;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -342,13 +344,13 @@ input:disabled{
   width: 100%;
 }
 .table-header :first-child{
-  border-left: 1px solid #ccc; 
+  border-left: 1px solid #dfe7ee; 
 }
 .table-header div{
   user-select:none; 
   float: left;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid #dfe7ee;
   border-left: none;
   padding: 2px;
   height: 35px;
@@ -382,8 +384,8 @@ input:disabled{
 }
 .table-line div{
   float: left;
-  border-right: 1px solid #ccc; 
-  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #dfe7ee; 
+  border-bottom: 1px solid #dfe7ee;
   padding: 2px;
   height: 45px;
   overflow: anto;
@@ -411,7 +413,7 @@ input:disabled{
 }
 
 .table-line :first-child{
-  border-left: 1px solid #ccc; 
+  border-left: 1px solid #dfe7ee; 
 }
 
 /* .table-line:hover div{

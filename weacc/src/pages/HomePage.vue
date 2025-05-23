@@ -25,7 +25,13 @@
             <div @click="go('/expPeriod')" class="function-item"><img src="images/qjgl.jpg">期间设置</div>
             <div @click="go('/expAccount')" class="function-item"><img src="images/kmsz.jpg">科目设置</div>
             <div @click="go('/expBudget')" class="function-item"><img src="images/yssz.jpg">预算设置</div>
-            <div @click="go('/profitRecord')" class="function-item"><img src="images/fymx.jpg">收益管理</div>
+        </div>
+
+        <div class="menu-title">收益管理</div>
+        <div class="function">
+            <!-- 修改按钮文本为收益登记 -->
+            <div @click="go('/profitRecord')" class="function-item"><img src="images/fymx.jpg">收益登记</div>
+            <div @click="go('/profitArchive')" class="function-item"><img src="images/kxhz.jpg">收益归档</div>
         </div>
 
         <div class="menu-title">使用说明</div>
@@ -131,11 +137,12 @@
 }
 
 .function-item{
-  height: 90px;
+  height: 70px;
   width: 90px;
   text-align: center;
   float: left;
   padding-top: 10px;
+  box-sizing: content-box;
   user-select:none; 
 }
 

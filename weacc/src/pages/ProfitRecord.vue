@@ -7,7 +7,47 @@
     <div class="box"> 
       <button class="bule-button" @click="query">查 询</button>
       <button class="litter-bule-button" @click="resetForm">重 置</button>
-      <button class="yellow-button" @click="addLine">新增</button>
+      <button class="yellow-button" @click="addLine">收益登记</button>
+    </div>
+    <!-- 移动汇总数据展示区域到按钮下方 -->
+    <div class="summary-box">
+      <h3>收益汇总</h3>
+      <div class="summary-row">
+        <div class="summary-col">渠道</div>
+        <div class="summary-col">当前收益</div>
+        <div class="summary-col">已归档收益</div>
+        <div class="summary-col">总收益</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-col">渠道PF</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_pf || 0) : 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_pf || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ ((archiveSummary.total_channel_pf + (item_list.length > 0 ? item_list[0].channel_pf : 0)).toFixed(2) ) }}</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-col">渠道ZS</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_zs || 0) : 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_zs || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ ((archiveSummary.total_channel_zs + (item_list.length > 0 ? item_list[0].channel_zs : 0)).toFixed(2) ) }}</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-col">渠道JT</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jt || 0) : 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_jt || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ ((archiveSummary.total_channel_jt + (item_list.length > 0 ? item_list[0].channel_jt : 0)).toFixed(2) ) }}</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-col">渠道JJ</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jj || 0) : 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_jj || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ ((archiveSummary.total_channel_jj + (item_list.length > 0 ? item_list[0].channel_jj : 0)).toFixed(2) ) }}</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-col">渠道汇总</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_total || 0) : 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_total || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ ((archiveSummary.total_channel_total + (item_list.length > 0 ? item_list[0].channel_total : 0)).toFixed(2) ) }}</div>
+      </div>
     </div>
     <div class="box"> 
       <div class="table-header">
@@ -22,32 +62,32 @@
         <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
           <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_pf | currency}}<span v-if="item.diff_pf !== undefined" 
+            {{ (item.channel_pf || 0).toFixed(2) | currency }}<span v-if="item.diff_pf !== undefined" 
                 :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
                 ({{item.diff_pf.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_zs | currency}}<span v-if="item.diff_zs !== undefined" 
+            {{ (item.channel_zs || 0).toFixed(2) | currency }}<span v-if="item.diff_zs !== undefined" 
                 :style="{'margin-left': '1px', 'color': item.diff_zs > 0 ? 'red' : item.diff_zs < 0 ? 'green' : ''}">
                 ({{item.diff_zs.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_jt | currency}}<span v-if="item.diff_jt !== undefined" 
+            {{ (item.channel_jt || 0).toFixed(2) | currency }}<span v-if="item.diff_jt !== undefined" 
                 :style="{'margin-left': '1px', 'color': item.diff_jt > 0 ? 'red' : item.diff_jt < 0 ? 'green' : ''}">
                 ({{item.diff_jt.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{item.channel_jj | currency}}<span v-if="item.diff_jj !== undefined" 
+            {{ (item.channel_jj || 0).toFixed(2) | currency }}<span v-if="item.diff_jj !== undefined" 
                 :style="{'margin-left': '1px', 'color': item.diff_jj > 0 ? 'red' : item.diff_jj < 0 ? 'green' : ''}">
                 ({{item.diff_jj.toFixed(2)}})
             </span>
           </div>
           <!-- 新增汇总列 -->
           <div style="flex: 4; text-align: center;">
-            {{item.channel_total | currency}}<span v-if="item.diff_total !== undefined" 
+            {{ (item.channel_total || 0).toFixed(2) | currency }}<span v-if="item.diff_total !== undefined" 
                 :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
                 ({{item.diff_total.toFixed(2)}})
             </span>
@@ -118,7 +158,14 @@ export default {
             current_line_channel_pf:null,
             current_line_channel_zs:null,
             current_line_channel_jt:null,
-            current_line_channel_jj:null
+            current_line_channel_jj:null,
+            archiveSummary: {
+                total_channel_pf: 0,
+                total_channel_zs: 0,
+                total_channel_jt: 0,
+                total_channel_jj: 0,
+                total_channel_total: 0
+            }
         }
     },
     methods:{
@@ -168,6 +215,8 @@ export default {
                     this.checkPage();
                 }
             });
+            // 点击查询时刷新归档汇总数据
+            this.fetchArchiveSummary();
         },
         changePage(type){
             if(type==1){
@@ -260,10 +309,40 @@ export default {
                 }
             });
         },
+        // 新增获取归档汇总数据的方法
+        fetchArchiveSummary() {
+            let summaryUrl = 'pf/profitArchive.query!archiveSummary';
+            let data = {
+                cost_date: this.cost_date
+            };
+            request.post(summaryUrl, data, {showLoadding: true}).then(res => {
+                if(res.data.success && res.data.datas.length > 0) {
+                    const rawData = res.data.datas[0];
+                    this.archiveSummary = {
+                        total_channel_pf: rawData.total_channel_pf !== null ? rawData.total_channel_pf : 0,
+                        total_channel_zs: rawData.total_channel_zs !== null ? rawData.total_channel_zs : 0,
+                        total_channel_jt: rawData.total_channel_jt !== null ? rawData.total_channel_jt : 0,
+                        total_channel_jj: rawData.total_channel_jj !== null ? rawData.total_channel_jj : 0,
+                        total_channel_total: rawData.total_channel_total !== null ? rawData.total_channel_total : 0
+                    };
+                } else {
+                    // 如果没有数据，将汇总数据重置为 0
+                    this.archiveSummary = {
+                        total_channel_pf: 0,
+                        total_channel_zs: 0,
+                        total_channel_jt: 0,
+                        total_channel_jj: 0,
+                        total_channel_total: 0
+                    };
+                }
+            });
+        },
     },
     beforeRouteEnter(to, from, next) {
         next(vm => {
             vm.query();
+            // 调用获取归档汇总数据的方法
+            vm.fetchArchiveSummary();
         });
     }
 }
@@ -285,5 +364,44 @@ input{
 }
 .table-pager{
     margin-top: 5px;
+}
+
+/* 修改 summary-box 样式以匹配表格样式 */
+.summary-box {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #dfe7ee;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.summary-box h3 {
+  margin: 0;
+  padding: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #343a40;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dfe7ee;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.summary-col {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  color: #495057;
+  padding: 0 5px;
 }
 </style>
