@@ -20,32 +20,32 @@
       </div>
       <div class="summary-row">
         <div class="summary-col">渠道PF</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_pf || 0) : 0).toFixed(2) | currency }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_pf || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_pf || 0) : 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_pf || 0).toFixed(2) }}</div>
         <div class="summary-col">{{ ((archiveSummary.total_channel_pf + (item_list.length > 0 ? item_list[0].channel_pf : 0)).toFixed(2) ) }}</div>
       </div>
       <div class="summary-row">
         <div class="summary-col">渠道ZS</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_zs || 0) : 0).toFixed(2) | currency }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_zs || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_zs || 0) : 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_zs || 0).toFixed(2) }}</div>
         <div class="summary-col">{{ ((archiveSummary.total_channel_zs + (item_list.length > 0 ? item_list[0].channel_zs : 0)).toFixed(2) ) }}</div>
       </div>
       <div class="summary-row">
         <div class="summary-col">渠道JT</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jt || 0) : 0).toFixed(2) | currency }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_jt || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jt || 0) : 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_jt || 0).toFixed(2) }}</div>
         <div class="summary-col">{{ ((archiveSummary.total_channel_jt + (item_list.length > 0 ? item_list[0].channel_jt : 0)).toFixed(2) ) }}</div>
       </div>
       <div class="summary-row">
         <div class="summary-col">渠道JJ</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jj || 0) : 0).toFixed(2) | currency }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_jj || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jj || 0) : 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_jj || 0).toFixed(2) }}</div>
         <div class="summary-col">{{ ((archiveSummary.total_channel_jj + (item_list.length > 0 ? item_list[0].channel_jj : 0)).toFixed(2) ) }}</div>
       </div>
       <div class="summary-row">
         <div class="summary-col">渠道汇总</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_total || 0) : 0).toFixed(2) | currency }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_total || 0).toFixed(2) | currency }}</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_total || 0) : 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_total || 0).toFixed(2) }}</div>
         <div class="summary-col">{{ ((archiveSummary.total_channel_total + (item_list.length > 0 ? item_list[0].channel_total : 0)).toFixed(2) ) }}</div>
       </div>
     </div>
@@ -62,32 +62,32 @@
         <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
           <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
           <div style="flex: 4; text-align: center;">
-            {{ (item.channel_pf || 0).toFixed(2) | currency }}<span v-if="item.diff_pf !== undefined" 
+            {{ (item.channel_pf || 0).toFixed(2) }}<span v-if="item.diff_pf !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
                 ({{item.diff_pf.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{ (item.channel_zs || 0).toFixed(2) | currency }}<span v-if="item.diff_zs !== undefined" 
+            {{ (item.channel_zs || 0).toFixed(2)  }}<span v-if="item.diff_zs !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_zs > 0 ? 'red' : item.diff_zs < 0 ? 'green' : ''}">
                 ({{item.diff_zs.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{ (item.channel_jt || 0).toFixed(2) | currency }}<span v-if="item.diff_jt !== undefined" 
+            {{ (item.channel_jt || 0).toFixed(2)  }}<span v-if="item.diff_jt !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_jt > 0 ? 'red' : item.diff_jt < 0 ? 'green' : ''}">
                 ({{item.diff_jt.toFixed(2)}})
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
-            {{ (item.channel_jj || 0).toFixed(2) | currency }}<span v-if="item.diff_jj !== undefined" 
+            {{ (item.channel_jj || 0).toFixed(2) }}<span v-if="item.diff_jj !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_jj > 0 ? 'red' : item.diff_jj < 0 ? 'green' : ''}">
                 ({{item.diff_jj.toFixed(2)}})
             </span>
           </div>
           <!-- 新增汇总列 -->
           <div style="flex: 4; text-align: center;">
-            {{ (item.channel_total || 0).toFixed(2) | currency }}<span v-if="item.diff_total !== undefined" 
+            {{ (item.channel_total || 0).toFixed(2) }}<span v-if="item.diff_total !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
                 ({{item.diff_total.toFixed(2)}})
             </span>
@@ -341,8 +341,6 @@ export default {
     beforeRouteEnter(to, from, next) {
         next(vm => {
             vm.query();
-            // 调用获取归档汇总数据的方法
-            vm.fetchArchiveSummary();
         });
     }
 }
