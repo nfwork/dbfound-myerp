@@ -11,7 +11,7 @@
     </div>
     <div class="box"> 
       <div class="table-header">
-        <div style="flex: 5;">收益日期</div>
+        <div style="flex: 5;">归档日期</div>
         <div style="flex: 4;">渠道PF</div>
         <div style="flex: 4;">渠道ZS</div>
         <div style="flex: 4;">渠道JT</div>
@@ -56,7 +56,7 @@
       <div class="popup-info-header">收益归档编辑</div>
       <div class="popup-row-info">
         <div class="box"> 
-          <div class="title">收益日期：</div>
+          <div class="title">归档日期：</div>
           <my-calendar class="my-calendar" v-model="current_line_cost_date"/>
         </div>
         <div class="box"> 

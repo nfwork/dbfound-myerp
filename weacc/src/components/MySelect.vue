@@ -110,7 +110,7 @@ export default {
   font-size: 14px;
   color: #555;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #dfe7ee;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 }
 
@@ -123,7 +123,7 @@ export default {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  border-top: 5px solid #999;
+  border-top: 5px solid #dfe7ee;
 }
 
 .current-name {
@@ -145,9 +145,8 @@ export default {
   border-radius: 3px;
   box-sizing: border-box;
   z-index: 99;
-  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2) inset;
   background-color: #fff;
-  border: 1px solid #dfdfdf;
+  border: 1px solid #cad5de;
   overflow: auto;
 }
 
@@ -156,7 +155,7 @@ export default {
   width: 100%;
   line-height: 35px;
   padding-left: 5px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #dfe7ee;
 }
 
 .option:hover {

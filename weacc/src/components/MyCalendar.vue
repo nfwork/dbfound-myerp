@@ -346,7 +346,7 @@ export default {
   font-size: 14px;
   color: #555;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #dfe7ee;
   border-radius: 8rpx;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 }
@@ -382,7 +382,7 @@ export default {
   border-radius: 3px;
   box-sizing: border-box;
   z-index: 99;
-  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2) inset;
+  border: 1px solid #cad5de;
   background-color: #fff;
 }
 
@@ -538,7 +538,7 @@ export default {
 }
  
 .calendar .calendar-main .day .other-month {
-  color: #ccc;
+  color: #dfe7ee;
 }
  
 .calendar .calendar-main .day .spot {
