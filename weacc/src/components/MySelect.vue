@@ -110,8 +110,7 @@ export default {
   font-size: 14px;
   color: #555;
   background-color: #fff;
-  border: 1px solid #dfe7ee;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  border: 1px solid #cbd0d8;
 }
 
 .select-current::after {
@@ -123,7 +122,7 @@ export default {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  border-top: 5px solid #dfe7ee;
+  border-top: 5px solid #999;
 }
 
 .current-name {

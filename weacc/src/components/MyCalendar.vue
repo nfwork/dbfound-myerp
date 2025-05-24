@@ -346,9 +346,8 @@ export default {
   font-size: 14px;
   color: #555;
   background-color: #fff;
-  border: 1px solid #dfe7ee;
+  border: 1px solid #cbd0d8;
   border-radius: 8rpx;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 }
 
 .select-current::after {
