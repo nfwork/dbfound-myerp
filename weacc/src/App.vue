@@ -509,9 +509,11 @@ input:disabled{
   box-sizing: border-box;
   overflow-x: auto; 
   overflow-y: hidden;
+  border: none;
 }
 .data-table-content{
   overflow-y: auto; overflow-x: hidden; margin-top: -1px;box-sizing: border-box;
+  border: none;
 }
 .data-table{
   border-collapse: collapse;

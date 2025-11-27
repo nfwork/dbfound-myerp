@@ -57,10 +57,10 @@
     </div>
 
     <div class="data-table-box" :style="'width:'+width+'px; height: 485px;'">
-      <table class="data-table" style="width: 580px;">
+      <table class="data-table" :style="width===580?'width: 580px;':'width: 510px;'">
         <thead>
           <tr>
-            <th style="width: 80px;">收益日期</th>
+            <th style="width: 90px;">收益日期</th>
             <th style="width: 70px;">渠道PF</th>
             <th style="width: 70px;">渠道ZS</th>
             <th style="width: 70px;">渠道JT</th>
@@ -70,11 +70,11 @@
           </tr>
         </thead>
       </table>
-      <div class="data-table-content" style="width:580px; height: 450px;">
+       <div class="data-table-content" :style="width===580?'width: 580px;':'width: 510px;'+'height: 450px;'">
         <table class="data-table">
           <tbody>
             <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.record_id" :class="(current_line==index?'data-table-current-line':'')">
-              <td @click="updateRecord(index,item)" style="width: 80px; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.cost_date}}</td>
+              <td @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.cost_date}}</td>
               <td style="width: 70px; text-align: center;">
                 {{ (item.channel_pf || 0).toFixed(2) }}
                 <div v-if="item.diff_pf !== undefined"
