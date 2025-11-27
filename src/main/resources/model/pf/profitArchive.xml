@@ -10,8 +10,9 @@
                 a.channel_pf,
                 a.channel_zs,
                 a.channel_jt,
+                a.channel_yc,
                 a.channel_jj,
-                ifnull(a.channel_pf,0) +ifnull(a.channel_zs,0) +ifnull(a.channel_jt,0) +ifnull(a.channel_jj,0) channel_total,
+                ifnull(a.channel_pf,0) +ifnull(a.channel_zs,0) +ifnull(a.channel_jt,0) +ifnull(a.channel_yc,0) + ifnull(a.channel_jj,0) channel_total,
                 DATE_FORMAT(a.cost_date,'%Y-%m-%d') cost_date
             FROM pf_profit_archive a
             where a.book_id = ${@book_id}
@@ -27,8 +28,9 @@
                 SUM(ifnull(a.channel_pf, 0)) as total_channel_pf,
                 SUM(ifnull(a.channel_zs, 0)) as total_channel_zs,
                 SUM(ifnull(a.channel_jt, 0)) as total_channel_jt,
+                SUM(ifnull(a.channel_yc, 0)) as total_channel_yc,
                 SUM(ifnull(a.channel_jj, 0)) as total_channel_jj,
-                SUM(ifnull(a.channel_pf, 0) + ifnull(a.channel_zs, 0) + ifnull(a.channel_jt, 0) + ifnull(a.channel_jj, 0)) as total_channel_total
+                SUM(ifnull(a.channel_pf, 0) + ifnull(a.channel_zs, 0) + ifnull(a.channel_jt, 0) + ifnull(a.channel_yc, 0) + ifnull(a.channel_jj, 0)) as total_channel_total
             FROM pf_profit_archive a
             WHERE a.book_id = ${@book_id}
             #AND_CLAUSE#
@@ -40,6 +42,7 @@
         <param name="channel_pf" dataType="number" />
         <param name="channel_zs" dataType="number" />
         <param name="channel_jt" dataType="number" />
+        <param name="channel_yc" dataType="number" />
         <param name="channel_jj" dataType="number" />
         <param name="cost_date" dataType="varchar" />
         <param name="user_id" dataType="number" scope="session" />
@@ -52,6 +55,7 @@
                    (channel_pf,
                     channel_zs,
                     channel_jt,
+                    channel_yc,
                     channel_jj,
                     cost_date,
                     book_id,
@@ -63,6 +67,7 @@
                     (${@channel_pf},
                     ${@channel_zs},
                     ${@channel_jt},
+                    ${@channel_yc},
                     ${@channel_jj},
                     ${@cost_date},
                     ${@book_id},
@@ -78,6 +83,7 @@
         <param name="channel_pf" dataType="number" />
         <param name="channel_zs" dataType="number" />
         <param name="channel_jt" dataType="number" />
+        <param name="channel_yc" dataType="number" />
         <param name="channel_jj" dataType="number" />
         <param name="cost_date" dataType="varchar" />
         <param name="user_id" dataType="number" scope="session" />
@@ -91,6 +97,7 @@
                     channel_pf = ${@channel_pf},
                     channel_zs = ${@channel_zs},
                     channel_jt = ${@channel_jt},
+                    channel_yc = ${@channel_yc},
                     channel_jj = ${@channel_jj},
                     cost_date = ${@cost_date},
                     last_update_by = ${@user_id},

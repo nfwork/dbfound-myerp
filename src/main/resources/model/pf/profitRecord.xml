@@ -10,8 +10,9 @@
                 p.channel_pf,
                 p.channel_zs,
                 p.channel_jt,
+                p.channel_yc,
                 p.channel_jj,
-                ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_jj,0) channel_total,
+                ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_yc,0) +ifnull(p.channel_jj,0) channel_total,
                 DATE_FORMAT(p.cost_date,'%Y-%m-%d') cost_date
             FROM pf_profit_record p
             where p.book_id = ${@book_id}
@@ -25,6 +26,7 @@
         <param name="channel_pf" dataType="number" />
         <param name="channel_zs" dataType="number" />
         <param name="channel_jt" dataType="number" />
+        <param name="channel_yc" dataType="number" />
         <param name="channel_jj" dataType="number" />
         <param name="cost_date" dataType="varchar" />
         <param name="user_id" dataType="number" scope="session" />
@@ -37,6 +39,7 @@
                    (channel_pf,
                     channel_zs,
                     channel_jt,
+                    channel_yc,
                     channel_jj,
                     cost_date,
                     book_id,
@@ -48,6 +51,7 @@
                     (${@channel_pf},
                     ${@channel_zs},
                     ${@channel_jt},
+                    ${@channel_yc},
                     ${@channel_jj},
                     ${@cost_date},
                     ${@book_id},
@@ -63,6 +67,7 @@
         <param name="channel_pf" dataType="number" />
         <param name="channel_zs" dataType="number" />
         <param name="channel_jt" dataType="number" />
+        <param name="channel_yc" dataType="number" />   
         <param name="channel_jj" dataType="number" />
         <param name="cost_date" dataType="varchar" />
         <param name="user_id" dataType="number" scope="session" />
@@ -76,6 +81,7 @@
                     channel_pf = ${@channel_pf},
                     channel_zs = ${@channel_zs},
                     channel_jt = ${@channel_jt},
+                    channel_yc = ${@channel_yc},    
                     channel_jj = ${@channel_jj},
                     cost_date = ${@cost_date},
                     last_update_by = ${@user_id},

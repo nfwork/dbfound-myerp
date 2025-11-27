@@ -9,6 +9,38 @@
       <button class="litter-bule-button" @click="resetForm">重 置</button>
       <button class="yellow-button" @click="addLine">收益归档</button>
     </div>
+
+    <div class="data-table-box" :style="'width:'+width+'px; height: 485px;'">
+      <table class="data-table" style="width: 580px;">
+        <thead>
+          <tr>
+            <th style="width: 80px;">归档日期</th>
+            <th style="width: 70px;">渠道PF</th>
+            <th style="width: 70px;">渠道ZS</th>
+            <th style="width: 70px;">渠道JT</th>
+            <th style="width: 70px;">渠道YC</th>
+            <th style="width: 70px;">渠道JJ</th>
+            <th style="width: 70px;">汇总</th>
+          </tr>
+        </thead>
+      </table>
+      <div class="data-table-content" style="width:580px; height: 450px;">
+        <table class="data-table">
+          <tbody>
+            <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.archive_id" :class="(current_line==index?'data-table-current-line':'')">
+              <td  @click="updateRecord(index,item)" style="width: 80px; text-align: center; color: #0f4ea0; cursor: pointer; ">{{item.cost_date}}</td>
+              <td style="text-align: center;width: 70px;">{{item.channel_pf | currency}}</td>
+              <td style="text-align: center;width: 70px;">{{item.channel_zs | currency}}</td>
+              <td style="text-align: center;width: 70px;">{{item.channel_jt | currency}}</td>
+              <td style="text-align: center;width: 70px;">{{item.channel_yc | currency}}</td> 
+              <td style="text-align: center;width: 70px;">{{item.channel_jj | currency}}</td> 
+              <td style="text-align: center;width: 70px;">{{item.channel_total | currency}}</td> 
+            </tr>
+          </tbody>
+        </table>
+      </div>  
+    </div>
+    <!--
     <div class="box"> 
       <div class="table-header">
         <div style="flex: 5;">归档日期</div>
@@ -16,7 +48,7 @@
         <div style="flex: 4;">渠道ZS</div>
         <div style="flex: 4;">渠道JT</div>
         <div style="flex: 4;">渠道JJ</div>
-        <div style="flex: 4;">汇总</div>  <!-- 新增汇总列 -->
+        <div style="flex: 4;">汇总</div> 
       </div>
       <div class="table-body" style="height: 450px;">
         <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.archive_id">
@@ -33,14 +65,14 @@
           <div style="flex: 4; text-align: center;">
             {{item.channel_jj | currency}}
           </div>
-          <!-- 新增汇总列 -->
           <div style="flex: 4; text-align: center;">
             {{item.channel_total | currency}}
           </div>
         </div>
       </div>
     </div>
-    
+    -->
+
     <div class="table-pager">
       <div class="desbox">显示 {{(currentPage-1)*limit+1}} 到 {{currentPage*limit > totalCounts?totalCounts:currentPage*limit}} 条，共 {{totalCounts}} 条，共 {{totalPages}} 页</div>
       <div class="buttonbox"> 
@@ -70,6 +102,10 @@
         <div class="box"> 
           <div class="title">渠道JT：</div>
           <input type="number" v-model="current_line_channel_jt"/>
+        </div>
+        <div class="box"> 
+          <div class="title">渠道YC：</div>
+          <input type="number" v-model="current_line_channel_yc"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JJ：</div>
@@ -103,7 +139,17 @@ export default {
             current_line_channel_pf:null,
             current_line_channel_zs:null,
             current_line_channel_jt:null,
+            current_line_channel_yc:null,
             current_line_channel_jj:null
+        }
+    },
+    computed:{
+        width(){
+            let width = document.documentElement.clientWidth ;
+            if(width > 600){
+                width = 600;
+            }
+            return width-20;
         }
     },
     methods:{
@@ -181,6 +227,7 @@ export default {
             this.current_line_channel_pf= null;
             this.current_line_channel_zs= null;
             this.current_line_channel_jt= null;
+            this.current_line_channel_yc= null;
             this.current_line_channel_jj= null; 
             this.showBox();
         },
@@ -190,6 +237,7 @@ export default {
             this.current_line_channel_pf = item.channel_pf;
             this.current_line_channel_zs = item.channel_zs;
             this.current_line_channel_jt = item.channel_jt;
+            this.current_line_channel_yc = item.channel_yc;
             this.current_line_channel_jj = item.channel_jj;
             this.showBox();
         },
@@ -211,6 +259,7 @@ export default {
                 channel_pf: this.current_line_channel_pf,
                 channel_zs: this.current_line_channel_zs,
                 channel_jt: this.current_line_channel_jt,
+                channel_yc: this.current_line_channel_yc,
                 channel_jj: this.current_line_channel_jj
             };
             request.post(url, data, {showLoadding:true}).then(res => {

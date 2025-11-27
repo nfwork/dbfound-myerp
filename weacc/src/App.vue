@@ -502,4 +502,42 @@ input:disabled{
   text-align: right;
 }
 
+.data-table-box{
+  margin-top: 5px;
+  display: block;
+  overflow-x: scroll;
+  box-sizing: border-box;
+  overflow-x: auto; 
+  overflow-y: hidden;
+}
+.data-table-content{
+  overflow-y: auto; overflow-x: hidden; margin-top: -1px;box-sizing: border-box;
+}
+.data-table{
+  border-collapse: collapse;
+  border: 1px solid #dfe7ee; 
+  box-sizing: border-box;
+  width: 100%;
+}
+.data-table th {
+  padding: 2px;
+  height: 35px;
+  background-color: #f6f6f6;
+  border: 1px solid #dfe7ee;
+  box-sizing: border-box;
+}
+.data-table td {
+  padding: 2px;
+  height: 45px;
+  border: 1px solid #dfe7ee;
+  box-sizing: border-box;
+}
+.data-table tbody tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+.data-table-current-line{
+  background-color: #edf7fd!important
+}
+
+
 </style>

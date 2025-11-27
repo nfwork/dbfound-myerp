@@ -37,6 +37,12 @@
         <div class="summary-col">{{ ((archiveSummary.total_channel_jt + (item_list.length > 0 ? item_list[0].channel_jt : 0)).toFixed(2) ) }}</div>
       </div>
       <div class="summary-row">
+        <div class="summary-col">渠道YC</div>
+        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_yc || 0) : 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ (archiveSummary.total_channel_yc || 0).toFixed(2) }}</div>
+        <div class="summary-col">{{ ((archiveSummary.total_channel_yc + (item_list.length > 0 ? item_list[0].channel_yc : 0)).toFixed(2) ) }}</div>
+      </div>
+      <div class="summary-row">
         <div class="summary-col">渠道JJ</div>
         <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jj || 0) : 0).toFixed(2) }}</div>
         <div class="summary-col">{{ (archiveSummary.total_channel_jj || 0).toFixed(2) }}</div>
@@ -49,22 +55,88 @@
         <div class="summary-col">{{ ((archiveSummary.total_channel_total + (item_list.length > 0 ? item_list[0].channel_total : 0)).toFixed(2) ) }}</div>
       </div>
     </div>
-    <div class="box"> 
+
+    <div class="data-table-box" :style="'width:'+width+'px; height: 485px;'">
+      <table class="data-table" style="width: 580px;">
+        <thead>
+          <tr>
+            <th style="width: 80px;">收益日期</th>
+            <th style="width: 70px;">渠道PF</th>
+            <th style="width: 70px;">渠道ZS</th>
+            <th style="width: 70px;">渠道JT</th>
+            <th style="width: 70px;">渠道YC</th>
+            <th style="width: 70px;">渠道JJ</th>
+            <th style="width: 70px;">汇总</th> 
+          </tr>
+        </thead>
+      </table>
+      <div class="data-table-content" style="width:580px; height: 450px;">
+        <table class="data-table">
+          <tbody>
+            <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.record_id" :class="(current_line==index?'data-table-current-line':'')">
+              <td @click="updateRecord(index,item)" style="width: 80px; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.cost_date}}</td>
+              <td style="width: 70px; text-align: center;">
+                {{ (item.channel_pf || 0).toFixed(2) }}
+                <div v-if="item.diff_pf !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
+                  ({{item.diff_pf.toFixed(2)}})
+                </div>
+              </td> 
+              <td style="width: 70px; text-align: center;">
+                {{ (item.channel_zs || 0).toFixed(2) }}
+                <div v-if="item.diff_zs !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_zs > 0 ? 'red' : item.diff_zs < 0 ? 'green' : ''}">
+                  ({{item.diff_zs.toFixed(2)}})
+                </div>
+              </td>
+              <td style="width: 70px; text-align: center;">
+                {{ (item.channel_jt || 0).toFixed(2) }}
+                <div v-if="item.diff_jt !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_jt > 0 ? 'red' : item.diff_jt < 0 ? 'green' : ''}">
+                  ({{item.diff_jt.toFixed(2)}})
+                </div>
+              </td>
+              <td style="width: 70px; text-align: center;">
+                {{ (item.channel_yc || 0).toFixed(2) }}
+                <div v-if="item.diff_yc !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_yc > 0 ? 'red' : item.diff_yc < 0 ? 'green' : ''}">
+                  ({{item.diff_yc.toFixed(2)}})
+                </div>
+              </td>
+              <td style="width: 70px; text-align: center;">
+                {{ (item.channel_jj || 0).toFixed(2) }}
+                <div v-if="item.diff_jj !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_jj > 0 ? 'red' : item.diff_jj < 0 ? 'green' : ''}">
+                  ({{item.diff_jj.toFixed(2)}})
+                </div>
+              </td>
+              <td style="width: 70px; text-align: center;">
+                {{ (item.channel_total || 0).toFixed(2) }}
+                <div v-if="item.diff_total !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
+                  ({{item.diff_total.toFixed(2)}})
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- <div class="box"> 
       <div class="table-header">
         <div style="flex: 5;">收益日期</div>
         <div style="flex: 4;">渠道PF</div>
         <div style="flex: 4;">渠道ZS</div>
         <div style="flex: 4;">渠道JT</div>
         <div style="flex: 4;">渠道JJ</div>
-        <div style="flex: 4;">汇总</div>  <!-- 新增汇总列 -->
+        <div style="flex: 4;">汇总</div> 
       </div>
       <div class="table-body" style="height: 450px;">
         <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
           <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
           <div style="flex: 4; text-align: center;">
-            {{ (item.channel_pf || 0).toFixed(2) }}<span v-if="item.diff_pf !== undefined"
-                :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
-                ({{item.diff_pf.toFixed(2)}})
+           
             </span>
           </div>
           <div style="flex: 4; text-align: center;">
@@ -85,7 +157,6 @@
                 ({{item.diff_jj.toFixed(2)}})
             </span>
           </div>
-          <!-- 新增汇总列 -->
           <div style="flex: 4; text-align: center;">
             {{ (item.channel_total || 0).toFixed(2) }}<span v-if="item.diff_total !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
@@ -94,7 +165,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     
     <div class="table-pager">
       <div class="desbox">显示 {{(currentPage-1)*limit+1}} 到 {{currentPage*limit > totalCounts?totalCounts:currentPage*limit}} 条，共 {{totalCounts}} 条，共 {{totalPages}} 页</div>
@@ -125,6 +196,10 @@
         <div class="box"> 
           <div class="title">渠道JT：</div>
           <input type="number" v-model="current_line_channel_jt"/>
+        </div>
+        <div class="box"> 
+          <div class="title">渠道YC：</div>
+          <input type="number" v-model="current_line_channel_yc"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JJ：</div>
@@ -158,14 +233,25 @@ export default {
             current_line_channel_pf:null,
             current_line_channel_zs:null,
             current_line_channel_jt:null,
+            current_line_channel_yc:null,
             current_line_channel_jj:null,
             archiveSummary: {
                 total_channel_pf: 0,
                 total_channel_zs: 0,
                 total_channel_jt: 0,
+                total_channel_yc: 0,
                 total_channel_jj: 0,
                 total_channel_total: 0
             }
+        }
+    },
+    computed:{
+        width(){
+            let width = document.documentElement.clientWidth ;
+            if(width > 600){
+                width = 600;
+            }
+            return width-20;
         }
     },
     methods:{
@@ -204,6 +290,8 @@ export default {
                                 ? item.channel_zs - nextItem.channel_zs : undefined;
                             item.diff_jt = (item.channel_jt != null && nextItem.channel_jt != null) 
                                 ? item.channel_jt - nextItem.channel_jt : undefined;
+                            item.diff_yc = (item.channel_yc != null && nextItem.channel_yc != null) 
+                                ? item.channel_yc - nextItem.channel_yc : undefined;
                             item.diff_jj = (item.channel_jj != null && nextItem.channel_jj != null) 
                                 ? item.channel_jj - nextItem.channel_jj : undefined;
                             item.diff_total = (item.channel_total != null && nextItem.channel_total != null) 
@@ -262,6 +350,7 @@ export default {
             this.current_line_channel_pf= null;
             this.current_line_channel_zs= null;
             this.current_line_channel_jt= null;
+            this.current_line_channel_yc= null;
             this.current_line_channel_jj= null; 
             this.showBox();
         },
@@ -271,6 +360,7 @@ export default {
             this.current_line_channel_pf = item.channel_pf;
             this.current_line_channel_zs = item.channel_zs;
             this.current_line_channel_jt = item.channel_jt;
+            this.current_line_channel_yc = item.channel_yc;
             this.current_line_channel_jj = item.channel_jj;
             this.showBox();
         },
@@ -292,6 +382,7 @@ export default {
                 channel_pf: this.current_line_channel_pf,
                 channel_zs: this.current_line_channel_zs,
                 channel_jt: this.current_line_channel_jt,
+                channel_yc: this.current_line_channel_yc,
                 channel_jj: this.current_line_channel_jj
             };
             request.post(url, data, {showLoadding:true}).then(res => {
@@ -322,6 +413,7 @@ export default {
                         total_channel_pf: rawData.total_channel_pf !== null ? rawData.total_channel_pf : 0,
                         total_channel_zs: rawData.total_channel_zs !== null ? rawData.total_channel_zs : 0,
                         total_channel_jt: rawData.total_channel_jt !== null ? rawData.total_channel_jt : 0,
+                        total_channel_yc: rawData.total_channel_yc !== null ? rawData.total_channel_yc : 0,
                         total_channel_jj: rawData.total_channel_jj !== null ? rawData.total_channel_jj : 0,
                         total_channel_total: rawData.total_channel_total !== null ? rawData.total_channel_total : 0
                     };
@@ -331,6 +423,7 @@ export default {
                         total_channel_pf: 0,
                         total_channel_zs: 0,
                         total_channel_jt: 0,
+                        total_channel_yc: 0,
                         total_channel_jj: 0,
                         total_channel_total: 0
                     };
