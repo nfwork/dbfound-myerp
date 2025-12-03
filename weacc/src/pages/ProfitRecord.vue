@@ -70,7 +70,7 @@
           </tr>
         </thead>
       </table>
-       <div class="data-table-content" :style="width===580?'width: 580px;':'width: 510px;'+'height: 450px;'">
+       <div class="data-table-content" :style="(width===580?'width: 580px;':'width: 510px;')+'height: 450px;'">
         <table class="data-table">
           <tbody>
             <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.record_id" :class="(current_line==index?'data-table-current-line':'')">
