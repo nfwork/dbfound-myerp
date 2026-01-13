@@ -56,6 +56,25 @@
       </div>
     </div>
 
+    <!-- 按月收益横向展开表格 -->
+    <div class="monthly-profit-box" :style="'width:'+width+'px;'">
+      <h3>按月收益</h3>
+      <div class="monthly-profit-content">
+        <table class="monthly-profit-table">
+          <thead>
+            <tr>
+              <th v-for="item in monthly_profit_list" :key="'m'+item.profit_month">{{ item.profit_month }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td v-for="item in monthly_profit_list" :key="'t'+item.profit_month">{{ (item.total || 0).toFixed(2) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="data-table-box" :style="'width:'+width+'px; height: 485px;'">
       <table class="data-table" :style="width===580?'width: 580px;':'width: 510px;'">
         <thead>
@@ -242,7 +261,8 @@ export default {
                 total_channel_yc: 0,
                 total_channel_jj: 0,
                 total_channel_total: 0
-            }
+            },
+            monthly_profit_list: []
         }
     },
     computed:{
@@ -305,6 +325,8 @@ export default {
             });
             // 点击查询时刷新归档汇总数据
             this.fetchArchiveSummary();
+            // 刷新按月收益数据
+            this.fetchMonthlyProfit();
         },
         changePage(type){
             if(type==1){
@@ -430,6 +452,18 @@ export default {
                 }
             });
         },
+        // 获取按月收益数据
+        fetchMonthlyProfit() {
+            let url = 'pf/report.query';
+            request.post(url, {}, {showLoadding: false}).then(res => {
+                if(res.data.success) {
+                    // 倒排数据，最新月份放前面
+                    this.monthly_profit_list = (res.data.datas || []).reverse();
+                } else {
+                    this.monthly_profit_list = [];
+                }
+            });
+        },
     },
     beforeRouteEnter(to, from, next) {
         next(vm => {
@@ -494,5 +528,63 @@ input{
   font-size: 14px;
   color: #495057;
   padding: 0 5px;
+}
+
+/* 按月收益表格样式 - 参考 summary-box */
+.monthly-profit-box {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #dfe7ee;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.monthly-profit-box h3 {
+  margin: 0;
+  padding: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #343a40;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dfe7ee;
+}
+
+.monthly-profit-content {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.monthly-profit-table {
+  width: max-content;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.monthly-profit-table th,
+.monthly-profit-table td {
+  min-width: 80px;
+  padding: 8px 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #495057;
+  border-right: 1px solid #e9ecef;
+}
+
+.monthly-profit-table th:last-child,
+.monthly-profit-table td:last-child {
+  border-right: none;
+}
+
+.monthly-profit-table th {
+  background-color: #f8f9fa;
+  color: #343a40;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.monthly-profit-table tbody tr {
+  background-color: #fff;
 }
 </style>
