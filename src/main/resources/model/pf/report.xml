@@ -14,9 +14,10 @@
                     where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01') and a.cost_date< DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
                 ) as archive_total
             from pf_profit_record p
-            where record_id in (
-                SELECT max(record_id) FROM pf_profit_record GROUP BY DATE_FORMAT(cost_date, '%Y-%m')
+            where cost_date in (
+                SELECT max(cost_date) FROM pf_profit_record GROUP BY DATE_FORMAT(cost_date, '%Y-%m')
             )
+            order by cost_date
             ]]>
         </sql>
     </query>
