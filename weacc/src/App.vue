@@ -510,16 +510,24 @@ input:disabled{
   overflow-x: auto; 
   overflow-y: hidden;
   border: none;
+  max-width: calc(100vw - 20px);
+  display: flex;
+  flex-direction: column;
 }
 .data-table-content{
   overflow-y: auto; overflow-x: hidden; margin-top: -1px;box-sizing: border-box;
   border: none;
+  width: max-content;
+  flex: 1;
+  overflow: auto;
 }
 .data-table{
   border-collapse: collapse;
   border: 1px solid #dfe7ee; 
   box-sizing: border-box;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
+  flex-shrink: 0;
 }
 .data-table th {
   padding: 2px;
