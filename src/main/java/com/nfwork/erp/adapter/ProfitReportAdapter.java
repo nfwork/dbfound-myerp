@@ -14,8 +14,8 @@ public class ProfitReportAdapter implements MapQueryAdapter {
         List<Map<String,Object>> datas = responseObject.getDatas();
         double lastRecordTotal = 0D;
         for (Map<String,Object> data : datas) {
-            Double recordTotal = (Double)data.get("record_total") ;
-            Double archiveTotal = (Double) data.get("archive_total");
+            Double recordTotal = (Double)data.remove("record_total") ;
+            Double archiveTotal = (Double) data.remove("archive_total");
             if (archiveTotal==null) {
                 archiveTotal = 0D;
             }
