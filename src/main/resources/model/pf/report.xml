@@ -13,7 +13,7 @@
                     where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
                       and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
                       <sqlPart type="if" sourcePath="cost_date">
-                      and a.cost_date &lt; ${@cost_date}
+                      and a.cost_date &lt;= ${@cost_date}
                       </sqlPart>
                 ) as archive_total
             from pf_profit_record p
