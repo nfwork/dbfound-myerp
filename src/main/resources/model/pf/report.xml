@@ -4,21 +4,28 @@
 
     <query adapter="com.nfwork.erp.adapter.ProfitReportAdapter">
         <sql>
-            <![CDATA[
             select
                 DATE_FORMAT(p.cost_date, '%Y-%m') as profit_month,
                 ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_yc,0)+ifnull(p.channel_jj,0) record_total,
                 ( select
                         SUM(ifnull(a.channel_pf, 0) + ifnull(a.channel_zs, 0) + ifnull(a.channel_jt, 0) + ifnull(a.channel_yc, 0) + ifnull(a.channel_jj, 0))
                     from pf_profit_archive a
-                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01') and a.cost_date< DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
+                      and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                      <sqlPart type="if" sourcePath="cost_date">
+                      and a.cost_date &lt; ${@cost_date}
+                      </sqlPart>
                 ) as archive_total
             from pf_profit_record p
             where cost_date in (
-                SELECT max(cost_date) FROM pf_profit_record GROUP BY DATE_FORMAT(cost_date, '%Y-%m')
+                SELECT max(cost_date)
+                FROM pf_profit_record
+                <sqlPart type="if" sourcePath="cost_date">
+                where cost_date &lt;= ${@cost_date}
+                </sqlPart>
+                GROUP BY DATE_FORMAT(cost_date, '%Y-%m')
             )
             order by cost_date
-            ]]>
         </sql>
     </query>
 </model>
