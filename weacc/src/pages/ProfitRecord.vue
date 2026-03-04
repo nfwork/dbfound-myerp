@@ -455,7 +455,10 @@ export default {
         // 获取按月收益数据
         fetchMonthlyProfit() {
             let url = 'pf/report.query';
-            request.post(url, {}, {showLoadding: false}).then(res => {
+            let data = {
+              cost_date: this.cost_date
+            };
+            request.post(url, data, {showLoadding: false}).then(res => {
                 if(res.data.success) {
                     // 倒排数据，最新月份放前面
                     this.monthly_profit_list = (res.data.datas || []).reverse();
