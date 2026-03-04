@@ -6,16 +6,25 @@
     </van-radio-group>
   </div>
 
-  <div class="header-box" :style="'width:'+width+'px'">
-    <div class="table-header" :style="'width:' + ((column_list.length+1)*95) + 'px;'">
-      <div>会计期间</div>
-      <div v-for="column in column_list" :key="column.priority" >{{column.name}}</div>
-    </div>
-
-    <div class="table-body" :style="'width:' + ((column_list.length+1)*95) + 'px;'">
-      <div @click="setIndex(index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item,index) in item_list" :key="item.c">
-        <div>{{item.c}}</div>
-        <div class="num-font" v-for="column in column_list" :key="column.priority">{{item[column.index] | currency}}</div>
+  <div class="data-table-box period-amount-table" :style="'width:'+width+'px; height:'+tableHeight+'px;'">
+    <div class="period-amount-wrapper" :style="'width:' + tableWidth + 'px; min-width: 100%;'">
+      <table class="data-table" :style="'width:' + tableWidth + 'px;'">
+        <thead>
+          <tr>
+            <th style="width: 95px;">会计期间</th>
+            <th v-for="column in column_list" :key="column.priority" style="width: 95px;">{{column.name}}</th>
+          </tr>
+        </thead>
+      </table>
+      <div class="data-table-content" :style="'width:' + tableWidth + 'px; height:' + contentHeight + 'px;'">
+        <table class="data-table" :style="'width:' + tableWidth + 'px;'">
+          <tbody>
+            <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.c" :class="(current_line==index?'data-table-current-line':'')">
+              <td style="width: 95px; text-align: center;">{{item.c}}</td>
+              <td class="num-font" v-for="column in column_list" :key="column.priority" style="width: 95px; text-align: right;">{{item[column.index] | currency}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -41,6 +50,16 @@ export default {
                 width = 600;
             }
             return width-20;
+        },
+        tableWidth(){
+            return (this.column_list.length + 1) * 95;
+        },
+        tableHeight(){
+            let h = document.documentElement.clientHeight;
+            return Math.max(200, h - 152);
+        },
+        contentHeight(){
+            return Math.max(150, this.tableHeight - 45);
         }
     },
     methods:{
@@ -129,30 +148,5 @@ export default {
 <style scoped>
 .box{
     margin-top: 5px;
-}
-.header-box {
-  overflow-x: scroll;
-  margin-top: 10px;
-  box-sizing: border-box;
-}
-.table-header{
-  margin-top: 0;
-}
-.table-line{
-  width: 100%;
-}
-
-.table-header div, .table-line div{
-  flex: 1;
-  font-size: 13px;
-  overflow: hidden;
-  height: 40px;
-  padding: 3px;
-}
-.table-line div{
-  text-align: right;
-}
-.table-line :first-child{
-  text-align: center;
 }
 </style>

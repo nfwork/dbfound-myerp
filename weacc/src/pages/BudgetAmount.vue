@@ -5,37 +5,53 @@
     <my-select class="my-select" :value="current_period" @select="setPeriod" :options="period_list" valueField="period_id" displayField="period_name"/>
   </div>
 
-  <div class="box"> 
-    <div class="table-header">
-      <div style="width: 120px;">科目名称</div>
-      <div style="flex:1">本月预算</div>
-      <div style="flex:1">本月发生</div>
-      <div style="flex:1">预算余额</div>
-    </div>
-    <div class="table-body"  style="height: 280px;">
-      <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
-        <div style="width: 120px;">{{item.account_name}}</div>
-        <div class="num-font" style="flex:1;text-align: right;">{{item.append_amount | currency}}</div>
-        <div class="num-font" style="flex:1;text-align: right;">{{item.emerge_amount | currency}}</div>
-        <div class="num-font" :style="'flex:1;text-align: right; color:' + (item.end_amount < 0?'red':'green')">{{item.end_amount | currency}}</div>
-      </div>
+  <div class="data-table-box" :style="'width:'+width+'px; height: 306px;'">
+    <table class="data-table" :style="'width:'+width+'px;'">
+      <thead>
+        <tr>
+          <th style="width: 28%;">科目名称</th>
+          <th style="width: 24%;">本月预算</th>
+          <th style="width: 24%;">本月发生</th>
+          <th style="width: 24%;">预算余额</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="data-table-content" :style="'width:'+width+'px; height: 280px;'">
+      <table class="data-table" :style="'width:'+width+'px;'">
+        <tbody>
+          <tr @click="showDetail(item.account_id,index)" v-for="(item,index) in item_list" :key="index" :class="(current_line==index?'data-table-current-line':'')">
+            <td style="width: 28%; text-align: center;">{{item.account_name}}</td>
+            <td class="num-font" style="width: 24%; text-align: right;">{{item.append_amount | currency}}</td>
+            <td class="num-font" style="width: 24%; text-align: right;">{{item.emerge_amount | currency}}</td>
+            <td class="num-font" :style="'width: 24%; text-align: right; color:' + (item.end_amount < 0?'red':'green')">{{item.end_amount | currency}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <div class="box"> 
-    <div class="table-header">
-      <div style="width: 90px;">费用日期</div>
-      <div style="width: 75px;">借</div>
-      <div style="width: 75px;">贷</div>
-      <div style="flex:1;">凭证描述</div>
-    </div>
-    <div class="table-body" style="max-height:225px; min-height:90px;">
-      <div class="table-line" hover-class="table-line-hover" v-for="item in item_line_list" :key="item.item_line_id">
-        <div style="width: 90px;text-align: center;">{{item.exp_time}}</div>
-        <div class="num-font" style="width: 75px;text-align: right;">{{item.dr_amount | currency}}</div>
-        <div class="num-font" style="width: 75px;text-align: right;">{{item.cr_amount | currency}}</div>
-        <div style="flex: 1;"><span>{{item.description}}</span></div>
-      </div>
+  <div class="data-table-box" :style="'width:'+width+'px; height: 306px;'">
+    <table class="data-table" :style="'width:'+width+'px;'">
+      <thead>
+        <tr>
+          <th style="width: 25%;">费用日期</th>
+          <th style="width: 20%;">借</th>
+          <th style="width: 20%;">贷</th>
+          <th style="width: 35%;">凭证描述</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="data-table-content" :style="'width:'+width+'px; height: 280px;'">
+      <table class="data-table" :style="'width:'+width+'px;'">
+        <tbody>
+          <tr v-for="item in item_line_list" :key="item.item_line_id">
+            <td style="width: 25%; text-align: center;">{{item.exp_time}}</td>
+            <td class="num-font" style="width: 20%; text-align: right;">{{item.dr_amount | currency}}</td>
+            <td class="num-font" style="width: 20%; text-align: right;">{{item.cr_amount | currency}}</td>
+            <td style="width: 35%;">{{item.description}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div> 
 </div>
@@ -51,6 +67,15 @@ export default {
             period_list:[],
             current_period: {},
             current_line:-1
+        }
+    },
+    computed:{
+        width(){
+            let width = document.documentElement.clientWidth;
+            if(width > 600){
+                width = 600;
+            }
+            return width-20;
         }
     },
     methods:{

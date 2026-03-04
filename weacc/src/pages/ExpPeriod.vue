@@ -8,20 +8,28 @@
         <button class="bule-button" @click="query">查 询</button>
         <button class="yellow-button" @click="reset">重 置</button>
     </div>
-    <div class="box"> 
-        <div class="table-header">
-        <div style="flex: 3;">期间编号</div>
-        <div style="flex: 3;">期间名称</div>
-        <div style="flex: 2;">期间状态</div>
-        <div style="flex: 2;">操作</div>
-        </div>
-        <div class="table-body" style="min-height: 400px;">
-        <div @click="setIndex(index)" :class="'table-line mini-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.period_id">
-            <div style="flex: 3; text-align: center;">{{item.period_code}}</div>
-            <div style="flex: 3; text-align: center;">{{item.period_name}}</div>
-            <div :style="'flex: 2; text-align: center; color:'+(item.status=='N'?'red':item.status=='Y'?'green':'black')">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</div>
-            <div @click="changeStatus(item.period_id,item.status)" style="flex: 2; text-align: center; color: #0f4ea0;">{{item.status=='Y'?'关闭':'打开'}}</div>
-        </div>
+    <div class="data-table-box" :style="'width:'+width+'px; height: 490px;'">
+        <table class="data-table" :style="'width:'+width+'px;'">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">期间编号</th>
+                    <th style="width: 30%;">期间名称</th>
+                    <th style="width: 20%;">期间状态</th>
+                    <th style="width: 20%;">操作</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="data-table-content" :style="'width:'+width+'px; height: 452px;'">
+            <table class="data-table" :style="'width:'+width+'px;'">
+                <tbody>
+                    <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.period_id" :class="(current_line==index?'data-table-current-line':'')">
+                        <td style="width: 30%; text-align: center;">{{item.period_code}}</td>
+                        <td style="width: 30%; text-align: center;">{{item.period_name}}</td>
+                        <td :style="'width: 20%; text-align: center; color:'+(item.status=='N'?'red':item.status=='Y'?'green':'black')">{{item.status=='A'?'未打开':item.status=='Y'?'已打开':'已关闭'}}</td>
+                        <td @click.stop="changeStatus(item.period_id,item.status)" style="width: 20%; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.status=='Y'?'关闭':'打开'}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="table-pager">
@@ -51,6 +59,15 @@ export default {
             totalPages: 0,
             current_line: -1,
             currentPage: 1
+        }
+    },
+    computed:{
+        width(){
+            let width = document.documentElement.clientWidth;
+            if(width > 600){
+                width = 600;
+            }
+            return width-20;
         }
     },
     methods:{
