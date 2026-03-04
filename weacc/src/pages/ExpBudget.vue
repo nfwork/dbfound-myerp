@@ -7,49 +7,33 @@
   <div class="box"> 
     <button class="bule-button" @click="initByLastMonth">按上月开销导入</button>
   </div>
-  <div class="data-table-box" :style="'width:'+width+'px; height: 305px;'">
-    <table class="data-table" :style="'width:'+width+'px;'">
-      <thead>
-        <tr>
-          <th style="width: 40%;">科目名称</th>
-          <th style="width: 30%;">本月预算</th>
-          <th style="width: 30%;">操作</th>
-        </tr>
-      </thead>
-    </table>
-    <div class="data-table-content" :style="'width:'+width+'px; height: 270px;'">
-      <table class="data-table" :style="'width:'+width+'px;'">
-        <tbody>
-          <tr @click="showDetail(item.account_id,index)" v-for="(item, index) in item_list" :key="item.account_id" :class="(current_line==index?'data-table-current-line':'')">
-            <td style="width: 40%; text-align: center;">{{item.account_name}}</td>
-            <td class="num-font" style="width: 30%; text-align: right;">{{item.append_amount | currency}}</td>
-            <td @click.stop="showBox(item)" style="width: 30%; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.account_id?'调整预算':''}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="box"> 
+    <div class="table-header">
+      <div style="width: 190px;">科目名称</div>
+      <div style="flex:1">本月预算</div>
+      <div style="flex:1">操作</div>
+    </div>
+    <div class="table-body"  style="height:240px;">
+      <div @click="showDetail(item.account_id,index)" :class="current_line==index?'table-line mini-line table-line-current':'table-line mini-line'" v-for="(item, index) in item_list" :key="item.account_id">
+        <div style="width: 190px;">{{item.account_name}}</div>
+        <div style="flex:1;text-align: right;">{{item.append_amount | currency}}</div>
+        <div @click="showBox(item)" style="flex:1; text-align: center; color: #0f4ea0;">{{item.account_id?'调整预算':''}}</div>
+      </div>
     </div>
   </div>
 
-  <div class="data-table-box" :style="'width:'+width+'px; height: 270px;'">
-    <table class="data-table" :style="'width:'+width+'px;'">
-      <thead>
-        <tr>
-          <th style="width: 25%;">添加时间</th>
-          <th style="width: 20%;">预算金额</th>
-          <th style="width: 55%;">说明</th>
-        </tr>
-      </thead>
-    </table>
-    <div class="data-table-content" :style="'width:'+width+'px; height: 225px;'">
-      <table class="data-table" :style="'width:'+width+'px;'">
-        <tbody>
-          <tr v-for="(item,index) in item_line_list" :key="index">
-            <td style="width: 25%; text-align: center;">{{item.add_time}}</td>
-            <td class="num-font" style="width: 20%; text-align: right;">{{item.amount | currency}}</td>
-            <td style="width: 55%;">{{item.description}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="box"> 
+    <div class="table-header">
+      <div style="width: 100px;">添加时间</div>
+      <div style="width: 80px;">预算金额</div>
+      <div style="flex:1">说明</div>
+    </div>
+    <div class="table-body" style="max-height: 225px;min-height: 90px;">
+      <div class="table-line" v-for="(item,index) in item_line_list" :key="index">
+        <div style="width: 100px; text-align: center; ">{{item.add_time}}</div>
+        <div style="width: 80px; text-align: right;">{{item.amount |currency }}</div>
+        <div style="flex:1">{{item.description}}</div>
+      </div>
     </div>
   </div>
   <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
@@ -103,15 +87,6 @@ export default {
         showUpdateBox: false,
         current_line:-1
       }
-    },
-    computed:{
-        width(){
-            let width = document.documentElement.clientWidth;
-            if(width > 600){
-                width = 600;
-            }
-            return width-20;
-        }
     },
     methods:{
       hiddenBox(){

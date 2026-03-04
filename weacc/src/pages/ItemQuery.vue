@@ -16,26 +16,18 @@
         <button class="bule-button" @click="query">查 询</button>
         <button class="yellow-button" @click="reset">重置</button>
     </div>
-    <div class="data-table-box" :style="'width:'+width+'px; height: 270px;'">
-        <table class="data-table" :style="'width:'+width+'px;'">
-            <thead>
-                <tr>
-                    <th style="width: 20%;">凭证号</th>
-                    <th style="width: 25%;">费用日期</th>
-                    <th style="width: 55%;">凭证描述</th>
-                </tr>
-            </thead>
-        </table>
-        <div class="data-table-content" :style="'width:'+width+'px; height: 230px;'">
-            <table class="data-table" :style="'width:'+width+'px;'">
-                <tbody>
-                    <tr @click="showDetail(item.item_id,index)" v-for="(item, index) in item_list" :key="item.item_id" :class="(current_line==index?'data-table-current-line':'')">
-                        <td style="width: 20%; text-align: center;">{{item.item_num}}</td>
-                        <td style="width: 25%; text-align: center;">{{item.exp_time}}</td>
-                        <td style="width: 55%; overflow-x: hidden;">{{item.description}}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="box"> 
+        <div class="table-header">
+        <div style="width: 80px;">凭证号</div>
+        <div style="width: 100px;">费用日期</div>
+        <div style="flex: 1;">凭证描述</div>
+        </div>
+        <div class="table-body" style="min-height: 230px;">
+        <div @click="showDetail(item.item_id,index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item, index) in item_list" :key="item.item_id">
+            <div style="width: 80px; text-align: center;">{{item.item_num}}</div>
+            <div style="width: 100px; text-align: center;">{{item.exp_time}}</div>
+            <div style="flex:1; overflow-x: hidden;"><span>{{item.description}}</span></div>
+        </div>
         </div>
     </div>
     
@@ -50,28 +42,20 @@
         </div>
     </div>
 
-    <div class="data-table-box" :style="'width:'+width+'px; height: 165px;'">
-        <table class="data-table" :style="'width:'+width+'px;'">
-            <thead>
-                <tr>
-                    <th style="width: 25%;">科目名称</th>
-                    <th style="width: 20%;">借</th>
-                    <th style="width: 20%;">贷</th>
-                    <th style="width: 35%;">行描述</th>
-                </tr>
-            </thead>
-        </table>
-        <div class="data-table-content" :style="'width:'+width+'px; height: 120px;'">
-            <table class="data-table" :style="'width:'+width+'px;'">
-                <tbody>
-                    <tr v-for="item in item_line_list" :key="item.item_line_id">
-                        <td style="width: 25%;">{{item.account_name}}</td>
-                        <td class="num-font" style="width: 20%; text-align: right;">{{item.dr_amount | currency}}</td>
-                        <td class="num-font" style="width: 20%; text-align: right;">{{item.cr_amount | currency}}</td>
-                        <td style="width: 35%;">{{item.description}}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="box"> 
+        <div class="table-header">
+            <div style="width: 100px;">科目名称</div>
+            <div style="width: 75px;">借</div>
+            <div style="width: 75px;">贷</div>
+            <div style="flex: 1;">行描述</div>
+        </div>
+        <div class="table-body" style="min-height: 90px;">
+            <div class="table-line" v-for="item in item_line_list" :key="item.item_line_id">
+                <div style="width: 100px;">{{item.account_name}}</div>
+                <div class="num-font" style="width: 75px;text-align: right;">{{item.dr_amount| currency}}</div>
+                <div class="num-font" style="width: 75px;text-align: right;">{{item.cr_amount| currency}}</div>
+                <div style="flex: 1;"><span>{{item.description}}</span></div>
+            </div>
         </div>
     </div>
 </div>
@@ -95,15 +79,6 @@ export default {
             totalCounts: 0,
             totalPages: 0,
             currentPage: 1,
-        }
-    },
-    computed:{
-        width(){
-            let width = document.documentElement.clientWidth;
-            if(width > 600){
-                width = 600;
-            }
-            return width-20;
         }
     },
     methods:{

@@ -29,28 +29,20 @@
         <button class="litter-bule-button" @click="addLine">添加行</button>
     </div>
 
-    <div class="data-table-box" :style="'width:'+width+'px; height: 295px;'">
-        <table class="data-table" :style="'width:'+width+'px;'">
-            <thead>
-                <tr>
-                    <th style="width: 25%;">科目名称</th>
-                    <th style="width: 20%;">借</th>
-                    <th style="width: 20%;">贷</th>
-                    <th style="width: 35%;">行描述</th>
-                </tr>
-            </thead>
-        </table>
-        <div class="data-table-content" :style="'width:'+width+'px; height: 230px;'">
-            <table class="data-table" :style="'width:'+width+'px;'">
-                <tbody>
-                    <tr v-for="(item,index) in item_line_list" :key="index">
-                        <td @click="updateLine(index,item.account_id,item.account_name)" style="width: 25%; color: #0f4ea0; cursor: pointer;">{{item.account_name}}</td>
-                        <td class="num-font" style="width: 20%; text-align: right;">{{item.dr_amount | currency}}</td>
-                        <td class="num-font" style="width: 20%; text-align: right;">{{item.cr_amount | currency}}</td>
-                        <td style="width: 35%;">{{item.description}}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="box"> 
+        <div class="table-header">
+            <div style="width: 100px;">科目名称</div>
+            <div style="width: 75px;">借</div>
+            <div style="width: 75px;">贷</div>
+            <div style="flex: 1;">行描述</div>
+        </div>
+        <div class="table-body"  style="max-height: 230px;min-height: 90px;">
+            <div class="table-line" hover-class="table-line-hover" v-for="(item,index) in item_line_list" :key="index">
+                <div @click="updateLine(index,item.account_id,item.account_name)" style="width: 100px;color: #0f4ea0;">{{item.account_name}}</div>
+                <div class="num-font" style="width: 75px; text-align: right;">{{item.dr_amount | currency}}</div>
+                <div class="num-font" style="width: 75px; text-align: right;">{{item.cr_amount | currency}}</div>
+                <div style="flex: 1;">{{item.description}}</div>
+            </div>
         </div>
     </div>
 
@@ -107,15 +99,6 @@ export default {
             current_line_cr_amount:null,
             current_line_description:"",
             current_line:{}
-        }
-    },
-    computed:{
-        width(){
-            let width = document.documentElement.clientWidth;
-            if(width > 600){
-                width = 600;
-            }
-            return width-20;
         }
     },
     methods:{

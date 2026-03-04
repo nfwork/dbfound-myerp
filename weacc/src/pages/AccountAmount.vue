@@ -14,53 +14,37 @@
     <button class="bule-button" @click="queryMain" >查 询</button>
     <button class="yellow-button" @click="reset">重 置</button>
   </div>
-  <div class="data-table-box" :style="'width:'+width+'px; height: 260px;'">
-    <table class="data-table" :style="'width:'+width+'px;'">
-      <thead>
-        <tr>
-          <th style="width: 30%;">科目名称</th>
-          <th style="width: 25%;">期初余额</th>
-          <th style="width: 20%;">本期增加</th>
-          <th style="width: 25%;">期末余额</th>
-        </tr>
-      </thead>
-    </table>
-    <div class="data-table-content" :style="'width:'+width+'px; height: 225px;'">
-      <table class="data-table" :style="'width:'+width+'px;'">
-        <tbody>
-          <tr @click="showDetail(item.account_id,index)" v-for="(item,index) in item_list" :key="index" :class="(current_line==index?'data-table-current-line':'')">
-            <td style="width: 30%; text-align: center;">{{item.account_name}}</td>
-            <td class="num-font num-mini-font" style="width: 25%; text-align: right;">{{item.remaind_amount | currency}}</td>
-            <td class="num-font num-mini-font" style="width: 20%; text-align: right;">{{item.emerge_amount | currency}}</td>
-            <td class="num-font num-mini-font" style="width: 25%; text-align: right;">{{item.end_amount | currency}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="box"> 
+    <div class="table-header">
+      <div style="width: 90px;">科目名称</div>
+      <div style="flex: 4;">期初余额</div>
+      <div style="flex: 3;">本期增加</div>
+      <div style="flex: 4;">期末余额</div>
+    </div>
+    <div class="table-body" style="max-height: 240px;">
+      <div @click="showDetail(item.account_id,index)" :class="'table-line mini-line ' + (current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="index">
+        <div style="width: 90px;text-align:center;">{{item.account_name}}</div>
+        <div class="num-font num-mini-font" style="flex: 4;text-align: right;">{{item.remaind_amount | currency}}</div>
+        <div class="num-font num-mini-font" style="flex: 3;text-align: right;">{{item.emerge_amount | currency}}</div>
+        <div class="num-font num-mini-font" style="flex: 4;text-align: right;">{{item.end_amount | currency}}</div>
+      </div>
     </div>
   </div>
 
-  <div class="data-table-box" :style="'width:'+width+'px; height: 265px;'">
-    <table class="data-table" :style="'width:'+width+'px;'">
-      <thead>
-        <tr>
-          <th style="width: 25%;">费用日期</th>
-          <th style="width: 20%;">借</th>
-          <th style="width: 20%;">贷</th>
-          <th style="width: 35%;">凭证描述</th>
-        </tr>
-      </thead>
-    </table>
-    <div class="data-table-content" :style="'width:'+width+'px; height: 230px;'">
-      <table class="data-table">
-        <tbody>
-          <tr v-for="(item) in item_line_list" :key="item.item_line_id">
-            <td style="width: 25%; text-align: center;">{{item.exp_time}}</td>
-            <td class="num-font" style="width: 20%; text-align: right;">{{item.dr_amount | currency}}</td>
-            <td class="num-font" style="width: 20%; text-align: right;">{{item.cr_amount | currency}}</td>
-            <td style="width: 35%;">{{item.description}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="box"> 
+    <div class="table-header">
+      <div style="width: 90px;">费用日期</div>
+      <div style="width: 75px;">借</div>
+      <div style="width: 75px;">贷</div>
+      <div style="flex:1;">凭证描述</div>
+    </div>
+    <div class="table-body" style="max-height: 230px;">
+      <div class="table-line" hover-class="table-line-hover" v-for="(item) in item_line_list" :key="item.item_line_id">
+        <div style="width: 90px;text-align: center;">{{item.exp_time}}</div>
+        <div class="num-font" style="width: 75px;text-align: right;">{{item.dr_amount | currency}}</div>
+        <div class="num-font" style="width: 75px;text-align: right;">{{item.cr_amount | currency}}</div>
+        <div style="flex: 1;"><span>{{item.description}}</span></div>
+      </div>
     </div>
   </div>
 
@@ -97,15 +81,6 @@ export default {
             account_id:"",
             account_type:{},
             current_line:-1
-        }
-    },
-    computed:{
-        width(){
-            let width = document.documentElement.clientWidth;
-            if(width > 600){
-                width = 600;
-            }
-            return width-20;
         }
     },
     methods:{

@@ -8,28 +8,22 @@
     <button class="bule-button" @click="query" >查 询</button>
     <button class="litter-bule-button" @click="addLine" >新增</button>
   </div>
-  <div class="data-table-box" :style="'width:'+width+'px; height: 490px;'">
-    <table class="data-table" :style="'width:'+width+'px;'">
-      <thead>
-        <tr>
-          <th style="width: 30%;">科目名称</th>
-          <th style="width: 30%;">科目类型</th>
-          <th style="width: 20%;">排序</th>
-          <th style="width: 20%;">首页展示</th>
-        </tr>
-      </thead>
-    </table>
-    <div class="data-table-content" :style="'width:'+width+'px; height: 452px;'">
-      <table class="data-table" :style="'width:'+width+'px;'">
-        <tbody>
-          <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.account_id" :class="(current_line==index?'data-table-current-line':'')">
-            <td @click.stop="updateAccount(index,item)" style="width: 30%; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.account_name}}</td>
-            <td style="width: 30%; text-align: center;">{{item.account_type_des}}</td>
-            <td style="width: 20%; text-align: center;">{{item.priority}}</td>
-            <td style="width: 20%; text-align: center;">{{item.display_in_home==1?"是":""}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="box"> 
+    <div class="table-header">
+      <div style="flex: 3;">科目名称</div>
+      <div style="flex: 3;">科目类型</div>
+      <div style="flex: 2;">排序</div>
+      <div style="flex: 2;">首页展示</div>
+    </div>
+    <div class="table-body" style="min-height: 400px;">
+      <div @click="setIndex(index)" :class="'table-line mini-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.account_id">
+        <div @click="updateAccount(index,item)" style="flex: 3; text-align: center; color: #0f4ea0;">{{item.account_name}}</div>
+        <div style="flex: 3; text-align: center;">{{item.account_type_des}}</div>
+        <div style="flex: 2; text-align: center;">{{item.priority}}</div>
+        <div style="flex: 2; text-align: center;">
+          {{item.display_in_home==1?"是":""}}
+        </div>
+      </div>
     </div>
   </div>
   
@@ -93,15 +87,6 @@ export default {
             current_line_priority:null,
             current_line_display_in_home:null,
             account_type_list: []
-        }
-    },
-    computed:{
-        width(){
-            let width = document.documentElement.clientWidth;
-            if(width > 600){
-                width = 600;
-            }
-            return width-20;
         }
     },
     methods:{
