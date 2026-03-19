@@ -12,7 +12,7 @@
     <!-- 移动汇总数据展示区域到按钮下方 -->
     <div class="summary-box">
       <h3>收益汇总</h3>
-      <div class="summary-row">
+      <div class="summary-row summary-row-header">
         <div class="summary-col">渠道</div>
         <div class="summary-col">当前收益</div>
         <div class="summary-col">已归档收益</div>
@@ -543,8 +543,14 @@ input{
   border-bottom: 1px solid #e9ecef;
 }
 
+.summary-row-header {
+  background-color: #f8f9fa;
+}
+
 .summary-row:last-child {
   border-bottom: none;
+  background-color: #f0f4f8;
+  font-weight: 600;
 }
 
 .summary-col {
