@@ -7,6 +7,11 @@
             select
                 DATE_FORMAT(p.cost_date, '%Y-%m') as profit_month,
                 ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_yc,0)+ifnull(p.channel_jj,0) record_total,
+                ifnull(p.channel_pf,0) as record_pf,
+                ifnull(p.channel_zs,0) as record_zs,
+                ifnull(p.channel_jt,0) as record_jt,
+                ifnull(p.channel_yc,0) as record_yc,
+                ifnull(p.channel_jj,0) as record_jj,
                 ( select
                         SUM(ifnull(a.channel_pf, 0) + ifnull(a.channel_zs, 0) + ifnull(a.channel_jt, 0) + ifnull(a.channel_yc, 0) + ifnull(a.channel_jj, 0))
                     from pf_profit_archive a
@@ -15,7 +20,42 @@
                       <sqlPart type="if" sourcePath="cost_date">
                       and a.cost_date &lt;= ${@cost_date}
                       </sqlPart>
-                ) as archive_total
+                ) as archive_total,
+                ( select SUM(ifnull(a.channel_pf, 0)) from pf_profit_archive a
+                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
+                      and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                      <sqlPart type="if" sourcePath="cost_date">
+                      and a.cost_date &lt;= ${@cost_date}
+                      </sqlPart>
+                ) as archive_pf,
+                ( select SUM(ifnull(a.channel_zs, 0)) from pf_profit_archive a
+                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
+                      and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                      <sqlPart type="if" sourcePath="cost_date">
+                      and a.cost_date &lt;= ${@cost_date}
+                      </sqlPart>
+                ) as archive_zs,
+                ( select SUM(ifnull(a.channel_jt, 0)) from pf_profit_archive a
+                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
+                      and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                      <sqlPart type="if" sourcePath="cost_date">
+                      and a.cost_date &lt;= ${@cost_date}
+                      </sqlPart>
+                ) as archive_jt,
+                ( select SUM(ifnull(a.channel_yc, 0)) from pf_profit_archive a
+                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
+                      and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                      <sqlPart type="if" sourcePath="cost_date">
+                      and a.cost_date &lt;= ${@cost_date}
+                      </sqlPart>
+                ) as archive_yc,
+                ( select SUM(ifnull(a.channel_jj, 0)) from pf_profit_archive a
+                    where a.cost_date >= DATE_FORMAT(p.cost_date , '%Y-%m-01')
+                      and a.cost_date &lt; DATE_FORMAT(DATE_ADD(p.cost_date , INTERVAL 1 MONTH), '%Y-%m-01')
+                      <sqlPart type="if" sourcePath="cost_date">
+                      and a.cost_date &lt;= ${@cost_date}
+                      </sqlPart>
+                ) as archive_jj
             from pf_profit_record p
             where cost_date in (
                 SELECT max(cost_date)

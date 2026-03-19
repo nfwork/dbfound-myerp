@@ -63,11 +63,33 @@
         <table class="monthly-profit-table">
           <thead>
             <tr>
+              <th class="channel-label-col">渠道</th>
               <th v-for="item in monthly_profit_list" :key="'m'+item.profit_month">{{ item.profit_month }}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td class="channel-label-col">渠道PF</td>
+              <td v-for="item in monthly_profit_list" :key="'pf'+item.profit_month">{{ (item.channel_pf || 0).toFixed(2) }}</td>
+            </tr>
+            <tr>
+              <td class="channel-label-col">渠道ZS</td>
+              <td v-for="item in monthly_profit_list" :key="'zs'+item.profit_month">{{ (item.channel_zs || 0).toFixed(2) }}</td>
+            </tr>
+            <tr>
+              <td class="channel-label-col">渠道JT</td>
+              <td v-for="item in monthly_profit_list" :key="'jt'+item.profit_month">{{ (item.channel_jt || 0).toFixed(2) }}</td>
+            </tr>
+            <tr>
+              <td class="channel-label-col">渠道YC</td>
+              <td v-for="item in monthly_profit_list" :key="'yc'+item.profit_month">{{ (item.channel_yc || 0).toFixed(2) }}</td>
+            </tr>
+            <tr>
+              <td class="channel-label-col">渠道JJ</td>
+              <td v-for="item in monthly_profit_list" :key="'jj'+item.profit_month">{{ (item.channel_jj || 0).toFixed(2) }}</td>
+            </tr>
+            <tr class="monthly-total-row">
+              <td class="channel-label-col">汇总</td>
               <td v-for="item in monthly_profit_list" :key="'t'+item.profit_month">{{ (item.total || 0).toFixed(2) }}</td>
             </tr>
           </tbody>
@@ -589,5 +611,31 @@ input{
 
 .monthly-profit-table tbody tr {
   background-color: #fff;
+}
+
+.monthly-profit-table .channel-label-col {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #343a40;
+  min-width: 64px;
+  border-right: 1px solid #dfe7ee;
+}
+
+.monthly-profit-table tbody .channel-label-col {
+  background-color: #fff;
+  font-weight: normal;
+}
+
+.monthly-profit-table .monthly-total-row td {
+  font-weight: 600;
+  background-color: #f0f4f8;
+  border-top: 1px solid #dfe7ee;
+}
+
+.monthly-profit-table .monthly-total-row .channel-label-col {
+  background-color: #f0f4f8;
 }
 </style>
