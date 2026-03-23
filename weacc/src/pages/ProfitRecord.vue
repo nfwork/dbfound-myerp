@@ -9,91 +9,95 @@
       <button class="litter-bule-button" @click="resetForm">重 置</button>
       <button class="yellow-button" @click="addLine">收益登记</button>
     </div>
-    <!-- 移动汇总数据展示区域到按钮下方 -->
-    <div class="summary-box">
-      <h3>收益汇总</h3>
-      <div class="summary-row summary-row-header">
-        <div class="summary-col">渠道</div>
-        <div class="summary-col">当前收益</div>
-        <div class="summary-col">已归档收益</div>
-        <div class="summary-col">总收益</div>
+    <!-- Tab 切换：收益汇总 / 按月收益 -->
+    <div class="summary-tab-box" :style="'width:'+width+'px;'">
+      <div class="summary-tab-header">
+        <div class="summary-tab-item" :class="{ active: summaryTab === 'monthly' }" @click="summaryTab = 'monthly'">按月收益</div>
+        <div class="summary-tab-item" :class="{ active: summaryTab === 'summary' }" @click="summaryTab = 'summary'">汇总收益</div>
       </div>
-      <div class="summary-row">
-        <div class="summary-col">渠道PF</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_pf || 0) : 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_pf || 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ ((archiveSummary.total_channel_pf + (item_list.length > 0 ? item_list[0].channel_pf : 0)).toFixed(2) ) }}</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-col">渠道ZS</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_zs || 0) : 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_zs || 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ ((archiveSummary.total_channel_zs + (item_list.length > 0 ? item_list[0].channel_zs : 0)).toFixed(2) ) }}</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-col">渠道JT</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jt || 0) : 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_jt || 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ ((archiveSummary.total_channel_jt + (item_list.length > 0 ? item_list[0].channel_jt : 0)).toFixed(2) ) }}</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-col">渠道YC</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_yc || 0) : 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_yc || 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ ((archiveSummary.total_channel_yc + (item_list.length > 0 ? item_list[0].channel_yc : 0)).toFixed(2) ) }}</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-col">渠道JJ</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jj || 0) : 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_jj || 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ ((archiveSummary.total_channel_jj + (item_list.length > 0 ? item_list[0].channel_jj : 0)).toFixed(2) ) }}</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-col">渠道汇总</div>
-        <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_total || 0) : 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ (archiveSummary.total_channel_total || 0).toFixed(2) }}</div>
-        <div class="summary-col">{{ ((archiveSummary.total_channel_total + (item_list.length > 0 ? item_list[0].channel_total : 0)).toFixed(2) ) }}</div>
-      </div>
-    </div>
-
-    <!-- 按月收益横向展开表格 -->
-    <div class="monthly-profit-box" :style="'width:'+width+'px;'">
-      <h3>按月收益</h3>
-      <div class="monthly-profit-content">
-        <table class="monthly-profit-table">
-          <thead>
-            <tr>
-              <th class="channel-label-col">渠道</th>
-              <th v-for="item in monthly_profit_list" :key="'m'+item.profit_month">{{ item.profit_month }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="channel-label-col">渠道PF</td>
-              <td v-for="item in monthly_profit_list" :key="'pf'+item.profit_month">{{ (item.channel_pf || 0).toFixed(2) }}</td>
-            </tr>
-            <tr>
-              <td class="channel-label-col">渠道ZS</td>
-              <td v-for="item in monthly_profit_list" :key="'zs'+item.profit_month">{{ (item.channel_zs || 0).toFixed(2) }}</td>
-            </tr>
-            <tr>
-              <td class="channel-label-col">渠道JT</td>
-              <td v-for="item in monthly_profit_list" :key="'jt'+item.profit_month">{{ (item.channel_jt || 0).toFixed(2) }}</td>
-            </tr>
-            <tr>
-              <td class="channel-label-col">渠道YC</td>
-              <td v-for="item in monthly_profit_list" :key="'yc'+item.profit_month">{{ (item.channel_yc || 0).toFixed(2) }}</td>
-            </tr>
-            <tr>
-              <td class="channel-label-col">渠道JJ</td>
-              <td v-for="item in monthly_profit_list" :key="'jj'+item.profit_month">{{ (item.channel_jj || 0).toFixed(2) }}</td>
-            </tr>
-            <tr class="monthly-total-row">
-              <td class="channel-label-col">汇总</td>
-              <td v-for="item in monthly_profit_list" :key="'t'+item.profit_month">{{ (item.total || 0).toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="summary-tab-body">
+        <!-- 收益汇总 -->
+        <div v-show="summaryTab === 'summary'" class="summary-content">
+          <div class="summary-row summary-row-header">
+            <div class="summary-col">渠道</div>
+            <div class="summary-col">当前收益</div>
+            <div class="summary-col">已归档收益</div>
+            <div class="summary-col">总收益</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-col">渠道PF</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_pf || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_pf || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_pf + (item_list.length > 0 ? item_list[0].channel_pf : 0)).toFixed(2) ) }}</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-col">渠道ZS</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_zs || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_zs || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_zs + (item_list.length > 0 ? item_list[0].channel_zs : 0)).toFixed(2) ) }}</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-col">渠道JT</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jt || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_jt || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_jt + (item_list.length > 0 ? item_list[0].channel_jt : 0)).toFixed(2) ) }}</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-col">渠道YC</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_yc || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_yc || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_yc + (item_list.length > 0 ? item_list[0].channel_yc : 0)).toFixed(2) ) }}</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-col">渠道JJ</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_jj || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_jj || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_jj + (item_list.length > 0 ? item_list[0].channel_jj : 0)).toFixed(2) ) }}</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-col">渠道汇总</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_total || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_total || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_total + (item_list.length > 0 ? item_list[0].channel_total : 0)).toFixed(2) ) }}</div>
+          </div>
+        </div>
+        <!-- 按月收益 -->
+        <div v-show="summaryTab === 'monthly'" class="monthly-profit-content">
+          <table class="monthly-profit-table">
+            <thead>
+              <tr>
+                <th class="channel-label-col">渠道</th>
+                <th v-for="item in monthly_profit_list" :key="'m'+item.profit_month">{{ item.profit_month }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="channel-label-col">渠道PF</td>
+                <td v-for="item in monthly_profit_list" :key="'pf'+item.profit_month">{{ (item.channel_pf || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道ZS</td>
+                <td v-for="item in monthly_profit_list" :key="'zs'+item.profit_month">{{ (item.channel_zs || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道JT</td>
+                <td v-for="item in monthly_profit_list" :key="'jt'+item.profit_month">{{ (item.channel_jt || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道YC</td>
+                <td v-for="item in monthly_profit_list" :key="'yc'+item.profit_month">{{ (item.channel_yc || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道JJ</td>
+                <td v-for="item in monthly_profit_list" :key="'jj'+item.profit_month">{{ (item.channel_jj || 0).toFixed(2) }}</td>
+              </tr>
+              <tr class="monthly-total-row">
+                <td class="channel-label-col">汇总</td>
+                <td v-for="item in monthly_profit_list" :key="'t'+item.profit_month">{{ (item.total || 0).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -284,7 +288,8 @@ export default {
                 total_channel_jj: 0,
                 total_channel_total: 0
             },
-            monthly_profit_list: []
+            monthly_profit_list: [],
+            summaryTab: 'monthly'
         }
     },
     computed:{
@@ -516,35 +521,56 @@ input{
     margin-top: 5px;
 }
 
-/* 修改 summary-box 样式以匹配表格样式 */
-.summary-box {
+/* Tab 容器 */
+.summary-tab-box {
   margin-top: 6px;
   margin-bottom: 6px;
   border: 1px solid #dfe7ee;
   border-radius: 4px;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-.summary-box h3 {
-  margin: 0;
-  padding: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #343a40;
+.summary-tab-header {
+  display: flex;
   background-color: #f8f9fa;
   border-bottom: 1px solid #dfe7ee;
 }
 
+.summary-tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.summary-tab-item.active {
+  color: #2d6ca2;
+  border-bottom-color: #2d6ca2;
+  background-color: #fff;
+}
+
+.summary-tab-body {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+/* 统一表格网格风格 */
 .summary-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 8px 10px;
   border-bottom: 1px solid #e9ecef;
 }
 
 .summary-row-header {
   background-color: #f8f9fa;
+  font-weight: 600;
 }
 
 .summary-row:last-child {
@@ -558,28 +584,12 @@ input{
   text-align: center;
   font-size: 14px;
   color: #495057;
-  padding: 0 5px;
+  padding: 8px 5px;
+  border-right: 1px solid #e9ecef;
 }
 
-/* 按月收益表格样式 - 参考 summary-box */
-.monthly-profit-box {
-  margin-top: 6px;
-  margin-bottom: 6px;
-  border: 1px solid #dfe7ee;
-  border-radius: 4px;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.monthly-profit-box h3 {
-  margin: 0;
-  padding: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #343a40;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dfe7ee;
+.summary-col:last-child {
+  border-right: none;
 }
 
 .monthly-profit-content {
@@ -602,6 +612,7 @@ input{
   font-size: 14px;
   color: #495057;
   border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .monthly-profit-table th:last-child,
@@ -609,10 +620,14 @@ input{
   border-right: none;
 }
 
+.monthly-profit-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .monthly-profit-table th {
   background-color: #f8f9fa;
+  font-weight: 600;
   color: #343a40;
-  border-bottom: 1px solid #e9ecef;
 }
 
 .monthly-profit-table tbody tr {
@@ -638,7 +653,6 @@ input{
 .monthly-profit-table .monthly-total-row td {
   font-weight: 600;
   background-color: #f0f4f8;
-  border-top: 1px solid #dfe7ee;
 }
 
 .monthly-profit-table .monthly-total-row .channel-label-col {
