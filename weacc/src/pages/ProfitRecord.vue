@@ -43,10 +43,10 @@
             <div class="summary-col">{{ ((archiveSummary.total_channel_jt + (item_list.length > 0 ? item_list[0].channel_jt : 0)).toFixed(2) ) }}</div>
           </div>
           <div class="summary-row">
-            <div class="summary-col">渠道YC</div>
-            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_yc || 0) : 0).toFixed(2) }}</div>
-            <div class="summary-col">{{ (archiveSummary.total_channel_yc || 0).toFixed(2) }}</div>
-            <div class="summary-col">{{ ((archiveSummary.total_channel_yc + (item_list.length > 0 ? item_list[0].channel_yc : 0)).toFixed(2) ) }}</div>
+            <div class="summary-col">渠道AL</div>
+            <div class="summary-col">{{ (item_list.length > 0 ? (item_list[0].channel_al || 0) : 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ (archiveSummary.total_channel_al || 0).toFixed(2) }}</div>
+            <div class="summary-col">{{ ((archiveSummary.total_channel_al + (item_list.length > 0 ? item_list[0].channel_al : 0)).toFixed(2) ) }}</div>
           </div>
           <div class="summary-row">
             <div class="summary-col">渠道JJ</div>
@@ -84,8 +84,8 @@
                 <td v-for="item in monthly_profit_list" :key="'jt'+item.profit_month">{{ (item.channel_jt || 0).toFixed(2) }}</td>
               </tr>
               <tr>
-                <td class="channel-label-col">渠道YC</td>
-                <td v-for="item in monthly_profit_list" :key="'yc'+item.profit_month">{{ (item.channel_yc || 0).toFixed(2) }}</td>
+                <td class="channel-label-col">渠道AL</td>
+                <td v-for="item in monthly_profit_list" :key="'al'+item.profit_month">{{ (item.channel_al || 0).toFixed(2) }}</td>
               </tr>
               <tr>
                 <td class="channel-label-col">渠道JJ</td>
@@ -109,7 +109,7 @@
             <th style="width: 70px;">渠道PF</th>
             <th style="width: 70px;">渠道ZS</th>
             <th style="width: 70px;">渠道JT</th>
-            <th style="width: 70px;">渠道YC</th>
+            <th style="width: 70px;">渠道AL</th>
             <th style="width: 70px;">渠道JJ</th>
             <th style="width: 70px;">汇总</th> 
           </tr>
@@ -142,10 +142,10 @@
                 </div>
               </td>
               <td style="width: 70px; text-align: center;">
-                {{ (item.channel_yc || 0).toFixed(2) }}
-                <div v-if="item.diff_yc !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_yc > 0 ? 'red' : item.diff_yc < 0 ? 'green' : ''}">
-                  ({{item.diff_yc.toFixed(2)}})
+                {{ (item.channel_al || 0).toFixed(2) }}
+                <div v-if="item.diff_al !== undefined"
+                  :style="{'margin-left': '1px', 'color': item.diff_al > 0 ? 'red' : item.diff_al < 0 ? 'green' : ''}">
+                  ({{item.diff_al.toFixed(2)}})
                 </div>
               </td>
               <td style="width: 70px; text-align: center;">
@@ -243,8 +243,8 @@
           <input type="number" v-model="current_line_channel_jt"/>
         </div>
         <div class="box"> 
-          <div class="title">渠道YC：</div>
-          <input type="number" v-model="current_line_channel_yc"/>
+          <div class="title">渠道AL：</div>
+          <input type="number" v-model="current_line_channel_al"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JJ：</div>
@@ -278,13 +278,13 @@ export default {
             current_line_channel_pf:null,
             current_line_channel_zs:null,
             current_line_channel_jt:null,
-            current_line_channel_yc:null,
+            current_line_channel_al:null,
             current_line_channel_jj:null,
             archiveSummary: {
                 total_channel_pf: 0,
                 total_channel_zs: 0,
                 total_channel_jt: 0,
-                total_channel_yc: 0,
+                total_channel_al: 0,
                 total_channel_jj: 0,
                 total_channel_total: 0
             },
@@ -337,8 +337,8 @@ export default {
                                 ? item.channel_zs - nextItem.channel_zs : undefined;
                             item.diff_jt = (item.channel_jt != null && nextItem.channel_jt != null) 
                                 ? item.channel_jt - nextItem.channel_jt : undefined;
-                            item.diff_yc = (item.channel_yc != null && nextItem.channel_yc != null) 
-                                ? item.channel_yc - nextItem.channel_yc : undefined;
+                            item.diff_al = (item.channel_al != null && nextItem.channel_al != null) 
+                                ? item.channel_al - nextItem.channel_al : undefined;
                             item.diff_jj = (item.channel_jj != null && nextItem.channel_jj != null) 
                                 ? item.channel_jj - nextItem.channel_jj : undefined;
                             item.diff_total = (item.channel_total != null && nextItem.channel_total != null) 
@@ -399,7 +399,7 @@ export default {
             this.current_line_channel_pf= null;
             this.current_line_channel_zs= null;
             this.current_line_channel_jt= null;
-            this.current_line_channel_yc= null;
+            this.current_line_channel_al= null;
             this.current_line_channel_jj= null; 
             this.showBox();
         },
@@ -409,7 +409,7 @@ export default {
             this.current_line_channel_pf = item.channel_pf;
             this.current_line_channel_zs = item.channel_zs;
             this.current_line_channel_jt = item.channel_jt;
-            this.current_line_channel_yc = item.channel_yc;
+            this.current_line_channel_al = item.channel_al;
             this.current_line_channel_jj = item.channel_jj;
             this.showBox();
         },
@@ -431,7 +431,7 @@ export default {
                 channel_pf: this.current_line_channel_pf,
                 channel_zs: this.current_line_channel_zs,
                 channel_jt: this.current_line_channel_jt,
-                channel_yc: this.current_line_channel_yc,
+                channel_al: this.current_line_channel_al,
                 channel_jj: this.current_line_channel_jj
             };
             request.post(url, data, {showLoadding:true}).then(res => {
@@ -462,7 +462,7 @@ export default {
                         total_channel_pf: rawData.total_channel_pf !== null ? rawData.total_channel_pf : 0,
                         total_channel_zs: rawData.total_channel_zs !== null ? rawData.total_channel_zs : 0,
                         total_channel_jt: rawData.total_channel_jt !== null ? rawData.total_channel_jt : 0,
-                        total_channel_yc: rawData.total_channel_yc !== null ? rawData.total_channel_yc : 0,
+                        total_channel_al: rawData.total_channel_al !== null ? rawData.total_channel_al : 0,
                         total_channel_jj: rawData.total_channel_jj !== null ? rawData.total_channel_jj : 0,
                         total_channel_total: rawData.total_channel_total !== null ? rawData.total_channel_total : 0
                     };
@@ -472,7 +472,7 @@ export default {
                         total_channel_pf: 0,
                         total_channel_zs: 0,
                         total_channel_jt: 0,
-                        total_channel_yc: 0,
+                        total_channel_al: 0,
                         total_channel_jj: 0,
                         total_channel_total: 0
                     };

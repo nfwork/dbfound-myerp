@@ -16,35 +16,35 @@ public class ProfitReportAdapter implements MapQueryAdapter {
         double lastRecordPf = 0D;
         double lastRecordZs = 0D;
         double lastRecordJt = 0D;
-        double lastRecordYc = 0D;
+        double lastRecordAl = 0D;
         double lastRecordJj = 0D;
         for (Map<String,Object> data : datas) {
             Double recordTotal = (Double) data.remove("record_total");
             Double recordPf = (Double) data.remove("record_pf");
             Double recordZs = (Double) data.remove("record_zs");
             Double recordJt = (Double) data.remove("record_jt");
-            Double recordYc = (Double) data.remove("record_yc");
+            Double recordAl = (Double) data.remove("record_al");
             Double recordJj = (Double) data.remove("record_jj");
 
             Double archiveTotal = nullToZero((Double) data.remove("archive_total"));
             Double archivePf = nullToZero((Double) data.remove("archive_pf"));
             Double archiveZs = nullToZero((Double) data.remove("archive_zs"));
             Double archiveJt = nullToZero((Double) data.remove("archive_jt"));
-            Double archiveYc = nullToZero((Double) data.remove("archive_yc"));
+            Double archiveAl = nullToZero((Double) data.remove("archive_al"));
             Double archiveJj = nullToZero((Double) data.remove("archive_jj"));
 
             data.put("total", recordTotal - lastRecordTotal + archiveTotal);
             data.put("channel_pf", recordPf - lastRecordPf + archivePf);
             data.put("channel_zs", recordZs - lastRecordZs + archiveZs);
             data.put("channel_jt", recordJt - lastRecordJt + archiveJt);
-            data.put("channel_yc", recordYc - lastRecordYc + archiveYc);
+            data.put("channel_al", recordAl - lastRecordAl + archiveAl);
             data.put("channel_jj", recordJj - lastRecordJj + archiveJj);
 
             lastRecordTotal = recordTotal;
             lastRecordPf = recordPf;
             lastRecordZs = recordZs;
             lastRecordJt = recordJt;
-            lastRecordYc = recordYc;
+            lastRecordAl = recordAl;
             lastRecordJj = recordJj;
         }
     }

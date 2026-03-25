@@ -18,7 +18,7 @@
             <th style="width: 70px;">渠道PF</th>
             <th style="width: 70px;">渠道ZS</th>
             <th style="width: 70px;">渠道JT</th>
-            <th style="width: 70px;">渠道YC</th>
+            <th style="width: 70px;">渠道AL</th>
             <th style="width: 70px;">渠道JJ</th>
             <th style="width: 70px;">汇总</th>
           </tr>
@@ -32,7 +32,7 @@
               <td style="text-align: center;width: 70px;">{{item.channel_pf | currency}}</td>
               <td style="text-align: center;width: 70px;">{{item.channel_zs | currency}}</td>
               <td style="text-align: center;width: 70px;">{{item.channel_jt | currency}}</td>
-              <td style="text-align: center;width: 70px;">{{item.channel_yc | currency}}</td> 
+              <td style="text-align: center;width: 70px;">{{item.channel_al | currency}}</td> 
               <td style="text-align: center;width: 70px;">{{item.channel_jj | currency}}</td> 
               <td style="text-align: center;width: 70px;">{{item.channel_total | currency}}</td> 
             </tr>
@@ -104,8 +104,8 @@
           <input type="number" v-model="current_line_channel_jt"/>
         </div>
         <div class="box"> 
-          <div class="title">渠道YC：</div>
-          <input type="number" v-model="current_line_channel_yc"/>
+          <div class="title">渠道AL：</div>
+          <input type="number" v-model="current_line_channel_al"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JJ：</div>
@@ -139,7 +139,7 @@ export default {
             current_line_channel_pf:null,
             current_line_channel_zs:null,
             current_line_channel_jt:null,
-            current_line_channel_yc:null,
+            current_line_channel_al:null,
             current_line_channel_jj:null
         }
     },
@@ -227,7 +227,7 @@ export default {
             this.current_line_channel_pf= null;
             this.current_line_channel_zs= null;
             this.current_line_channel_jt= null;
-            this.current_line_channel_yc= null;
+            this.current_line_channel_al= null;
             this.current_line_channel_jj= null; 
             this.showBox();
         },
@@ -237,7 +237,7 @@ export default {
             this.current_line_channel_pf = item.channel_pf;
             this.current_line_channel_zs = item.channel_zs;
             this.current_line_channel_jt = item.channel_jt;
-            this.current_line_channel_yc = item.channel_yc;
+            this.current_line_channel_al = item.channel_al;
             this.current_line_channel_jj = item.channel_jj;
             this.showBox();
         },
@@ -259,7 +259,7 @@ export default {
                 channel_pf: this.current_line_channel_pf,
                 channel_zs: this.current_line_channel_zs,
                 channel_jt: this.current_line_channel_jt,
-                channel_yc: this.current_line_channel_yc,
+                channel_al: this.current_line_channel_al,
                 channel_jj: this.current_line_channel_jj
             };
             request.post(url, data, {showLoadding:true}).then(res => {

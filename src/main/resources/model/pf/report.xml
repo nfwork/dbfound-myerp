@@ -8,27 +8,27 @@
         <sql>
             select
                 DATE_FORMAT(p.cost_date, '%Y-%m') as profit_month,
-                ifnull(p.channel_pf,0) + ifnull(p.channel_zs,0) + ifnull(p.channel_jt,0) + ifnull(p.channel_yc,0) + ifnull(p.channel_jj,0) as record_total,
+                ifnull(p.channel_pf,0) + ifnull(p.channel_zs,0) + ifnull(p.channel_jt,0) + ifnull(p.channel_al,0) + ifnull(p.channel_jj,0) as record_total,
                 ifnull(p.channel_pf,0) as record_pf,
                 ifnull(p.channel_zs,0) as record_zs,
                 ifnull(p.channel_jt,0) as record_jt,
-                ifnull(p.channel_yc,0) as record_yc,
+                ifnull(p.channel_al,0) as record_al,
                 ifnull(p.channel_jj,0) as record_jj,
                 ifnull(arc.archive_total, 0) as archive_total,
                 ifnull(arc.archive_pf, 0)    as archive_pf,
                 ifnull(arc.archive_zs, 0)    as archive_zs,
                 ifnull(arc.archive_jt, 0)    as archive_jt,
-                ifnull(arc.archive_yc, 0)    as archive_yc,
+                ifnull(arc.archive_al, 0)    as archive_al,
                 ifnull(arc.archive_jj, 0)    as archive_jj
             from pf_profit_record p
             left join (
                 select
                     DATE_FORMAT(cost_date, '%Y-%m') as archive_month,
-                    SUM(ifnull(channel_pf,0) + ifnull(channel_zs,0) + ifnull(channel_jt,0) + ifnull(channel_yc,0) + ifnull(channel_jj,0)) as archive_total,
+                    SUM(ifnull(channel_pf,0) + ifnull(channel_zs,0) + ifnull(channel_jt,0) + ifnull(channel_al,0) + ifnull(channel_jj,0)) as archive_total,
                     SUM(ifnull(channel_pf,0)) as archive_pf,
                     SUM(ifnull(channel_zs,0)) as archive_zs,
                     SUM(ifnull(channel_jt,0)) as archive_jt,
-                    SUM(ifnull(channel_yc,0)) as archive_yc,
+                    SUM(ifnull(channel_al,0)) as archive_al,
                     SUM(ifnull(channel_jj,0)) as archive_jj
                 from pf_profit_archive
                 where book_id = ${@book_id}
