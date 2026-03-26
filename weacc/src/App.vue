@@ -256,7 +256,7 @@ export default {
 
 .box button{
   margin: 3px 4px;
-  min-width: 85px;
+  min-width: 80px;
 }
 
 .bule-button {
@@ -298,6 +298,19 @@ export default {
 }
 .yellow-button:active {
   background-image: linear-gradient(to bottom,#f3bf76 0,#e7a64a 100%);
+}
+
+.green-button {
+  background-image: linear-gradient(to bottom,#5cb85c 0,#419641 100%);
+  background-repeat: repeat-x;
+  border-color: #3e8f3e;
+  color: #fff;
+  margin-top: 10px;
+  display: block;
+  height: 32px;
+}
+.green-button:active {
+  background-image: linear-gradient(to bottom,#7ecf7e 0,#5cb85c 100%);
 }
 
 button,input, textarea{

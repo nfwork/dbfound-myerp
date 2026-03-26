@@ -8,6 +8,7 @@
       <button class="bule-button" @click="query">查 询</button>
       <button class="litter-bule-button" @click="resetForm">重 置</button>
       <button class="yellow-button" @click="addLine">收益登记</button>
+      <button class="green-button" @click="openAnnualCalc">年化测算</button>
     </div>
     <!-- Tab 切换：收益汇总 / 按月收益 -->
     <div class="summary-tab-box" :style="'width:'+width+'px;'">
@@ -223,6 +224,36 @@
       </div>
     </div>
 
+    <van-popup v-model="showAnnualBox" style="max-width:460px;width:90%;top:43%">
+      <div class="popup-info-header">年化收益测算 ({{annualCalcMonth}})</div>
+      <div class="popup-row-info annual-calc-body">
+        <div class="annual-row annual-row-header">
+          <div class="annual-col-channel">渠道</div>
+          <div class="annual-col-profit">月收益(元)</div>
+          <div class="annual-col-principal">本金(万元)</div>
+          <div class="annual-col-rate">年化率</div>
+        </div>
+        <div class="annual-scroll">
+          <div class="annual-row" v-for="(item, index) in annualCalcList" :key="index"
+               :class="{'annual-row-total': item.isTotal}">
+            <div class="annual-col-channel">{{item.label}}</div>
+            <div class="annual-col-profit">{{(item.profit || 0).toFixed(2)}}</div>
+            <div class="annual-col-principal">
+              <input type="number" v-model.number="item.principal" placeholder="本金"/>
+            </div>
+            <div class="annual-col-rate">
+              <span v-if="item.rate !== null" :style="item.rate >= 0 ? 'color:#e74c3c' : 'color:#27ae60'">{{item.rate}}%</span>
+              <span v-else>-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup-info-footer">
+        <button class="litter-bule-button" @click="showAnnualBox = false">关 闭</button>
+        <button class="bule-button" @click="calcAnnualReturn">计 算</button>
+      </div>
+    </van-popup>
+
     <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
       <div class="popup-info-header">收益记录编辑</div>
       <div class="popup-row-info">
@@ -289,7 +320,10 @@ export default {
                 total_channel_total: 0
             },
             monthly_profit_list: [],
-            summaryTab: 'monthly'
+            summaryTab: 'monthly',
+            showAnnualBox: false,
+            annualCalcList: [],
+            annualCalcMonth: ''
         }
     },
     computed:{
@@ -412,6 +446,61 @@ export default {
             this.current_line_channel_al = item.channel_al;
             this.current_line_channel_jj = item.channel_jj;
             this.showBox();
+        },
+        loadPrincipalCache(){
+            try {
+                const raw = localStorage.getItem('annual_calc_principal');
+                return raw ? JSON.parse(raw) : {};
+            } catch(e) {
+                return {};
+            }
+        },
+        savePrincipalCache(){
+            const cache = {};
+            for(const item of this.annualCalcList){
+                if(item.principal > 0){
+                    cache[item.key] = item.principal;
+                }
+            }
+            localStorage.setItem('annual_calc_principal', JSON.stringify(cache));
+        },
+        openAnnualCalc(){
+            if(!this.monthly_profit_list || this.monthly_profit_list.length === 0){
+                Toast.fail('请先查询收益数据');
+                return;
+            }
+            const latest = this.monthly_profit_list[0];
+            this.annualCalcMonth = latest.profit_month;
+            const cache = this.loadPrincipalCache();
+            this.annualCalcList = [
+                { key: 'pf', label: '渠道PF', profit: latest.channel_pf || 0, principal: cache.pf || null, rate: null },
+                { key: 'zs', label: '渠道ZS', profit: latest.channel_zs || 0, principal: cache.zs || null, rate: null },
+                { key: 'jt', label: '渠道JT', profit: latest.channel_jt || 0, principal: cache.jt || null, rate: null },
+                { key: 'al', label: '渠道AL', profit: latest.channel_al || 0, principal: cache.al || null, rate: null },
+                { key: 'jj', label: '渠道JJ', profit: latest.channel_jj || 0, principal: cache.jj || null, rate: null },
+                { key: 'total', label: '汇总', profit: latest.total || 0, principal: cache.total || null, rate: null, isTotal: true }
+            ];
+            this.showAnnualBox = true;
+            const hasCache = this.annualCalcList.some(item => item.principal > 0);
+            if(hasCache){
+                this.calcAnnualReturn();
+            }
+        },
+        calcAnnualReturn(){
+            let hasInput = false;
+            for(const item of this.annualCalcList){
+                if(item.principal > 0){
+                    hasInput = true;
+                    item.rate = (item.profit / (item.principal * 10000) * 12 * 100).toFixed(2);
+                } else {
+                    item.rate = null;
+                }
+            }
+            if(!hasInput){
+                Toast.fail('请至少填入一个渠道的本金');
+                return;
+            }
+            this.savePrincipalCache();
         },
         saveRecord(){
             if(!this.current_line_cost_date){
@@ -657,5 +746,54 @@ input{
 
 .monthly-profit-table .monthly-total-row .channel-label-col {
   background-color: #f0f4f8;
+}
+
+.annual-calc-body{
+    padding: 0 10px;
+}
+.annual-row{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.annual-row-header{
+    font-weight: 600;
+    color: #555;
+    font-size: 13px;
+    background: #f8f8f8;
+    border-radius: 4px;
+}
+.annual-row-total{
+    background: #f0f4f8;
+    font-weight: 600;
+}
+.annual-col-channel,
+.annual-col-profit,
+.annual-col-principal,
+.annual-col-rate{
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+}
+.annual-col-profit{
+    text-align: center;
+    padding-right: 6px;
+}
+.annual-col-rate{
+    font-weight: bold;
+}
+.annual-col-principal input{
+    width: 80%;
+    max-width: 80px;
+    height: 28px;
+    font-size: 13px;
+    text-align: right;
+    padding: 0 4px;
+    margin: 0;
+}
+.annual-scroll{
+    max-height: 300px;
+    overflow-y: auto;
 }
 </style>
