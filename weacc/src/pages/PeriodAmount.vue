@@ -138,7 +138,7 @@ export default {
 .period-table-box {
   margin-top: 10px;
   overflow: auto;
-  max-height: calc(100vh - 160px);
+  max-height: calc(100vh - 180px);
 }
 
 /* 改用 border-separate 让每个单元格拥有独立边框，sticky 时边框不丢失 */
@@ -152,6 +152,8 @@ export default {
 .period-table th,
 .period-table td {
   min-width: 95px;
+  height: 38px;
+  padding: 2px 6px;
   text-align: right;
   font-size: 13px;
   border: none;
