@@ -30,9 +30,12 @@
 
     <div class="box function"> 
         <div @click="showBox">修改密码</div>
-        <div bindtap="bind">绑定微信</div>
         <div @click="logout">注销登录</div>
         <div @click="keepLogin" :class="{'disabled': keep_login}">{{keep_login ? '已保持登录' : '保持登录'}}</div>
+    </div>
+    <div class="box function"> 
+        <div bindtap="bind">绑定微信</div>
+        <div @click="forceRefresh">强制刷新</div>
     </div>
 
     <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
@@ -151,6 +154,22 @@ export default {
         showBox(){
             this.showUpdateBox = true;
         },
+        forceRefresh(){
+            if('serviceWorker' in navigator){
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    const tasks = registrations.map(r => r.unregister());
+                    return Promise.all(tasks);
+                }).then(() => {
+                    if(window.caches){
+                        return caches.keys().then(names => Promise.all(names.map(n => caches.delete(n))));
+                    }
+                }).then(() => {
+                    window.location.reload(true);
+                });
+            } else {
+                window.location.reload(true);
+            }
+        },
         logout(){
             Dialog.confirm({
                 title: '提示',
@@ -217,6 +236,9 @@ export default {
 .function{
   color:#0f4ea0;
   font-size: 14px;
+  margin-top: 10px;
+}
+.function:first-of-type{
   margin-top: 20px;
 }
 
