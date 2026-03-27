@@ -6,18 +6,21 @@
     </van-radio-group>
   </div>
 
-  <div class="header-box" :style="'width:'+width+'px'">
-    <div class="table-header" :style="'width:' + ((column_list.length+1)*95) + 'px;'">
-      <div>会计期间</div>
-      <div v-for="column in column_list" :key="column.priority" >{{column.name}}</div>
-    </div>
-
-    <div class="table-body" :style="'width:' + ((column_list.length+1)*95) + 'px;'">
-      <div @click="setIndex(index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item,index) in item_list" :key="item.c">
-        <div>{{item.c}}</div>
-        <div class="num-font" v-for="column in column_list" :key="column.priority">{{item[column.index] | currency}}</div>
-      </div>
-    </div>
+  <div class="data-table-box period-table-box" :style="'width:'+width+'px'">
+    <table class="data-table period-table">
+      <thead>
+        <tr>
+          <th class="sticky-col">会计期间</th>
+          <th v-for="column in column_list" :key="column.priority">{{column.name}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr @click="setIndex(index)" :class="current_line==index?'data-table-current-line':''" v-for="(item,index) in item_list" :key="item.c">
+          <td class="sticky-col">{{item.c}}</td>
+          <td v-for="column in column_list" :key="column.priority">{{item[column.index] | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 </template>
@@ -130,29 +133,66 @@ export default {
 .box{
     margin-top: 5px;
 }
-.header-box {
-  overflow-x: scroll;
+
+/* 覆盖全局 data-table-box 的 overflow-y: hidden，此页面需要双向滚动 */
+.period-table-box {
   margin-top: 10px;
-  box-sizing: border-box;
-}
-.table-header{
-  margin-top: 0;
-}
-.table-line{
-  width: 100%;
+  overflow: auto;
+  max-height: calc(100vh - 160px);
 }
 
-.table-header div, .table-line div{
-  flex: 1;
-  font-size: 13px;
-  overflow: hidden;
-  height: 40px;
-  padding: 3px;
+/* 改用 border-separate 让每个单元格拥有独立边框，sticky 时边框不丢失 */
+.period-table {
+  width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: none;
 }
-.table-line div{
+
+.period-table th,
+.period-table td {
+  min-width: 95px;
   text-align: right;
+  font-size: 13px;
+  border: none;
+  border-right: 1px solid #dfe7ee;
+  border-bottom: 1px solid #dfe7ee;
 }
-.table-line :first-child{
+
+/* 表头加顶部边线 */
+.period-table th {
+  border-top: 1px solid #dfe7ee;
+}
+
+/* 表头锁定 */
+.period-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   text-align: center;
+}
+
+/* 第一列锁定，加左边线代替 table 自身的左 border */
+.period-table .sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 80px;
+  text-align: center;
+  background-color: #f6f6f6;
+  border-left: 1px solid #dfe7ee;
+}
+
+.period-table tbody .sticky-col {
+  background-color: #fff;
+}
+
+.period-table tbody tr:nth-child(even) .sticky-col {
+  background-color: #f7f7f7;
+}
+
+/* 左上角单元格同时锁定行和列，z-index 最高 */
+.period-table thead .sticky-col {
+  z-index: 3;
 }
 </style>
