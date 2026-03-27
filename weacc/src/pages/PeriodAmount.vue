@@ -17,7 +17,7 @@
       <tbody>
         <tr @click="setIndex(index)" :class="current_line==index?'data-table-current-line':''" v-for="(item,index) in item_list" :key="item.c">
           <td class="sticky-col">{{item.c}}</td>
-          <td v-for="column in column_list" :key="column.priority">{{item[column.index] | currency}}</td>
+          <td class="num-font" v-for="column in column_list" :key="column.priority">{{item[column.index] | currency}}</td>
         </tr>
       </tbody>
     </table>
@@ -152,7 +152,7 @@ export default {
 .period-table th,
 .period-table td {
   min-width: 95px;
-  height: 38px;
+  height: 40px;
   padding: 2px 6px;
   text-align: right;
   font-size: 13px;
@@ -191,6 +191,11 @@ export default {
 
 .period-table tbody tr:nth-child(even) .sticky-col {
   background-color: #f7f7f7;
+}
+
+/* 选中行的锁定列也要跟随高亮 */
+.period-table tbody tr.data-table-current-line .sticky-col {
+  background-color: #edf7fd !important;
 }
 
 /* 左上角单元格同时锁定行和列，z-index 最高 */

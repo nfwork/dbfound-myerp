@@ -703,7 +703,8 @@ input{
 
 .monthly-profit-table {
   width: max-content;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   table-layout: fixed;
 }
 
@@ -745,7 +746,8 @@ input{
   font-weight: 600;
   color: #343a40;
   min-width: 64px;
-  border-right: 1px solid #dfe7ee;
+  border-right: none;
+  box-shadow: 1px 0 0 0 #dfe7ee;
 }
 
 .monthly-profit-table tbody .channel-label-col {

@@ -10,7 +10,7 @@
       <button class="yellow-button" @click="addLine">收益归档</button>
     </div>
 
-    <div class="data-table-box" :style="'width:'+width+'px; height: 485px;'">
+    <div class="data-table-box" :style="'width:'+width+'px; height: 442px;'">
       <table class="data-table" :style="width===580?'width: 580px;':'width: 510px;'">
         <thead>
           <tr>
@@ -24,7 +24,7 @@
           </tr>
         </thead>
       </table>
-      <div class="data-table-content" :style="(width===580?'width: 580px;':'width: 510px;')+'height: 450px;'">
+      <div class="data-table-content" :style="(width===580?'width: 580px;':'width: 510px;')+'height: 402px;'">
         <table class="data-table">
           <tbody>
             <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.archive_id" :class="(current_line==index?'data-table-current-line':'')">
@@ -128,7 +128,7 @@ export default {
         return {
             item_list:[],
             cost_date:'',
-            limit : 30,  // 将分页大小从10改为30
+            limit : 10,
             totalCounts: 0,
             totalPages: 0,
             currentPage: 1,
@@ -302,5 +302,9 @@ input{
 }
 .table-pager{
     margin-top: 5px;
+}
+.data-table th,
+.data-table td{
+  height: 40px;
 }
 </style>
