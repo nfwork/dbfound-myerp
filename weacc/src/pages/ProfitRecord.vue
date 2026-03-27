@@ -225,7 +225,11 @@
     </div>
 
     <van-popup v-model="showAnnualBox" style="max-width:460px;width:90%;top:43%">
-      <div class="popup-info-header">年化收益测算 ({{annualCalcMonth}})</div>
+      <div class="popup-info-header annual-header">
+        <button class="annual-nav-btn" :disabled="annualCalcIndex >= monthly_profit_list.length - 1" @click="switchAnnualMonth(1)">&lt;</button>
+        <span>年化收益测算 ({{annualCalcMonth}})</span>
+        <button class="annual-nav-btn" :disabled="annualCalcIndex <= 0" @click="switchAnnualMonth(-1)">&gt;</button>
+      </div>
       <div class="popup-row-info annual-calc-body">
         <div class="annual-row annual-row-header">
           <div class="annual-col-channel">渠道</div>
@@ -323,7 +327,8 @@ export default {
             summaryTab: 'monthly',
             showAnnualBox: false,
             annualCalcList: [],
-            annualCalcMonth: ''
+            annualCalcMonth: '',
+            annualCalcIndex: 0
         }
     },
     computed:{
@@ -469,20 +474,29 @@ export default {
                 Toast.fail('请先查询收益数据');
                 return;
             }
-            const latest = this.monthly_profit_list[0];
-            this.annualCalcMonth = latest.profit_month;
+            this.annualCalcIndex = 0;
+            this.loadAnnualMonth();
+            this.showAnnualBox = true;
+        },
+        switchAnnualMonth(delta){
+            const newIndex = this.annualCalcIndex + delta;
+            if(newIndex < 0 || newIndex >= this.monthly_profit_list.length) return;
+            this.annualCalcIndex = newIndex;
+            this.loadAnnualMonth();
+        },
+        loadAnnualMonth(){
+            const item = this.monthly_profit_list[this.annualCalcIndex];
+            this.annualCalcMonth = item.profit_month;
             const cache = this.loadPrincipalCache();
             this.annualCalcList = [
-                { key: 'pf', label: '渠道PF', profit: latest.channel_pf || 0, principal: cache.pf || null, rate: null },
-                { key: 'zs', label: '渠道ZS', profit: latest.channel_zs || 0, principal: cache.zs || null, rate: null },
-                { key: 'jt', label: '渠道JT', profit: latest.channel_jt || 0, principal: cache.jt || null, rate: null },
-                { key: 'al', label: '渠道AL', profit: latest.channel_al || 0, principal: cache.al || null, rate: null },
-                { key: 'jj', label: '渠道JJ', profit: latest.channel_jj || 0, principal: cache.jj || null, rate: null },
-                { key: 'total', label: '汇总', profit: latest.total || 0, principal: cache.total || null, rate: null, isTotal: true }
+                { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: cache.pf || null, rate: null },
+                { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: cache.zs || null, rate: null },
+                { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: cache.jt || null, rate: null },
+                { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: cache.al || null, rate: null },
+                { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: cache.jj || null, rate: null },
+                { key: 'total', label: '汇总', profit: item.total || 0, principal: cache.total || null, rate: null, isTotal: true }
             ];
-            this.showAnnualBox = true;
-            const hasCache = this.annualCalcList.some(item => item.principal > 0);
-            if(hasCache){
+            if(this.annualCalcList.some(i => i.principal > 0)){
                 this.calcAnnualReturn();
             }
         },
@@ -748,6 +762,30 @@ input{
   background-color: #f0f4f8;
 }
 
+.annual-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+.annual-nav-btn{
+    width: 32px;
+    height: 32px;
+    border: 1px solid #cbd0d8;
+    background: #f8f9fa;
+    color: #2d6ca2;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    line-height: 32px;
+    padding: 0;
+    margin: 0;
+}
+.annual-nav-btn:disabled{
+    color: #ccc;
+    cursor: not-allowed;
+}
 .annual-calc-body{
     padding: 0 10px;
 }
