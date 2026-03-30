@@ -529,29 +529,66 @@ input:disabled{
   border: none;
 }
 .data-table{
-  border-collapse: collapse;
-  border: 1px solid #dfe7ee; 
-  box-sizing: border-box;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: none;
   width: 100%;
 }
-.data-table th {
+.data-table thead th {
   padding: 2px;
   height: 35px;
-  background-color: #f6f6f6;
-  border: 1px solid #dfe7ee;
+  background-color: #f6f6f6 !important;
+  border: none;
+  border-bottom: 1px solid #dfe7ee;
+  border-right: 1px solid #dfe7ee;
+  border-top: 1px solid #dfe7ee;
   box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 3;
 }
 .data-table td {
   padding: 2px;
   height: 45px;
-  border: 1px solid #dfe7ee;
+  border: none;
+  border-bottom: 1px solid #dfe7ee;
+  border-right: 1px solid #dfe7ee;
   box-sizing: border-box;
 }
 .data-table tbody tr:nth-child(even) {
   background-color: #f7f7f7;
 }
-.data-table-current-line{
+.data-table-current-line, .data-table-current-line td{
   background-color: #edf7fd!important
+}
+
+/* 通用锁定列样式 (包含定位与视觉部分) */
+.data-table .sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  border-left: 1px solid #dfe7ee;
+  white-space: nowrap;          /* 强制不换行，防止文字挤出 */
+  overflow: hidden;             /* 超出隐藏 */
+  text-overflow: ellipsis;      /* 超出显示省略号 */
+  background-clip: border-box;  /* 必须使用 border-box，确保背景覆盖边框区域，挡住下方滚动文字 */
+  transform: translateZ(0);     /* 开启硬件加速，解决移动端 sticky 渲染缝隙 */
+}
+
+/* 锁定列在表头时的层级 */
+.data-table thead th.sticky-col {
+  z-index: 4;
+}
+
+/* 锁定列背景色自动适配（防止滚动透明） */
+.data-table tr:nth-child(even) .sticky-col {
+  background-color: #f7f7f7;
+}
+.data-table tr:nth-child(odd) .sticky-col {
+  background-color: #fff;
+}
+.data-table-current-line .sticky-col {
+  background-color: #edf7fd !important;
 }
 
 

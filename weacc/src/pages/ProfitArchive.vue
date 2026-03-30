@@ -10,11 +10,11 @@
       <button class="yellow-button" @click="addLine">收益归档</button>
     </div>
 
-    <div class="data-table-box" :style="'width:'+width+'px; height: 442px;'">
-      <table class="data-table" :style="width===580?'width: 580px;':'width: 510px;'">
+    <div class="data-table-box" :style="'width:'+width+'px; height: 442px; overflow: auto;'">
+      <table class="data-table" :style="width===580?'width: 580px;':'width: 510px; border-top:none;'">
         <thead>
           <tr>
-            <th style="width: 90px;">归档日期</th>
+            <th class="sticky-col" style="width: 90px;">归档日期</th>
             <th style="width: 70px;">渠道PF</th>
             <th style="width: 70px;">渠道ZS</th>
             <th style="width: 70px;">渠道JT</th>
@@ -23,55 +23,19 @@
             <th style="width: 70px;">汇总</th>
           </tr>
         </thead>
+        <tbody>
+          <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.archive_id" :class="(current_line==index?'data-table-current-line':'')">
+            <td class="sticky-col" @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer; ">{{item.cost_date}}</td>
+            <td style="text-align: center;width: 70px;">{{item.channel_pf | currency}}</td>
+            <td style="text-align: center;width: 70px;">{{item.channel_zs | currency}}</td>
+            <td style="text-align: center;width: 70px;">{{item.channel_jt | currency}}</td>
+            <td style="text-align: center;width: 70px;">{{item.channel_al | currency}}</td> 
+            <td style="text-align: center;width: 70px;">{{item.channel_jj | currency}}</td> 
+            <td style="text-align: center;width: 70px;">{{item.channel_total | currency}}</td> 
+          </tr>
+        </tbody>
       </table>
-      <div class="data-table-content" :style="(width===580?'width: 580px;':'width: 510px;')+'height: 402px;'">
-        <table class="data-table">
-          <tbody>
-            <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.archive_id" :class="(current_line==index?'data-table-current-line':'')">
-              <td @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer; ">{{item.cost_date}}</td>
-              <td style="text-align: center;width: 70px;">{{item.channel_pf | currency}}</td>
-              <td style="text-align: center;width: 70px;">{{item.channel_zs | currency}}</td>
-              <td style="text-align: center;width: 70px;">{{item.channel_jt | currency}}</td>
-              <td style="text-align: center;width: 70px;">{{item.channel_al | currency}}</td> 
-              <td style="text-align: center;width: 70px;">{{item.channel_jj | currency}}</td> 
-              <td style="text-align: center;width: 70px;">{{item.channel_total | currency}}</td> 
-            </tr>
-          </tbody>
-        </table>
-      </div>  
     </div>
-    <!--
-    <div class="box"> 
-      <div class="table-header">
-        <div style="flex: 5;">归档日期</div>
-        <div style="flex: 4;">渠道PF</div>
-        <div style="flex: 4;">渠道ZS</div>
-        <div style="flex: 4;">渠道JT</div>
-        <div style="flex: 4;">渠道JJ</div>
-        <div style="flex: 4;">汇总</div> 
-      </div>
-      <div class="table-body" style="height: 450px;">
-        <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.archive_id">
-          <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
-          <div style="flex: 4; text-align: center;">
-            {{item.channel_pf | currency}}
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{item.channel_zs | currency}}
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{item.channel_jt | currency}}
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{item.channel_jj | currency}}
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{item.channel_total | currency}}
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
 
     <div class="table-pager">
       <div class="desbox">显示 {{(currentPage-1)*limit+1}} 到 {{currentPage*limit > totalCounts?totalCounts:currentPage*limit}} 条，共 {{totalCounts}} 条，共 {{totalPages}} 页</div>

@@ -102,11 +102,11 @@
       </div>
     </div>
 
-    <div class="data-table-box" :style="'width:'+width+'px; height: 485px;'">
-      <table class="data-table" :style="width===580?'width: 580px;':'width: 510px;'">
+    <div class="data-table-box" :style="'width:'+width+'px; height: 485px; overflow: auto;'">
+      <table class="data-table" :style="width===580?'width: 580px;':'width: 510px; border-top:none;'">
         <thead>
           <tr>
-            <th style="width: 90px;">收益日期</th>
+            <th class="sticky-col" style="width: 90px;">收益日期</th>
             <th style="width: 70px;">渠道PF</th>
             <th style="width: 70px;">渠道ZS</th>
             <th style="width: 70px;">渠道JT</th>
@@ -115,104 +115,56 @@
             <th style="width: 70px;">汇总</th> 
           </tr>
         </thead>
-      </table>
-       <div class="data-table-content" :style="(width===580?'width: 580px;':'width: 510px;')+'height: 450px;'">
-        <table class="data-table">
-          <tbody>
-            <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.record_id" :class="(current_line==index?'data-table-current-line':'')">
-              <td @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.cost_date}}</td>
-              <td style="width: 70px; text-align: center;">
-                {{ (item.channel_pf || 0).toFixed(2) }}
-                <div v-if="item.diff_pf !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
-                  ({{item.diff_pf.toFixed(2)}})
-                </div>
-              </td> 
-              <td style="width: 70px; text-align: center;">
-                {{ (item.channel_zs || 0).toFixed(2) }}
-                <div v-if="item.diff_zs !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_zs > 0 ? 'red' : item.diff_zs < 0 ? 'green' : ''}">
-                  ({{item.diff_zs.toFixed(2)}})
-                </div>
-              </td>
-              <td style="width: 70px; text-align: center;">
-                {{ (item.channel_jt || 0).toFixed(2) }}
-                <div v-if="item.diff_jt !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_jt > 0 ? 'red' : item.diff_jt < 0 ? 'green' : ''}">
-                  ({{item.diff_jt.toFixed(2)}})
-                </div>
-              </td>
-              <td style="width: 70px; text-align: center;">
-                {{ (item.channel_al || 0).toFixed(2) }}
-                <div v-if="item.diff_al !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_al > 0 ? 'red' : item.diff_al < 0 ? 'green' : ''}">
-                  ({{item.diff_al.toFixed(2)}})
-                </div>
-              </td>
-              <td style="width: 70px; text-align: center;">
-                {{ (item.channel_jj || 0).toFixed(2) }}
-                <div v-if="item.diff_jj !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_jj > 0 ? 'red' : item.diff_jj < 0 ? 'green' : ''}">
-                  ({{item.diff_jj.toFixed(2)}})
-                </div>
-              </td>
-              <td style="width: 70px; text-align: center;">
-                {{ (item.channel_total || 0).toFixed(2) }}
-                <div v-if="item.diff_total !== undefined"
-                  :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
-                  ({{item.diff_total.toFixed(2)}})
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- <div class="box"> 
-      <div class="table-header">
-        <div style="flex: 5;">收益日期</div>
-        <div style="flex: 4;">渠道PF</div>
-        <div style="flex: 4;">渠道ZS</div>
-        <div style="flex: 4;">渠道JT</div>
-        <div style="flex: 4;">渠道JJ</div>
-        <div style="flex: 4;">汇总</div> 
-      </div>
-      <div class="table-body" style="height: 450px;">
-        <div @click="setIndex(index)" :class="'table-line '+(current_line==index?'table-line-current':'')" v-for="(item,index) in item_list" :key="item.record_id">
-          <div @click="updateRecord(index,item)" style="flex: 5; text-align: center; color: #0f4ea0; ">{{item.cost_date}}</div>
-          <div style="flex: 4; text-align: center;">
-           
-            </span>
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{ (item.channel_zs || 0).toFixed(2)  }}<span v-if="item.diff_zs !== undefined"
+        <tbody>
+          <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.record_id" :class="(current_line==index?'data-table-current-line':'')">
+            <td class="sticky-col" @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer;">{{item.cost_date}}</td>
+            <td style="width: 70px; text-align: center;">
+              {{ (item.channel_pf || 0).toFixed(2) }}
+              <div v-if="item.diff_pf !== undefined"
+                :style="{'margin-left': '1px', 'color': item.diff_pf > 0 ? 'red' : item.diff_pf < 0 ? 'green' : ''}">
+                ({{item.diff_pf.toFixed(2)}})
+              </div>
+            </td> 
+            <td style="width: 70px; text-align: center;">
+              {{ (item.channel_zs || 0).toFixed(2) }}
+              <div v-if="item.diff_zs !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_zs > 0 ? 'red' : item.diff_zs < 0 ? 'green' : ''}">
                 ({{item.diff_zs.toFixed(2)}})
-            </span>
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{ (item.channel_jt || 0).toFixed(2)  }}<span v-if="item.diff_jt !== undefined"
+              </div>
+            </td>
+            <td style="width: 70px; text-align: center;">
+              {{ (item.channel_jt || 0).toFixed(2) }}
+              <div v-if="item.diff_jt !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_jt > 0 ? 'red' : item.diff_jt < 0 ? 'green' : ''}">
                 ({{item.diff_jt.toFixed(2)}})
-            </span>
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{ (item.channel_jj || 0).toFixed(2) }}<span v-if="item.diff_jj !== undefined"
+              </div>
+            </td>
+            <td style="width: 70px; text-align: center;">
+              {{ (item.channel_al || 0).toFixed(2) }}
+              <div v-if="item.diff_al !== undefined"
+                :style="{'margin-left': '1px', 'color': item.diff_al > 0 ? 'red' : item.diff_al < 0 ? 'green' : ''}">
+                ({{item.diff_al.toFixed(2)}})
+              </div>
+            </td>
+            <td style="width: 70px; text-align: center;">
+              {{ (item.channel_jj || 0).toFixed(2) }}
+              <div v-if="item.diff_jj !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_jj > 0 ? 'red' : item.diff_jj < 0 ? 'green' : ''}">
                 ({{item.diff_jj.toFixed(2)}})
-            </span>
-          </div>
-          <div style="flex: 4; text-align: center;">
-            {{ (item.channel_total || 0).toFixed(2) }}<span v-if="item.diff_total !== undefined"
+              </div>
+            </td>
+            <td style="width: 70px; text-align: center;">
+              {{ (item.channel_total || 0).toFixed(2) }}
+              <div v-if="item.diff_total !== undefined"
                 :style="{'margin-left': '1px', 'color': item.diff_total > 0 ? 'red' : item.diff_total < 0 ? 'green' : ''}">
                 ({{item.diff_total.toFixed(2)}})
-            </span>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="table-pager">
       <div class="desbox">显示 {{(currentPage-1)*limit+1}} 到 {{currentPage*limit > totalCounts?totalCounts:currentPage*limit}} 条，共 {{totalCounts}} 条，共 {{totalPages}} 页</div>
       <div class="buttonbox"> 
