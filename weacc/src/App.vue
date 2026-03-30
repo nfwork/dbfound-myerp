@@ -523,6 +523,7 @@ input:disabled{
   overflow-x: auto; 
   overflow-y: hidden;
   border: none;
+  overscroll-behavior: none;
 }
 .data-table-content{
   overflow-y: auto; overflow-x: hidden; margin-top: -1px;box-sizing: border-box;
