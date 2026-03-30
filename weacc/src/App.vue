@@ -566,13 +566,11 @@ input:disabled{
 .data-table .sticky-col {
   position: sticky;
   left: 0;
-  z-index: 2;
+  z-index: 1;
   border-left: 1px solid #dfe7ee;
   white-space: nowrap;          /* 强制不换行，防止文字挤出 */
   overflow: hidden;             /* 超出隐藏 */
   text-overflow: ellipsis;      /* 超出显示省略号 */
-  background-clip: border-box;  /* 必须使用 border-box，确保背景覆盖边框区域，挡住下方滚动文字 */
-  backface-visibility: hidden;   /* 硬件加速，避免 translateZ(0) 遮挡滚动条 */
 }
 
 /* 锁定列在表头时的层级 */
