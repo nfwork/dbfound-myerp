@@ -572,7 +572,7 @@ input:disabled{
   overflow: hidden;             /* 超出隐藏 */
   text-overflow: ellipsis;      /* 超出显示省略号 */
   background-clip: border-box;  /* 必须使用 border-box，确保背景覆盖边框区域，挡住下方滚动文字 */
-  transform: translateZ(0);     /* 开启硬件加速，解决移动端 sticky 渲染缝隙 */
+  backface-visibility: hidden;   /* 硬件加速，避免 translateZ(0) 遮挡滚动条 */
 }
 
 /* 锁定列在表头时的层级 */
