@@ -384,6 +384,7 @@ input:disabled{
   flex-wrap: wrap;
   align-content: flex-start;
   overflow: auto;
+  overscroll-behavior: none;
 }
 .table-line{
   font-size: 13px;
