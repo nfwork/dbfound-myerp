@@ -195,7 +195,8 @@
             <div class="annual-col-channel">{{item.label}}</div>
             <div class="annual-col-profit">{{(item.profit || 0).toFixed(2)}}</div>
             <div class="annual-col-principal">
-              <input type="number" v-model.number="item.principal" placeholder="本金"/>
+              <input v-if="!item.isTotal" type="number" v-model.number="item.principal" placeholder="本金"/>
+              <span v-else>{{(item.principal || 0).toFixed(2)}}</span>
             </div>
             <div class="annual-col-rate">
               <span v-if="item.rate !== null" :style="item.rate >= 0 ? 'color:#e74c3c' : 'color:#27ae60'">{{item.rate}}%</span>
@@ -404,22 +405,37 @@ export default {
             this.current_line_channel_jj = item.channel_jj;
             this.showBox();
         },
-        loadPrincipalCache(){
-            try {
-                const raw = localStorage.getItem('annual_calc_principal');
-                return raw ? JSON.parse(raw) : {};
-            } catch(e) {
+        base64UrlEncode(str){
+            return btoa(unescape(encodeURIComponent(str)))
+                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        },
+        base64UrlDecode(str){
+            str = str.replace(/-/g, '+').replace(/_/g, '/');
+            while(str.length % 4) str += '=';
+            return decodeURIComponent(escape(atob(str)));
+        },
+        loadPrincipalCache(month){
+            return request.post('pf/userConfig.query', {
+                config_key: 'annual_principal_' + month
+            }).then(res => {
+                if(res.data.success && res.data.datas && res.data.datas.length > 0){
+                    try { return JSON.parse(this.base64UrlDecode(res.data.datas[0].config_value)); } catch(e) { return {}; }
+                }
                 return {};
-            }
+            }).catch(() => ({}));
         },
         savePrincipalCache(){
             const cache = {};
             for(const item of this.annualCalcList){
+                if(item.isTotal) continue;
                 if(item.principal > 0){
                     cache[item.key] = item.principal;
                 }
             }
-            localStorage.setItem('annual_calc_principal', JSON.stringify(cache));
+            request.post('pf/userConfig.execute!save', {
+                config_key: 'annual_principal_' + this.annualCalcMonth,
+                config_value: this.base64UrlEncode(JSON.stringify(cache))
+            });
         },
         openAnnualCalc(){
             if(!this.monthly_profit_list || this.monthly_profit_list.length === 0){
@@ -439,34 +455,52 @@ export default {
         loadAnnualMonth(){
             const item = this.monthly_profit_list[this.annualCalcIndex];
             this.annualCalcMonth = item.profit_month;
-            const cache = this.loadPrincipalCache();
-            this.annualCalcList = [
-                { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: cache.pf || null, rate: null },
-                { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: cache.zs || null, rate: null },
-                { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: cache.jt || null, rate: null },
-                { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: cache.al || null, rate: null },
-                { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: cache.jj || null, rate: null },
-                { key: 'total', label: '汇总', profit: item.total || 0, principal: cache.total || null, rate: null, isTotal: true }
-            ];
-            if(this.annualCalcList.some(i => i.principal > 0)){
-                this.calcAnnualReturn();
-            }
+            this.loadPrincipalCache(item.profit_month).then(cache => {
+                this.annualCalcList = [
+                    { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: cache.pf || null, rate: null },
+                    { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: cache.zs || null, rate: null },
+                    { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: cache.jt || null, rate: null },
+                    { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: cache.al || null, rate: null },
+                    { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: cache.jj || null, rate: null },
+                    { key: 'total', label: '汇总', profit: item.total || 0, principal: null, rate: null, isTotal: true }
+                ];
+                this._principalSnapshot = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
+                if(this.annualCalcList.some(i => i.principal > 0)){
+                    this.calcAnnualReturn(false);
+                }
+            });
         },
-        calcAnnualReturn(){
+        calcAnnualReturn(userTriggered = true){
             let hasInput = false;
+            let totalPrincipal = 0;
+            const totalItem = this.annualCalcList.find(i => i.isTotal);
             for(const item of this.annualCalcList){
+                if(item.isTotal) continue;
                 if(item.principal > 0){
                     hasInput = true;
+                    totalPrincipal += item.principal;
                     item.rate = (item.profit / (item.principal * 10000) * 12 * 100).toFixed(2);
                 } else {
                     item.rate = null;
                 }
             }
             if(!hasInput){
-                Toast.fail('请至少填入一个渠道的本金');
+                if(totalItem) { totalItem.principal = null; totalItem.rate = null; }
+                if(userTriggered) Toast.fail('请至少填入一个渠道的本金');
                 return;
             }
-            this.savePrincipalCache();
+            if(totalItem){
+                totalItem.principal = totalPrincipal;
+                totalItem.rate = totalPrincipal > 0
+                    ? (totalItem.profit / (totalPrincipal * 10000) * 12 * 100).toFixed(2) : null;
+            }
+            if(userTriggered){
+                const current = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
+                if(current !== this._principalSnapshot){
+                    this.savePrincipalCache();
+                    this._principalSnapshot = current;
+                }
+            }
         },
         saveRecord(){
             if(!this.current_line_cost_date){

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://dbfound.googlecode.com/model"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+    <param name="book_id" dataType="number" scope="session" />
+    <param name="user_id" dataType="number" scope="session" />
+
+    <query>
+        <param name="config_key" dataType="varchar" />
+        <sql>
+            SELECT config_id, config_key, config_value
+              FROM pf_user_config
+             WHERE book_id = ${@book_id}
+               AND config_key = ${@config_key}
+        </sql>
+    </query>
+
+    <execute name="save">
+        <param name="config_key" dataType="varchar" />
+        <param name="config_value" dataType="varchar" />
+        <sqls>
+            <executeSql>
+                INSERT INTO pf_user_config
+                    (book_id, config_key, config_value,
+                     create_by, create_date, last_update_by, last_update_date)
+                VALUES
+                    (${@book_id}, ${@config_key}, ${@config_value},
+                     ${@user_id}, NOW(), ${@user_id}, NOW())
+                ON DUPLICATE KEY UPDATE
+                    config_value = ${@config_value},
+                    last_update_by = ${@user_id},
+                    last_update_date = NOW()
+            </executeSql>
+        </sqls>
+    </execute>
+
+    <execute name="delete">
+        <param name="config_key" dataType="varchar" />
+        <sqls>
+            <executeSql>
+                DELETE FROM pf_user_config
+                 WHERE book_id = ${@book_id}
+                   AND config_key = ${@config_key}
+            </executeSql>
+        </sqls>
+    </execute>
+
+</model>
