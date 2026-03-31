@@ -414,12 +414,33 @@ export default {
             while(str.length % 4) str += '=';
             return decodeURIComponent(escape(atob(str)));
         },
+        // 轻量可逆混淆：单字节固定 key 异或，复杂度 O(n)
+        simpleEncrypt(str){
+            const key = 23;
+            let out = '';
+            for(let i = 0; i < str.length; i++){
+                out += String.fromCharCode(str.charCodeAt(i) ^ key);
+            }
+            return out;
+        },
+        simpleDecrypt(str){
+            return this.simpleEncrypt(str);
+        },
+        encodeConfigValue(str){
+            return this.base64UrlEncode(this.simpleEncrypt(str));
+        },
+        decodeConfigValue(str){
+            return this.simpleDecrypt(this.base64UrlDecode(str));
+        },
+        annualPrincipalConfigKey(month){
+            return 'conf-pf-ap-' + month;
+        },
         loadPrincipalCache(month){
             return request.post('pf/userConfig.query', {
-                config_key: 'annual_principal_' + month
+                config_key: this.annualPrincipalConfigKey(month)
             }).then(res => {
                 if(res.data.success && res.data.datas && res.data.datas.length > 0){
-                    try { return JSON.parse(this.base64UrlDecode(res.data.datas[0].config_value)); } catch(e) { return {}; }
+                    try { return JSON.parse(this.decodeConfigValue(res.data.datas[0].config_value)); } catch(e) { return {}; }
                 }
                 return {};
             }).catch(() => ({}));
@@ -433,8 +454,8 @@ export default {
                 }
             }
             request.post('pf/userConfig.execute!save', {
-                config_key: 'annual_principal_' + this.annualCalcMonth,
-                config_value: this.base64UrlEncode(JSON.stringify(cache))
+                config_key: this.annualPrincipalConfigKey(this.annualCalcMonth),
+                config_value: this.encodeConfigValue(JSON.stringify(cache))
             });
         },
         openAnnualCalc(){
