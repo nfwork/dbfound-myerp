@@ -5,9 +5,10 @@
     <param name="book_id" dataType="number" scope="session" />
 
     <query adapter="com.nfwork.erp.adapter.ProfitReportAdapter">
+        <param name="date_format" dataType="varchar" value="%Y-%m" />
         <sql>
             select
-                DATE_FORMAT(p.cost_date, '%Y-%m') as profit_month,
+                DATE_FORMAT(p.cost_date, '#{@date_format}') as profit_period,
                 ifnull(p.channel_pf,0) + ifnull(p.channel_zs,0) + ifnull(p.channel_jt,0) + ifnull(p.channel_al,0) + ifnull(p.channel_jj,0) as record_total,
                 ifnull(p.channel_pf,0) as record_pf,
                 ifnull(p.channel_zs,0) as record_zs,
@@ -23,7 +24,7 @@
             from pf_profit_record p
             left join (
                 select
-                    DATE_FORMAT(cost_date, '%Y-%m') as archive_month,
+                    DATE_FORMAT(cost_date, '#{@date_format}') as archive_period,
                     SUM(ifnull(channel_pf,0) + ifnull(channel_zs,0) + ifnull(channel_jt,0) + ifnull(channel_al,0) + ifnull(channel_jj,0)) as archive_total,
                     SUM(ifnull(channel_pf,0)) as archive_pf,
                     SUM(ifnull(channel_zs,0)) as archive_zs,
@@ -35,8 +36,8 @@
                 <sqlPart type="if" sourcePath="cost_date">
                   and cost_date &lt;= ${@cost_date}
                 </sqlPart>
-                group by DATE_FORMAT(cost_date, '%Y-%m')
-            ) arc on DATE_FORMAT(p.cost_date, '%Y-%m') = arc.archive_month
+                group by DATE_FORMAT(cost_date, '#{@date_format}')
+            ) arc on DATE_FORMAT(p.cost_date, '#{@date_format}') = arc.archive_period
             where p.cost_date in (
                 SELECT max(cost_date)
                 FROM pf_profit_record
@@ -44,7 +45,7 @@
                 <sqlPart type="if" sourcePath="cost_date">
                   and cost_date &lt;= ${@cost_date}
                 </sqlPart>
-                GROUP BY DATE_FORMAT(cost_date, '%Y-%m')
+                GROUP BY DATE_FORMAT(cost_date, '#{@date_format}')
             )
             order by p.cost_date
         </sql>

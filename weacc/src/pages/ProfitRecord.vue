@@ -14,9 +14,47 @@
     <div class="summary-tab-box" :style="'width:'+width+'px;'">
       <div class="summary-tab-header">
         <div class="summary-tab-item" :class="{ active: summaryTab === 'monthly' }" @click="summaryTab = 'monthly'">按月收益</div>
-        <div class="summary-tab-item" :class="{ active: summaryTab === 'summary' }" @click="summaryTab = 'summary'">汇总收益</div>
+        <div class="summary-tab-item" :class="{ active: summaryTab === 'yearly' }" @click="summaryTab = 'yearly'">按年收益</div>
+        <div class="summary-tab-item" :class="{ active: summaryTab === 'summary' }" @click="summaryTab = 'summary'">总收益</div>
       </div>
       <div class="summary-tab-body">
+        <!-- 按年收益 -->
+        <div v-show="summaryTab === 'yearly'" class="monthly-profit-content">
+          <table class="monthly-profit-table">
+            <thead>
+              <tr>
+                <th class="channel-label-col">渠道</th>
+                <th v-for="item in yearly_profit_list" :key="'y'+item.profit_period">{{ item.profit_period }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="channel-label-col">渠道PF</td>
+                <td v-for="item in yearly_profit_list" :key="'ypf'+item.profit_period">{{ (item.channel_pf || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道ZS</td>
+                <td v-for="item in yearly_profit_list" :key="'yzs'+item.profit_period">{{ (item.channel_zs || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道JT</td>
+                <td v-for="item in yearly_profit_list" :key="'yjt'+item.profit_period">{{ (item.channel_jt || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道AL</td>
+                <td v-for="item in yearly_profit_list" :key="'yal'+item.profit_period">{{ (item.channel_al || 0).toFixed(2) }}</td>
+              </tr>
+              <tr>
+                <td class="channel-label-col">渠道JJ</td>
+                <td v-for="item in yearly_profit_list" :key="'yjj'+item.profit_period">{{ (item.channel_jj || 0).toFixed(2) }}</td>
+              </tr>
+              <tr class="monthly-total-row">
+                <td class="channel-label-col">汇总</td>
+                <td v-for="item in yearly_profit_list" :key="'yt'+item.profit_period">{{ (item.total || 0).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <!-- 收益汇总 -->
         <div v-show="summaryTab === 'summary'" class="summary-content">
           <div class="summary-row summary-row-header">
@@ -68,33 +106,33 @@
             <thead>
               <tr>
                 <th class="channel-label-col">渠道</th>
-                <th v-for="item in monthly_profit_list" :key="'m'+item.profit_month">{{ item.profit_month }}</th>
+                <th v-for="item in monthly_profit_list" :key="'m'+item.profit_period">{{ item.profit_period }}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td class="channel-label-col">渠道PF</td>
-                <td v-for="item in monthly_profit_list" :key="'pf'+item.profit_month">{{ (item.channel_pf || 0).toFixed(2) }}</td>
+                <td v-for="item in monthly_profit_list" :key="'pf'+item.profit_period">{{ (item.channel_pf || 0).toFixed(2) }}</td>
               </tr>
               <tr>
                 <td class="channel-label-col">渠道ZS</td>
-                <td v-for="item in monthly_profit_list" :key="'zs'+item.profit_month">{{ (item.channel_zs || 0).toFixed(2) }}</td>
+                <td v-for="item in monthly_profit_list" :key="'zs'+item.profit_period">{{ (item.channel_zs || 0).toFixed(2) }}</td>
               </tr>
               <tr>
                 <td class="channel-label-col">渠道JT</td>
-                <td v-for="item in monthly_profit_list" :key="'jt'+item.profit_month">{{ (item.channel_jt || 0).toFixed(2) }}</td>
+                <td v-for="item in monthly_profit_list" :key="'jt'+item.profit_period">{{ (item.channel_jt || 0).toFixed(2) }}</td>
               </tr>
               <tr>
                 <td class="channel-label-col">渠道AL</td>
-                <td v-for="item in monthly_profit_list" :key="'al'+item.profit_month">{{ (item.channel_al || 0).toFixed(2) }}</td>
+                <td v-for="item in monthly_profit_list" :key="'al'+item.profit_period">{{ (item.channel_al || 0).toFixed(2) }}</td>
               </tr>
               <tr>
                 <td class="channel-label-col">渠道JJ</td>
-                <td v-for="item in monthly_profit_list" :key="'jj'+item.profit_month">{{ (item.channel_jj || 0).toFixed(2) }}</td>
+                <td v-for="item in monthly_profit_list" :key="'jj'+item.profit_period">{{ (item.channel_jj || 0).toFixed(2) }}</td>
               </tr>
               <tr class="monthly-total-row">
                 <td class="channel-label-col">汇总</td>
-                <td v-for="item in monthly_profit_list" :key="'t'+item.profit_month">{{ (item.total || 0).toFixed(2) }}</td>
+                <td v-for="item in monthly_profit_list" :key="'t'+item.profit_period">{{ (item.total || 0).toFixed(2) }}</td>
               </tr>
             </tbody>
           </table>
@@ -277,6 +315,7 @@ export default {
                 total_channel_total: 0
             },
             monthly_profit_list: [],
+            yearly_profit_list: [],
             summaryTab: 'monthly',
             showAnnualBox: false,
             annualCalcList: [],
@@ -346,6 +385,8 @@ export default {
             this.fetchArchiveSummary();
             // 刷新按月收益数据
             this.fetchMonthlyProfit();
+            // 刷新按年收益数据
+            this.fetchYearlyProfit();
         },
         changePage(type){
             if(type==1){
@@ -475,7 +516,7 @@ export default {
         },
         loadAnnualMonth(){
             const item = this.monthly_profit_list[this.annualCalcIndex];
-            this.annualCalcMonth = item.profit_month;
+            this.annualCalcMonth = item.profit_period;
             this.annualCalcList = [
                 { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: null, rate: null },
                 { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: null, rate: null },
@@ -485,7 +526,7 @@ export default {
                 { key: 'total', label: '汇总', profit: item.total || 0, principal: null, rate: null, isTotal: true }
             ];
             this._principalSnapshot = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
-            this.loadPrincipalCache(item.profit_month).then(cache => {
+            this.loadPrincipalCache(item.profit_period).then(cache => {
                 const hasCache = Object.keys(cache).length > 0;
                 if(!hasCache) return;
                 for(const row of this.annualCalcList){
@@ -603,10 +644,24 @@ export default {
             };
             request.post(url, data, {showLoadding: false}).then(res => {
                 if(res.data.success) {
-                    // 倒排数据，最新月份放前面
                     this.monthly_profit_list = (res.data.datas || []).reverse();
                 } else {
                     this.monthly_profit_list = [];
+                }
+            });
+        },
+        // 获取按年收益数据
+        fetchYearlyProfit() {
+            let url = 'pf/report.query';
+            let data = {
+              cost_date: this.cost_date,
+              date_format: '%Y'
+            };
+            request.post(url, data, {showLoadding: false}).then(res => {
+                if(res.data.success) {
+                    this.yearly_profit_list = (res.data.datas || []).reverse();
+                } else {
+                    this.yearly_profit_list = [];
                 }
             });
         },
