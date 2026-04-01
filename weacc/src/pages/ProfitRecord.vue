@@ -476,19 +476,25 @@ export default {
         loadAnnualMonth(){
             const item = this.monthly_profit_list[this.annualCalcIndex];
             this.annualCalcMonth = item.profit_month;
+            this.annualCalcList = [
+                { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: null, rate: null },
+                { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: null, rate: null },
+                { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: null, rate: null },
+                { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: null, rate: null },
+                { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: null, rate: null },
+                { key: 'total', label: '汇总', profit: item.total || 0, principal: null, rate: null, isTotal: true }
+            ];
+            this._principalSnapshot = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
             this.loadPrincipalCache(item.profit_month).then(cache => {
-                this.annualCalcList = [
-                    { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: cache.pf || null, rate: null },
-                    { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: cache.zs || null, rate: null },
-                    { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: cache.jt || null, rate: null },
-                    { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: cache.al || null, rate: null },
-                    { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: cache.jj || null, rate: null },
-                    { key: 'total', label: '汇总', profit: item.total || 0, principal: null, rate: null, isTotal: true }
-                ];
-                this._principalSnapshot = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
-                if(this.annualCalcList.some(i => i.principal > 0)){
-                    this.calcAnnualReturn(false);
+                const hasCache = Object.keys(cache).length > 0;
+                if(!hasCache) return;
+                for(const row of this.annualCalcList){
+                    if(!row.isTotal && cache[row.key]){
+                        row.principal = cache[row.key];
+                    }
                 }
+                this._principalSnapshot = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
+                this.calcAnnualReturn(false);
             });
         },
         calcAnnualReturn(userTriggered = true){
