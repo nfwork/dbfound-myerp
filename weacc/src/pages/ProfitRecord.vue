@@ -216,14 +216,14 @@
 
     <van-popup v-model="showAnnualBox" style="max-width:460px;width:90%;top:43%">
       <div class="popup-info-header annual-header">
-        <button class="annual-nav-btn" :disabled="annualCalcIndex >= monthly_profit_list.length - 1" @click="switchAnnualMonth(1)">&lt;</button>
+        <button class="annual-nav-btn" :disabled="annualCalcIndex <= 0" @click="switchAnnualMonth(-1)">&lt;</button>
         <span>年化收益测算 ({{annualCalcMonth}})</span>
-        <button class="annual-nav-btn" :disabled="annualCalcIndex <= 0" @click="switchAnnualMonth(-1)">&gt;</button>
+        <button class="annual-nav-btn" :disabled="annualCalcIndex >= annualProfitSource.length - 1" @click="switchAnnualMonth(1)">&gt;</button>
       </div>
       <div class="popup-row-info annual-calc-body">
         <div class="annual-row annual-row-header">
           <div class="annual-col-channel">渠道</div>
-          <div class="annual-col-profit">月收益(元)</div>
+          <div class="annual-col-profit">{{annualProfitLabel}}</div>
           <div class="annual-col-principal">本金(万元)</div>
           <div class="annual-col-rate">年化率</div>
         </div>
@@ -233,7 +233,7 @@
             <div class="annual-col-channel">{{item.label}}</div>
             <div class="annual-col-profit">{{(item.profit || 0).toFixed(2)}}</div>
             <div class="annual-col-principal">
-              <input v-if="!item.isTotal" type="number" v-model.number="item.principal" placeholder="本金"/>
+              <input v-if="!item.isTotal" type="number" v-model.number="item.principal"/>
               <span v-else>{{(item.principal || 0).toFixed(2)}}</span>
             </div>
             <div class="annual-col-rate">
@@ -330,6 +330,15 @@ export default {
                 width = 600;
             }
             return width-20;
+        },
+        annualProfitSource(){
+            return this.summaryTab === 'yearly' ? this.yearly_profit_list : this.monthly_profit_list;
+        },
+        annualPeriodMultiplier(){
+            return this.summaryTab === 'yearly' ? 1 : 12;
+        },
+        annualProfitLabel(){
+            return this.summaryTab === 'yearly' ? '年收益(元)' : '月收益(元)';
         }
     },
     methods:{
@@ -500,7 +509,7 @@ export default {
             });
         },
         openAnnualCalc(){
-            if(!this.monthly_profit_list || this.monthly_profit_list.length === 0){
+            if(!this.annualProfitSource || this.annualProfitSource.length === 0){
                 Toast.fail('请先查询收益数据');
                 return;
             }
@@ -510,12 +519,12 @@ export default {
         },
         switchAnnualMonth(delta){
             const newIndex = this.annualCalcIndex + delta;
-            if(newIndex < 0 || newIndex >= this.monthly_profit_list.length) return;
+            if(newIndex < 0 || newIndex >= this.annualProfitSource.length) return;
             this.annualCalcIndex = newIndex;
             this.loadAnnualMonth();
         },
         loadAnnualMonth(){
-            const item = this.monthly_profit_list[this.annualCalcIndex];
+            const item = this.annualProfitSource[this.annualCalcIndex];
             this.annualCalcMonth = item.profit_period;
             this.annualCalcList = [
                 { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: null, rate: null },
@@ -547,7 +556,7 @@ export default {
                 if(item.principal > 0){
                     hasInput = true;
                     totalPrincipal += item.principal;
-                    item.rate = (item.profit / (item.principal * 10000) * 12 * 100).toFixed(2);
+                    item.rate = (item.profit / (item.principal * 10000) * this.annualPeriodMultiplier * 100).toFixed(2);
                 } else {
                     item.rate = null;
                 }
@@ -560,7 +569,7 @@ export default {
             if(totalItem){
                 totalItem.principal = totalPrincipal;
                 totalItem.rate = totalPrincipal > 0
-                    ? (totalItem.profit / (totalPrincipal * 10000) * 12 * 100).toFixed(2) : null;
+                    ? (totalItem.profit / (totalPrincipal * 10000) * this.annualPeriodMultiplier * 100).toFixed(2) : null;
             }
             if(userTriggered){
                 const current = JSON.stringify(this.annualCalcList.filter(i => !i.isTotal).map(i => i.principal));
