@@ -1,0 +1,148 @@
+---
+description: dbfound框架开发规范 - 编写或修改dbfound model XML文件及相关Java代码时自动生效
+globs:
+  - "**/model/**/*.xml"
+  - "**/*Adapter*.java"
+  - "**/*Controller*.java"
+alwaysApply: false
+---
+
+# dbfound 框架开发规范
+
+官方文档：https://github.com/nfwork/dbfound/wiki  
+**不确定的 API 或用法必须参考官方文档，禁止猜测或编造。**
+
+## 项目概况
+
+- Maven WAR + Servlet + dbfound **3.6.3**，Java 8，MySQL，非 Spring
+- 入口：`DispatcherFilter`（`web.xml`），配置见 `resources/dbfound-conf.xml`
+- Controller 扫描包：`com.nfwork.erp.controller`
+- 拦截器：`com.nfwork.erp.interceptor.SimpleCheckInterceptor`
+- 业务以 **Model XML + Adapter** 为主，Controller 极少
+
+## Model XML
+
+文件在 `resources/model/` 下，路径即 model_name（如 `model/sys/user.xml` → `sys/user`）。
+
+```xml
+<model xmlns="http://dbfound.googlecode.com/model"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+```
+
+根标签下仅三种子标签，顺序：`<param>` → `<query>` → `<execute>`。
+
+### 参数语法
+
+- `${@name}`：动态绑定（PreparedStatement，**值场景必须用这个**）
+- `#{@name}`：静态拼接（仅用于字段名、排序等非值场景，有注入风险）
+
+### param 标签
+
+- `name`（必填）、`dataType`：varchar / number / date / boolean / collection / file
+- `sourcePath`：EL 取值路径，如 `session.user_id`、`ids.size`、`header.x-forwarded-for`
+- `scope`：session / request / param / outParam / cookie / header
+- `ioType`：in / out / both
+
+### query
+
+- 每个 model 最多一个匿名 query（默认查询）
+- 子标签顺序：`<param>` → `<sql>` → `<filter>` → `<verifier>`
+- HTTP：`/modelName.query` 或 `/modelName.query!queryName`
+
+### filter
+
+通过 `#WHERE_CLAUSE#`（SQL 无 WHERE 时）或 `#AND_CLAUSE#`（已有 WHERE 时）挂载。  
+生效规则：无 `condition` 时同名参数非空即生效；有 `condition` 按表达式判断；`active="true"` 始终生效。
+
+```xml
+<filter name="username" dataType="varchar" express="username like concat('%', ${@username}, '%')" />
+<filter name="enabled" active="true" express="enabled = 1" />
+<filter name="is_admin" condition="${@login_user_admin} = false" express="team_id = ${@team_id}" />
+```
+
+### verifier（query 专用）
+
+条件命中时抛 VerifyException：
+```xml
+<verifier express="${@hour} is not null and ${@hour} not between 0 and 23" message="小时数必须在0-23之间"/>
+```
+
+### execute
+
+- `name` 必填，子标签：`<param>` → `<sqls>`
+- HTTP：`/modelName.execute!executeName`
+
+`<sqls>` 内可用子标签：
+
+| 标签 | 说明 |
+|---|---|
+| `executeSql` | DML，`generatedKeyParam` 可返回自增主键 |
+| `collisionSql` | 校验，WHERE 命中时抛异常（**execute 专用**） |
+| `querySql` | execute 流程中查询参数 |
+| `batchExecuteSql` | 批量，用 `#BATCH_TEMPLATE_BEGIN#` / `#BATCH_TEMPLATE_END#` 包裹模板 |
+| `batchSql` | 逐行遍历，支持 `sourcePath` 或 `cursor` |
+| `whenSql` / `otherwiseSql` / `caseSql` | 条件分支 |
+| `query` / `execute` | 调用其他 model |
+
+### sqlPart
+
+- `type="if"`：条件判断（`condition` 表达式或 `sourcePath` 非空）
+- `type="for"`：循环（属性：`sourcePath`、`separator`、`begin`、`end`、`item`、`index`）
+- `type="elseif"` / `type="else"`
+- `autoClearComma="true"`：自动清除结尾多余逗号
+
+```xml
+<sqlPart type="if" condition="${@sort} is not null">order by #{@sort}</sqlPart>
+<sqlPart type="if" sourcePath="cost_date">and cost_date <= ${@cost_date}</sqlPart>
+```
+
+### 集合参数
+
+- `dataType="collection"` 自动将逗号分隔字符串转集合
+- in 场景：`user_id in (${@ids})`
+- 判空用衍生参数：`<param name="ids_size" sourcePath="ids.size" dataType="number" />`
+
+## Java API
+
+### ModelEngine
+
+```java
+// 查询
+QueryResponseObject<T> q = ModelEngine.query(context, "report/accountAmountQuery", "getGroupData", AccountGroupItem.class);
+// 默认 query 传 null
+ModelEngine.query(context, "sys/wxLogin", null);
+// 执行
+ModelEngine.execute(context, "report/homeAnalysis", "autoCreate");
+// 批量执行
+ModelEngine.batchExecute(context, "sys/user", "add", "param.GridData");
+```
+
+### Context
+
+```java
+Context context = new Context().withParam("user_id", userId).withBeanParam(bean).withMapParam(map);
+// Web 请求中：Context.getCurrentContext(request, response)
+```
+
+### 事务
+
+`@ActionTransactional` 标注 Controller 方法；编程式用 `TransactionUtil.execute` / `executeWithoutResult`。
+
+### Controller
+
+实现 `ActionController`，`@ActionMapping("路径")`，方法签名 `ResponseObject method(Context context)`。  
+URL 以 `.do` 结尾，`!` 后接方法名。
+
+### Adapter
+
+- `QueryAdapter` / `MapQueryAdapter`：挂在 `<query adapter="全限定类名">`
+- `ExecuteAdapter`：挂在 `<execute adapter="全限定类名">`
+- 用于报表加工、外部 API 调用等，区别于 Controller
+
+## 常见错误
+
+1. **禁止**用 MyBatis 语法 `#{param}` `${param}`，dbfound 语法带 `@`：`${@param}` `#{@param}`
+2. **禁止**在 query 中用 `collisionSql`（execute 专用），query 用 `verifier`
+3. **禁止**编造不存在的标签或属性
+4. `#WHERE_CLAUSE#` / `#AND_CLAUSE#` 是固定拼写，不可修改
