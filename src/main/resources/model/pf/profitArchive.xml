@@ -13,6 +13,15 @@
                 a.channel_al,
                 a.channel_jj,
                 ifnull(a.channel_pf,0) +ifnull(a.channel_zs,0) +ifnull(a.channel_jt,0) +ifnull(a.channel_al,0) + ifnull(a.channel_jj,0) channel_total,
+                (
+                    SELECT SUM(
+                        ifnull(b.channel_pf,0) + ifnull(b.channel_zs,0) + ifnull(b.channel_jt,0)
+                        + ifnull(b.channel_al,0) + ifnull(b.channel_jj,0)
+                    )
+                    FROM pf_profit_archive b
+                    WHERE b.book_id = a.book_id
+                      AND b.cost_date &lt;= a.cost_date
+                ) cumulative_total,
                 DATE_FORMAT(a.cost_date,'%Y-%m-%d') cost_date
             FROM pf_profit_archive a
             where a.book_id = ${@book_id}

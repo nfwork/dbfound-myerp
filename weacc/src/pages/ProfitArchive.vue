@@ -11,7 +11,7 @@
     </div>
 
     <div class="data-table-box" :style="'width:'+width+'px; height: 442px; overflow: auto;'">
-      <table class="data-table" :style="width===580?'width: 580px;':'width: 510px; border-top:none;'">
+      <table class="data-table" :style="'width: 580px;'+(width===580?'':' border-top:none;')">
         <thead>
           <tr>
             <th class="sticky-col" style="width: 90px;">归档日期</th>
@@ -20,18 +20,20 @@
             <th style="width: 70px;">渠道JT</th>
             <th style="width: 70px;">渠道AL</th>
             <th style="width: 70px;">渠道JJ</th>
-            <th style="width: 70px;">汇总</th>
+            <th style="width: 70px;">当日汇总</th>
+            <th style="width: 70px;">累计汇总</th>
           </tr>
         </thead>
         <tbody>
           <tr @click="setIndex(index)" v-for="(item,index) in item_list" :key="item.archive_id" :class="(current_line==index?'data-table-current-line':'')">
             <td class="sticky-col" @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer; ">{{item.cost_date}}</td>
-            <td style="text-align: center;width: 70px;">{{item.channel_pf | currency}}</td>
-            <td style="text-align: center;width: 70px;">{{item.channel_zs | currency}}</td>
-            <td style="text-align: center;width: 70px;">{{item.channel_jt | currency}}</td>
-            <td style="text-align: center;width: 70px;">{{item.channel_al | currency}}</td> 
-            <td style="text-align: center;width: 70px;">{{item.channel_jj | currency}}</td> 
-            <td style="text-align: center;width: 70px;">{{item.channel_total | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_pf | currency}}</td>
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_zs | currency}}</td>
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jt | currency}}</td>
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_al | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jj | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_total | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.cumulative_total | currency}}</td> 
           </tr>
         </tbody>
       </table>
@@ -57,23 +59,23 @@
         </div>
         <div class="box"> 
           <div class="title">渠道PF：</div>
-          <input type="number" v-model="current_line_channel_pf"/>
+          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_pf"/>
         </div>
         <div class="box"> 
           <div class="title">渠道ZS：</div>
-          <input type="number" v-model="current_line_channel_zs"/>
+          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_zs"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JT：</div>
-          <input type="number" v-model="current_line_channel_jt"/>
+          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_jt"/>
         </div>
         <div class="box"> 
           <div class="title">渠道AL：</div>
-          <input type="number" v-model="current_line_channel_al"/>
+          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_al"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JJ：</div>
-          <input type="number" v-model="current_line_channel_jj"/>
+          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_jj"/>
         </div>
       </div>
       <div class="popup-info-footer">
