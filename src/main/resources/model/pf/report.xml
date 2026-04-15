@@ -50,4 +50,64 @@
             order by p.cost_date
         </sql>
     </query>
+
+    <!-- 总收益 Tab：归档侧聚合恒为 1 行，作驱动表再挂「截止日期内最新一条」明细 -->
+    <query name="totalSummary">
+        <param name="cost_date" dataType="varchar" />
+        <sql>
+            SELECT
+                IFNULL(latest.channel_pf, 0) AS current_channel_pf,
+                IFNULL(latest.channel_zs, 0) AS current_channel_zs,
+                IFNULL(latest.channel_jt, 0) AS current_channel_jt,
+                IFNULL(latest.channel_al, 0) AS current_channel_al,
+                IFNULL(latest.channel_jj, 0) AS current_channel_jj,
+                IFNULL(latest.channel_pf, 0) + IFNULL(latest.channel_zs, 0) + IFNULL(latest.channel_jt, 0)
+                    + IFNULL(latest.channel_al, 0) + IFNULL(latest.channel_jj, 0) AS current_channel_total,
+                IFNULL(arc.t_pf, 0) AS archived_channel_pf,
+                IFNULL(arc.t_zs, 0) AS archived_channel_zs,
+                IFNULL(arc.t_jt, 0) AS archived_channel_jt,
+                IFNULL(arc.t_al, 0) AS archived_channel_al,
+                IFNULL(arc.t_jj, 0) AS archived_channel_jj,
+                IFNULL(arc.t_sum, 0) AS archived_channel_total,
+                IFNULL(latest.channel_pf, 0) + IFNULL(arc.t_pf, 0) AS total_channel_pf,
+                IFNULL(latest.channel_zs, 0) + IFNULL(arc.t_zs, 0) AS total_channel_zs,
+                IFNULL(latest.channel_jt, 0) + IFNULL(arc.t_jt, 0) AS total_channel_jt,
+                IFNULL(latest.channel_al, 0) + IFNULL(arc.t_al, 0) AS total_channel_al,
+                IFNULL(latest.channel_jj, 0) + IFNULL(arc.t_jj, 0) AS total_channel_jj,
+                IFNULL(latest.channel_pf, 0) + IFNULL(latest.channel_zs, 0) + IFNULL(latest.channel_jt, 0)
+                    + IFNULL(latest.channel_al, 0) + IFNULL(latest.channel_jj, 0) + IFNULL(arc.t_sum, 0) AS total_channel_total
+            FROM (
+                SELECT
+                    SUM(IFNULL(a.channel_pf, 0)) AS t_pf,
+                    SUM(IFNULL(a.channel_zs, 0)) AS t_zs,
+                    SUM(IFNULL(a.channel_jt, 0)) AS t_jt,
+                    SUM(IFNULL(a.channel_al, 0)) AS t_al,
+                    SUM(IFNULL(a.channel_jj, 0)) AS t_jj,
+                    SUM(
+                        IFNULL(a.channel_pf, 0) + IFNULL(a.channel_zs, 0) + IFNULL(a.channel_jt, 0)
+                        + IFNULL(a.channel_al, 0) + IFNULL(a.channel_jj, 0)
+                    ) AS t_sum
+                FROM pf_profit_archive a
+                WHERE a.book_id = ${@book_id}
+                <sqlPart type="if" sourcePath="cost_date">
+                AND a.cost_date &lt;= ${@cost_date}
+                </sqlPart>
+            ) arc
+            LEFT JOIN (
+                SELECT
+                    p.channel_pf,
+                    p.channel_zs,
+                    p.channel_jt,
+                    p.channel_al,
+                    p.channel_jj
+                FROM pf_profit_record p
+                WHERE p.book_id = ${@book_id}
+                <sqlPart type="if" sourcePath="cost_date">
+                AND p.cost_date &lt;= ${@cost_date}
+                </sqlPart>
+                ORDER BY p.cost_date DESC
+                LIMIT 1
+            ) latest ON TRUE
+        </sql>
+    </query>
 </model>

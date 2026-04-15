@@ -22,22 +22,6 @@
         <filter name="cost_date" express="${@cost_date} >= cost_date " />
     </query>
 
-    <query name="archiveSummary">
-        <sql>
-            SELECT
-                SUM(ifnull(a.channel_pf, 0)) as total_channel_pf,
-                SUM(ifnull(a.channel_zs, 0)) as total_channel_zs,
-                SUM(ifnull(a.channel_jt, 0)) as total_channel_jt,
-                SUM(ifnull(a.channel_al, 0)) as total_channel_al,
-                SUM(ifnull(a.channel_jj, 0)) as total_channel_jj,
-                SUM(ifnull(a.channel_pf, 0) + ifnull(a.channel_zs, 0) + ifnull(a.channel_jt, 0) + ifnull(a.channel_al, 0) + ifnull(a.channel_jj, 0)) as total_channel_total
-            FROM pf_profit_archive a
-            WHERE a.book_id = ${@book_id}
-            #AND_CLAUSE#
-        </sql>
-        <filter name="cost_date" express="${@cost_date} >= DATE_FORMAT(a.cost_date, '%Y-%m-%d') " />
-    </query>
-
     <execute name="add">
         <param name="channel_pf" dataType="number" />
         <param name="channel_zs" dataType="number" />

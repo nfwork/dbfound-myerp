@@ -12,12 +12,19 @@
                 p.channel_jt,
                 p.channel_al,
                 p.channel_jj,
-                ifnull(p.channel_pf,0) +ifnull(p.channel_zs,0) +ifnull(p.channel_jt,0) +ifnull(p.channel_al,0) +ifnull(p.channel_jj,0) channel_total,
-                DATE_FORMAT(p.cost_date,'%Y-%m-%d') cost_date
+                IFNULL(p.channel_pf,0) + IFNULL(p.channel_zs,0) + IFNULL(p.channel_jt,0) + IFNULL(p.channel_al,0) + IFNULL(p.channel_jj,0) AS channel_total,
+                DATE_FORMAT(p.cost_date,'%Y-%m-%d') AS cost_date,
+                p.channel_pf - LEAD(p.channel_pf) OVER (ORDER BY p.cost_date DESC) AS diff_pf,
+                p.channel_zs - LEAD(p.channel_zs) OVER (ORDER BY p.cost_date DESC) AS diff_zs,
+                p.channel_jt - LEAD(p.channel_jt) OVER (ORDER BY p.cost_date DESC) AS diff_jt,
+                p.channel_al - LEAD(p.channel_al) OVER (ORDER BY p.cost_date DESC) AS diff_al,
+                p.channel_jj - LEAD(p.channel_jj) OVER (ORDER BY p.cost_date DESC) AS diff_jj,
+                (IFNULL(p.channel_pf,0) + IFNULL(p.channel_zs,0) + IFNULL(p.channel_jt,0) + IFNULL(p.channel_al,0) + IFNULL(p.channel_jj,0))
+                    - LEAD(IFNULL(p.channel_pf,0) + IFNULL(p.channel_zs,0) + IFNULL(p.channel_jt,0) + IFNULL(p.channel_al,0) + IFNULL(p.channel_jj,0)) OVER (ORDER BY p.cost_date DESC) AS diff_total
             FROM pf_profit_record p
-            where p.book_id = ${@book_id}
+            WHERE p.book_id = ${@book_id}
             #AND_CLAUSE#
-            order by p.cost_date desc
+            ORDER BY p.cost_date DESC
         </sql>
         <filter name="cost_date" express="${@cost_date} >= cost_date " />
     </query>
