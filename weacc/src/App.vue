@@ -134,7 +134,8 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Arial", "Source Han Sans CN", "Helvetica Neue", "Helvetica",sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
   .android .num-font{
@@ -149,6 +150,11 @@ export default {
   .ios .num-font{
     font-family: "Helvetica Neue";
     font-size: 13px;
+  }
+
+  .others .num-font{
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
   }
 
   #app{
