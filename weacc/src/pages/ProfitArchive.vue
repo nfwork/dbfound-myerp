@@ -11,7 +11,7 @@
     </div>
 
     <div class="data-table-box" :style="'width:'+width+'px; height: 442px; overflow: auto;'">
-      <table class="data-table" :style="'width: 580px;'+(width===580?'':' border-top:none;')">
+      <table class="data-table" :style="'width: 600px;'+(width===580?'':' border-top:none;')">
         <thead>
           <tr>
             <th class="sticky-col" style="width: 90px;">归档日期</th>
@@ -20,8 +20,8 @@
             <th style="width: 70px;">渠道JT</th>
             <th style="width: 70px;">渠道AL</th>
             <th style="width: 70px;">渠道JJ</th>
-            <th style="width: 70px;">当日汇总</th>
-            <th style="width: 70px;">累计汇总</th>
+            <th style="width: 80px;">当日汇总</th>
+            <th style="width: 80px;">累计汇总</th>
           </tr>
         </thead>
         <tbody>
@@ -32,8 +32,8 @@
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jt | currency}}</td>
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_al | currency}}</td> 
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jj | currency}}</td> 
-            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_total | currency}}</td> 
-            <td class="num-font" style="text-align: right;width: 70px;">{{item.cumulative_total | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 80px;">{{item.channel_total | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 80px;">{{item.cumulative_total | currency}}</td> 
           </tr>
         </tbody>
       </table>
