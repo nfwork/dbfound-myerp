@@ -357,8 +357,12 @@ export default {
     annualProfitSource() {
       return this.summaryTab === 'yearly' ? this.yearly_profit_list : this.monthly_profit_list;
     },
+    /** 年化折算：按年已是全年收益用 1；按月用 365/当月自然日数（替代固定×12） */
     annualPeriodMultiplier() {
-      return this.summaryTab === 'yearly' ? 1 : 12;
+      if (this.summaryTab === 'yearly') return 1;
+      const days = this.daysInMonthForProfitPeriod(this.annualCalcMonth);
+      if (days == null || days < 1) return 12;
+      return 365 / days;
     },
     annualProfitLabel() {
       return this.summaryTab === 'yearly' ? '年收益(元)' : '月收益(元)';
@@ -373,6 +377,16 @@ export default {
   },
 
   methods: {
+    /** profit_period 为 YYYY-MM 时返回该月天数（含闰年 2 月）；否则 null */
+    daysInMonthForProfitPeriod(periodStr) {
+      if (!periodStr || typeof periodStr !== 'string') return null;
+      const parts = periodStr.trim().split('-');
+      if (parts.length < 2) return null;
+      const y = parseInt(parts[0], 10);
+      const mo = parseInt(parts[1], 10);
+      if (!Number.isFinite(y) || !Number.isFinite(mo) || mo < 1 || mo > 12) return null;
+      return new Date(y, mo, 0).getDate();
+    },
     fmt(v) {
       return (Number(v) || 0).toFixed(2);
     },
