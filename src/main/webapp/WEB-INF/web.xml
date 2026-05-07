@@ -25,7 +25,7 @@
 
 	<context-param>
 		<param-name>serviceMode</param-name>
-		<param-value>mqSender</param-value> <!--mqCustomer mqSender -->
+		<param-value>mqCustomer</param-value> <!--mqCustomer mqSender -->
 	</context-param>
 
 </web-app>
