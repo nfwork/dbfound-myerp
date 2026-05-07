@@ -11,6 +11,21 @@ const request = axios.create({
   }
 });
 
+function getResponseMessage(response) {
+  if (!response || !response.data) {
+    return "";
+  }
+  let data = response.data;
+  if (typeof data === "string") {
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+      return data;
+    }
+  }
+  return data.message || "";
+}
+
 request.interceptors.request.use(
   config => {
     if(!request.jsessionid){
@@ -33,7 +48,7 @@ request.interceptors.request.use(
     return config
   },
   error => {
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
 
@@ -53,16 +68,19 @@ request.interceptors.response.use(
     return res;
   },
   error => {
-    if(error.config.showLoadding){
+    if(error.config && error.config.showLoadding){
       Toast.clear();
     }
-    let {message} = error;
-    if (message === "Network Error") {
+    let message = getResponseMessage(error.response);
+    if (!message && error.message === "Network Error") {
       message = "后端接口连接异常";
-    } else if (message.includes("timeout")) {
+    } else if (!message && error.message.includes("timeout")) {
       message = "系统接口请求超时";
     }
-    Toast.fail(message);
+    Toast.fail(message || "系统接口请求异常");
+    if (error.response) {
+      return error.response;
+    }
     return Promise.reject(error);
   }
 )
