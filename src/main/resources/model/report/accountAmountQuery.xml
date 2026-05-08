@@ -24,22 +24,28 @@
 		<sql>
 		 <![CDATA[
 			select l.account_id,
-			       p.period_code,
-			       sum(ifnull(dr_amount,0)-ifnull(cr_amount,0)) as amount
-			  from exp_item i, exp_item_line l, exp_period p,exp_account a
-			  where l.account_id = a.account_id
-				and i.item_id = l.item_id
-				and i.period_id = p.period_id
-			    and p.period_code <=  ${@period_code_to}
-				and i.book_id = ${@book_id}
-				and l.book_id = ${@book_id}
-				and a.book_id = ${@book_id}
+			       sum(case
+			           when p.period_code >= ${@period_code_from}
+			            and p.period_code <= ${@period_code_to}
+			           then ifnull(dr_amount,0)-ifnull(cr_amount,0)
+			           else 0
+			       end) as emerge_amount,
+			       sum(case
+			           when p.period_code < ${@period_code_from}
+			           then ifnull(dr_amount,0)-ifnull(cr_amount,0)
+			           else 0
+			       end) as remaind_amount
+			FROM exp_item i
+				JOIN exp_item_line l ON l.item_id = i.item_id
+				JOIN exp_period p ON i.period_id = p.period_id
+			WHERE i.book_id = ${@book_id}
 			    and p.book_id = ${@book_id}
+			    and p.period_code <=  ${@period_code_to}
 				#AND_CLAUSE#
-              group by l.account_id, p.period_code
+              group by l.account_id
 			]]>
 		</sql>
-		<filter name="account_type" express="a.account_type = ${@account_type}" />
+		<filter name="account_type" express="l.account_id in (select account_id from exp_account a where a.book_id = ${@book_id} and a.account_type =${@account_type}) " />
 	</query>
 
 	<query name="getExpDetail">
