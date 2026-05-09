@@ -104,7 +104,7 @@ export default {
         },
         getAccountTypeList(){
             let url = 'fnd/sourceCode.query!combo';
-            let data ={};
+            let data ={"code":"ACCOUNTTYPE"};
             request.post(url, data).then(res => {
                 if(res.data.success){
                     this.account_type_list = res.data.datas;
