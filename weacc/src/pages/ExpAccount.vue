@@ -103,7 +103,7 @@ export default {
             this.current_line_account_type = item;
         },
         getAccountTypeList(){
-            let url = 'fnd/sourceCode.query';
+            let url = 'fnd/sourceCode.query!combo';
             let data ={};
             request.post(url, data).then(res => {
                 if(res.data.success){

@@ -3,7 +3,7 @@
 	<query>
 		<sql>
 		 <![CDATA[
-			select 
+			select
 				code_id,
 				code,
 				code_value,
@@ -19,6 +19,21 @@
 		<filter name="code" express="code = ${@code}"/>
 		<filter name="code_name" express="code_name like concat(${@code_name},'%')"/>
 		<filter name="code_value" express="code_value = ${@code_value}"/>
+	</query>
+
+	<query name="combo" adapter="com.nfwork.erp.adapter.SourceCodeCacheAdapter">
+		<sql>
+			select
+				code_id,
+				code,
+				code_value,
+				code_name,
+				priority
+			from sys_code t
+			where code = ${@code}
+			order by priority
+		</sql>
+		<verifier express="${@code} is null" message="code不能为空" />
 	</query>
 	
 	<execute name="add">
