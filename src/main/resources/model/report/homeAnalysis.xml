@@ -64,7 +64,6 @@
 	</query>
 
 	<execute name="autoCreate">
-		<param value="@period_code" dataType="number" />
 		<sqls>
 			<executeSql>
 			 <![CDATA[
