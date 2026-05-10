@@ -27,8 +27,8 @@ public class PeriodComboCacheAdapter implements MapQueryAdapter, ExecuteAdapter 
     public QueryResponseObject<Map<String, Object>> handleQuery(Context context, Map<String, Param> params) {
         String book_id = context.getString("session.book_id");
         if (DataUtil.isNotNull(book_id)){
-            cacheKeyMap.putIfAbsent(context.getCurrentModelChild(),1);
-            String key = context.getCurrentModelChild() + book_id;
+            cacheKeyMap.putIfAbsent(context.getCurrentModelAction(),1);
+            String key = context.getCurrentModelAction() + book_id;
             QueryResponseObject<Map<String, Object>> info = periodCache.getIfPresent(key);
             if(info!=null){
                 LogUtil.info("get period from cache, cache_key: " + key);
@@ -42,7 +42,7 @@ public class PeriodComboCacheAdapter implements MapQueryAdapter, ExecuteAdapter 
     public void afterQuery(Context context, Map<String, Param> params, QueryResponseObject<Map<String, Object>> responseObject) {
         String book_id = context.getString("session.book_id");
         if(DataUtil.isNotNull(book_id)) {
-            String key = context.getCurrentModelChild() + book_id;
+            String key = context.getCurrentModelAction() + book_id;
             periodCache.put(key, responseObject);
         }
     }
