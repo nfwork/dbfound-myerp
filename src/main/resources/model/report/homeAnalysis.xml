@@ -3,7 +3,8 @@
 
 	<param name="book_id" dataType="number" scope="session" />
 
-	<query adapter="com.nfwork.erp.adapter.PeriodAdapter">
+	<query adapter="com.nfwork.erp.adapter.PeriodAdapter
+					com.nfwork.erp.adapter.HomeAnalysisCacheAdapter">
 		<param name="user_name" scope="session" ioType="both"/>
 		<sql>
 		 <![CDATA[

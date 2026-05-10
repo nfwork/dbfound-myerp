@@ -35,7 +35,8 @@
 		</sql>
 	</query>
 	
-	<execute name="add" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
+	<execute name="add" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter
+								 com.nfwork.erp.adapter.HomeAnalysisCacheAdapter">
 		<param name="account_code" dataType="varchar" />
 		<param name="account_name" dataType="varchar" />
 		<param name="account_type" dataType="varchar" />
@@ -61,7 +62,8 @@
 		</sqls>
 	</execute>
 
-	<execute name="update" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
+	<execute name="update" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter
+									com.nfwork.erp.adapter.HomeAnalysisCacheAdapter">
 		<param name="account_code" dataType="varchar" />
 		<param name="account_name" dataType="varchar" />
 		<param name="priority" dataType="number" />
@@ -82,7 +84,8 @@
 		</sqls>
 	</execute>
 
-	<execute name="delete" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
+	<execute name="delete" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter
+									com.nfwork.erp.adapter.HomeAnalysisCacheAdapter">
 		<param name="account_id" dataType="number" />
 		<sqls>
 			<executeSql>
