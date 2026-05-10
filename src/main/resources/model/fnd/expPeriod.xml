@@ -21,7 +21,6 @@
 	</query>
 	
 	<query name="combo" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
-		<param name="cache_key" value="combo_" dataType="varchar" />
 		<sql>
 			 select period_id,
 				period_code,
@@ -36,7 +35,6 @@
 	</query>
 	
 	<query name="comboAll" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
-		<param name="cache_key" value="combo_all_" dataType="varchar" />
 		<sql>
 			 select period_id,
 				period_code,
