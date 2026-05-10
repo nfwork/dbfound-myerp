@@ -5,7 +5,6 @@
 
 	<query>
 		<sql>
-		 <![CDATA[
 			 select period_id,
 				period_code,
 				period_name,
@@ -15,16 +14,15 @@
 			where t.book_id = ${@book_id}
 			#AND_CLAUSE#
 		 	order by t.priority
-		 ]]>
 		</sql>
 		<filter name="period_name" express="period_name like ${@period_name}"/>
 		<filter name="period_code" express="period_code = ${@period_code}"/>
 		<filter name="status" express="status = ${@status}"/>
 	</query>
 	
-	<query name="combo">
+	<query name="combo" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
+		<param name="cache_key" value="combo_" dataType="varchar" />
 		<sql>
-		 <![CDATA[
 			 select period_id,
 				period_code,
 				period_name,
@@ -34,13 +32,12 @@
 			where status='Y'
 			  and t.book_id = ${@book_id}
 		 	order by t.priority
-		 ]]>
 		</sql>
 	</query>
 	
-	<query name="comboAll">
+	<query name="comboAll" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
+		<param name="cache_key" value="combo_all_" dataType="varchar" />
 		<sql>
-		 <![CDATA[
 			 select period_id,
 				period_code,
 				period_name,
@@ -50,18 +47,16 @@
 			where status != 'A'
 			  and t.book_id = ${@book_id}
 		 	order by t.priority
-		 ]]>
 		</sql>
 	</query>
 	
-	<execute name="add">
+	<execute name="add" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
 		<param name="period_code" dataType="number" />
 		<param name="period_name" dataType="varchar" />
 		<param name="status" dataType="varchar" />
 		<param name="priority" dataType="number" />
 		<sqls>
 			<executeSql>
-			 <![CDATA[
 			    insert into exp_period(
 			    		period_code,
 			    		period_name,
@@ -73,68 +68,59 @@
 			    		${@status},
 				        ${@book_id},
 			    		${@priority})
-			 ]]>
 			</executeSql>
 		</sqls>
 	</execute>
 
-	<execute name="update">
+	<execute name="update" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
 		<param name="period_name" dataType="varchar" />
 		<param name="priority" dataType="number" />
 		<param name="period_id" dataType="number" />
 		<sqls>
 			<executeSql>
-			  <![CDATA[
 				update exp_period
 				   set 
 					period_name = ${@period_name},
 					priority = ${@priority}		
 				 where period_id = ${@period_id}
 				   and book_id = ${@book_id}
-			  ]]>
 			</executeSql>
 		</sqls>
 	</execute>
 	
-	<execute name="open">
+	<execute name="open" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
 		<param name="status" dataType="varchar" />
 		<param name="period_id" dataType="number" />
 		<sqls>
 			<executeSql>
-			  <![CDATA[
 				update exp_period
 				   set 
 					status = 'Y'
 				 where period_id = ${@period_id}
 				   and book_id = ${@book_id}
-			  ]]>
 			</executeSql>
 		</sqls>
 	</execute>
 	
-	<execute name="close">
+	<execute name="close" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
 		<param name="status" dataType="varchar" />
 		<param name="period_id" dataType="number" />
 		<sqls>
 			<executeSql>
-			  <![CDATA[
 				update exp_period
 				   set 
 					status = 'N'
 				 where period_id = ${@period_id}
 				   and book_id = ${@book_id}
-			  ]]>
 			</executeSql>
 		</sqls>
 	</execute>
 
-	<execute name="delete">
+	<execute name="delete" adapter="com.nfwork.erp.adapter.PeriodComboCacheAdapter">
 		<param name="period_id" dataType="number" />
 		<sqls>
 			<executeSql>
-			  <![CDATA[
 				delete from exp_period where period_id = ${@period_id} and book_id = ${@book_id}
-			  ]]>
 			</executeSql>
 		</sqls>
 	</execute>

@@ -5,7 +5,6 @@
 
 	<query>
 		<sql>
-		 <![CDATA[
 			 select account_id,
 				account_code,
 				account_name,
@@ -17,14 +16,26 @@
 			where t.book_id = ${@book_id}
 			#AND_CLAUSE#
 			order by t.priority
-		 ]]>
 		</sql>
 		<filter name="account_name" express="account_name like ${@account_name}"/>
 		<filter name="account_code" express="account_code like ${@account_code}"/>
 		<filter name="account_type" express="account_type like ${@account_type}"/>
 	</query>
+
+	<query name="combo" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
+		<sql>
+			select account_id,
+				   account_code,
+				   account_name,
+				   account_type,
+				   priority
+			from exp_account t
+			where t.book_id = ${@book_id}
+			order by t.priority
+		</sql>
+	</query>
 	
-	<execute name="add">
+	<execute name="add" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
 		<param name="account_code" dataType="varchar" />
 		<param name="account_name" dataType="varchar" />
 		<param name="account_type" dataType="varchar" />
@@ -32,7 +43,6 @@
 		<param name="display_in_home" dataType="number" />
 		<sqls>
 			<executeSql>
-			 <![CDATA[
 			    insert into exp_account(
 			    		account_code,
 			    		account_name,
@@ -47,12 +57,11 @@
 				        ${@book_id},
 				        ${@display_in_home},
 			    		${@priority})
-			 ]]>
 			</executeSql>
 		</sqls>
 	</execute>
 
-	<execute name="update">
+	<execute name="update" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
 		<param name="account_code" dataType="varchar" />
 		<param name="account_name" dataType="varchar" />
 		<param name="priority" dataType="number" />
@@ -61,7 +70,6 @@
 		<param name="display_in_home" dataType="number" />
 		<sqls>
 			<executeSql>
-			  <![CDATA[
 				update exp_account
 				   set
 					account_name = ${@account_name},
@@ -70,18 +78,15 @@
 					priority = ${@priority}		
 				 where account_id = ${@account_id}
 				   and book_id = ${@book_id}
-			  ]]>
 			</executeSql>
 		</sqls>
 	</execute>
 
-	<execute name="delete">
+	<execute name="delete" adapter="com.nfwork.erp.adapter.AccountComboCacheAdapter">
 		<param name="account_id" dataType="number" />
 		<sqls>
 			<executeSql>
-			  <![CDATA[
 				delete from exp_account where account_id = ${@account_id} and book_id = ${@book_id}
-			  ]]>
 			</executeSql>
 		</sqls>
 	</execute>

@@ -158,7 +158,7 @@ export default {
             });
         },
         getAccountList(){
-            let url = 'fnd/expAccount.query';
+            let url = 'fnd/expAccount.query!combo';
             let data ={};
             request.post(url, data).then(res => {
                 if(res.data.success){
