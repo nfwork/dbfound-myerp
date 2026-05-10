@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AccountComboCacheAdapter implements MapQueryAdapter, ExecuteAdapter {
 
-    private final Cache<String, QueryResponseObject<Map<String, Object>>> accountCache = Caffeine.newBuilder()
+    private static final Cache<String, QueryResponseObject<Map<String, Object>>> accountCache = Caffeine.newBuilder()
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .initialCapacity(50)
             .maximumSize(500)

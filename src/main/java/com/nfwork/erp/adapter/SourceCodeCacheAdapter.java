@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SourceCodeCacheAdapter implements MapQueryAdapter {
 
-    private final Cache<String, QueryResponseObject<Map<String, Object>>> userInfoCache = Caffeine.newBuilder()
+    private static final Cache<String, QueryResponseObject<Map<String, Object>>> userInfoCache = Caffeine.newBuilder()
             .expireAfterWrite(3, TimeUnit.MINUTES)
             .initialCapacity(50)
             .maximumSize(500)
