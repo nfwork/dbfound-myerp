@@ -81,12 +81,12 @@
 
 			<execute name="save"/>
 
-			<setContextData targetPath="dr_line.dr_amount" sourcePath="amount" />
-			<setContextData targetPath="dr_line.account_id" sourcePath="dr_account_id" />
+			<setContextData name="dr_line.dr_amount" param="amount" scope="param"/>
+			<setContextData name="dr_line.account_id" param="dr_account_id" scope="param"/>
 			<execute modelName="exp/itemLine" name="add" currentPath="dr_line"/>
 
-			<setContextData targetPath="cr_line.cr_amount" sourcePath="amount" />
-			<setContextData targetPath="cr_line.account_id" sourcePath="cr_account_id"/>
+			<setContextData name="cr_line.cr_amount" param="amount" scope="param"/>
+			<setContextData name="cr_line.account_id" param="cr_account_id" scope="param"/>
 			<execute modelName="exp/itemLine" name="add" currentPath="cr_line"/>
 		</sqls>
 	</execute>
