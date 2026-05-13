@@ -31,7 +31,7 @@
         </div>
         <div class="table-body" style="min-height: 230px;">
         <div @click="showDetail(item.item_id,index)" :class="current_line==index?'table-line table-line-current':'table-line'" v-for="(item, index) in item_list" :key="item.item_id">
-            <div style="width: 80px; text-align: center;">{{item.item_num}}</div>
+            <div style="width: 80px;color: #0f4ea0; text-align: center;cursor: pointer;" @click.stop="goToDetail(item.item_id)">{{item.item_num}}</div>
             <div style="width: 100px; text-align: center;">{{item.exp_time}}</div>
             <div style="flex:1; overflow-x: hidden;"><span>{{item.description}}</span></div>
         </div>
@@ -180,6 +180,9 @@ export default {
             this.only_my = false;
             this.current_period = {};
             this.current_account = {};
+        },
+        goToDetail(item_id){
+            this.$router.push("/itemDetailSave?item_id="+item_id+"&viewOnly=1")
         },
         init(){
             this.getAccountList();

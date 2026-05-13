@@ -14,17 +14,17 @@
     </div>
     <div class="box"> 
         <div class="title">会计期间：</div>
-        <my-select class="my-select" :value="current_period" @select="setPeriod" :options="period_list" valueField="period_id" displayField="period_name"/>
+        <my-select :class="isViewOnly?'my-select readonly-control':'my-select'" :value="current_period" @select="setPeriod" :options="period_list" valueField="period_id" displayField="period_name"/>
     </div>
     <div class="box"> 
         <div class="title">费用日期：</div>
-        <my-calendar class="my-calendar" v-model="exp_time"/>
+        <my-calendar :class="isViewOnly?'my-calendar readonly-control':'my-calendar'" v-model="exp_time"/>
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>
-        <textarea cursor-spacing="120" v-model="description"></textarea>
+        <textarea cursor-spacing="120" v-model="description" :disabled="isViewOnly"></textarea>
     </div>
-    <div class="box"> 
+    <div class="box" v-if="!isViewOnly"> 
         <button class="bule-button" @click="save">保 存</button>
         <button class="litter-bule-button" @click="addLine">添加行</button>
     </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="table-body"  style="max-height: 230px;min-height: 90px;">
             <div class="table-line" hover-class="table-line-hover" v-for="(item,index) in item_line_list" :key="index">
-                <div @click="updateLine(index,item.account_id,item.account_name)" style="width: 100px;color: #0f4ea0;">{{item.account_name}}</div>
+                <div @click="updateLine(index,item.account_id,item.account_name)" :style="isViewOnly?'width: 100px;':'width: 100px;color: #0f4ea0;'">{{item.account_name}}</div>
                 <div class="num-font" style="width: 75px; text-align: right;">{{item.dr_amount | currency}}</div>
                 <div class="num-font" style="width: 75px; text-align: right;">{{item.cr_amount | currency}}</div>
                 <div style="flex: 1;">{{item.description}}</div>
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <van-popup v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
+    <van-popup v-if="!isViewOnly" v-model="showUpdateBox" style="max-width:460px;width:90%;top:43%">
         <div class="popup-info-header">凭证行管理</div>
         <div class="popup-row-info">
             <div class="box"> 
@@ -98,7 +98,8 @@ export default {
             current_line_dr_amount:null,
             current_line_cr_amount:null,
             current_line_description:"",
-            current_line:{}
+            current_line:{},
+            isViewOnly:false
         }
     },
     methods:{
@@ -109,6 +110,9 @@ export default {
             this.showUpdateBox = true;
         },
         saveLine(){
+            if(this.isViewOnly){
+                return;
+            }
             if(!this.current_line_account.account_id){
                 Toast.fail("科目不能为空！")
                 return;
@@ -153,12 +157,18 @@ export default {
             this.hiddenBox();
         },
         setPeriod(item){
+            if(this.isViewOnly){
+                return;
+            }
             this.current_period = item;
         },
         setAccount(item){
             this.current_line_account = item;
         },
         addLine(){
+            if(this.isViewOnly){
+                return;
+            }
             this.line_index= -1;
             this.current_line_account={};
             this.current_line_dr_amount="";
@@ -167,6 +177,9 @@ export default {
             this.showBox();
         },
         save(){
+            if(this.isViewOnly){
+                return;
+            }
             if(!this.current_period || !this.current_period.period_id){
                 Toast.fail('会计期间不能为空')
                 return;
@@ -230,6 +243,9 @@ export default {
             return Math.round(num1 * m + num2 * m) / m;
         },
         updateLine(index,accountid,accountname){
+            if(this.isViewOnly){
+                return;
+            }
             let data = this.item_line_list[index];
             this.line_index = index;
             this.current_line_cr_amount = data.cr_amount ;
@@ -250,9 +266,9 @@ export default {
             });
         },
         getPeriodList(){
-            let url = 'fnd/expPeriod.query!combo';
+            let url = this.isViewOnly ? 'fnd/expPeriod.query!comboAll' : 'fnd/expPeriod.query!combo';
             let data ={};
-            request.post(url, data).then(res => {
+            return request.post(url, data).then(res => {
                 if(res.data.success){
                     this.period_list = res.data.datas;
                     this.current_period = this.period_list[0];
@@ -313,22 +329,31 @@ export default {
             this.current_period ={};
             // 清空表格数据
             this.item_line_list = []; 
-            this.getPeriodList();
-            this.getAccountList();
+            return this.getPeriodList();
+        },
+        loadPage(query){
+            this.isViewOnly = query.item_id && query.edit != 1;
+            this.init().then(() => {
+                this.getAccountList();
+                let item_id = query.item_id;
+                if(item_id){
+                    this.item_id =item_id;
+                    this.query();
+                    this.showDetail();
+                }else{
+                    this.getBasic();
+                }
+            });
         }
     },
     beforeRouteEnter(to, from, next) {
         next(vm => {
-            vm.init();
-            let item_id = to.query.item_id;
-            if(item_id){
-                vm.item_id =item_id;
-                vm.query();
-                vm.showDetail();
-            }else{
-                vm.getBasic();
-            }
+            vm.loadPage(to.query);
         });
+    },
+    beforeRouteUpdate(to, from, next) {
+        this.loadPage(to.query);
+        next();
     }
 }
 </script>
@@ -351,5 +376,19 @@ textarea{
   flex: 1;
   height: 70px;
   margin-top: 2px;
+}
+.readonly-control{
+  pointer-events: none;
+}
+textarea[disabled]{
+  color: #555;
+  background-color: #f1f1f1;
+  opacity: 1;
+}
+.readonly-control >>> .select-current{
+  background-color: #f1f1f1;
+}
+.readonly-control >>> .select-current::after{
+  display: none;
 }
 </style>

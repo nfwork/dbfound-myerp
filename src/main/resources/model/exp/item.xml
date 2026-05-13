@@ -81,6 +81,8 @@
 										     and description = ${@description} and exp_time = ${@exp_time})"
 						message="当日已经存在凭证：'#{@description}'"/>
 
+			<collisionSql where="not exists (select 1 from exp_period where book_id = ${@book_id} and period_id = ${@period_id} and status = 'Y')" message="会计期间未打开，不能保存凭证！"/>
+
 			<execute name="save"/>
 
 			<setContextData name="dr_line.dr_amount" param="amount" scope="param"/>
