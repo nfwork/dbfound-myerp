@@ -2,6 +2,7 @@
 <model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
 
 	<param name="book_id" dataType="number" scope="session" />
+	<param name="user_id" dataType="number" scope="session" />
 
 	<query>
 		<sql>
@@ -30,6 +31,7 @@
 											                   and l.book_id =  ${@book_id}
 											                   and l.account_id = ${@account_id} )" />
 		<filter name="description" express="t.description like concat('%',${@description},'%')" />
+		<filter name="only_my" express="t.regist_user_id = ${@user_id}" />
 		<filter name="timefrom" express="t.exp_time &gt;= ${@timefrom}" />
 		<filter name="timeto" express="t.exp_time &lt;= ${@timeto}" />
 	</query>

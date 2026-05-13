@@ -12,6 +12,13 @@
         <div class="title">凭证描述：</div>
         <input type="text" v-model="description" @keyup.enter="query"/>
     </div>
+    <div class="box filter-option"> 
+        <div class="title">登记人：</div>
+        <label class="checkbox-label">
+            <input class="checkbox-input" type="checkbox" v-model="only_my"/>
+            仅显示本人登记
+        </label>
+    </div>
     <div class="box"> 
         <button class="bule-button" @click="query">查 询</button>
         <button class="yellow-button" @click="reset">重置</button>
@@ -73,6 +80,7 @@ export default {
             current_period: {},
             current_account: {},
             description: '',
+            only_my: false,
             period_id: null,
             current_line:-1,
             limit : 5,
@@ -89,6 +97,7 @@ export default {
                 account_id: this.current_account.account_id,
                 limit : this.limit,
                 description : this.description,
+                only_my : this.only_my ? 1 : null,
                 start : (this.currentPage - 1) * this.limit
             };
             request.post(url, data, {showLoadding:true}).then(res => {
@@ -168,6 +177,7 @@ export default {
         },
         reset(){
             this.description = '';
+            this.only_my = false;
             this.current_period = {};
             this.current_account = {};
         },
@@ -194,9 +204,32 @@ export default {
   float: left;
   text-align: right;
 }
-input{
+input[type="text"]{
   flex: 1;
   margin-top: 2px;
   float: left;
+}
+.checkbox-label{
+  height: 34px;
+  line-height: 34px;
+  margin-top: 2px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  color: #444;
+  background: #f7f9fc;
+  border: 1px solid #dfe7ee;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-input{
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin: 0 6px 0 0;
+  padding: 0;
+  accent-color: #2d6ca2;
+  cursor: pointer;
 }
 </style>
