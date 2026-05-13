@@ -11,6 +11,7 @@ import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.LogUtil;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -21,13 +22,13 @@ public class PeriodComboCacheAdapter implements MapQueryAdapter, ExecuteAdapter 
             .initialCapacity(50)
             .maximumSize(500)
             .build();
-    private static final Map<String,Integer> cacheKeyMap = new ConcurrentHashMap<>();
+    private static final Set<String> cacheKeySet = ConcurrentHashMap.newKeySet();
 
     @Override
     public QueryResponseObject<Map<String, Object>> handleQuery(Context context, Map<String, Param> params) {
         String book_id = context.getString("session.book_id");
         if (DataUtil.isNotNull(book_id)){
-            cacheKeyMap.putIfAbsent(context.getCurrentModelAction(),1);
+            cacheKeySet.add(context.getCurrentModelAction());
             String key = context.getCurrentModelAction() + book_id;
             QueryResponseObject<Map<String, Object>> info = periodCache.getIfPresent(key);
             if(info!=null){
@@ -51,7 +52,7 @@ public class PeriodComboCacheAdapter implements MapQueryAdapter, ExecuteAdapter 
     public void afterExecute(Context context, Map<String, Param> params) {
         String book_id = context.getString("session.book_id");
         if(DataUtil.isNotNull(book_id)) {
-            for (String key : cacheKeyMap.keySet()) {
+            for (String key : cacheKeySet) {
                 periodCache.invalidate(key + book_id);
             }
         }
