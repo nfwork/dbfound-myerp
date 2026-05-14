@@ -11,19 +11,63 @@ const request = axios.create({
   }
 });
 
-function getResponseMessage(response) {
-  if (!response || !response.data) {
-    return "";
-  }
+function getResponseData(response) {
   let data = response.data;
   if (typeof data === "string") {
     try {
-      data = JSON.parse(data);
+      return JSON.parse(data);
     } catch (e) {
       return data;
     }
   }
-  return data.message || "";
+  return data;
+}
+
+function getKnownResponseMessage(response) {
+  if (!response || !response.data) {
+    return "";
+  }
+  let data = getResponseData(response);
+  return data && typeof data === "object" ? data.message || "" : "";
+}
+
+function appendHttpCode(message, response) {
+  if (!response || !response.status) {
+    return message;
+  }
+  return message + "（HTTP " + response.status + "）";
+}
+
+function getErrorMessage(error) {
+  let knownMessage = getKnownResponseMessage(error.response);
+  if (knownMessage) {
+    return {
+      message: knownMessage,
+      known: true
+    };
+  }
+  if (error.response && error.response.status === 502) {
+    return {
+      message: "服务暂时不可用，请稍后再试",
+      known: false
+    };
+  }
+  if (error.message === "Network Error") {
+    return {
+      message: "后端接口连接异常",
+      known: false
+    };
+  }
+  if (error.message && error.message.includes("timeout")) {
+    return {
+      message: "系统接口请求超时",
+      known: false
+    };
+  }
+  return {
+    message: "系统接口请求异常",
+    known: false
+  };
 }
 
 request.interceptors.request.use(
@@ -71,16 +115,8 @@ request.interceptors.response.use(
     if(error.config && error.config.showLoadding){
       Toast.clear();
     }
-    let message = getResponseMessage(error.response);
-    if (!message && error.message === "Network Error") {
-      message = "后端接口连接异常";
-    } else if (!message && error.message.includes("timeout")) {
-      message = "系统接口请求超时";
-    }
-    Toast.fail(message || "系统接口请求异常");
-    if (error.response) {
-      return error.response;
-    }
+    let errorInfo = getErrorMessage(error);
+    Toast.fail(errorInfo.known ? errorInfo.message : appendHttpCode(errorInfo.message, error.response));
     return Promise.reject(error);
   }
 )

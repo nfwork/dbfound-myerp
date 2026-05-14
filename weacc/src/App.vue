@@ -61,14 +61,22 @@ export default {
     }
   },
   methods: {
-    changeTab(path,falg){
+    getTitle(path, query){
+      if(path == "/itemDetailSave" && query && query.item_id && query.edit != 1){
+        return "We记账-凭证详情";
+      }
+      let pathEntity = this.paths[path];
+      return pathEntity ? pathEntity.title : this.title;
+    },
+    changeTab(path,falg,query){
       if(this.path == path){
+        this.title = this.getTitle(path, query);
         return;
       }
       let pathEntity = this.paths[path];
       if(pathEntity){
         this.path = path;
-        this.title = pathEntity.title;
+        this.title = this.getTitle(path, query);
         if(falg){
           return;
         }
@@ -108,7 +116,7 @@ export default {
         if(!path){
           path ="/";
         }
-        this.changeTab(path,true);
+        this.changeTab(path,true,to.query);
       },
       deep: true,
       immediate: true
