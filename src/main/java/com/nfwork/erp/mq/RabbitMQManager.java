@@ -15,8 +15,6 @@ public class RabbitMQManager {
 
     static volatile RequestSender sender = null;
 
-    static String serviceMode = null;
-
     public static void initCustomer() {
         if (customer == null) {
             synchronized (RabbitMQManager.class) {
