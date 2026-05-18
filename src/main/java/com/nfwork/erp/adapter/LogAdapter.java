@@ -11,6 +11,6 @@ public class LogAdapter implements ExecuteAdapter {
 
     @Override
     public void beforeExecute(Context context, Map<String, Param> params) {
-        DBFoundConfig.setOpenLog("1".equals(params.get("open").getValue()));
+        // DBFoundConfig.setOpenLog("1".equals(params.get("open").getValue()));
     }
 }

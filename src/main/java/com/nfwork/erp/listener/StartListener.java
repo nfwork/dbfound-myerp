@@ -1,9 +1,7 @@
 package com.nfwork.erp.listener;
 
 import com.nfwork.dbfound.core.DBFoundConfig;
-import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.web.base.Listener;
-import com.nfwork.erp.mq.MQModelOperator;
 import com.nfwork.erp.mq.RabbitMQManager;
 
 import javax.servlet.ServletContext;
@@ -13,15 +11,14 @@ public class StartListener implements Listener {
     public void init(ServletContext servletContext) {
         DBFoundConfig.getSensitiveParamSet().add("ypassword");
 
-        RabbitMQManager.setServiceMode(servletContext.getInitParameter("serviceMode"));
+        String serviceMode = System.getProperty("myErp.serviceMode");
         // 初始化MQ消费者
-        if("mqCustomer".equals(RabbitMQManager.getServiceMode())){
+        if("mqCustomer".equals(serviceMode)){
             RabbitMQManager.initCustomer();
         }
         // 初始化MQ消费者
-        else if("mqSender".equals(RabbitMQManager.getServiceMode())){
+        else if("mqSender".equals(serviceMode)){
             RabbitMQManager.initSender();
-            ModelEngine.setModelOperator(new MQModelOperator());
         }
     }
 

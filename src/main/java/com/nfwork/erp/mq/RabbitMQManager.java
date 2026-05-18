@@ -111,12 +111,4 @@ public class RabbitMQManager {
             throw new RuntimeException(e);
         }
     }
-
-    public static String getServiceMode() {
-        return serviceMode;
-    }
-
-    public static void setServiceMode(String serviceMode) {
-        RabbitMQManager.serviceMode = serviceMode;
-    }
 }
