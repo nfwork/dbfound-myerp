@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.util.DataUtil;
@@ -63,14 +64,16 @@ public class SimpleCheckInterceptor implements Interceptor {
 	public void setCors(HttpServletRequest request, HttpServletResponse response) {
 		String origin = request.getHeader("Origin");
 		if(DataUtil.isNotNull(origin)) {
-			String jsessionid = request.getSession().getId();
-			response.setHeader("Jsessionid", jsessionid);
 			response.setHeader("Access-Control-Allow-Origin", origin);
+			response.setHeader("Vary", "Origin");
+			response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 			response.setHeader("Access-Control-Max-Age", "1800");
-			response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-			response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-			response.setHeader("Access-Control-Expose-Headers", "Jsessionid");
 			response.setHeader("Access-Control-Allow-Credentials", "true");
+			response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+			response.addHeader("Access-Control-Expose-Headers", "Jsessionid");
+
+			HttpSession session = "OPTIONS".equalsIgnoreCase(request.getMethod()) ? request.getSession(false) : request.getSession();
+			response.setHeader("Jsessionid", session == null ? "" : session.getId());
 		}
 	}
 
