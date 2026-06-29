@@ -398,7 +398,8 @@ input:disabled{
   flex-wrap: wrap;
   align-content: flex-start;
   overflow: auto;
-  overscroll-behavior: none;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
 }
 .table-line{
   font-size: 13px;
@@ -538,7 +539,8 @@ input:disabled{
   overflow-x: auto; 
   overflow-y: hidden;
   border: none;
-  overscroll-behavior: none;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
 }
 .data-table-content{
   overflow-y: auto; overflow-x: hidden; margin-top: -1px;box-sizing: border-box;

@@ -769,7 +769,6 @@ input {
 .monthly-profit-content {
   overflow-x: auto;
   overscroll-behavior-x: none;
-  -webkit-overflow-scrolling: touch;
   width: 100%;
 }
 
