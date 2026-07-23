@@ -31,7 +31,8 @@
 											                   and l.book_id =  ${@book_id}
 											                   and l.account_id = ${@account_id} )" />
 		<filter name="description" express="t.description like concat('%',${@description},'%')" />
-		<filter name="only_my" express="t.regist_user_id = ${@user_id}" />
+		<filter name="register_user_type_my" condition="${@register_user_type} = 'my'" express="t.regist_user_id = ${@user_id}" />
+		<filter name="register_user_type_not_my" condition="${@register_user_type} = 'not_my'" express="t.regist_user_id != ${@user_id}" />
 		<filter name="timefrom" express="t.exp_time &gt;= ${@timefrom}" />
 		<filter name="timeto" express="t.exp_time &lt;= ${@timeto}" />
 	</query>

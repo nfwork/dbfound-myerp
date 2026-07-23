@@ -10,10 +10,11 @@
     </div>
     <div class="box filter-option"> 
         <div class="title">登记人：</div>
-        <label class="checkbox-label">
-            <input class="checkbox-input" type="checkbox" v-model="only_my"/>
-            仅显示本人登记
-        </label>
+        <van-radio-group class="register-radio-group" v-model="register_user_type" direction="horizontal" @change="changeRegisterUserType">
+            <van-radio class="register-radio" icon-size="16" name="">全部</van-radio>
+            <van-radio class="register-radio" icon-size="16" name="my">本人</van-radio>
+            <van-radio class="register-radio" icon-size="16" name="not_my">非本人</van-radio>
+        </van-radio-group>
     </div>
     <div class="box"> 
         <button class="bule-button" @click="query">查 询</button>
@@ -81,7 +82,7 @@ export default {
             currentPage: 1,
             period_id: null,
             description: '',
-            only_my: false,
+            register_user_type: '',
             current_period: {},
             current_line:-1
         }
@@ -100,7 +101,7 @@ export default {
                 period_id: this.current_period.period_id,
                 limit : this.limit,
                 description : this.description,
-                only_my : this.only_my ? 1 : null,
+                register_user_type : this.register_user_type || null,
                 start : (this.currentPage - 1) * this.limit
             };
             request.post(url, data, {showLoadding:true}).then(res => {
@@ -175,6 +176,11 @@ export default {
                 });
             });
         },
+        changeRegisterUserType(value){
+            this.register_user_type = value;
+            this.currentPage = 1;
+            this.query();
+        },
         goToDetail(item_id){
             this.go("/itemDetailSave?item_id="+item_id+"&edit=1")
         },
@@ -214,27 +220,14 @@ input[type="text"]{
   margin-top: 2px;
   float: left;
 }
-.checkbox-label{
+.register-radio-group{
   height: 34px;
-  line-height: 34px;
-  margin-top: 2px;
-  padding: 0 12px;
-  display: inline-flex;
+  margin-top: 3px;
+  display: flex;
   align-items: center;
-  color: #444;
-  background: #f7f9fc;
-  border: 1px solid #dfe7ee;
-  border-radius: 3px;
-  cursor: pointer;
-  user-select: none;
 }
-.checkbox-input{
-  width: 16px;
-  height: 16px;
-  flex: none;
-  margin: 0 6px 0 0;
-  padding: 0;
-  accent-color: #2d6ca2;
-  cursor: pointer;
+.register-radio{
+  margin: 3px 12px 3px 0;
+  font-size: 14px;
 }
 </style>
