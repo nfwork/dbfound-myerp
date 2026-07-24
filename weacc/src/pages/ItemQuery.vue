@@ -28,6 +28,7 @@
     </div>
     <div class="box"> 
         <button class="bule-button" @click="query">查 询</button>
+        <button class="green-button" @click="queryDrAmountTotal">查询总金额</button>
         <button class="yellow-button" @click="reset">重置</button>
     </div>
     <div class="box"> 
@@ -77,6 +78,7 @@
 
 <script>
 import request from '@/util/request';
+import { Dialog } from 'vant';
 export default {
     data(){
         return {
@@ -99,16 +101,21 @@ export default {
         }
     },
     methods:{
-        query(){
-            let url = 'exp/item.query';
-            let data = {
+        getQueryData(){
+            return {
                 period_id: this.current_period.period_id,
                 account_id: this.current_account.account_id,
-                limit : this.limit,
                 description : this.description,
                 timefrom : this.timefrom || null,
                 timeto : this.timeto || null,
-                register_user_type : this.register_user_type || null,
+                register_user_type : this.register_user_type || null
+            };
+        },
+        query(){
+            let url = 'exp/item.query';
+            let data = {
+                ...this.getQueryData(),
+                limit : this.limit,
                 start : (this.currentPage - 1) * this.limit
             };
             request.post(url, data, {showLoadding:true}).then(res => {
@@ -120,6 +127,29 @@ export default {
                     this.totalPages = Math.ceil(res.data.totalCounts/this.limit);
                     this.checkPage();
                 }
+            });
+        },
+        queryDrAmountTotal(){
+            let url = 'exp/item.query!getDrAmountTotal';
+            request.post(url, this.getQueryData(), {showLoadding:true}).then(res => {
+                if(res.data.success){
+                    let totalAmount = 0;
+                    if(res.data.datas && res.data.datas.length > 0){
+                        totalAmount = res.data.datas[0].dr_amount_total || 0;
+                    }
+                    Dialog.alert({
+                        title: '查询总金额',
+                        confirmButtonColor : '#2d6ca2',
+                        message: '借方金额总和：' + this.formatAmount(totalAmount)
+                    });
+                }
+            });
+        },
+        formatAmount(amount){
+            let number = Number(amount || 0);
+            return number.toLocaleString('zh-CN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             });
         },
         checkPage(){
