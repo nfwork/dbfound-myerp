@@ -4,7 +4,7 @@
     <div class="current-name">{{selectValue}}</div>
   </div>
 
-<div v-if="isShow" class="calendar">
+<div v-if="isShow" ref="calendarPanel" class="calendar" :style="calendarStyle">
 	<div class="title flex">
 		<div class="flex">
 			<div @click="lastMonth" class="tool-month-box">
@@ -31,7 +31,7 @@
 	<!-- 日历主体 -->
 	<div class="flex-start flex-wrap calendar-main">
 		<div v-for="(item,index) in dateList" :key="index" class="day">
-			<div :class="'bg ' + ((item.year != selectDay.year || item.month != selectDay.month) ? 'other-month' : (item.day === selectDay.day) ? 'select':'')" @click="selectChange(item)">
+			<div :class="'bg ' + ((item.year != selectDay.year || item.month != selectDay.month) ? 'other-month' : (item.dateString === selectValue) ? 'select':'') + (item.dateString === todayString ? ' today' : '')" @click="selectChange(item)">
 				{{item.day}} 
 			</div>
 			<div class="spot" v-if="item.spot"></div>
@@ -50,11 +50,11 @@ export default {
   props: {
     spot: {
       type: Array,
-      value: []
+      default: () => []
     },
     value: {
       type: String,
-      value: ''
+      default: ''
     }
   },
   data(){
@@ -63,13 +63,20 @@ export default {
         selectDay: {}, //选中时间
         open: true,
         isShow: false,
-        selectValue: this.value
+        selectValue: this.value,
+        todayString: '',
+        calendarStyle: {}
     }
   },
   methods: {
     openClose() {
-      this.isShow= !this.isShow
+      if (this.isShow) {
+        this.close();
+        return;
+      }
+      this.isShow= true
       this.initValue();
+      this.$nextTick(this.updateCalendarPosition);
     },
 
     // 此方法供父组件调用
@@ -160,33 +167,36 @@ export default {
       const lastMonth = new Date(this.selectDay.year, this.selectDay.month - 2)
       const year = lastMonth.getFullYear()
       const month = lastMonth.getMonth() + 1
-      this.setMonth(year, month)
+      this.setMonth(year, month, null, false)
     },
     //下月切换按钮点击
     nextMonth() {
       const nextMonth = new Date(this.selectDay.year, this.selectDay.month)
       const year = nextMonth.getFullYear()
       const month = nextMonth.getMonth() + 1
-      this.setMonth(year, month)
+      this.setMonth(year, month, null, false)
     },
     //设置月份
-    setMonth(setYear, setMonth, setDay) {
+    setMonth(setYear, setMonth, setDay, emitChange = true) {
       if (this.selectDay.year !== setYear || this.selectDay.month !== setMonth) {
         const day = Math.min(new Date(setYear, setMonth, 0).getDate(), this.selectDay.day)
         const time = new Date(setYear, setMonth - 1, setDay ? setDay : day)
+        const dateString = this.formatTime(time, "Y-M-D")
         this.selectDay = {
             year: setYear,
             month: setMonth,
             day: setDay ? setDay : day,
-            dateString: this.formatTime(time, "Y-M-D")
+            dateString: dateString
         };
-        this.selectValue = this.formatTime(time, "Y-M-D")
+        if (emitChange) {
+          this.selectValue = dateString;
+          this.$emit('input', this.selectValue);
+        }
         if (!setDay) {
           this.open = true
         }
         this.dateInit(setYear, setMonth)
         this.setSpot()
-        this.$emit('input', this.selectValue);
       }
     },
     //展开收起
@@ -265,6 +275,7 @@ export default {
       }
       if (this.selectDay.year !== year || this.selectDay.month !== month) {
         this.setMonth(year, month, day)
+        this.close();
       } else  {
         this.selectDay= selectDay;
         this.selectValue = selectDay.dateString;
@@ -289,16 +300,17 @@ export default {
       }
     },
     initValue(){
-      if(!(this.selectDay.year)){
-        let now = this.selectValue ? new Date(this.selectValue) : new Date()
-        let selectDay = {
-          year: now.getFullYear(),
-          month: now.getMonth() + 1,
-          day: now.getDate(),
-          dateString: this.formatTime(now, "Y-M-D")
-        }
-        this.setMonth(selectDay.year, selectDay.month, selectDay.day);
+      this.todayString = this.formatTime(new Date(), "Y-M-D");
+      let now = this.selectValue ? new Date(this.selectValue) : new Date()
+      let selectDay = {
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        day: now.getDate(),
+        dateString: this.formatTime(now, "Y-M-D")
       }
+      this.selectDay = selectDay;
+      this.dateInit(selectDay.year, selectDay.month);
+      this.setSpot();
     },
     hiddenBox(event){
       if(this.isShow == true){
@@ -307,20 +319,50 @@ export default {
           this.isShow = false;
         }
       }
+    },
+    updateCalendarPosition(){
+      let panel = this.$refs.calendarPanel;
+      let container = this.$refs.calendarRef;
+      if(!panel || !container){
+        return;
+      }
+      let margin = 10;
+      let windowWidth = document.documentElement.clientWidth || window.innerWidth;
+      let panelWidth = Math.min(panel.offsetWidth || 290, windowWidth - margin * 2);
+      let containerRect = container.getBoundingClientRect();
+      let panelLeft = containerRect.right - panelWidth;
+      let maxLeft = windowWidth - panelWidth - margin;
+      if(panelLeft < margin){
+        panelLeft = margin;
+      }else if(panelLeft > maxLeft){
+        panelLeft = maxLeft;
+      }
+      this.calendarStyle = {
+        left: (panelLeft - containerRect.left) + 'px',
+        right: 'auto',
+        width: panelWidth + 'px'
+      };
     }
   },
   beforeDestroy(){
     document.removeEventListener('click',this.hiddenBox);
+    window.removeEventListener('resize', this.updateCalendarPosition);
   },
   watch: {
     value(newValue) {
       this.selectValue = newValue;
+      if (this.isShow) {
+        this.initValue();
+        this.$nextTick(this.updateCalendarPosition);
+      }
     },
     isShow(value){
       if(value == true){
         document.addEventListener('click', this.hiddenBox);
+        window.addEventListener('resize', this.updateCalendarPosition);
       }else{
         document.removeEventListener('click',this.hiddenBox);
+        window.removeEventListener('resize', this.updateCalendarPosition);
       }
     }
   }
@@ -377,6 +419,7 @@ export default {
   max-height: 450px;
   overflow: scroll;
   width: 290px;
+  max-width: calc(100vw - 20px);
   padding: 6px 6px 5px 6px;
   border-radius: 3px;
   box-sizing: border-box;
@@ -533,6 +576,15 @@ export default {
   color: #fff;
   background: linear-gradient(-60deg, #0f74c7, #1279be);
   box-shadow: 0px 5px 16px 0px #C6F3ED;
+  margin: 0 auto;
+}
+
+.calendar .calendar-main .day .today:not(.select) {
+  width: 23px;
+  border: 1px solid #0f74c7;
+  border-radius: 50%;
+  box-sizing: border-box;
+  color: #0f74c7;
   margin: 0 auto;
 }
  

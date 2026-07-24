@@ -1,13 +1,13 @@
 <template>
   <div ref="selectRef" class="select-box">
     <div class="select-current" @click="openClose">
-      <span class="current-name">{{selected[displayField]}}</span>
+      <span class="current-name">{{selectedName}}</span>
     </div> 
     <div ref="containRef" class="option-list" v-if="isShow">
-      <div @click="optionTap(item)" :class="item[valueField] == value[valueField]?'option option-active':'option'"
+      <div @click="optionTap(item)" :class="isOptionSelected(item)?'option option-active':'option'"
         v-for="(item,index) in options"  
-        :key="index"
-        :ref="'itemRef-'+item[valueField]">{{item[displayField]}}
+        :key="getOptionValue(item) || index"
+        :ref="'itemRef-'+getOptionValue(item)">{{item[displayField]}}
       </div>
     </div>
   </div>
@@ -19,24 +19,30 @@ export default {
   props: {
     options: {
       type: Array,
-      value: []
+      default: () => []
     },
     displayField: {
       type: String,
-      value: 'name'
+      default: 'name'
     },
     valueField: {
       type: String,
-      value: 'id'
+      default: 'id'
     },
     value: {
-      type: Object
+      type: Object,
+      default: () => ({})
     }
   },
   data(){
     return {
       isShow: false,
-      selected:this.value
+      selected:this.value || {}
+    }
+  },
+  computed:{
+    selectedName(){
+      return this.selected ? this.selected[this.displayField] : '';
     }
   },
   methods:{
@@ -45,6 +51,8 @@ export default {
     },
     optionTap(item) {
       this.selected = item;
+      this.$emit('input', item);
+      this.$emit('select', item);
       this.close();
     },
     close() {
@@ -57,32 +65,42 @@ export default {
           this.isShow = false;
         }
       }
+    },
+    getOptionValue(item){
+      return item ? item[this.valueField] : null;
+    },
+    isOptionSelected(item){
+      return this.getOptionValue(item) == this.getOptionValue(this.selected);
+    },
+    scrollToSelected(){
+      let contain = this.$refs.containRef;
+      let selectedValue = this.getOptionValue(this.selected);
+      if(!contain || selectedValue === null || selectedValue === undefined){
+        return;
+      }
+      let element = this.$refs['itemRef-'+selectedValue];
+      if(Array.isArray(element)){
+        element = element[0];
+      }
+      if(element){
+        contain.scrollTop = Math.max(element.offsetTop - 105, 0);
+      }
     }
   },
   beforeDestroy(){
     document.removeEventListener('click',this.hiddenBox);
   },
   watch: {
-    selected(newValue) {
-      this.$emit('input', newValue);
-      this.$emit('select', newValue);
-    },
     value(newValue) {
-      this.selected = newValue;
+      this.selected = newValue || {};
+      if(this.isShow){
+        this.$nextTick(this.scrollToSelected);
+      }
     },
     isShow(value){
       if(value == true){
         document.addEventListener('click', this.hiddenBox);
-        setTimeout(() => {
-          let contain = this.$refs.containRef; 
-          let itemRef = 'itemRef-'+this.selected[this.valueField];
-          let element = this.$refs[itemRef];
-          if(element){
-            let top = element[0].offsetTop;
-            top = top - 105;
-            contain.scrollTop = top ;
-          }
-        }, 0);
+        this.$nextTick(this.scrollToSelected);
       }else{
         document.removeEventListener('click',this.hiddenBox);
       }

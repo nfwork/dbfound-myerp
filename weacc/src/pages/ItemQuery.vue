@@ -8,6 +8,12 @@
         <div class="title">费用科目：</div>
         <my-select class="my-select" v-model="current_account" :options="account_list" valueField="account_id" displayField="account_name"/>
     </div>
+    <div class="box date-range-box"> 
+        <div class="title">费用日期：</div>
+        <my-calendar class="date-calendar" v-model="timefrom"/>
+        <div class="date-separator">至</div>
+        <my-calendar class="date-calendar" v-model="timeto"/>
+    </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>
         <input type="text" v-model="description" @keyup.enter="query"/>
@@ -81,6 +87,8 @@ export default {
             current_period: {},
             current_account: {},
             description: '',
+            timefrom: '',
+            timeto: '',
             register_user_type: '',
             period_id: null,
             current_line:-1,
@@ -98,6 +106,8 @@ export default {
                 account_id: this.current_account.account_id,
                 limit : this.limit,
                 description : this.description,
+                timefrom : this.timefrom || null,
+                timeto : this.timeto || null,
                 register_user_type : this.register_user_type || null,
                 start : (this.currentPage - 1) * this.limit
             };
@@ -178,6 +188,8 @@ export default {
         },
         reset(){
             this.description = '';
+            this.timefrom = '';
+            this.timeto = '';
             this.register_user_type = '';
             this.current_period = {};
             this.current_account = {};
@@ -217,6 +229,20 @@ input[type="text"]{
   flex: 1;
   margin-top: 2px;
   float: left;
+}
+.date-range-box{
+  flex-wrap: nowrap;
+}
+.date-calendar{
+  flex: 1;
+  min-width: 0;
+  margin-top: 2px;
+}
+.date-separator{
+  height: 40px;
+  line-height: 40px;
+  padding: 0 6px;
+  color: #666;
 }
 .register-radio-group{
   height: 34px;
