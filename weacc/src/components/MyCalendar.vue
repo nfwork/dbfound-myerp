@@ -425,7 +425,7 @@ export default {
 
 .current-name {
   display: block;
-  width: calc(100% - 45px);
+  width: 100%;
   height: 100%;
   word-wrap: normal;
   overflow: hidden;
@@ -433,7 +433,7 @@ export default {
 
 .clear-button {
   position: absolute;
-  right: 25px;
+  right: 23px;
   top: 9px;
   width: 16px;
   min-width: 16px;
