@@ -2,6 +2,14 @@
 <div ref="calendarRef" class="select-box">
   <div class="select-current" @click="openClose">
     <div class="current-name">{{selectValue}}</div>
+    <button
+      v-if="hasSelected"
+      type="button"
+      class="clear-button"
+      title="清空"
+      aria-label="清空"
+      @click.stop="clearSelect"
+    ></button>
   </div>
 
 <div v-if="isShow" ref="calendarPanel" class="calendar" :style="calendarStyle">
@@ -68,6 +76,11 @@ export default {
         calendarStyle: {}
     }
   },
+  computed: {
+    hasSelected(){
+      return !!this.selectValue;
+    }
+  },
   methods: {
     openClose() {
       if (this.isShow) {
@@ -82,6 +95,12 @@ export default {
     // 此方法供父组件调用
     close() {
       this.isShow = false;
+    },
+    clearSelect() {
+      this.selectValue = '';
+      this.$emit('input', '');
+      this.$emit('clear');
+      this.close();
     },
     /**
      * 时间戳转化为年 月 日 时 分 秒
@@ -406,10 +425,56 @@ export default {
 
 .current-name {
   display: block;
-  width: 85%;
+  width: calc(100% - 45px);
   height: 100%;
   word-wrap: normal;
   overflow: hidden;
+}
+
+.clear-button {
+  position: absolute;
+  right: 25px;
+  top: 9px;
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #c5ccd6;
+  box-sizing: border-box;
+  background-color: #f7f8fa;
+  cursor: pointer;
+}
+
+.clear-button::before,
+.clear-button::after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  content: '';
+  width: 7px;
+  height: 1px;
+  background-color: #8f98a3;
+  border-radius: 1px;
+}
+
+.clear-button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.clear-button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.clear-button:hover {
+  border-color: #9aa3ad;
+  background-color: #eef1f5;
+}
+
+.clear-button:hover::before,
+.clear-button:hover::after {
+  background-color: #666;
 }
 
 .calendar {

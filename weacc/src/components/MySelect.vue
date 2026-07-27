@@ -2,6 +2,14 @@
   <div ref="selectRef" class="select-box">
     <div class="select-current" @click="openClose">
       <span class="current-name">{{selectedName}}</span>
+      <button
+        v-if="hasSelected"
+        type="button"
+        class="clear-button"
+        title="清空"
+        aria-label="清空"
+        @click.stop="clearSelect"
+      ></button>
     </div> 
     <div ref="containRef" class="option-list" v-if="isShow">
       <div @click="optionTap(item)" :class="isOptionSelected(item)?'option option-active':'option'"
@@ -42,7 +50,11 @@ export default {
   },
   computed:{
     selectedName(){
-      return this.selected ? this.selected[this.displayField] : '';
+      const name = this.selected ? this.selected[this.displayField] : '';
+      return name === undefined || name === null ? '' : name;
+    },
+    hasSelected(){
+      return this.selectedName !== '';
     }
   },
   methods:{
@@ -53,6 +65,14 @@ export default {
       this.selected = item;
       this.$emit('input', item);
       this.$emit('select', item);
+      this.close();
+    },
+    clearSelect() {
+      const emptyValue = {};
+      this.selected = emptyValue;
+      this.$emit('input', emptyValue);
+      this.$emit('select', emptyValue);
+      this.$emit('clear');
       this.close();
     },
     close() {
@@ -145,10 +165,56 @@ export default {
 
 .current-name {
   display: block;
-  width: 85%;
+  width: calc(100% - 45px);
   height: 100%;
   word-wrap: normal;
   overflow: hidden;
+}
+
+.clear-button {
+  position: absolute;
+  right: 25px;
+  top: 9px;
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #c5ccd6;
+  box-sizing: border-box;
+  background-color: #f7f8fa;
+  cursor: pointer;
+}
+
+.clear-button::before,
+.clear-button::after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  content: '';
+  width: 7px;
+  height: 1px;
+  background-color: #8f98a3;
+  border-radius: 1px;
+}
+
+.clear-button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.clear-button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.clear-button:hover {
+  border-color: #9aa3ad;
+  background-color: #eef1f5;
+}
+
+.clear-button:hover::before,
+.clear-button:hover::after {
+  background-color: #666;
 }
 
 .option-list {
