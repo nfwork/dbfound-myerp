@@ -2,7 +2,7 @@
   <div class="root">
     <div class="box"> 
         <div class="title">会计期间：</div>
-        <my-select class="my-select" v-model="current_period" :options="period_list" valueField="period_id" displayField="period_name"/>
+        <my-select class="my-select" v-model="current_period" :clearable="false" :options="period_list" valueField="period_id" displayField="period_name"/>
     </div>
     <div class="box"> 
         <div class="title">凭证描述：</div>
@@ -94,6 +94,10 @@ export default {
         query(){
             if(this.period_list.length == 0){
                 Toast.fail('当前没有打开的期间')
+                return;
+            }
+            if(!this.current_period || !this.current_period.period_id){
+                Toast.fail('会计期间不能为空')
                 return;
             }
             let url = 'exp/item.query';

@@ -2,7 +2,7 @@
 <div class="root">
   <div class="box"> 
     <div class="title">会计期间：</div>
-    <my-select class="my-select" v-model="current_period" @select="query" :options="period_list" valueField="period_id" displayField="period_name"/>
+    <my-select class="my-select" v-model="current_period" :clearable="false" @select="query" :options="period_list" valueField="period_id" displayField="period_name"/>
   </div>
   <div class="box"> 
     <button class="bule-button" @click="initByLastMonth">按上月开销导入</button>
@@ -99,9 +99,19 @@ export default {
           this.amount = "";
           this.description = "";
       },
-      initByLastMonth(){
+      validatePeriod(){
         if(this.period_list.length == 0){
           Toast.fail('当前没有打开过的期间');
+          return false;
+        }
+        if(!this.current_period || !this.current_period.period_id){
+          Toast.fail('会计期间不能为空');
+          return false;
+        }
+        return true;
+      },
+      initByLastMonth(){
+        if(!this.validatePeriod()){
           return;
         }
         Dialog.confirm({
@@ -138,6 +148,9 @@ export default {
           Toast.fail("调整说明不能为空！");
           return;
         }
+        if(!this.validatePeriod()){
+          return;
+        }
         let url = 'exp/amountManager.execute!add';
         let data = {
           period_id: this.current_period.period_id,
@@ -161,8 +174,7 @@ export default {
         });
       },
       query(){
-        if(this.period_list.length == 0){
-          Toast.fail('当前没有打开过的期间');
+        if(!this.validatePeriod()){
           return;
         }
         let url = 'exp/amountManager.query';
@@ -203,6 +215,9 @@ export default {
         return Math.round(num1 * m + num2 * m) / m;
       },
       showDetail(account_id, index){
+        if(!this.validatePeriod()){
+          return;
+        }
         let url = 'exp/amountManager.query!detail';
         let data = {
           account_id: account_id,

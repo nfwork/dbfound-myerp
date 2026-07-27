@@ -2,7 +2,7 @@
 <div class="root">
   <div class="box"> 
     <div class="title">会计期间：</div>
-    <my-select class="my-select" :value="current_period" @select="setPeriod" :options="period_list" valueField="period_id" displayField="period_name"/>
+    <my-select class="my-select" :value="current_period" :clearable="false" @select="setPeriod" :options="period_list" valueField="period_id" displayField="period_name"/>
   </div>
 
   <div class="box"> 
@@ -43,6 +43,7 @@
 
 <script>
 import request from '@/util/request';
+import { Toast } from 'vant';
 export default {
     data(){
         return {
@@ -67,6 +68,10 @@ export default {
         },
 
         query(){
+            if(!this.current_period || !this.current_period.period_id){
+                Toast.fail('会计期间不能为空');
+                return;
+            }
             let url = 'exp/amountManager.query';
             let data = {
                 period_id: this.current_period.period_id
@@ -108,6 +113,10 @@ export default {
             return Math.round(num1 * m + num2 * m) / m;
         },
         showDetail(account_id, index){
+            if(!this.current_period || !this.current_period.period_id){
+                Toast.fail('会计期间不能为空');
+                return;
+            }
             this.current_line = index;
             let url ='exp/amountManager.query!getExpDetail';
             let data = {

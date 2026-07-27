@@ -2,9 +2,9 @@
   <div class="root">
   <div class="box"> 
     <div class="title">本期从：</div>
-    <my-select class="my-select" :value="current_period_from" @select="setPeriodFrom" :options="period_list" valueField="period_id" displayField="period_name"/>
+    <my-select class="my-select" :value="current_period_from" :clearable="false" @select="setPeriodFrom" :options="period_list" valueField="period_id" displayField="period_name"/>
     <div class="title" style="width: 45px;">到：</div>
-    <my-select class="my-select" :value="current_period_to" @select="setPeriodTo" :options="period_list" valueField="period_id" displayField="period_name"/>
+    <my-select class="my-select" :value="current_period_to" :clearable="false" @select="setPeriodTo" :options="period_list" valueField="period_id" displayField="period_name"/>
   </div>
   <div class="box"> 
     <div class="title">科目类型：</div>
@@ -110,6 +110,10 @@ export default {
                 Toast.fail('当前没有打开过的期间')
                 return;
             }
+            if(!this.current_period_from || !this.current_period_from.period_code || !this.current_period_to || !this.current_period_to.period_code){
+                Toast.fail('会计期间不能为空')
+                return;
+            }
             let url= 'report/accountAmountQuery.query';
             let data = {
                 period_code_from: this.current_period_from.period_code,
@@ -173,6 +177,10 @@ export default {
             this.query();
         },
         query(){
+            if(!this.current_period_from || !this.current_period_from.period_code || !this.current_period_to || !this.current_period_to.period_code){
+                Toast.fail('会计期间不能为空')
+                return;
+            }
             let url ='report/accountAmountQuery.query!getExpDetail';
             let data = {
                 account_id: this.account_id,

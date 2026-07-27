@@ -3,7 +3,7 @@
     <div class="select-current" @click="openClose">
       <span class="current-name">{{selectedName}}</span>
       <button
-        v-if="hasSelected"
+        v-if="clearable && hasSelected"
         type="button"
         class="clear-button"
         title="清空"
@@ -40,6 +40,10 @@ export default {
     value: {
       type: Object,
       default: () => ({})
+    },
+    clearable: {
+      type: Boolean,
+      default: true
     }
   },
   data(){
