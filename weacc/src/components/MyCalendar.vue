@@ -39,12 +39,16 @@
 	<!-- 日历主体 -->
 	<div class="flex-start flex-wrap calendar-main">
 		<div v-for="(item,index) in dateList" :key="index" class="day">
-			<div :class="'bg ' + ((item.year != selectDay.year || item.month != selectDay.month) ? 'other-month' : (item.dateString === selectValue) ? 'select':'') + (item.dateString === todayString ? ' today' : '')" @click="selectChange(item)">
+			<div :class="getDayClass(item)" @click="selectChange(item)">
 				{{item.day}} 
 			</div>
 			<div class="spot" v-if="item.spot"></div>
 		</div>
 	</div>
+  <div class="calendar-footer">
+    <button type="button" class="today-button" @click="selectToday">今天</button>
+    <button type="button" class="cancel-button" @click="close">取消</button>
+  </div>
 </div>
 
 </div>
@@ -96,10 +100,29 @@ export default {
     close() {
       this.isShow = false;
     },
+    getDayClass(item) {
+      const isOtherMonth = item.year !== this.selectDay.year || item.month !== this.selectDay.month;
+      const isSelected = item.dateString === this.selectValue;
+      const isToday = item.dateString === this.todayString;
+      return 'bg ' + (isOtherMonth ? 'other-month' : (isSelected ? 'select' : '')) + (isToday ? ' today' : '');
+    },
     clearSelect() {
       this.selectValue = '';
       this.$emit('input', '');
       this.$emit('clear');
+      this.close();
+    },
+    selectToday() {
+      const today = new Date();
+      const dateString = this.formatTime(today, "Y-M-D");
+      this.selectDay = {
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate(),
+        dateString: dateString
+      };
+      this.selectValue = dateString;
+      this.$emit('input', dateString);
       this.close();
     },
     /**
@@ -347,7 +370,7 @@ export default {
       }
       let margin = 10;
       let windowWidth = document.documentElement.clientWidth || window.innerWidth;
-      let panelWidth = Math.min(panel.offsetWidth || 290, windowWidth - margin * 2);
+      let panelWidth = Math.min(panel.offsetWidth || 276, windowWidth - margin * 2);
       let containerRect = container.getBoundingClientRect();
       let panelLeft = containerRect.right - panelWidth;
       let maxLeft = windowWidth - panelWidth - margin;
@@ -408,7 +431,7 @@ export default {
   color: #555;
   background-color: #fff;
   border: 1px solid #cbd0d8;
-  border-radius: 8rpx;
+  cursor: pointer;
 }
 
 .select-current::after {
@@ -427,8 +450,10 @@ export default {
   display: block;
   width: 100%;
   height: 100%;
+  white-space: nowrap;
   word-wrap: normal;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .clear-button {
@@ -445,6 +470,7 @@ export default {
   box-sizing: border-box;
   background-color: #f7f8fa;
   cursor: pointer;
+  z-index: 1;
 }
 
 .clear-button::before,
@@ -482,15 +508,16 @@ export default {
   right: 0;
   top: 38px;
   max-height: 450px;
-  overflow: scroll;
-  width: 290px;
+  overflow: auto;
+  width: 276px;
   max-width: calc(100vw - 20px);
-  padding: 6px 6px 5px 6px;
+  padding: 4px;
   border-radius: 3px;
   box-sizing: border-box;
   z-index: 99;
   border: 1px solid #cad5de;
   background-color: #fff;
+  box-shadow: 0 4px 12px rgba(15, 78, 160, 0.12);
 }
 
  .tool-month-box{
@@ -499,7 +526,14 @@ export default {
   text-align: center;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 0 15px;
+  border-radius: 3px;
+  cursor: pointer;
+ }
+
+ .tool-month-box:hover {
+  background-color: #edf7fd;
  }
  .next-month {
   width:0;
@@ -522,29 +556,9 @@ export default {
   align-items: center;
 }
  
-.direction-column {
-  flex-direction: column;
-}
- 
-.flex1 {
-  flex: 1;
-}
- 
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
- 
 .flex-start {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-}
- 
-.flex-end {
-  display: flex;
-  justify-content: flex-end;
   align-items: center;
 }
  
@@ -558,63 +572,32 @@ export default {
   flex-wrap: wrap;
 }
  
-.align-start {
-  align-items: flex-start;
-}
- 
-.align-end {
-  align-items: flex-end;
-}
- 
-.align-stretch {
-  align-items: stretch;
-}
- 
-.calendar {
-  background-color: #fff;
-}
- 
 .calendar .title {
   font-size: 20px;
   color: #555;
-  padding: 10px;
-  padding-left: 55px;
-  line-height: 30px;
+  padding: 6px 8px 5px 48px;
+  line-height: 26px;
 }
  
 .calendar .title .year-month {
   margin-right: 0px;
 }
  
-.calendar .title .icon {
-  padding: 0 8px;
-  font-size: 16px;
-  color: #999;
-}
- 
-.calendar .title .open {
-  background-color: #f6f6f6;
-  color: #999;
-  font-size: 12px;
-  line-height: 18px;
-  border-radius: 9px;
-  padding: 0 7px;
-}
- 
 .calendar .calendar-week {
+  justify-content: flex-start;
   line-height: 20px;
-  padding: 0 12px;
+  padding: 0 7px;
   font-size: 14px;
   color: #999;
 }
- 
-.calendar .calendar-week .view {
-  width: 50px;
+
+.calendar .calendar-week .div {
+  width: 36px;
   text-align: center;
 }
  
 .calendar .calendar-main {
-  padding: 14px 11px;
+  padding: 10px 7px 4px;
   transition: height 0.3s;
   align-content: flex-start;
 }
@@ -628,29 +611,31 @@ export default {
 }
  
 .calendar .calendar-main .day .bg {
+  width: 23px;
   height: 23px;
   line-height: 23px;
+  margin: 0 auto;
+  border-radius: 50%;
+  box-sizing: border-box;
   font-size: 14px;
   color: #333;
+  cursor: pointer;
+}
+
+.calendar .calendar-main .day .bg:not(.select):hover {
+  background-color: #edf7fd;
 }
  
 .calendar .calendar-main .day .select {
-  width: 23px;
-  border-radius: 50%;
   text-align: center;
   color: #fff;
   background: linear-gradient(-60deg, #0f74c7, #1279be);
   box-shadow: 0px 5px 16px 0px #C6F3ED;
-  margin: 0 auto;
 }
 
 .calendar .calendar-main .day .today:not(.select) {
-  width: 23px;
   border: 1px solid #0f74c7;
-  border-radius: 50%;
-  box-sizing: border-box;
   color: #0f74c7;
-  margin: 0 auto;
 }
  
 .calendar .calendar-main .day .other-month {
@@ -663,5 +648,37 @@ export default {
   background-color: #1DCDB8;
   border-radius: 50%;
   margin: 3px auto 0;
+}
+
+.calendar-footer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+  padding: 5px 7px 2px;
+  border-top: 1px solid #edf1f5;
+}
+
+.calendar-footer button {
+  min-width: 44px;
+  height: 24px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid #cad5de;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #555;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.calendar-footer .today-button {
+  border-color: #0f74c7;
+  color: #0f74c7;
+}
+
+.calendar-footer button:hover {
+  background-color: #edf7fd;
 }
 </style>
