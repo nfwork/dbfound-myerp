@@ -17,9 +17,9 @@
             <th class="sticky-col" style="width: 90px;">归档日期</th>
             <th style="width: 70px;">渠道PF</th>
             <th style="width: 70px;">渠道ZS</th>
-            <th style="width: 70px;">渠道JT</th>
             <th style="width: 70px;">渠道AL</th>
             <th style="width: 70px;">渠道JJ</th>
+            <th style="width: 70px;">渠道JT</th>
             <th style="width: 80px;">当日汇总</th>
             <th style="width: 80px;">累计汇总</th>
           </tr>
@@ -29,9 +29,9 @@
             <td class="sticky-col" @click="updateRecord(index,item)" style="width: 90px; text-align: center; color: #0f4ea0; cursor: pointer; ">{{item.cost_date}}</td>
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_pf | currency}}</td>
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_zs | currency}}</td>
-            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jt | currency}}</td>
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_al | currency}}</td> 
             <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jj | currency}}</td> 
+            <td class="num-font" style="text-align: right;width: 70px;">{{item.channel_jt | currency}}</td>
             <td class="num-font" style="text-align: right;width: 80px;">{{item.channel_total | currency}}</td> 
             <td class="num-font" style="text-align: right;width: 80px;">{{item.cumulative_total | currency}}</td> 
           </tr>
@@ -66,16 +66,16 @@
           <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_zs"/>
         </div>
         <div class="box"> 
-          <div class="title">渠道JT：</div>
-          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_jt"/>
-        </div>
-        <div class="box"> 
           <div class="title">渠道AL：</div>
           <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_al"/>
         </div>
         <div class="box"> 
           <div class="title">渠道JJ：</div>
           <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_jj"/>
+        </div>
+        <div class="box"> 
+          <div class="title">渠道JT：</div>
+          <input class="num-font" style="text-align: right" type="number" v-model="current_line_channel_jt"/>
         </div>
       </div>
       <div class="popup-info-footer">

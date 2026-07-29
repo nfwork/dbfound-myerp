@@ -212,9 +212,9 @@ const PAGE_SIZE = 30;
 const SUMMARY_TABLE_ROWS = [
   { label: '渠道PF', cur: 'current_channel_pf', arch: 'archived_channel_pf', tot: 'total_channel_pf' },
   { label: '渠道ZS', cur: 'current_channel_zs', arch: 'archived_channel_zs', tot: 'total_channel_zs' },
-  { label: '渠道JT', cur: 'current_channel_jt', arch: 'archived_channel_jt', tot: 'total_channel_jt' },
   { label: '渠道AL', cur: 'current_channel_al', arch: 'archived_channel_al', tot: 'total_channel_al' },
   { label: '渠道JJ', cur: 'current_channel_jj', arch: 'archived_channel_jj', tot: 'total_channel_jj' },
+  { label: '渠道JT', cur: 'current_channel_jt', arch: 'archived_channel_jt', tot: 'total_channel_jt' },
   { label: '渠道汇总', cur: 'current_channel_total', arch: 'archived_channel_total', tot: 'total_channel_total' }
 ];
 
@@ -222,27 +222,27 @@ const SUMMARY_TABLE_ROWS = [
 const CHANNEL_MATRIX_ROWS = [
   { key: 'channel_pf', label: '渠道PF' },
   { key: 'channel_zs', label: '渠道ZS' },
-  { key: 'channel_jt', label: '渠道JT' },
   { key: 'channel_al', label: '渠道AL' },
-  { key: 'channel_jj', label: '渠道JJ' }
+  { key: 'channel_jj', label: '渠道JJ' },
+  { key: 'channel_jt', label: '渠道JT' }
 ];
 
-const DETAIL_HEADS = ['渠道PF', '渠道ZS', '渠道JT', '渠道AL', '渠道JJ', '汇总'];
+const DETAIL_HEADS = ['渠道PF', '渠道ZS', '渠道AL', '渠道JJ', '渠道JT', '汇总'];
 
 const DETAIL_CHANNEL_COLS = [
   { channel: 'channel_pf', diff: 'diff_pf' },
   { channel: 'channel_zs', diff: 'diff_zs' },
-  { channel: 'channel_jt', diff: 'diff_jt' },
   { channel: 'channel_al', diff: 'diff_al' },
-  { channel: 'channel_jj', diff: 'diff_jj' }
+  { channel: 'channel_jj', diff: 'diff_jj' },
+  { channel: 'channel_jt', diff: 'diff_jt' }
 ];
 
 const EDIT_FORM_FIELDS = [
   { title: '渠道PF：', model: 'channel_pf' },
   { title: '渠道ZS：', model: 'channel_zs' },
-  { title: '渠道JT：', model: 'channel_jt' },
   { title: '渠道AL：', model: 'channel_al' },
-  { title: '渠道JJ：', model: 'channel_jj' }
+  { title: '渠道JJ：', model: 'channel_jj' },
+  { title: '渠道JT：', model: 'channel_jt' }
 ];
 
 function emptyProfitSummary() {
@@ -561,9 +561,9 @@ export default {
       this.annualCalcList = [
         { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: null, rate: null },
         { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: null, rate: null },
-        { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: null, rate: null },
         { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: null, rate: null },
         { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: null, rate: null },
+        { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: null, rate: null },
         { key: 'total', label: '汇总', profit: item.total || 0, principal: null, rate: null, isTotal: true }
       ];
       this._principalSnapshot = JSON.stringify(this.annualCalcList.filter((i) => !i.isTotal).map((i) => i.principal));
