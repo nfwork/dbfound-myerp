@@ -182,7 +182,6 @@ export default {
         },
         changeRegisterUserType(value){
             this.register_user_type = value;
-            this.currentPage = 1;
             this.query();
         },
         goToDetail(item_id){
