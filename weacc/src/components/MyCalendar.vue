@@ -14,13 +14,19 @@
 
 <div v-if="isShow" ref="calendarPanel" class="calendar" :style="calendarStyle">
 	<div class="title flex">
-		<div class="flex">
-			<div @click="lastMonth" class="tool-month-box">
+		<div class="flex title-nav">
+			<div @click="lastYear" class="tool-month-box" title="上一年">
+        <div class="last-year"></div>
+      </div>
+			<div @click="lastMonth" class="tool-month-box" title="上一月">
         <div class="last-month"></div>
       </div>
       <div class="year-month">{{selectDay.year}}.{{selectDay.month>9?selectDay.month:"0"+selectDay.month}}</div>
-      <div @click="nextMonth" class="tool-month-box">
-        <div class="next-month" ></div>
+      <div @click="nextMonth" class="tool-month-box" title="下一月">
+        <div class="next-month"></div>
+      </div>
+			<div @click="nextYear" class="tool-month-box" title="下一年">
+        <div class="next-year"></div>
       </div>
 		</div>
 	</div>
@@ -71,9 +77,8 @@ export default {
   },
   data(){
     return {
-        dateList: [], //日历主体渲染数组
-        selectDay: {}, //选中时间
-        open: true,
+        dateList: [],
+        selectDay: {},
         isShow: false,
         selectValue: this.value,
         todayString: '',
@@ -125,84 +130,24 @@ export default {
       this.$emit('input', dateString);
       this.close();
     },
-    /**
-     * 时间戳转化为年 月 日 时 分 秒
-     * time: 需要被格式化的时间，可以被new Date()解析即可
-     * format：格式化之后返回的格式，年月日时分秒分别为Y, M, D, h, m, s，这个参数不填的话则显示多久前
-     */
     formatTime(time, format) {
       function formatNumber(n) {
         n = n.toString()
         return n[1] ? n : '0' + n
       }
- 
-      function getDate(time, format) {
-        const formateArr = ['Y', 'M', 'D', 'h', 'm', 's']
-        const returnArr = []
-        const date = new Date(time)
-        returnArr.push(date.getFullYear())
-        returnArr.push(formatNumber(date.getMonth() + 1))
-        returnArr.push(formatNumber(date.getDate()))
-        returnArr.push(formatNumber(date.getHours()))
-        returnArr.push(formatNumber(date.getMinutes()))
-        returnArr.push(formatNumber(date.getSeconds()))
-        for (const i in returnArr) {
-          format = format.replace(formateArr[i], returnArr[i])
-        }
-        return format
+      const formateArr = ['Y', 'M', 'D', 'h', 'm', 's']
+      const returnArr = []
+      const date = new Date(time)
+      returnArr.push(date.getFullYear())
+      returnArr.push(formatNumber(date.getMonth() + 1))
+      returnArr.push(formatNumber(date.getDate()))
+      returnArr.push(formatNumber(date.getHours()))
+      returnArr.push(formatNumber(date.getMinutes()))
+      returnArr.push(formatNumber(date.getSeconds()))
+      for (const i in returnArr) {
+        format = format.replace(formateArr[i], returnArr[i])
       }
- 
-      function getDateDiff(time) {
-        let r = ''
-        const ft = new Date(time)
-        const nt = new Date()
-        const nd = new Date(nt)
-        nd.setHours(23)
-        nd.setMinutes(59)
-        nd.setSeconds(59)
-        nd.setMilliseconds(999)
-        const d = parseInt((nd - ft) / 86400000)
-        switch (true) {
-
-          case d === 0:
-            const t = parseInt(nt / 1000) - parseInt(ft / 1000)
-            switch (true) {
-              case t < 60:
-                r = '刚刚'
-                break
-              case t < 3600:
-                r = parseInt(t / 60) + '分钟前'
-                break
-              default:
-                r = parseInt(t / 3600) + '小时前'
-            }
-            break
-          case d === 1:
-            r = '昨天'
-            break
-          case d === 2:
-            r = '前天'
-            break
-          case d > 2 && d < 30:
-            r = d + '天前'
-            break
-          default:
-            r = getDate(time, 'Y-M-D')
-        }
-        return r
-      }
-      if (!format) {
-        return getDateDiff(time)
-      } else {
-        return getDate(time, format)
-      }
-    },
-    //picker设置月份
-    editMonth(e) {
-      const arr = e.detail.value.split("-")
-      const year = parseInt(arr[0])
-      const month = parseInt(arr[1])
-      this.setMonth(year, month)
+      return format
     },
     //上月切换按钮点击
     lastMonth() {
@@ -217,6 +162,14 @@ export default {
       const year = nextMonth.getFullYear()
       const month = nextMonth.getMonth() + 1
       this.setMonth(year, month, null, false)
+    },
+    //上一年切换按钮点击
+    lastYear() {
+      this.setMonth(this.selectDay.year - 1, this.selectDay.month, null, false)
+    },
+    //下一年切换按钮点击
+    nextYear() {
+      this.setMonth(this.selectDay.year + 1, this.selectDay.month, null, false)
     },
     //设置月份
     setMonth(setYear, setMonth, setDay, emitChange = true) {
@@ -234,18 +187,9 @@ export default {
           this.selectValue = dateString;
           this.$emit('input', this.selectValue);
         }
-        if (!setDay) {
-          this.open = true
-        }
         this.dateInit(setYear, setMonth)
         this.setSpot()
       }
-    },
-    //展开收起
-    openChange() {
-      this.open = !this.open;
-      this.dateInit()
-      this.setSpot()
     },
     //设置日历底下是否展示小圆点
     setSpot() {
@@ -262,44 +206,23 @@ export default {
           item.spot = false
         }
       })
-     //  this.dateList= this.data.dateList
     },
     //日历主体的渲染方法
     dateInit(setYear = this.selectDay.year, setMonth = this.selectDay.month) {
-      let dateList = []; //需要遍历的日历数组数据
-      let now = new Date(setYear, setMonth - 1)//当前月份的1号
-      let startWeek = now.getDay(); //目标月1号对应的星期
-      let dayNum = new Date(setYear, setMonth, 0).getDate() //当前月有多少天
-      let forNum = Math.ceil((startWeek + dayNum) / 7) * 7 //当前月跨越的周数
-      if (this.open) {
-        //展开状态，需要渲染完整的月份
-        for (let i = 0; i < forNum; i++) {
-          const now2 = new Date(now)
-          now2.setDate(i - startWeek + 1)
-          let obj = {};
-          obj = {
-            day: now2.getDate(),
-            month: now2.getMonth() + 1,
-            year: now2.getFullYear(),
-            dateString: this.formatTime(now2, "Y-M-D")
-          };
-          dateList[i] = obj;
-        }
-      } else {
-        //非展开状态，只需要渲染当前周
-        for (let i = 0; i < 7; i++) {
-          const now2 = new Date(now)
-          //当前周的7天
-          now2.setDate(Math.ceil((this.selectDay.day + startWeek) / 7) * 7 - 6 - startWeek + i)
-          let obj = {};
-          obj = {
-            day: now2.getDate(),
-            month: now2.getMonth() + 1,
-            year: now2.getFullYear(),
-            dateString: this.formatTime(now2, "Y-M-D")
-          };
-          dateList[i] = obj;
-        }
+      let dateList = [];
+      let now = new Date(setYear, setMonth - 1)
+      let startWeek = now.getDay();
+      let dayNum = new Date(setYear, setMonth, 0).getDate()
+      let forNum = Math.ceil((startWeek + dayNum) / 7) * 7
+      for (let i = 0; i < forNum; i++) {
+        const now2 = new Date(now)
+        now2.setDate(i - startWeek + 1)
+        dateList[i] = {
+          day: now2.getDate(),
+          month: now2.getMonth() + 1,
+          year: now2.getFullYear(),
+          dateString: this.formatTime(now2, "Y-M-D")
+        };
       }
       this.dateList= dateList;
     },
@@ -323,22 +246,6 @@ export default {
         this.selectValue = selectDay.dateString;
         this.$emit('input', this.selectValue);
         this.close();
-      }
-    },
-    myTouchStart(e) {
-      //开启滑动事件
-      this.slipFlag = true;
-      this.startPoint = e.touches[0];
-    },
-  
-    myTouchMove(e) {
-      // ----------------监听手势左右滑事件----------------
-      if (((this.startPoint.clientX - e.touches[e.touches.length - 1].clientX) > 80) && this.slipFlag) {
-        this.slipFlag = false
-        this.nextMonth();
-      } else if (((this.startPoint.clientX - e.touches[e.touches.length - 1].clientX) < -80) && this.slipFlag) {
-        this.slipFlag = false
-        this.lastMonth();
       }
     },
     initValue(){
@@ -522,14 +429,15 @@ export default {
 
  .tool-month-box{
   width: 20px; 
-  height: 15px; 
+  height: 18px; 
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 15px;
+  margin: 0 4px;
   border-radius: 3px;
   cursor: pointer;
+  flex-shrink: 0;
  }
 
  .tool-month-box:hover {
@@ -538,16 +446,54 @@ export default {
  .next-month {
   width:0;
   height:0;
-  border-top:7px solid transparent;
-  border-left:7px solid #333;
-  border-bottom:7px solid transparent;
+  border-top:6px solid transparent;
+  border-left:6px solid #333;
+  border-bottom:6px solid transparent;
 }
 .last-month {
   width:0;
   height:0;
-  border-right:7px solid #333;
-  border-bottom:7px solid transparent;
-  border-top:7px solid transparent;
+  border-right:6px solid #333;
+  border-bottom:6px solid transparent;
+  border-top:6px solid transparent;
+}
+.last-year,
+.next-year {
+  position: relative;
+  width: 10px;
+  height: 12px;
+}
+.last-year::before,
+.last-year::after,
+.next-year::before,
+.next-year::after {
+  position: absolute;
+  top: 0;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+.last-year::before,
+.last-year::after {
+  border-right: 6px solid #333;
+}
+.next-year::before,
+.next-year::after {
+  border-left: 6px solid #333;
+}
+.last-year::before {
+  left: 0;
+}
+.last-year::after {
+  left: 4px;
+}
+.next-year::before {
+  left: 0;
+}
+.next-year::after {
+  left: 4px;
 }
 
 .flex {
@@ -573,14 +519,22 @@ export default {
 }
  
 .calendar .title {
-  font-size: 20px;
+  font-size: 18px;
   color: #555;
-  padding: 6px 8px 5px 48px;
+  padding: 6px 4px 5px;
   line-height: 26px;
+  justify-content: center;
+}
+
+.calendar .title .title-nav {
+  width: 100%;
+  justify-content: center;
 }
  
 .calendar .title .year-month {
-  margin-right: 0px;
+  margin: 0 6px;
+  min-width: 90px;
+  text-align: center;
 }
  
 .calendar .calendar-week {
