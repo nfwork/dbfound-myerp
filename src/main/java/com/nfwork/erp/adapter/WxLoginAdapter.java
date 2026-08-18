@@ -14,5 +14,6 @@ public class WxLoginAdapter extends WxBindAdapter {
             throw new CollisionException("无需登录");
         }
         super.beforeExecute(context,params);
+        LoginAdapter.fillJsessionid(context, params);
     }
 }

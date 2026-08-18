@@ -15,49 +15,63 @@ import com.nfwork.dbfound.web.base.Interceptor;
 
 public class SimpleCheckInterceptor implements Interceptor {
 
+	private static final String LOGIN_USER_AGENT = "login_user_agent";
+
 	Map<String, String> accessMap;
 
 	public boolean jspInterceptor(HttpServletRequest request,
 								  HttpServletResponse response) throws Exception {
-		Object user_id = request.getSession().getAttribute("user_id");
-
-		if (user_id == null) {
-			String url = request.getServletPath();
-			if (check(url)) {
-				return true;
-			} else {
-				if (url.startsWith("/mobile/")) {
-					request.getRequestDispatcher("/mobile/login.jsp").forward(
-							request, response);
-				}else{
-					request.getRequestDispatcher("/sessionExpire.jsp").forward(
-							request, response);
-				}
-				return false;
-			}
-		} else {
+		if (isAccessAllowed(request)) {
 			return true;
 		}
+		String page = request.getServletPath().startsWith("/mobile/")
+				? "/mobile/login.jsp" : "/sessionExpire.jsp";
+		request.getRequestDispatcher(page).forward(request, response);
+		return false;
 	}
 
 	private boolean commonInterceptor(Context context){
-		Object user_id = context.request.getSession().getAttribute("user_id");
-
-		if (user_id == null) {
-			String url = context.request.getServletPath();
-			if (check(url)) {
-				return true;
-			} else {
-				Map<String,Object> map = new HashMap<>();
-				map.put("timeout", true);
-				map.put("message", "session超时或未登录");
-				map.put("success", false);
-				WebWriter.jsonWriter(context.response, JsonUtil.toJson(map));
-				return false;
-			}
-		} else {
+		HttpServletRequest request = context.request;
+		boolean loggedIn = request.getSession().getAttribute("user_id") != null;
+		if (isAccessAllowed(request)) {
 			return true;
 		}
+		writeTimeout(context, loggedIn ? "登录环境发生变化，请重新登录" : "session超时或未登录");
+		return false;
+	}
+
+	private boolean isAccessAllowed(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Object user_id = session.getAttribute("user_id");
+		if (user_id == null) {
+			return check(request.getServletPath());
+		}
+		if (userAgentChanged(session, request)) {
+			session.invalidate();
+			return false;
+		}
+		return true;
+	}
+
+	private void writeTimeout(Context context, String message) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("timeout", true);
+		map.put("message", message);
+		map.put("success", false);
+		WebWriter.jsonWriter(context.response, JsonUtil.toJson(map));
+	}
+
+	private boolean userAgentChanged(HttpSession session, HttpServletRequest request) {
+		Object saved = session.getAttribute(LOGIN_USER_AGENT);
+		if (saved == null) {
+			return true;
+		}
+		return !String.valueOf(saved).equals(headerUserAgent(request));
+	}
+
+	private String headerUserAgent(HttpServletRequest request) {
+		String ua = request.getHeader("User-Agent");
+		return ua == null ? "" : ua;
 	}
 
 	@Override
