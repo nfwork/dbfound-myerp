@@ -48,12 +48,9 @@ public class SimpleCheckInterceptor implements Interceptor {
 		if (user_id == null) {
 			return check(request.getServletPath());
 		}
-		if (hasDeviceId(session)) {
-			if (deviceIdChanged(session, request)) {
-				session.invalidate();
-				return false;
-			}
-			return true;
+		if (hasDeviceId(session) && deviceIdChanged(session, request)) {
+			session.invalidate();
+			return false;
 		}
 		if (userAgentChanged(session, request)) {
 			session.invalidate();
