@@ -1,6 +1,7 @@
 import axios from 'axios';
 import router from '../router';
 import { Toast } from 'vant';
+import { getDeviceId } from './device';
 
 const request = axios.create({
   baseURL: "https://dbfound.3g.net.cn/dbfound/",
@@ -72,6 +73,7 @@ function getErrorMessage(error) {
 
 request.interceptors.request.use(
   config => {
+    config.headers["X-Device-Id"] = getDeviceId();
     if(!request.jsessionid){
       request.jsessionid = localStorage.getItem("jsessionid");
     }

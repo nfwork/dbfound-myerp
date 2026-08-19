@@ -16,6 +16,8 @@ import com.nfwork.dbfound.web.base.Interceptor;
 public class SimpleCheckInterceptor implements Interceptor {
 
 	private static final String LOGIN_USER_AGENT = "login_user_agent";
+	private static final String DEVICE_ID = "device_id";
+	private static final String DEVICE_ID_HEADER = "X-Device-Id";
 
 	Map<String, String> accessMap;
 
@@ -46,6 +48,13 @@ public class SimpleCheckInterceptor implements Interceptor {
 		if (user_id == null) {
 			return check(request.getServletPath());
 		}
+		if (hasDeviceId(session)) {
+			if (deviceIdChanged(session, request)) {
+				session.invalidate();
+				return false;
+			}
+			return true;
+		}
 		if (userAgentChanged(session, request)) {
 			session.invalidate();
 			return false;
@@ -61,17 +70,23 @@ public class SimpleCheckInterceptor implements Interceptor {
 		WebWriter.jsonWriter(context.response, JsonUtil.toJson(map));
 	}
 
+	private boolean hasDeviceId(HttpSession session) {
+		Object saved = session.getAttribute(DEVICE_ID);
+		return saved != null && DataUtil.isNotNull(String.valueOf(saved));
+	}
+
+	private boolean deviceIdChanged(HttpSession session, HttpServletRequest request) {
+		String current = request.getHeader(DEVICE_ID_HEADER);
+		return current == null || !String.valueOf(session.getAttribute(DEVICE_ID)).equals(current);
+	}
+
 	private boolean userAgentChanged(HttpSession session, HttpServletRequest request) {
 		Object saved = session.getAttribute(LOGIN_USER_AGENT);
 		if (saved == null) {
 			return true;
 		}
-		return !String.valueOf(saved).equals(headerUserAgent(request));
-	}
-
-	private String headerUserAgent(HttpServletRequest request) {
 		String ua = request.getHeader("User-Agent");
-		return ua == null ? "" : ua;
+		return !String.valueOf(saved).equals(ua == null ? "" : ua);
 	}
 
 	@Override
@@ -83,7 +98,7 @@ public class SimpleCheckInterceptor implements Interceptor {
 			response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 			response.setHeader("Access-Control-Max-Age", "1800");
 			response.setHeader("Access-Control-Allow-Credentials", "true");
-			response.addHeader("Access-Control-Allow-Headers", "Content-Type");
+			response.addHeader("Access-Control-Allow-Headers", "Content-Type, X-Device-Id");
 			response.addHeader("Access-Control-Expose-Headers", "Jsessionid");
 
 			HttpSession session = "OPTIONS".equalsIgnoreCase(request.getMethod()) ? request.getSession(false) : request.getSession();

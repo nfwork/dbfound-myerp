@@ -3,10 +3,13 @@ import App from './App.vue'
 
 import router from './router';
 import './registerServiceWorker';
+import { getDeviceId } from '@/util/device';
 import MySelect from '@/components/MySelect.vue';
 import MyCalendar from '@/components/MyCalendar.vue';
 import 'vant/lib/index.css';
 import { Popup, RadioGroup, Radio, Switch} from 'vant';
+
+getDeviceId();
 
 Vue.config.productionTip = false;
 Vue.component("MySelect", MySelect);

@@ -12,6 +12,7 @@
 		<param name="user_code" dataType="varchar" autoCookie="true" autoSession="true" ioType="both"/>
 		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
 		<param name="login_user_agent" dataType="varchar" sourcePath="header.user-agent" autoSession="true"/>
+		<param name="device_id" dataType="varchar" sourcePath="header.x-device-id" autoSession="true"/>
 		<param name="jsessionid" dataType="varchar" />
 		<sqls>
 			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password = md5(${@password}) and status = 'Y')" message="账号或密码不正确！"/>
@@ -32,8 +33,8 @@
 		    </querySql>
 			<executeSql>
 				<![CDATA[
-				insert into sys_login_history(user_code,password,ip,user_agent,jsessionid,status,login_time,login_date)
-				values(${@user_code},'ttt',${@ip},${@login_user_agent},${@jsessionid},1,now(),now())
+				insert into sys_login_history(user_code,password,ip,user_agent,jsessionid,device_id,status,login_time,login_date)
+				values(${@user_code},'ttt',${@ip},${@login_user_agent},${@jsessionid},${@device_id},1,now(),now())
 				]]>
 			</executeSql>
 		</sqls>
