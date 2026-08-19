@@ -1,5 +1,7 @@
 const STORAGE_KEY = "device_id";
 
+let cachedId = "";
+
 function createDeviceId() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
@@ -12,10 +14,13 @@ function createDeviceId() {
 }
 
 export function getDeviceId() {
-  let deviceId = localStorage.getItem(STORAGE_KEY);
-  if (!deviceId) {
-    deviceId = createDeviceId();
-    localStorage.setItem(STORAGE_KEY, deviceId);
+  if (cachedId) {
+    return cachedId;
   }
-  return deviceId;
+  cachedId = localStorage.getItem(STORAGE_KEY);
+  if (!cachedId) {
+    cachedId = createDeviceId();
+    localStorage.setItem(STORAGE_KEY, cachedId);
+  }
+  return cachedId;
 }

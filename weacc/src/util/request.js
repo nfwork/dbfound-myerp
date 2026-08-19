@@ -2,6 +2,7 @@ import axios from 'axios';
 import router from '../router';
 import { Toast } from 'vant';
 import { getDeviceId } from './device';
+import { appendJsessionid, saveJsessionid, clearJsessionid } from './jsessionid';
 
 const request = axios.create({
   baseURL: "https://dbfound.3g.net.cn/dbfound/",
@@ -74,16 +75,7 @@ function getErrorMessage(error) {
 request.interceptors.request.use(
   config => {
     config.headers["X-Device-Id"] = getDeviceId();
-    if(!request.jsessionid){
-      request.jsessionid = localStorage.getItem("jsessionid");
-    }
-    let url = config.url;
-    let index = url.indexOf("?");
-    if(index>0){
-      config.url = url.substring(0,index) +';jsessionid=' + request.jsessionid + url.substring(index); 
-    }else{
-      config.url = url +';jsessionid=' + request.jsessionid; 
-    }
+    config.url = appendJsessionid(config.url);
     if(config.showLoadding){
       Toast.loading({
         duration: 0,
@@ -103,12 +95,13 @@ request.interceptors.response.use(
     if(res.config.showLoadding){
       Toast.clear();
     }
-    let jsessionid = res.headers["jsessionid"];
-    if(jsessionid && jsessionid != request.jsessionid){
-      request.jsessionid = jsessionid;
-      localStorage.setItem("jsessionid",jsessionid);
+    let data = getResponseData(res);
+    let jsessionid = data && data.outParam && data.outParam.jsessionid;
+    if (jsessionid) {
+      saveJsessionid(jsessionid);
     }
-    if(res.data.timeout){
+    if(data && data.timeout){
+      clearJsessionid();
       router.push("/login");
     }
     return res;

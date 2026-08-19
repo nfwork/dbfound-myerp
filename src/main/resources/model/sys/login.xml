@@ -13,7 +13,8 @@
 		<param name="ip" dataType="varchar" sourcePath="header.x-forwarded-for" />
 		<param name="login_user_agent" dataType="varchar" sourcePath="header.user-agent" autoSession="true"/>
 		<param name="device_id" dataType="varchar" sourcePath="header.x-device-id" autoSession="true"/>
-		<param name="jsessionid" dataType="varchar" />
+		<!-- 输入：写入登录历史；输出：返回给前端跟踪会话 -->
+		<param name="jsessionid" dataType="varchar" ioType="both"/>
 		<sqls>
 			<collisionSql where="not exists (select 1 from sys_user where user_code= ${@user_code} and password = md5(${@password}) and status = 'Y')" message="账号或密码不正确！"/>
 			<querySql>

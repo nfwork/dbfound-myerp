@@ -65,6 +65,7 @@
 <script>
 import { Toast,Dialog } from 'vant';
 import request from '@/util/request';
+import { clearJsessionid } from '@/util/jsessionid';
 export default {
     data(){
         return {
@@ -178,6 +179,7 @@ export default {
             }).then(() => {
                 let url = "user.do!logout"
                 request.post(url).then(res => {
+                    clearJsessionid();
                     this.$router.replace({ path: "/login" });
                 });
             }).catch(() => {

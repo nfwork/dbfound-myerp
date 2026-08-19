@@ -99,10 +99,6 @@ public class SimpleCheckInterceptor implements Interceptor {
 			response.setHeader("Access-Control-Max-Age", "1800");
 			response.setHeader("Access-Control-Allow-Credentials", "true");
 			response.addHeader("Access-Control-Allow-Headers", "Content-Type, X-Device-Id");
-			response.addHeader("Access-Control-Expose-Headers", "Jsessionid");
-
-			HttpSession session = "OPTIONS".equalsIgnoreCase(request.getMethod()) ? request.getSession(false) : request.getSession();
-			response.setHeader("Jsessionid", session == null ? "" : session.getId());
 		}
 	}
 
