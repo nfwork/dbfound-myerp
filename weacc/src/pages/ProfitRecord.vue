@@ -39,21 +39,21 @@
             <thead>
               <tr>
                 <th class="channel-label-col">渠道</th>
-                <th v-for="item in annualProfitSource" :key="'p' + item.profit_period">{{ item.profit_period }}</th>
+                <th v-for="item in summaryProfitSource" :key="'p' + item.profit_period">{{ item.profit_period }}</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="row in CHANNEL_MATRIX_ROWS" :key="summaryTab + row.key">
                 <td class="channel-label-col">{{ row.label }}</td>
                 <td
-                  v-for="col in annualProfitSource"
+                  v-for="col in summaryProfitSource"
                   :key="summaryTab + col.profit_period + row.key"
                 >{{ fmt(col[row.key]) }}</td>
               </tr>
               <tr class="monthly-total-row">
                 <td class="channel-label-col">汇总</td>
                 <td
-                  v-for="col in annualProfitSource"
+                  v-for="col in summaryProfitSource"
                   :key="'tot' + summaryTab + col.profit_period"
                 >{{ fmt(col.total) }}</td>
               </tr>
@@ -140,20 +140,20 @@
 
     <van-popup v-model="showAnnualBox" style="max-width:460px;width:90%;top:43%">
       <div class="popup-info-header annual-header">
-        <button type="button" class="annual-nav-btn" :disabled="annualCalcIndex <= 0" @click="switchAnnualMonth(-1)">&lt;</button>
-        <span>年化收益测算 ({{ annualCalcMonth }})</span>
+        <button type="button" class="annual-nav-btn" :disabled="annualCalcIndex <= 0" @click="switchAnnualPeriod(-1)">&lt;</button>
+        <span>年化收益测算 ({{ annualCalcPeriod }})</span>
         <button
           type="button"
           class="annual-nav-btn"
           :disabled="annualCalcIndex >= annualProfitSource.length - 1"
-          @click="switchAnnualMonth(1)"
+          @click="switchAnnualPeriod(1)"
         >&gt;</button>
       </div>
       <div class="popup-row-info annual-calc-body">
         <div class="annual-row annual-row-header">
           <div class="annual-col-channel">渠道</div>
           <div class="annual-col-profit">{{ annualProfitLabel }}</div>
-          <div class="annual-col-principal">本金(万元)</div>
+          <div class="annual-col-principal">{{ annualPrincipalLabel }}</div>
           <div class="annual-col-rate">年化率</div>
         </div>
         <div class="annual-scroll">
@@ -166,8 +166,8 @@
             <div class="annual-col-channel">{{ item.label }}</div>
             <div class="annual-col-profit">{{ fmt(item.profit) }}</div>
             <div class="annual-col-principal">
-              <input v-if="!item.isTotal" type="number" v-model.number="item.principal" />
-              <span v-else>{{ fmt(item.principal) }}</span>
+              <input v-if="!item.isTotal && annualCalcMode !== 'yearly'" type="number" v-model.number="item.principal" />
+              <span v-else>{{ item.principal == null ? '-' : fmt(item.principal) }}</span>
             </div>
             <div class="annual-col-rate">
               <span v-if="item.rate !== null" :style="item.rate >= 0 ? 'color:#e74c3c' : 'color:#27ae60'">{{ item.rate }}%</span>
@@ -178,7 +178,7 @@
       </div>
       <div class="popup-info-footer">
         <button type="button" class="litter-bule-button" @click="showAnnualBox = false">关 闭</button>
-        <button type="button" class="bule-button" @click="calcAnnualReturn">计 算</button>
+        <button v-if="annualCalcMode !== 'yearly'" type="button" class="bule-button" @click="calcAnnualReturn">计 算</button>
       </div>
     </van-popup>
 
@@ -220,11 +220,11 @@ const SUMMARY_TABLE_ROWS = [
 
 /** 按月/按年矩阵：每行对应接口字段名 */
 const CHANNEL_MATRIX_ROWS = [
-  { key: 'channel_pf', label: '渠道PF' },
-  { key: 'channel_zs', label: '渠道ZS' },
-  { key: 'channel_al', label: '渠道AL' },
-  { key: 'channel_jj', label: '渠道JJ' },
-  { key: 'channel_jt', label: '渠道JT' }
+  { key: 'channel_pf', principalKey: 'pf', label: '渠道PF' },
+  { key: 'channel_zs', principalKey: 'zs', label: '渠道ZS' },
+  { key: 'channel_al', principalKey: 'al', label: '渠道AL' },
+  { key: 'channel_jj', principalKey: 'jj', label: '渠道JJ' },
+  { key: 'channel_jt', principalKey: 'jt', label: '渠道JT' }
 ];
 
 const DETAIL_HEADS = ['渠道PF', '渠道ZS', '渠道AL', '渠道JJ', '渠道JT', '汇总'];
@@ -333,8 +333,10 @@ export default {
       summaryTab: 'monthly',
       showAnnualBox: false,
       annualCalcList: [],
-      annualCalcMonth: '',
-      annualCalcIndex: 0
+      annualCalcPeriod: '',
+      annualCalcIndex: 0,
+      annualCalcMode: 'monthly',
+      annualCalcRequestId: 0
     };
   },
 
@@ -353,19 +355,24 @@ export default {
       if (w > 600) w = 600;
       return w - 20;
     },
-    /** 按月/按年矩阵与年化弹窗共用同一套期间数据 */
-    annualProfitSource() {
+    summaryProfitSource() {
       return this.summaryTab === 'yearly' ? this.yearly_profit_list : this.monthly_profit_list;
+    },
+    annualProfitSource() {
+      return this.annualCalcMode === 'yearly' ? this.yearly_profit_list : this.monthly_profit_list;
     },
     /** 年化折算：按年已是全年收益用 1；按月用 365/当月自然日数（替代固定×12） */
     annualPeriodMultiplier() {
-      if (this.summaryTab === 'yearly') return 1;
-      const days = this.daysInMonthForProfitPeriod(this.annualCalcMonth);
+      if (this.annualCalcMode === 'yearly') return 1;
+      const days = this.daysInMonthForProfitPeriod(this.annualCalcPeriod);
       if (days == null || days < 1) return 12;
       return 365 / days;
     },
     annualProfitLabel() {
-      return this.summaryTab === 'yearly' ? '年收益(元)' : '月收益(元)';
+      return this.annualCalcMode === 'yearly' ? '年收益(元)' : '月收益(元)';
+    },
+    annualPrincipalLabel() {
+      return this.annualCalcMode === 'yearly' ? '月均本金(万元)' : '本金(万元)';
     },
     pageRangeFrom() {
       return (this.currentPage - 1) * this.limit + 1;
@@ -514,19 +521,57 @@ export default {
     annualPrincipalConfigKey(month) {
       return `conf-pf-ap-${month}`;
     },
-    loadPrincipalCache(month) {
+    loadPrincipalCaches(configKeys) {
+      if (!configKeys || configKeys.length === 0) return Promise.resolve([]);
       return request.post('pf/userConfig.query', {
-        config_key: this.annualPrincipalConfigKey(month)
+        config_keys: configKeys
       }).then((res) => {
-        if (res.data.success && res.data.datas && res.data.datas.length > 0) {
+        if (!res.data.success) throw new Error(res.data.message || '本金数据加载失败');
+        return (res.data.datas || []).map((item) => {
           try {
-            return JSON.parse(this.decodeConfigValue(res.data.datas[0].config_value));
+            return JSON.parse(this.decodeConfigValue(item.config_value));
           } catch (e) {
-            return {};
+            return null;
+          }
+        }).filter((cache) => cache !== null);
+      });
+    },
+    loadPrincipalCache(month) {
+      const configKey = this.annualPrincipalConfigKey(month);
+      return this.loadPrincipalCaches([configKey])
+        .then((caches) => caches[0] || {})
+        .catch(() => ({}));
+    },
+    loadYearlyAveragePrincipal(year) {
+      const yearText = String(year || '');
+      if (!/^\d{4}$/.test(yearText)) return Promise.resolve({});
+
+      const configKeys = Array.from(
+        { length: 12 },
+        (_, index) => this.annualPrincipalConfigKey(
+          `${yearText}-${String(index + 1).padStart(2, '0')}`
+        )
+      );
+      return this.loadPrincipalCaches(configKeys).then((monthlyCaches) => {
+        if (monthlyCaches.length === 0) return {};
+        const averages = {};
+        const keys = CHANNEL_MATRIX_ROWS.map((row) => row.principalKey);
+        for (const key of keys) {
+          const total = monthlyCaches.reduce((sum, cache) => {
+            const value = Number(cache[key]);
+            return sum + (Number.isFinite(value) && value > 0 ? value : 0);
+          }, 0);
+          if (total > 0) {
+            averages[key] = total / monthlyCaches.length;
           }
         }
-        return {};
-      }).catch(() => ({}));
+        return averages;
+      });
+    },
+    principalSnapshot() {
+      return JSON.stringify(
+        this.annualCalcList.filter((item) => !item.isTotal).map((item) => item.principal)
+      );
     },
     savePrincipalCache() {
       const cache = {};
@@ -534,46 +579,63 @@ export default {
         if (item.isTotal) continue;
         if (item.principal > 0) cache[item.key] = item.principal;
       }
-      request.post('pf/userConfig.execute!save', {
-        config_key: this.annualPrincipalConfigKey(this.annualCalcMonth),
+      return request.post('pf/userConfig.execute!save', {
+        config_key: this.annualPrincipalConfigKey(this.annualCalcPeriod),
         config_value: this.encodeConfigValue(JSON.stringify(cache))
       });
     },
 
     openAnnualCalc() {
+      this.annualCalcMode = this.summaryTab === 'yearly' ? 'yearly' : 'monthly';
       if (!this.annualProfitSource || this.annualProfitSource.length === 0) {
         Toast.fail('请先查询收益数据');
         return;
       }
       this.annualCalcIndex = 0;
-      this.loadAnnualMonth();
+      this.loadAnnualPeriod();
       this.showAnnualBox = true;
     },
-    switchAnnualMonth(delta) {
+    switchAnnualPeriod(delta) {
       const newIndex = this.annualCalcIndex + delta;
       if (newIndex < 0 || newIndex >= this.annualProfitSource.length) return;
       this.annualCalcIndex = newIndex;
-      this.loadAnnualMonth();
+      this.loadAnnualPeriod();
     },
-    loadAnnualMonth() {
+    loadAnnualPeriod() {
       const item = this.annualProfitSource[this.annualCalcIndex];
-      this.annualCalcMonth = item.profit_period;
+      const requestId = ++this.annualCalcRequestId;
+      const period = item.profit_period;
+      const isYearly = this.annualCalcMode === 'yearly';
+      this.annualCalcPeriod = period;
       this.annualCalcList = [
-        { key: 'pf', label: '渠道PF', profit: item.channel_pf || 0, principal: null, rate: null },
-        { key: 'zs', label: '渠道ZS', profit: item.channel_zs || 0, principal: null, rate: null },
-        { key: 'al', label: '渠道AL', profit: item.channel_al || 0, principal: null, rate: null },
-        { key: 'jj', label: '渠道JJ', profit: item.channel_jj || 0, principal: null, rate: null },
-        { key: 'jt', label: '渠道JT', profit: item.channel_jt || 0, principal: null, rate: null },
+        ...CHANNEL_MATRIX_ROWS.map((row) => ({
+          key: row.principalKey,
+          label: row.label,
+          profit: Number(item[row.key]) || 0,
+          principal: null,
+          rate: null
+        })),
         { key: 'total', label: '汇总', profit: item.total || 0, principal: null, rate: null, isTotal: true }
       ];
-      this._principalSnapshot = JSON.stringify(this.annualCalcList.filter((i) => !i.isTotal).map((i) => i.principal));
-      this.loadPrincipalCache(item.profit_period).then((cache) => {
-        if (Object.keys(cache).length === 0) return;
-        for (const row of this.annualCalcList) {
-          if (!row.isTotal && cache[row.key]) row.principal = cache[row.key];
+      this._principalSnapshot = this.principalSnapshot();
+      const principalLoader = isYearly
+        ? this.loadYearlyAveragePrincipal(period)
+        : this.loadPrincipalCache(period);
+      principalLoader.then((cache) => {
+        if (requestId !== this.annualCalcRequestId) return;
+        if (Object.keys(cache).length === 0) {
+          if (isYearly) Toast.fail('该年度暂无已保存的月度本金');
+          return;
         }
-        this._principalSnapshot = JSON.stringify(this.annualCalcList.filter((i) => !i.isTotal).map((i) => i.principal));
+        for (const row of this.annualCalcList) {
+          if (!row.isTotal && cache[row.key] != null) row.principal = cache[row.key];
+        }
+        this._principalSnapshot = this.principalSnapshot();
         this.calcAnnualReturn(false);
+      }).catch(() => {
+        if (requestId === this.annualCalcRequestId && isYearly) {
+          Toast.fail('月度本金加载失败，请稍后重试');
+        }
       });
     },
     calcAnnualReturn(userTriggered = true) {
@@ -605,10 +667,15 @@ export default {
           : null;
       }
       if (userTriggered) {
-        const current = JSON.stringify(this.annualCalcList.filter((i) => !i.isTotal).map((i) => i.principal));
-        if (current !== this._principalSnapshot) {
-          this.savePrincipalCache();
-          this._principalSnapshot = current;
+        const current = this.principalSnapshot();
+        if (this.annualCalcMode !== 'yearly' && current !== this._principalSnapshot) {
+          const requestId = this.annualCalcRequestId;
+          this.savePrincipalCache().then((res) => {
+            if (!res.data.success) throw new Error(res.data.message || '本金保存失败');
+            if (requestId === this.annualCalcRequestId) this._principalSnapshot = current;
+          }).catch(() => {
+            Toast.fail('本金保存失败，请稍后重试');
+          });
         }
       }
     },

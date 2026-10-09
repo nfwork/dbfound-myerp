@@ -7,12 +7,13 @@
     <param name="user_id" dataType="number" scope="session" />
 
     <query>
-        <param name="config_key" dataType="varchar" />
+        <param name="config_keys" dataType="collection" />
         <sql>
             SELECT config_id, config_key, config_value
               FROM pf_user_config
              WHERE book_id = ${@book_id}
-               AND config_key = ${@config_key}
+               AND config_key IN (${@config_keys})
+             ORDER BY config_key
         </sql>
     </query>
 
