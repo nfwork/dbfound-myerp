@@ -542,12 +542,24 @@ export default {
         .then((caches) => caches[0] || {})
         .catch(() => ({}));
     },
+    yearlyPrincipalMonthCount(year) {
+      const cutoffMatch = String(this.cost_date || '').match(/^(\d{4})-(\d{1,2})/);
+      if (!cutoffMatch) return 12;
+
+      const targetYear = Number(year);
+      const cutoffYear = Number(cutoffMatch[1]);
+      const cutoffMonth = Number(cutoffMatch[2]);
+      if (targetYear < cutoffYear) return 12;
+      if (targetYear > cutoffYear) return 0;
+      return Math.min(Math.max(cutoffMonth, 1), 12);
+    },
     loadYearlyAveragePrincipal(year) {
       const yearText = String(year || '');
       if (!/^\d{4}$/.test(yearText)) return Promise.resolve({});
 
+      const monthCount = this.yearlyPrincipalMonthCount(yearText);
       const configKeys = Array.from(
-        { length: 12 },
+        { length: monthCount },
         (_, index) => this.annualPrincipalConfigKey(
           `${yearText}-${String(index + 1).padStart(2, '0')}`
         )
